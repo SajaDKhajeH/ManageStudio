@@ -1,0 +1,931 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="0" />
+    <DataSources isList="true" count="1">
+      <Data Ref="2" type="Stimulsoft.Report.Dictionary.StiBusinessObjectSource" isKey="true">
+        <Alias>Data</Alias>
+        <Columns isList="true" count="7">
+          <value>ORIGINAL,GroupProduct,GroupProduct,GroupProduct,System.String,_x0035_689c954203a4611840017c7d399e6d0</value>
+          <value>ORIGINAL,GroupProductId,GroupProductId,GroupProductId,System.Int32,_x0035_543b6902287423696abff054c8560f1</value>
+          <value>ORIGINAL,ProductTitle,ProductTitle,ProductTitle,System.String,e9b9fb1a6b0a48f580e37c500552b7f2</value>
+          <value>ORIGINAL,CountAll,CountAll,CountAll,System.Int32,_x0038_08780c6b5df4d8a833fd5b65b6b4708</value>
+          <value>ORIGINAL,SumPriceBuy,SumPriceBuy,SumPriceBuy,System.Decimal,_x0033_5afe3beba4e499b90e3bcfdd913dd65</value>
+          <value>ORIGINAL,SumPriceSale,SumPriceSale,SumPriceSale,System.Decimal,_x0039_3304a66f0fa46f18bd37fabd6e9f702</value>
+          <value>ORIGINAL,Profit,Profit,Profit,System.Decimal,_x0037_6054dfe190349c5b8ee2529ff52beb1</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Key>9b356cbb477346f090f6ffee1fd09a37</Key>
+        <Name>Data</Name>
+        <NameInSource>Data</NameInSource>
+      </Data>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="1">
+      <value>,Date,Date,,System.String,,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="3" type="Page" isKey="true">
+      <Border>All;[184:204:228];3;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="4">
+        <PageHeaderBand1 Ref="4" type="PageHeaderBand" isKey="true">
+          <Border>Bottom;[146:205:220];3;Solid;False;4;Black</Border>
+          <Brush>[219:238:243]</Brush>
+          <ClientRectangle>0,0.2,11.25,0.9</ClientRectangle>
+          <Components isList="true" count="3">
+            <Panel1 Ref="5" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,1.33,0.9</ClientRectangle>
+              <Components isList="true" count="2">
+                <Text3 Ref="6" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0,1.33,0.5</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Top</DockStyle>
+                  <Font>Calibri,12</Font>
+                  <Guid>32aeefe02b2d45339ab3d9f95a60b67c</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text3</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="5" />
+                  <Text>تاریخ : {Date}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Bottom</VertAlignment>
+                </Text3>
+                <Text4 Ref="7" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0.5,1.33,0.5</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Top</DockStyle>
+                  <Font>Calibri,12</Font>
+                  <Guid>85b5645482a344909b38933339c10f38</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text4</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="5" />
+                  <Text>صفحه {PageNumber} از {TotalPageCount}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Expression</Type>
+                </Text4>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Left</DockStyle>
+              <Name>Panel1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+            </Panel1>
+            <Panel2 Ref="8" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>9.92,0,1.33,0.9</ClientRectangle>
+              <Components isList="true" count="1">
+                <Image1 Ref="9" type="Image" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0,1.33,0.9</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Fill</DockStyle>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Image1</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="8" />
+                </Image1>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Right</DockStyle>
+              <Guid>04d9f8f162004f07bbdc0160d0abc2c4</Guid>
+              <Name>Panel2</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+            </Panel2>
+            <Text1 Ref="10" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.33,0,8.59,0.91</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Top</DockStyle>
+              <Font>Calibri,18</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>سود کالاها</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeaderBand1</Name>
+          <Page isRef="3" />
+          <Parent isRef="3" />
+        </PageHeaderBand1>
+        <GroupHeaderBand1 Ref="11" type="GroupHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,1.5,11.25,0.82</ClientRectangle>
+          <Components isList="true" count="2">
+            <Panel5 Ref="12" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.42,11.25,0.4</ClientRectangle>
+              <Components isList="true" count="8">
+                <Text43 Ref="13" type="Text" isKey="true">
+                  <Border>None;[173:193:217];3;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0,0.05,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Left</DockStyle>
+                  <Font>Calibri,14.25</Font>
+                  <Guid>0634cd16fee9401281e795748887b51f</Guid>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text43</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text43>
+                <Text48 Ref="14" type="Text" isKey="true">
+                  <Border>None;[173:193:217];3;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>11.2,0,0.05,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Right</DockStyle>
+                  <Font>Calibri,14.25</Font>
+                  <Guid>2defc2fccdc545b9b89512c21e3df03c</Guid>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text48</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text48>
+                <Text49 Ref="15" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>10.9,0,0.3,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,10,Bold</Font>
+                  <Guid>35893cefa7e84f2e9f77217529de1e27</Guid>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text49</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>ردیف</Text>
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text49>
+                <Text50 Ref="16" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>3.55,0,2.2,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,10,Bold</Font>
+                  <Guid>6339bc03a98d4bd791c5060c6d0e2fa8</Guid>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text50</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>مجموع خرید</Text>
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text50>
+                <Text54 Ref="17" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>5.75,0,2.2,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,10,Bold</Font>
+                  <Guid>14c7852fb17343768c93113fc2272bb0</Guid>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text54</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>مجموع فروش</Text>
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text54>
+                <Text56 Ref="18" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>7.95,0,0.8,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,10,Bold</Font>
+                  <Guid>c9568611754341e592377cb605135266</Guid>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text56</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>تعداد</Text>
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text56>
+                <Text62 Ref="19" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>8.75,0,2.15,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,10,Bold</Font>
+                  <Guid>ceb7782a861044b0b1647b748246451e</Guid>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text62</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>عنوان کال</Text>
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text62>
+                <Text5 Ref="20" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];2;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0.05,0,3.5,0.4</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,10,Bold</Font>
+                  <Guid>ae60c5884e8b435da5077a80c9095a88</Guid>
+                  <HorAlignment>Center</HorAlignment>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text5</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="12" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>سود</Text>
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text5>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Bottom</DockStyle>
+              <Name>Panel5</Name>
+              <Page isRef="3" />
+              <Parent isRef="11" />
+            </Panel5>
+            <Panel6 Ref="21" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,11.25,0.3</ClientRectangle>
+              <Components isList="true" count="10">
+                <Text51 Ref="22" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0,0.05,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Left</DockStyle>
+                  <Font>Calibri,8</Font>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text51</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <TextBrush>Black</TextBrush>
+                </Text51>
+                <Text9 Ref="23" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <ClientRectangle>6.49,0,0.94,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>75cab955c1bd472dbde2f4b744675959</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text9</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>مجموع فروش : </Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text9>
+                <Text57 Ref="24" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>11.2,0,0.05,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Right</DockStyle>
+                  <Font>Calibri,8</Font>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text57</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <TextBrush>Black</TextBrush>
+                </Text57>
+                <Text68 Ref="25" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <ClientRectangle>7.43,0,1.14,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>a75d37bb772d43c8b3f6bc525bc957a1</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text68</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>تعداد: {Sum(GroupHeaderBand1,Data.CountAll)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text68>
+                <Text8 Ref="26" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <ClientRectangle>8.57,0,2.63,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>8706a3dad25948db9df259f3de1806f8</Guid>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text8</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>گروه کالا:{Data.GroupProduct}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text8>
+                <Text2 Ref="27" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <CanShrink>True</CanShrink>
+                  <ClientRectangle>4.18,0,0.8,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>8a1f38727f0140d18c4d220f7016a96e</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text2</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>مجموع خرید: </Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text2>
+                <Text45 Ref="28" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <ClientRectangle>0.02,0,1.99,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>4b1c3acb151f45b9bd809224d35799b5</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text45</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>{Sum(GroupHeaderBand1,Data.Profit)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextFormat Ref="29" type="NumberFormat" isKey="true">
+                    <DecimalDigits>0</DecimalDigits>
+                    <GroupSeparator>,</GroupSeparator>
+                    <NegativePattern>1</NegativePattern>
+                    <UseLocalSetting>False</UseLocalSetting>
+                  </TextFormat>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Totals</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text45>
+                <Text7 Ref="30" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <ClientRectangle>4.99,0,1.54,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>579bca9d95ee4223812fd3d05b7652cc</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text7</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>{Sum(GroupHeaderBand1,Data.SumPriceSale)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextFormat Ref="31" type="NumberFormat" isKey="true">
+                    <DecimalDigits>0</DecimalDigits>
+                    <GroupSeparator>,</GroupSeparator>
+                    <NegativePattern>1</NegativePattern>
+                    <UseLocalSetting>False</UseLocalSetting>
+                  </TextFormat>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Totals</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text7>
+                <Text10 Ref="32" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <CanShrink>True</CanShrink>
+                  <ClientRectangle>2.58,0,1.6,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>7c17e39ce53a4886a1a0e27f97e8a691</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text10</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>{Sum(GroupHeaderBand1,Data.SumPriceBuy)}</Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextFormat Ref="33" type="NumberFormat" isKey="true">
+                    <DecimalDigits>0</DecimalDigits>
+                    <GroupSeparator>,</GroupSeparator>
+                    <NegativePattern>1</NegativePattern>
+                    <UseLocalSetting>False</UseLocalSetting>
+                  </TextFormat>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Totals</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text10>
+                <Text11 Ref="34" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+                  <Brush>[191:191:191]</Brush>
+                  <ClientRectangle>2.02,0,0.55,0.3</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Calibri,11,Bold</Font>
+                  <Guid>3ac84eb6f852452085896aecbed46a5b</Guid>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text11</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="21" />
+                  <ShrinkFontToFit>True</ShrinkFontToFit>
+                  <Text>سود: </Text>
+                  <TextBrush>Black</TextBrush>
+                  <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text11>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Top</DockStyle>
+              <Name>Panel6</Name>
+              <Page isRef="3" />
+              <Parent isRef="11" />
+            </Panel6>
+          </Components>
+          <Condition>{Data.GroupProductId}</Condition>
+          <Conditions isList="true" count="0" />
+          <Name>GroupHeaderBand1</Name>
+          <Page isRef="3" />
+          <Parent isRef="3" />
+        </GroupHeaderBand1>
+        <DataBand1 Ref="35" type="DataBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,2.72,11.25,0.4</ClientRectangle>
+          <Components isList="true" count="8">
+            <Text15 Ref="36" type="Text" isKey="true">
+              <Border>None;[173:193:217];3;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,0.05,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Left</DockStyle>
+              <Font>Calibri,14.25</Font>
+              <Guid>49e442716e5948cdb0d302a7706a2e21</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text15</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <TextBrush>[63:63:63]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text15>
+            <Text16 Ref="37" type="Text" isKey="true">
+              <Border>None;[173:193:217];3;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>11.2,0,0.05,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Right</DockStyle>
+              <Font>Calibri,14.25</Font>
+              <Guid>e97c5b483e1c477d8712a9e9d78c23fc</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text16</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <TextBrush>[63:63:63]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text16>
+            <Text17 Ref="38" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>10.9,0,0.3,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10</Font>
+              <Guid>e1a9be3cdc86474f9203d408764bb63e</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text17</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Line}</Text>
+              <TextBrush>[63:63:63]</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text17>
+            <Text18 Ref="39" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.55,0,2.2,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10</Font>
+              <Guid>0189d37bc54f4e6b904ceacac82e6698</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text18</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Data.SumPriceBuy}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="40" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text18>
+            <Text63 Ref="41" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.75,0,2.2,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10</Font>
+              <Guid>c78de39e90674a9a989e11172c37db82</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text63</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Data.SumPriceSale}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="42" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text63>
+            <Text32 Ref="43" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>7.95,0,0.8,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10</Font>
+              <Guid>f3316c62d8c041479398e6f74ad33fd4</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text32</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Data.CountAll}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text32>
+            <Text34 Ref="44" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>8.75,0,2.15,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10</Font>
+              <Guid>950c809accaa43fba4442796e01a9ff2</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text34</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Data.ProductTitle}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text34>
+            <Text6 Ref="45" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];2;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.05,0,3.5,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,10</Font>
+              <Guid>807c54a330864f8c9ef322b5971617e9</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="3" />
+              <Parent isRef="35" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Data.Profit}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="46" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>Data</DataSourceName>
+          <Filters isList="true" count="0" />
+          <Name>DataBand1</Name>
+          <Page isRef="3" />
+          <Parent isRef="3" />
+          <RightToLeft>True</RightToLeft>
+          <Sort isList="true" count="0" />
+        </DataBand1>
+        <ReportSummaryBand1 Ref="47" type="ReportSummaryBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,3.52,11.25,1</ClientRectangle>
+          <Components isList="true" count="7">
+            <Panel4 Ref="48" type="Panel" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,11.25,0.1</ClientRectangle>
+              <Components isList="true" count="3">
+                <Text23 Ref="49" type="Text" isKey="true">
+                  <Border>None;[173:193:217];3;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0,0.2,0.1</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Left</DockStyle>
+                  <Font>Calibri,14.25</Font>
+                  <Guid>288918c92cfc4f6aaf13c30c7ded62c1</Guid>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text23</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="48" />
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text23>
+                <Text24 Ref="50" type="Text" isKey="true">
+                  <Border>None;[173:193:217];3;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>11.05,0,0.2,0.1</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Right</DockStyle>
+                  <Font>Calibri,14.25</Font>
+                  <Guid>7d45fe31f08a4fb9825a2311d3892dc4</Guid>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text24</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="48" />
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text24>
+                <Text30 Ref="51" type="Text" isKey="true">
+                  <Border>Adv[31:73:125];1;Solid;[31:73:125];3;None;[31:73:125];1;None;[31:73:125];2;None;False;4;[0:0:0:0]</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0.2,0,10.85,0.1</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <DockStyle>Fill</DockStyle>
+                  <Font>Calibri,14.25</Font>
+                  <Guid>1e0788af1365407b8436dbe6b78a09a7</Guid>
+                  <HorAlignment>Right</HorAlignment>
+                  <Margins>0,5,0,0</Margins>
+                  <Name>Text30</Name>
+                  <Page isRef="3" />
+                  <Parent isRef="48" />
+                  <TextBrush>[63:63:63]</TextBrush>
+                  <Type>Expression</Type>
+                  <VertAlignment>Center</VertAlignment>
+                </Text30>
+              </Components>
+              <Conditions isList="true" count="0" />
+              <DockStyle>Top</DockStyle>
+              <Name>Panel4</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+            </Panel4>
+            <Text39 Ref="52" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>[191:191:191]</Brush>
+              <ClientRectangle>5.79,0.18,1.2,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,12,Bold</Font>
+              <Guid>b37cd4e992c847c9b316ce492b0e7605</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text39</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>: مجموع خرید</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text39>
+            <Text40 Ref="53" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>[191:191:191]</Brush>
+              <ClientRectangle>3.89,0.18,1.9,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,12,Bold</Font>
+              <Guid>dd4882c5d51e4de6ae55185c351f2700</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text40</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Sum(DataBand1,Data.SumPriceBuy)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="54" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Totals</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text40>
+            <Text41 Ref="55" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>[191:191:191]</Brush>
+              <ClientRectangle>9.19,0.18,1.1,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,12,Bold</Font>
+              <Guid>f1ffc68caa814612b879bb267067286b</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text41</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>: مجموع فروش</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text41>
+            <Text42 Ref="56" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>[191:191:191]</Brush>
+              <ClientRectangle>7.29,0.18,1.9,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,12,Bold</Font>
+              <Guid>a90dee1b69e84ff78122791ec07a3040</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text42</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Sum(DataBand1,Data.SumPriceSale)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="57" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>0</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <Type>Totals</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text42>
+            <Text67 Ref="58" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>[191:191:191]</Brush>
+              <ClientRectangle>2.8,0.18,0.6,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,12,Bold</Font>
+              <Guid>ab0ffe2e247444369ce9618121009e5c</Guid>
+              <HorAlignment>Right</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text67</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>: سود</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text67>
+            <Text19 Ref="59" type="Text" isKey="true">
+              <Border>Adv[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;[31:73:125];1;Solid;False;4;[0:0:0:0]</Border>
+              <Brush>[191:191:191]</Brush>
+              <ClientRectangle>0.4,0.18,2.4,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Calibri,12,Bold</Font>
+              <Guid>16da6aee34d541b9abf737d91cab3a9f</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,5,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="3" />
+              <Parent isRef="47" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Sum(DataBand1,Data.Profit)}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="60" type="NumberFormat" isKey="true">
+                <DecimalDigits>0</DecimalDigits>
+                <GroupSeparator>,</GroupSeparator>
+                <NegativePattern>1</NegativePattern>
+                <UseLocalSetting>False</UseLocalSetting>
+              </TextFormat>
+              <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
+              <Type>Totals</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>ReportSummaryBand1</Name>
+          <Page isRef="3" />
+          <Parent isRef="3" />
+        </ReportSummaryBand1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>7628280b106a4b9a8e3d394e399bef9c</Guid>
+      <Margins>0.22,0.22,0.22,0.22</Margins>
+      <Name>Page1</Name>
+      <Orientation>Landscape</Orientation>
+      <PageHeight>8.27</PageHeight>
+      <PageWidth>11.69</PageWidth>
+      <PaperSize>A4</PaperSize>
+      <Report isRef="0" />
+      <Watermark Ref="61" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <PrinterSettings Ref="62" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>12/18/2024 10:58:48 AM</ReportChanged>
+  <ReportCreated>1/18/2022 2:47:40 PM</ReportCreated>
+  <ReportFile />
+  <ReportGuid>d57292b4d3574565bde4f95e1e956674</ReportGuid>
+  <ReportImage isNull="true" />
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2017.2.2.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

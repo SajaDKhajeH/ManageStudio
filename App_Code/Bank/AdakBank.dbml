@@ -1,0 +1,1630 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="KidsStudio" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=sql.nscom.ir,1429;Initial Catalog=KidsStudio;User ID=KidsStudio;Encrypt=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="KidsStudioConnectionString" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.usp_RequestLog_Select_By_RequestId" Method="usp_RequestLog_Select_By_RequestId">
+    <Parameter Name="RequestId" Parameter="requestId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_RequestLog_Select_By_RequestIdResult">
+      <Column Name="RL_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="RL_Text" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Time" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="Date" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="RL_CauserId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Data_Delete" Method="usp_Data_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_DataType_Select" Method="usp_DataType_Select">
+    <ElementType Name="usp_DataType_SelectResult">
+      <Column Name="DT_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DT_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="DT_ShowState" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DT_ShowDefaultSMS" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_DataType_Select_By_Id" Method="usp_DataType_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_DataType_Select_By_IdResult">
+      <Column Name="DT_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="DT_ShowState" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DT_ShowDefaultSMS" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_ErrorAdd" Method="usp_ErrorAdd">
+    <Parameter Name="FormName" Parameter="formName" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Text" Parameter="text" Type="System.String" DbType="NVarChar(4000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Factor_Delete" Method="usp_Factor_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FactorDetail_Delete" Method="usp_FactorDetail_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Add" Method="usp_Family_Add">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FatherName" Parameter="fatherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="FatherLName" Parameter="fatherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherName" Parameter="motherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherLName" Parameter="motherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherMobile" Parameter="motherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="FatherMobile" Parameter="fatherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="CityId" Parameter="cityId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="HomeAddress" Parameter="homeAddress" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Archive" Parameter="archive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="MotherSit" Parameter="motherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FatherSit" Parameter="fatherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Phone" Parameter="phone" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="MarriageDate" Parameter="marriageDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Delete" Method="usp_Family_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Edit" Method="usp_Family_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FatherName" Parameter="fatherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="FatherLName" Parameter="fatherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherName" Parameter="motherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherLName" Parameter="motherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherMobile" Parameter="motherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="FatherMobile" Parameter="fatherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="CityId" Parameter="cityId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="HomeAddress" Parameter="homeAddress" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Archive" Parameter="archive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="MotherSit" Parameter="motherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FatherSit" Parameter="fatherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Phone" Parameter="phone" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="MarriageDate" Parameter="marriageDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FamilyChild_Delete" Method="usp_FamilyChild_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Log_Add" Method="usp_Log_Add">
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Text" Parameter="text" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="Page" Parameter="page" Type="System.String" DbType="NVarChar(1001)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Login" Method="usp_Login">
+    <Parameter Name="Username" Parameter="username" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="NVarChar(110)" />
+    <ElementType Name="usp_LoginResult">
+      <Column Name="P_Name" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_LastName" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="P_Mobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="P_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_ShowPopupCall" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="P_MaxPercentForSetDiscount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="P_RoleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Personnel_Add" Method="usp_Personnel_Add">
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="LastName" Parameter="lastName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="Sex" Parameter="sex" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="BirthDate" Parameter="birthDate" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="ShowPopupCall" Parameter="showPopupCall" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Mobile" Parameter="mobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Phone" Parameter="phone" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Address" Parameter="address" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Username" Parameter="username" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="MaxPercentForSetDiscount" Parameter="maxPercentForSetDiscount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="RoleId" Parameter="roleId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Personnel_Delete" Method="usp_Personnel_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Personnel_Edit" Method="usp_Personnel_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="LastName" Parameter="lastName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="Sex" Parameter="sex" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="BirthDate" Parameter="birthDate" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="ShowPopupCall" Parameter="showPopupCall" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Mobile" Parameter="mobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Phone" Parameter="phone" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Address" Parameter="address" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Username" Parameter="username" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="MaxPercentForSetDiscount" Parameter="maxPercentForSetDiscount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="RoleId" Parameter="roleId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Personnel_SelectInfo_By_Username_Or_Id" Method="usp_Personnel_SelectInfo_By_Username_Or_Id">
+    <Parameter Name="Username" Parameter="username" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Personnel_SelectInfo_By_Username_Or_IdResult">
+      <Column Name="P_Name" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_LastName" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="P_Mobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="P_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_ShowPopupCall" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="P_MaxPercentForSetDiscount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="P_RoleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Product_Delete" Method="usp_Product_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_ProductGroup_Add" Method="usp_ProductGroup_Add">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_ProductGroup_Delete" Method="usp_ProductGroup_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_ProductGroup_Edit" Method="usp_ProductGroup_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_ProductGroup_Select_By_Id" Method="usp_ProductGroup_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_ProductGroup_Select_By_IdResult">
+      <Column Name="PG_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="PG_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PG_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="PG_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PG_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Request_Delete" Method="usp_Request_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Request_Edit_Designer" Method="usp_Request_Edit_Designer">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="DesignerId" Parameter="designerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Status" Parameter="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Request_Edit_Photographer" Method="usp_Request_Edit_Photographer">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Status" Parameter="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_RequestLog_Add" Method="usp_RequestLog_Add">
+    <Parameter Name="RequestId" Parameter="requestId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="LogText" Parameter="logText" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_RequestLog_Delete" Method="usp_RequestLog_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Select_For_Grid" Method="usp_Family_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Family_Select_For_GridResult">
+      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Causer" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_ProductGroup_Select_Active" Method="usp_ProductGroup_Select_Active">
+    <ElementType Name="usp_ProductGroup_Select_ActiveResult">
+      <Column Name="PG_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PG_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FactorPaid_Select_ByFactor" Method="usp_FactorPaid_Select_ByFactor">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_FactorPaid_Select_ByFactorResult">
+      <Column Name="FP_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FP_DateS" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="FP_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FP_PaidType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FP_RefNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FP_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FP_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FP_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="PaidTypeTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FactorPaid_Delete" Method="usp_FactorPaid_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FactorPaid_Add" Method="usp_FactorPaid_Add">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Price" Parameter="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int32" DbType="Int" />
+    <Parameter Name="RefNumber" Parameter="refNumber" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Time" Parameter="time" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Setting_Select_By_Key" Method="usp_Setting_Select_By_Key">
+    <Parameter Name="Key" Parameter="key" Type="System.String" DbType="VarChar(110)" />
+    <ElementType Name="usp_Setting_Select_By_KeyResult">
+      <Column Name="Se_Value" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="Se_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.Get_DefaultTemplateID" Method="Get_DefaultTemplateID">
+    <Parameter Name="ID" Parameter="iD" Type="System.Int32" DbType="Int" />
+    <ElementType Name="Get_DefaultTemplateIDResult">
+      <Column Name="Title" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="TemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Proc]" Member="Proc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_DefaultTemplate" Method="usp_Select_DefaultTemplate">
+    <Parameter Name="ReportID" Parameter="reportID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="InstituteBranch" Parameter="instituteBranch" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="AcademyKey" Parameter="academyKey" Type="System.String" DbType="NVarChar(1001)" />
+    <ElementType Name="usp_Select_DefaultTemplateResult">
+      <Column Name="ReportID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultTemplate_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountReportTemplate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DefaultProcName" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="AcademyKey" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="DefultView" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" />
+      <Column Name="DefaultTemTitle" Type="System.String" DbType="NVarChar(133)" CanBeNull="true" />
+      <Column Name="RequireSetBak" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsPublic" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ReportTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultTemplateTitle" Type="System.String" DbType="NVarChar(133)" CanBeNull="true" />
+      <Column Name="FirstTemplateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Report_By_ID" Method="usp_Select_Report_By_ID">
+    <Parameter Name="RPTID" Parameter="rPTID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <ElementType Name="usp_Select_Report_By_IDResult">
+      <Column Name="ReportTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="ReportID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReportActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultTemplate_ID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="CountReportTemplate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AcademyKeyDefaultTemplate" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="IsPublicDefaultTemplate" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ProcName_VariablesDefaultTemplate" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="LanguageIDDefaultTemplate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RequireSetBakDefaultTemplate" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="TitleDefaultTemplate" Type="System.String" DbType="NVarChar(133)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Report_Template" Method="usp_Select_Report_Template">
+    <Parameter Name="ID" Parameter="iD" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Select_Report_TemplateResult">
+      <Column Name="RPTT_File" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsPublic" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcName_Variables" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="ReportID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RequireSetBak" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(133) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Report_Template_Information" Method="usp_Select_Report_Template_Information">
+    <Parameter Name="TemplateID" Parameter="templateID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="InstituteBranch" Parameter="instituteBranch" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Select_Report_Template_InformationResult">
+      <Column Name="ReportTitle" Type="System.String" DbType="NVarChar(133) NOT NULL" CanBeNull="false" />
+      <Column Name="RPTT_RequireSetBak" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NeedToUpdateFile" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LanguageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcName_Variables" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="AcademyKey" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Report_Template_Source" Method="usp_Select_Report_Template_Source">
+    <Parameter Name="TemplateID" Parameter="templateID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Select_Report_Template_SourceResult">
+      <Column Name="RTS_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RTS_Prcedures" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="RTS_SourceName" Type="System.String" DbType="NVarChar(133) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Report_Template_Source_Field" Method="usp_Select_Report_Template_Source_Field">
+    <Parameter Name="SourceID" Parameter="sourceID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Select_Report_Template_Source_FieldResult">
+      <Column Name="RTSF_FieldName" Type="System.String" DbType="NVarChar(133) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Report_Template_Variable" Method="usp_Select_Report_Template_Variable">
+    <Parameter Name="TemplateID" Parameter="templateID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Select_Report_Template_VariableResult">
+      <Column Name="RTV_IsDefaultValue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RTV_ValFormType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RTV_ValNameFromForm" Type="System.String" DbType="NVarChar(59)" CanBeNull="true" />
+      <Column Name="RTV_ValueFromSource" Type="System.String" DbType="NVarChar(133)" CanBeNull="true" />
+      <Column Name="RTV_VariableName" Type="System.String" DbType="NVarChar(133) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_ReportTemplate_File" Method="usp_Select_ReportTemplate_File">
+    <Parameter Name="TemplateID" Parameter="templateID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="InstituteBranch" Parameter="instituteBranch" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Select_ReportTemplate_FileResult">
+      <Column Name="ReportFile" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Select_Tbl_Report" Method="usp_Select_Tbl_Report">
+    <Parameter Name="InstituteBranch" Parameter="instituteBranch" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Select_Tbl_ReportResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultTemplateID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="SystemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReportTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="SystemTitle" Type="System.String" DbType="NVarChar(333) NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultTemplateTitle" Type="System.String" DbType="NVarChar(133)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FactorPaid_Select_Grid" Method="usp_FactorPaid_Select_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_FactorPaid_Select_GridResult">
+      <Column Name="FP_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FP_DateS" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="FP_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FP_PaidType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FP_RefNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FP_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FP_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FP_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="PaidTypeTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="FactorId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FamilyTiyle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Factor_Detail" Method="usp_Factor_Detail">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_DetailResult">
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorTitle" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorDesc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Factor_Select_Product" Method="usp_Factor_Select_Product">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_Select_ProductResult">
+      <Column Name="ProductTitle" Type="System.String" DbType="NVarChar(2003) NOT NULL" CanBeNull="false" />
+      <Column Name="[Desc]" Member="Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="Fee" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sum" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Request_Add" Method="usp_Request_Add">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FamilyChildId" Parameter="familyChildId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TurnDate" Parameter="turnDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="TurnTime" Parameter="turnTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="TurnerId" Parameter="turnerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="DesignerId" Parameter="designerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="Status" Parameter="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="Type" Parameter="type" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Select_ForCombo" Method="usp_Family_Select_ForCombo">
+    <ElementType Name="usp_Family_Select_ForComboResult">
+      <Column Name="F_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1031) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_SMS_Add" Method="usp_SMS_Add">
+    <Parameter Name="Mobile" Parameter="mobile" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="Text" Parameter="text" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Sms_Select_For_Send" Method="usp_Sms_Select_For_Send">
+    <ElementType Name="usp_Sms_Select_For_SendResult">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Textt" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Mobile" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_SMS_SetSended" Method="usp_SMS_SetSended">
+    <Parameter Name="Ids" Parameter="ids" Type="System.String" DbType="VarChar(4000)" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Request_Edit_TurnInfo" Method="usp_Request_Edit_TurnInfo">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FamilyChildId" Parameter="familyChildId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TurnDate" Parameter="turnDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="TurnTime" Parameter="turnTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="TurnerId" Parameter="turnerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Status" Parameter="status" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Type" Parameter="type" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Personnel_By_Role" Method="usp_Personnel_By_Role">
+    <Parameter Name="RoleId" Parameter="roleId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Personnel_By_RoleResult">
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_Name" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_LastName" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Sex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="P_BirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Product_Add" Method="usp_Product_Add">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SalePrice" Parameter="salePrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="BuyPrice_InitialInventory" Parameter="buyPrice_InitialInventory" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="InitialInventoryCount" Parameter="initialInventoryCount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="GroupId" Parameter="groupId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="CheckInventory" Parameter="checkInventory" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Priority" Parameter="priority" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Product_Edit" Method="usp_Product_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SalePrice" Parameter="salePrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="BuyPrice_InitialInventory" Parameter="buyPrice_InitialInventory" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="InitialInventoryCount" Parameter="initialInventoryCount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="GroupId" Parameter="groupId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CheckInventory" Parameter="checkInventory" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Priority" Parameter="priority" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Product_Select_for_Set_Factor" Method="usp_Product_Select_for_Set_Factor">
+    <ElementType Name="usp_Product_Select_for_Set_FactorResult">
+      <Column Name="Pro_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_GroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="SalePrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Pro_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Pro_CheckInventory" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Pro_InitialInventoryCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Product_Select_For_Grid" Method="usp_Product_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="GroupProductId" Parameter="groupProductId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Product_Select_For_GridResult">
+      <Column Name="Pro_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_SalePrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Pro_BuyPrice_InitialInventory" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Pro_InitialInventoryCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Pro_GroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Pro_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="GroupTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Pro_CheckInventory" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Pro_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="ActiveText" Type="System.String" DbType="NVarChar(7) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Product_Select_By_Id" Method="usp_Product_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Product_Select_By_IdResult">
+      <Column Name="Pro_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_SalePrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Pro_BuyPrice_InitialInventory" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Pro_InitialInventoryCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Pro_GroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Pro_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="GroupTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="Pro_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Pro_CheckInventory" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Pro_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Personnel_Select_By_Id" Method="usp_Personnel_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Personnel_Select_By_IdResult">
+      <Column Name="P_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_Name" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_LastName" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Sex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="P_BirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="P_ShowPopupCall" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="P_Mobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="P_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="P_Address" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="P_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="P_Password" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="P_MaxPercentForSetDiscount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="P_RoleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="P_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="RoleTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Personnel_Select_For_Grid" Method="usp_Personnel_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Personnel_Select_For_GridResult">
+      <Column Name="P_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_Name" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="P_LastName" Type="System.String" DbType="NVarChar(110) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Sex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="P_Mobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="P_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="P_RoleId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="P_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="P_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="RoleTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FamilyChild_Add" Method="usp_FamilyChild_Add">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Sex" Parameter="sex" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="BirthDate" Parameter="birthDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="HospitalId" Parameter="hospitalId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FamilyChild_By_FamilyId" Method="usp_FamilyChild_By_FamilyId">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_FamilyChild_By_FamilyIdResult">
+      <Column Name="FC_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FC_Name" Type="System.String" DbType="NVarChar(133) NOT NULL" CanBeNull="false" />
+      <Column Name="FC_Sex" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FC_BirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="FC_HospitalId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FamilyChild_Edit" Method="usp_FamilyChild_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Sex" Parameter="sex" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="BirthDate" Parameter="birthDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="HospitalId" Parameter="hospitalId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Factor_Select_For_Grid" Method="usp_Factor_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="PaidStatus" Parameter="paidStatus" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FactorStatusId" Parameter="factorStatusId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TypePhotographiId" Parameter="typePhotographiId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="DesignerId" Parameter="designerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="IsGift" Parameter="isGift" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="ForceDesign" Parameter="forceDesign" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="usp_Factor_Select_For_GridResult">
+      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_DiscountPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_SumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="F_TaxPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_TaxPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_Date" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="F_SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FinanStatus" Type="System.String" DbType="NVarChar(117)" CanBeNull="true" />
+      <Column Name="F_ForceDesign" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="F_IsGift" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="F_Status" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_PhotographerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_TypePhotographyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_DesignerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="PhotographerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="DesignerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="TypePhotographyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="F_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Family_Select_For_Grid_New" Method="usp_Family_Select_For_Grid_New">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="OnlyArchive" Parameter="onlyArchive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="HospitalId" Parameter="hospitalId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Family_Select_For_Grid_NewResult">
+      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Causer" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FactorDetail_Add" Method="usp_FactorDetail_Add">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="ProductId" Parameter="productId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Count" Parameter="count" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fee" Parameter="fee" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="SumPrice" Parameter="sumPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="BuyPrice" Parameter="buyPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ShotCount" Parameter="shotCount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Gift" Parameter="gift" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FactorDetail_Edit" Method="usp_FactorDetail_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Count" Parameter="count" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fee" Parameter="fee" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="SumPrice" Parameter="sumPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="BuyPrice" Parameter="buyPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ShotCount" Parameter="shotCount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Gift" Parameter="gift" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FactorDetail_By_FactorId" Method="usp_FactorDetail_By_FactorId">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_FactorDetail_By_FactorIdResult">
+      <Column Name="FD_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FD_ProductId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FD_Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FD_Fee" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FD_SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FD_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="FD_BuyPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FD_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FD_Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FD_DeletedBy" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FD_DeletedTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ProductTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductGroupTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="FD_ShotCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FD_IsGift" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Factor_ChangeStatus" Method="usp_Factor_ChangeStatus">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="StatusId" Parameter="statusId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="LogText" Parameter="logText" Type="System.String" DbType="NVarChar(1001)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Cost_Add" Method="usp_Cost_Add">
+    <Parameter Name="CostType" Parameter="costType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Price" Parameter="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="PaidDate" Parameter="paidDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="RefNumber" Parameter="refNumber" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="PaidTo" Parameter="paidTo" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="PaidFrom" Parameter="paidFrom" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Cost_Delete" Method="usp_Cost_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Cost_Edit" Method="usp_Cost_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CostType" Parameter="costType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Price" Parameter="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="PaidDate" Parameter="paidDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="RefNumber" Parameter="refNumber" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="PaidTo" Parameter="paidTo" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="PaidFrom" Parameter="paidFrom" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Cost_Select_By_Id" Method="usp_Cost_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Cost_Select_By_IdResult">
+      <Column Name="Co_CostType" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Co_Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Co_Date" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Co_PaidType" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Co_RefNumber" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="Co_PaidTo" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Co_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="Co_CreationTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Co_PaidFrom" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Co_CauserId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CostTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="PaidTypeTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="PaidFromFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidToFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Cost_Select_For_Grid" Method="usp_Cost_Select_For_Grid">
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CostType" Parameter="costType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PaidFromID" Parameter="paidFromID" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PaidToId" Parameter="paidToId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Cost_Select_For_GridResult">
+      <Column Name="Co_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Co_CostType" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Co_Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Co_Date" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Co_PaidType" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Co_RefNumber" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="Co_PaidTo" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Co_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="Co_CreationTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Co_PaidFrom" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Co_CauserId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CostTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="PaidTypeTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="PaidFromFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidToFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Data_Select_For_Grid" Method="usp_Data_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Data_Select_For_GridResult">
+      <Column Name="D_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="D_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="D_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveText" Type="System.String" DbType="NVarChar(7) NOT NULL" CanBeNull="false" />
+      <Column Name="D_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="TypeTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="D_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Data_Add" Method="usp_Data_Add">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="DefaultSMSText" Parameter="defaultSMSText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="Pariority" Parameter="pariority" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Data_Edit" Method="usp_Data_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="DefaultSMSText" Parameter="defaultSMSText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Pariority" Parameter="pariority" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Data_Select_By_Id" Method="usp_Data_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Data_Select_By_IdResult">
+      <Column Name="D_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="D_DefaultSMSText" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="D_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="D_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="D_TypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="D_StateId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="D_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="D_Systematic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Data_Select_By_TypeId" Method="usp_Data_Select_By_TypeId">
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_Data_Select_By_TypeIdResult">
+      <Column Name="D_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="D_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="D_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="D_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FactorLog_Select" Method="usp_FactorLog_Select">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_FactorLog_SelectResult">
+      <Column Name="FL_LogText" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Time" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FactorLog_Add" Method="usp_FactorLog_Add">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="LogText" Parameter="logText" Type="System.String" DbType="NVarChar(1001)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Factor_SetArchive" Method="usp_Factor_SetArchive">
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FactorStatus" Parameter="factorStatus" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Arhcive" Parameter="arhcive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Factor_Add" Method="usp_Factor_Add">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="SumPrice" Parameter="sumPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="SumDiscountPrice" Parameter="sumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="TaxPrice" Parameter="taxPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="DetailCount" Parameter="detailCount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DiscountPercent" Parameter="discountPercent" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TaxPercent" Parameter="taxPercent" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="ForceDesign" Parameter="forceDesign" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="TypePhotographyId" Parameter="typePhotographyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Status" Parameter="status" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="OnlyEditedDelivered" Parameter="onlyEditedDelivered" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Factor_Edit" Method="usp_Factor_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="SumPrice" Parameter="sumPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="SumDiscountPrice" Parameter="sumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="TaxPrice" Parameter="taxPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="DetailCount" Parameter="detailCount" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DiscountPercent" Parameter="discountPercent" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TaxPercent" Parameter="taxPercent" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ForceDesign" Parameter="forceDesign" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="TypePhotographyId" Parameter="typePhotographyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Status" Parameter="status" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="OnlyEditedDelivered" Parameter="onlyEditedDelivered" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Factor_Select_By_Id" Method="usp_Factor_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_Select_By_IdResult">
+      <Column Name="F_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_Date" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="F_DateMiladi" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="F_SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_SumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_TaxPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_PaidPrice" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
+      <Column Name="F_DetailCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_DiscountPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="F_TaxPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="F_ForceDesign" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="F_TypePhotographyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_Status" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_PhotographerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_DesignerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_IsGift" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PhotographerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="DesignerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="TypePhotographyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="F_OnlyEditedDelivered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Factor_Set_Delivered" Method="usp_Factor_Set_Delivered">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Delivered" Parameter="delivered" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="RPT.usp_AllFactors" Method="usp_AllFactors">
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Status" Parameter="status" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_AllFactorsResult">
+      <Column Name="CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="Pari" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountAll" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="SumPriceDiscount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="SumPaidPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="ModAll" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="IsGift" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_ProductProfic" Method="usp_ProductProfic">
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Status" Parameter="status" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_ProductProficResult">
+      <Column Name="GroupProduct" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="GroupProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="Pari" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CountAll" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SumPriceBuy" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="SumPriceSale" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="Profit" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Factor_ComputedPerformancePersonnel" Method="usp_Factor_ComputedPerformancePersonnel">
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Status" Parameter="status" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_ComputedPerformancePersonnelResult">
+      <Column Name="PersonnelId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="RoleTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="Performance" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Family_Select_For_SendSMS" Method="usp_Family_Select_For_SendSMS">
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="HospitalId" Parameter="hospitalId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="OnlyBedFamily" Parameter="onlyBedFamily" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Family_Select_For_SendSMSResult">
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_SMS_AddMulti" Method="usp_SMS_AddMulti">
+    <Parameter Name="FamilyIds" Parameter="familyIds" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="SendToMother" Parameter="sendToMother" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SendToFather" Parameter="sendToFather" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SMSText" Parameter="sMSText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(4000)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_SMS_Select_ForGrid" Method="usp_SMS_Select_ForGrid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="OnlyQueded" Parameter="onlyQueded" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_SMS_Select_ForGridResult">
+      <Column Name="S_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="S_Mobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="S_Text" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="S_SendTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="S_SendedTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="S_Sended" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="S_FamilyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="S_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="TypeTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_SMS_Delete" Method="usp_SMS_Delete">
+    <Parameter Name="Ids" Parameter="ids" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FactorChangeStatus" Method="usp_FactorChangeStatus">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CurrentStatus" Parameter="currentStatus" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="NewStatus" Parameter="newStatus" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="UpdateDesigner" Parameter="updateDesigner" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="DesignerId" Parameter="designerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Mes" Parameter="mes" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_FactorsNotArchive_For_Tracking" Method="usp_FactorsNotArchive_For_Tracking">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_FactorsNotArchive_For_TrackingResult">
+      <Column Name="FactorID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorStatus" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="CauserFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="DesignerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="DesignerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="PhotographerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="PhotographerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="TypePhotographyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TypePhotographTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="ForceDesign" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FactorDesc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="LastLogDate" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Add" Method="usp_PrivateCheque_Add">
+    <Parameter Name="C_ReciveDate" Parameter="c_ReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_Desc" Parameter="c_Desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_WillReciveDate" Parameter="c_WillReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_ForSubject" Parameter="c_ForSubject" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_ChequeNumber" Parameter="c_ChequeNumber" Type="System.String" DbType="VarChar(59)" />
+    <Parameter Name="C_IsRecive" Parameter="c_IsRecive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="C_Price" Parameter="c_Price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="C_Owner" Parameter="c_Owner" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="C_Registered" Parameter="c_Registered" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Delete" Method="usp_PrivateCheque_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Edit" Method="usp_PrivateCheque_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="C_ReciveDate" Parameter="c_ReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_Desc" Parameter="c_Desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_WillReciveDate" Parameter="c_WillReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_ForSubject" Parameter="c_ForSubject" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_ChequeNumber" Parameter="c_ChequeNumber" Type="System.String" DbType="VarChar(59)" />
+    <Parameter Name="C_IsRecive" Parameter="c_IsRecive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="C_Price" Parameter="c_Price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="C_Owner" Parameter="c_Owner" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="C_Registered" Parameter="c_Registered" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Select_For_Grid" Method="usp_PrivateCheque_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="RegisterdType" Parameter="registerdType" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="IsRecived" Parameter="isRecived" Type="System.Boolean" DbType="Bit" />
+    <ElementType Name="usp_PrivateCheque_Select_For_GridResult">
+      <Column Name="C_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="C_ReciveDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="C_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="C_WillReciveDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="C_ForSubject" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="C_ChequeNumber" Type="System.String" DbType="VarChar(59)" CanBeNull="true" />
+      <Column Name="C_IsRecive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="C_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="C_Owner" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="C_Registered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Family_Select_Active" Method="usp_Family_Select_Active">
+    <ElementType Name="usp_Family_Select_ActiveResult">
+      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Family_Select_All" Method="usp_Family_Select_All">
+    <ElementType Name="usp_Family_Select_AllResult">
+      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_FamilyChild_LunarCalendar" Method="usp_FamilyChild_LunarCalendar">
+    <ElementType Name="usp_FamilyChild_LunarCalendarResult">
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="ChildName" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="BirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="[DESC]" Member="DESC" Type="System.String" DbType="NVarChar(17)" CanBeNull="true" />
+      <Column Name="OrderBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Family_Edit_14031018" Method="usp_Family_Edit_14031018">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FatherName" Parameter="fatherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="FatherLName" Parameter="fatherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherName" Parameter="motherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherLName" Parameter="motherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherMobile" Parameter="motherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="FatherMobile" Parameter="fatherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="CityId" Parameter="cityId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="HomeAddress" Parameter="homeAddress" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Archive" Parameter="archive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="MotherSit" Parameter="motherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FatherSit" Parameter="fatherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Phone" Parameter="phone" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="MarriageDate" Parameter="marriageDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="MotherBirthDate" Parameter="motherBirthDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FatherBirthDate" Parameter="fatherBirthDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="InviteTypeId" Parameter="inviteTypeId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Add_14031018" Method="usp_Family_Add_14031018">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FatherName" Parameter="fatherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="FatherLName" Parameter="fatherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherName" Parameter="motherName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherLName" Parameter="motherLName" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="MotherMobile" Parameter="motherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="FatherMobile" Parameter="fatherMobile" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="CityId" Parameter="cityId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="HomeAddress" Parameter="homeAddress" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Archive" Parameter="archive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="MotherSit" Parameter="motherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FatherSit" Parameter="fatherSit" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Phone" Parameter="phone" Type="System.String" DbType="VarChar(14)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="MarriageDate" Parameter="marriageDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="MotherBirthDate" Parameter="motherBirthDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FatherBirthDate" Parameter="fatherBirthDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="InviteTypeId" Parameter="inviteTypeId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Select_By_Id" Method="usp_Family_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Family_Select_By_IdResult">
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="F_FatherName" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="F_FatherLName" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="F_MotherName" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="F_MotherLName" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_CityId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_StateId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_HomeAddress" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="F_MotherSituation" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_FatherSituation" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="F_InviteByCode" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="F_Causer" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_MarriageDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="CityTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="StateTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_MotherBirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="F_FatherBirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="F_InviteTypeId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Edit_new" Method="usp_PrivateCheque_Edit_new">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="C_ReciveDate" Parameter="c_ReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_Desc" Parameter="c_Desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_WillReciveDate" Parameter="c_WillReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_ForSubject" Parameter="c_ForSubject" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_ChequeNumber" Parameter="c_ChequeNumber" Type="System.String" DbType="VarChar(59)" />
+    <Parameter Name="C_IsRecive" Parameter="c_IsRecive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="C_Price" Parameter="c_Price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="C_Owner" Parameter="c_Owner" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="C_Registered" Parameter="c_Registered" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="BankId" Parameter="bankId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Spent" Parameter="spent" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Add_New" Method="usp_PrivateCheque_Add_New">
+    <Parameter Name="C_ReciveDate" Parameter="c_ReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_Desc" Parameter="c_Desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_WillReciveDate" Parameter="c_WillReciveDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="C_ForSubject" Parameter="c_ForSubject" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="C_ChequeNumber" Parameter="c_ChequeNumber" Type="System.String" DbType="VarChar(59)" />
+    <Parameter Name="C_IsRecive" Parameter="c_IsRecive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="C_Price" Parameter="c_Price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="C_Owner" Parameter="c_Owner" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="C_Registered" Parameter="c_Registered" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="BankId" Parameter="bankId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Spent" Parameter="spent" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Select_For_Grid_New" Method="usp_PrivateCheque_Select_For_Grid_New">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="RegisterdType" Parameter="registerdType" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="IsRecived" Parameter="isRecived" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="IsSpent" Parameter="isSpent" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="BankId" Parameter="bankId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_PrivateCheque_Select_For_Grid_NewResult">
+      <Column Name="C_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="C_ReciveDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="C_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="C_WillReciveDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="C_ForSubject" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="C_ChequeNumber" Type="System.String" DbType="VarChar(59)" CanBeNull="true" />
+      <Column Name="C_IsRecive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="C_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="C_Owner" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="C_Registered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="C_Spent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="C_Bank" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="BankTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_PrivateCheque_Select_ById" Method="usp_PrivateCheque_Select_ById">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_PrivateCheque_Select_ByIdResult">
+      <Column Name="C_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="C_ReciveDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="C_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="C_WillReciveDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="C_ForSubject" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="C_ChequeNumber" Type="System.String" DbType="VarChar(59)" CanBeNull="true" />
+      <Column Name="C_IsRecive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="C_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="C_Owner" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="C_Registered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="C_CrationTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="C_Bank" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="C_Spent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_RequestTurn_Add" Method="usp_RequestTurn_Add">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TurnDate" Parameter="turnDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="TurnTime" Parameter="turnTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="TurnerId" Parameter="turnerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="Type" Parameter="type" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="LocationId" Parameter="locationId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Duration" Parameter="duration" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Cost" Parameter="cost" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_RequestTurn_Edit" Method="usp_RequestTurn_Edit">
+    <Parameter Name="TurnId" Parameter="turnId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TurnDate" Parameter="turnDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="TurnTime" Parameter="turnTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Type" Parameter="type" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="LocationId" Parameter="locationId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Duration" Parameter="duration" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Cost" Parameter="cost" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Paids_Delete" Method="usp_Paids_Delete">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Paids_Select_Grid" Method="usp_Paids_Select_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Paids_Select_GridResult">
+      <Column Name="Pa_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Pa_DateS" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Pa_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Pa_PaidType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Pa_RefNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Pa_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Pa_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Pa_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="PaidTypeTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectTypeText" Type="System.String" DbType="NVarChar(9) NOT NULL" CanBeNull="false" />
+      <Column Name="FamilyTiyle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Request_Select_By_Date_For_Dashboard" Method="usp_Request_Select_By_Date_For_Dashboard">
+    <Parameter Name="Date" Parameter="date" Type="System.DateTime" DbType="Date" />
+    <ElementType Name="usp_Request_Select_By_Date_For_DashboardResult">
+      <Column Name="R_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="R_TurnTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="R_TurnerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TurnerName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="R_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="R_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="R_Type" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TypeTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="R_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="R_Cost" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="R_Duration" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="R_Location" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="LocationTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Paids_Add" Method="usp_Paids_Add">
+    <Parameter Name="SubjectId" Parameter="subjectId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="SubjectType" Parameter="subjectType" Type="System.Byte" DbType="TinyInt" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Price" Parameter="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="PaidType" Parameter="paidType" Type="System.Int32" DbType="Int" />
+    <Parameter Name="RefNumber" Parameter="refNumber" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Time" Parameter="time" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

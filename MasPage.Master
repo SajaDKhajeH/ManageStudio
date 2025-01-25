@@ -1,0 +1,2062 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasPage.Master.cs" Inherits="AdakStudio.MasPage" %>
+
+<!DOCTYPE html>
+
+<html direction="rtl" dir="rtl" style="direction: rtl">
+<head>
+    <base href="../">
+    <title>مدیریت آتلیه</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="مدیریت استادیو کودک" />
+    <meta property="og:site_name" content="مدیریت آتلیه" />
+    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+    <link href="assets/css/sweetalert2.min.css" rel="stylesheet" />
+    <!--begin::Fonts-->
+    <!--end::Fonts-->
+    <!--begin::Page Vendor Stylesheets(used by this page)-->
+    <link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendor Stylesheets-->
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker/css/timepicker.min.css">
+
+
+    <style>
+        @font-face {
+            font-family: 'ISW';
+            src: url('assets/Fonts/IRANSANSWEB.TTF');
+        }
+
+        body {
+            font-family: 'ISW', Tahoma, sans-serif;
+            background-color: #f5f5f5;
+            direction: rtl;
+            text-align: center;
+            margin: 50px;
+        }
+
+        select {
+            font-family: 'ISW', Tahoma, sans-serif;
+        }
+
+        .datepicker-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-control {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            text-align: right;
+        }
+
+
+        /*کلید های عملیات در گرید ها
+*/
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btnDataTable {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .btnDataTable:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+        .btnDataTable-edit {
+            background-color: #dbeafe; /* آبی ملایم */
+            color: #2563eb; /* آبی */
+        }
+
+            .btnDataTable-edit:hover {
+                background-color: #bfdbfe; /* آبی روشن‌تر */
+            }
+
+        .btnDataTable-delete {
+            background-color: #f08383; /* قرمز ملایم */
+            color: #fbfbfb; /* قرمز */
+        }
+
+        .btnDataTable-print {
+            background-color: #437c8e; /* قرمز ملایم */
+            color: #f9f9f9; /* قرمز */
+        }
+
+        .btnDataTable-delete:hover {
+            background-color: #fecaca; /* قرمز روشن‌تر */
+        }
+        /*پایان استایل کلیدهای عملیات در گریدها*/
+
+        /* دکمه Logout در گوشه سمت راست */
+        .logout-btn {
+            position: fixed;
+            top: 5px;
+            left: 10px;
+            background-color: #f44336; /* رنگ قرمز */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 20px;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .LoginCauserName {
+            position: absolute;
+            top: 15px;
+            left: 100px;
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .logout-btn i {
+            font-size: 10px;
+        }
+    </style>
+    <style>
+        .btn {
+            max-height: 48px;
+        }
+        /* Button to trigger modal */
+        .open-modal-btn {
+            background-color: #FF6F61;
+            color: #fff;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .open-modal-btn:hover {
+                background-color: #e65a4d;
+            }
+
+        /* Modal Body */
+        .modal-body input, .modal-body select, .modal-body textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .modal-body textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-body select {
+            height: 40px;
+        }
+
+        /* Category Buttons */
+        .category-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+            .category-buttons button {
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px;
+                font-size: 16px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .category-buttons button:hover {
+                    background-color: #0056b3;
+                }
+
+        /* Item Buttons for Selected Category */
+        .item-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+            .item-buttons button {
+                background-color: #28a745;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+                .item-buttons button:hover {
+                    background-color: #218838;
+                }
+
+        /* Selected Items List */
+        .selected-items {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 15px;
+            text-align: right;
+            max-height: 200px; /* Prevent excessive scrolling */
+            overflow-y: auto; /* Enable scrolling if the list grows */
+        }
+
+            .selected-items li {
+                background-color: #f1f1f1;
+                padding: 10px;
+                margin: 5px 0;
+                border-radius: 6px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+        .remove-item {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+            .remove-item:hover {
+                background-color: #c82333;
+            }
+
+        /* Modal Footer */
+        /*        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }*/
+
+        .modal-footer button {
+            padding: 12px 25px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .modal-footer button:hover {
+                background-color: #218838;
+            }
+    </style>
+    <%-- استایل مربوط به ثبت فاکتور جدید --%>
+    <style>
+        .popup-header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+            .popup-header input, .popup-header select {
+                flex: 1 1 calc(33% - 10px); /* چهار فیلد در یک ردیف */
+                margin: 5px;
+                border: 1px solid #ccc;
+                border-radius: 9px;
+            }
+
+        .popup-content {
+            display: flex;
+            gap: 10px;
+            margin: 5px;
+        }
+
+        .item-selection {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+            .item-selection .group {
+                margin-bottom: 10px;
+            }
+
+            .item-selection button {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 5px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .item-selection button:hover {
+                    background-color: #0056b3;
+                }
+
+            .item-selection ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .item-selection ul li {
+                    margin-bottom: 5px;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                    .item-selection ul li button {
+                        width: auto;
+                        padding: 5px 10px;
+                        background-color: #28a745;
+                    }
+
+                        .item-selection ul li button:hover {
+                            background-color: #218838;
+                        }
+
+        .item-table {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+            .item-table table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 10px;
+            }
+
+                .item-table table th, .item-table table td {
+                    padding: 8px;
+                    text-align: center;
+                    border: 1px solid #ddd;
+                }
+
+                .item-table table th {
+                    background-color: #f4f4f4;
+                }
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+            .summary div {
+                font-weight: bold;
+                font-size: 14px;
+                border-left: groove;
+                border-end-end-radius: 3px
+            }
+
+                .summary div span {
+                    color: #007bff;
+                }
+    </style>
+    <%-- استایل مربوط به ثبت درخواست --%>
+    <style>
+        .col-lg-6 {
+            flex: 1 1 calc(50% - 20px); /* ستون‌ها 50% عرض می‌گیرند */
+            max-width: calc(50% - 20px); /* حداکثر 50% عرض */
+        }
+
+        .hidden {
+            visibility: hidden; /* ستون را مخفی می‌کند */
+            height: 0; /* ارتفاع ستون را به صفر می‌رساند */
+            overflow: hidden;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+            .radio-group input {
+                width: auto;
+            }
+
+        .info-box {
+            display: none;
+            margin-top: 5px;
+        }
+
+            .info-box input {
+                margin-bottom: 5px;
+            }
+    </style>
+    <%-- دکمه های محصولات --%>
+    <style>
+        /* دکمه‌های اصلی */
+        .button {
+            display: block;
+            width: 200px;
+            margin: 10px 0;
+            padding: 10px;
+            text-align: center;
+            background: #7cb7f7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+            .button:hover {
+                background: #0056b3;
+            }
+
+        /* دکمه‌های فرزند */
+        .child-buttons {
+            display: none; /* پنهان‌شده به طور پیش‌فرض */
+            margin: 10px 0 20px 0;
+        }
+
+            .child-buttons .child-button {
+                display: inline-block; /* نمایش در کنار هم */
+                padding: 10px 15px;
+                background: #6c757d;
+                color: white;
+                border: none;
+                margin: 2px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+                width: auto; /* عرض خودکار بر اساس متن */
+                text-align: center; /* متن وسط چین */
+                white-space: nowrap; /* جلوگیری از شکستن متن */
+            }
+
+                .child-buttons .child-button:hover {
+                    background: #495057;
+                }
+    </style>
+    <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
+    <!--end::Global Stylesheets Bundle-->
+</head>
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-enabled aside-fixed">
+    <!--begin::Main-->
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Page-->
+        <div class="page d-flex flex-row flex-column-fluid">
+            <!--begin::Aside-->
+            <div id="kt_aside" class="aside aside-dark aside-hoverable" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
+                <!--begin::Brand-->
+                <div class="aside-logo flex-column-auto" id="kt_aside_logo">
+                    <!--begin::Logo-->
+                    <%-- <a href="../../demo1/dist/index.html">
+                        <img alt="Logo" src="assets/media/logos/logo-1-dark.svg" class="h-25px logo" />
+                    </a>--%>
+                    <!--end::Logo-->
+                    <!--begin::Aside toggler-->
+                    <div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr079.svg-->
+                        <span class="svg-icon svg-icon-1 rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path opacity="0.5" d="M14.2657 11.4343L18.45 7.25C18.8642 6.83579 18.8642 6.16421 18.45 5.75C18.0358 5.33579 17.3642 5.33579 16.95 5.75L11.4071 11.2929C11.0166 11.6834 11.0166 12.3166 11.4071 12.7071L16.95 18.25C17.3642 18.6642 18.0358 18.6642 18.45 18.25C18.8642 17.8358 18.8642 17.1642 18.45 16.75L14.2657 12.5657C13.9533 12.2533 13.9533 11.7467 14.2657 11.4343Z" fill="black" />
+                                <path d="M8.2657 11.4343L12.45 7.25C12.8642 6.83579 12.8642 6.16421 12.45 5.75C12.0358 5.33579 11.3642 5.33579 10.95 5.75L5.40712 11.2929C5.01659 11.6834 5.01659 12.3166 5.40712 12.7071L10.95 18.25C11.3642 18.6642 12.0358 18.6642 12.45 18.25C12.8642 17.8358 12.8642 17.1642 12.45 16.75L8.2657 12.5657C7.95328 12.2533 7.95328 11.7467 8.2657 11.4343Z" fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Aside toggler-->
+                </div>
+                <!--end::Brand-->
+                <!--begin::Aside menu-->
+                <div class="aside-menu flex-column-fluid">
+                    <!--begin::Aside Menu-->
+                    <div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
+                        <!--begin::Menu-->
+                        <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
+                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="Dashboard.aspx">
+                                    <span class="menu-icon">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title" id="title_MasterPage">داشبورد</span>
+                                </a>
+                            </div>
+                            <% } %>
+                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="Personnel.aspx">
+                                    <span class="menu-icon">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">مدیریت پرسنل</span>
+                                </a>
+                            </div>
+                            <% } %>
+                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="Family.aspx">
+                                    <span class="menu-icon">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">مدیریت خانواده ها</span>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a class="menu-link" href="ManageInvoice.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/layouts/lay010.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z" fill="black" />
+                                                <path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">مدیریت فاکتور</span>
+                                </a>
+                            </div>
+                            <% } %>
+                            <%  if (LoginedUser.Role != DefaultDataIDs.Role_PhotographerInHospital)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="RequestStatus.aspx">
+                                    <span class="menu-icon">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">وضعیت فاکتورها</span>
+                                </a>
+                            </div>
+                            <% } %>
+                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="FactorPaids.aspx">
+                                    <span class="menu-icon">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">مدیریت پرداختی ها</span>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a class="menu-link" href="Products.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">مدیریت کالا</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="Cost.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">هزینه ها</span>
+                                </a>
+                            </div>
+                            <% } %>
+                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="SendSms.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">ارسال پیامک</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="QueueSMS.aspx">
+                                    <span class="menu-icon">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">صف پیامک</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="BasicData.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">اطلاعات پایه</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="Reports.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">گزارش ها</span>
+                                </a>
+                            </div>
+                            <% } %>
+                            <%  if (LoginedUser.Id == 1)
+                                { %>
+                            <div class="menu-item">
+                                <a class="menu-link" href="PrivateManageCheque.aspx">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
+                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
+                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title">مدیریت چک ها</span>
+                                </a>
+                            </div>
+                            <% } %>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <!--end::Aside Menu-->
+                </div>
+            </div>
+            <!--end::Aside-->
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <!--begin::Header-->
+                <div id="kt_header" style="" class="header align-items-stretch">
+                    <!--begin::Container-->
+                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+                        <!--begin::Aside mobile toggle-->
+                        <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
+                            <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
+                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                                <span class="svg-icon svg-icon-2x mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+                        </div>
+                        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+                            <div class="d-flex align-items-center" id="kt_header_nav">
+                                <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_header_nav'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                    <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1" id="master_PageTitle">داشبورد</h1>
+                                </div>
+
+                                <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_header_nav'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                </div>
+                                <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_header_nav'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                    <!-- دکمه خروج با آیکن Shutdown -->
+
+                                </div>
+
+
+                            </div>
+                            <div class="d-flex align-items-center flex-shrink-0">
+                                <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                                    { %>
+                                <button class="btn btn-primary me-2  open-modal-btn" onclick="openModalSetFactor()" data-bs-toggle="modal" data-bs-target="#m_SetFactor" id="openModalBtn">ثبت فاکتور</button>
+                                <button class="btn btn-primary open-modal-btn" onclick="ResetFeildsFamily()" data-bs-toggle="modal" data-bs-target="#modal_addedit_family" id="Btn_AddRequest">ثبت مشتری</button>
+                                <%} %>
+                                <button class="btn btn-primary open-modal-btn" id="btnEditRequestModal" data-bs-toggle="modal" data-bs-target="#appointmentModal" style="display: none">ویرایش درخواست</button>
+                                <div class="d-flex align-items-center ms-1 ms-lg-3">
+
+                                    <!--begin::Menu wrapper-->
+                                    <div onclick="logout()" class="btn btn-icon btn-danger w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                        <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                                        <span class="svg-icon svg-icon-1">
+                                            <i class="fas fa-power-off"></i>
+                                            <!-- آیکن shutdown -->
+
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </div>
+
+                                    <!--end::Menu wrapper-->
+                                </div>
+                                <!--end::Toolbar wrapper-->
+                            </div>
+                            <!--end::Topbar-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <!--begin::Post-->
+                    <div class="post d-flex flex-column-fluid" id="kt_post">
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Post-->
+                </div>
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <div class="modal fade" id="m_SetPaidPrice">
+        <div class="modal-dialog modal-dialog-centered mw-450px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bolder" id="header_modalSetPay">ثبت پرداختی</h2>
+                    <div onclick="CloseModalPayFactor()" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body py-10 px-lg-20">
+                    <label class="fs-6 fw-bold mb-2">مبلغ پرداختی</label>
+                    <input type="text" class="form-control" style="margin: 3px" maxlength="15" id="pay_PaidPrice" onchange="TextFormatPrice(this)" onkeyup="TextFormatPrice(this)" placeholder="مبلغ">
+                    <label class="fs-6 fw-bold mb-2">طریقه پرداخت</label>
+                    <select style="margin: 3px" id="pay_PaidType" data-control="select" data-placeholder="نوع پرداخت" class="form-select form-select-solid fw-bolder">
+                        <%Response.Write(PublicMethod.GetPaidType()); %>
+                    </select>
+                    <label class="fs-6 fw-bold mb-2">شماره پیگیری</label>
+                    <input style="margin: 3px" type="text" maxlength="20" id="pay_RefNumber" class="form-control" placeholder="شماره پیگیری">
+                    <label class="fs-6 fw-bold mb-2">توضیحات</label>
+                    <input style="margin: 3px" placeholder="توضیحات" maxlength="1001" class="form-control" id="pay_desc">
+                </div>
+                <div class="modal-footer flex-center">
+                    <button onclick="SetPay()" id="btn_SetPaid">ثبت پرداختی</button>
+                    <button type="reset" class="btn btn-light me-3" onclick="CloseModalPayFactor()">لغو</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Structure -->
+    <div class="modal fade" id="m_SetFactor">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header" id="kt_modal_add_customer_header">
+                    <h2 class="fw-bolder" id="header_modalSetFactor">ثبت فاکتور</h2>
+                    <div id="closeModalBtnFactorModals" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="row g-10" style="margin: 5px">
+                    <div class="col-lg-3">
+                        <label>انتخاب خانواده</label>
+                        <select id="factor_Family" data-dropdown-parent="#m_SetFactor" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" style="margin: 3px" data-placeholder="انتخاب مشتری">
+                        </select>
+                        <label>تاریخ فاکتور</label>
+                        <input style="margin: 3px" class="form-control datepicker selectedShamsiDate" id="factor_Date">
+                        <label>توضیحات فاکتور</label>
+                        <textarea style="margin: 3px" placeholder="توضیحات" class="form-control" id="factor_desc"></textarea>
+                        <label>موضوع عکاسی</label>
+                        <select id="factor_TypePhotography">
+                            <%Response.Write(PublicMethod.GetTypePhotographi()); %>
+                        </select>
+                        <label>وضعیت فاکتور</label>
+                        <select id="factor_status">
+                            <%Response.Write(PublicMethod.GetFactorStatus()); %>
+                        </select>
+                        <label>عکاس</label>
+                        <select id="factor_Photographer">
+                            <%Response.Write(PublicMethod.GetPhotographer(true)); %>
+                        </select>
+                        <div class="d-flex flex-stack" style="margin: 3px">
+                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                <input id="factor_ForceDesign" class="form-check-input" type="checkbox" />
+                                <span class="form-check-label fw-bold text-dark">این فاکتور نیاز به طراحی فوری دارد</span>
+                            </label>
+                        </div>
+                        <div class="d-flex flex-stack" style="margin: 3px">
+                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                <input id="factor_OnlyEditedDelivered" class="form-check-input" type="checkbox" />
+                                <span class="form-check-label fw-bold text-dark">تمامی عکس های این فاکتور ادیت شده تحویل داده می شوند</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3" style="margin: 5px">
+                        <div class="item-selection">
+                            <%Response.Write(GetProducts()); %>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" style="margin: 5px">
+                        <div class="item-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="min-w-70px">هدیه</th>
+                                        <th class="min-w-80px">عنوان کالا</th>
+                                        <th class="min-w-50px">تعداد</th>
+                                        <th class="min-w-50px">فی</th>
+                                        <th class="min-w-120px">توضیحات</th>
+                                        <th class="min-w-50px">تعداد عکس</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemTableBody">
+                                </tbody>
+                            </table>
+                            <div id="div_Pay_A_Discount">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label class="fs-6 fw-bold mb-2">مبلغ تخفیف</label>
+                                        <input type="text" class="form-control" style="margin: 3px" id="factor_discountPercent" onkeyup="TextFormatPrice(this)" onchange="updateTable()" placeholder="مبلغ تخفیف">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="fs-6 fw-bold mb-2">مبلغ پرداختی</label>
+                                        <input type="text" class="form-control" style="margin: 3px" id="factor_PaidPrice" onkeyup="TextFormatPrice(this)" onchange="updateTable()" placeholder="مبلغ پرداختی">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="fs-6 fw-bold mb-2">طریقه پرداخت</label>
+                                        <select style="margin: 3px" id="factor_PaidType" data-control="select" data-placeholder="نوع پرداخت" class="form-select form-select-solid fw-bolder">
+                                            <%Response.Write(PublicMethod.GetPaidType()); %>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="fs-6 fw-bold mb-2">شماره پیگیری</label>
+                                        <input style="margin: 3px" type="text" id="factor_RefNumber" class="form-control" placeholder="شماره پیگیری">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="summary row">
+                                <div class="col-lg-3">مجموع فاکتور: <span id="totalAmount">0</span> <%Response.Write(Settings.TextAfterPrice); %></div>
+                                <div class="col-lg-3">تخفیف: <span id="discountAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                                <div class="col-lg-3">مبلغ پرداختی: <span id="paidAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                                <div class="col-lg-3">قابل پرداخت: <span id="payableAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button onclick="SetFactor()" id="btn_SetFactor">ثبت فاکتور</button>
+                    <button type="reset" class="btn btn-light me-3" id="cancelBtn">لغو</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--end::Main-->
+
+    <%-- مدال ثبت درخواست عکاسی --%>
+    <!-- مدال -->
+    <div class="modal fade" id="appointmentModal">
+        <div class="modal-dialog modal-dialog-centered mw-450px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bolder" id="header_modalSetRequest">ثبت نوبت</h2>
+                    <div id="closeModalBtnRequestModals" onclick="closeModalRequest()" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body py-10 px-lg-20">
+                    <div id="div_Family_For_Request" style="margin: 3px">
+                        <label>خانواده</label>
+                        <select id="turn_family" data-dropdown-parent="#appointmentModal" data-control="select2" class="form-select form-select-solid select2-hidden-accessible">
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="appointmentDate">تاریخ</label>
+                            <input class="form-control datepicker selectedShamsiDate" id="turn_Date">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentTime">ساعت</label>
+                            <input type="time" id="turn_Time" class="form-control" placeholder="انتخاب زمان">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="appointmentTime">موضوع</label>
+                            <select id="turn_Type">
+                                <%Response.Write(PublicMethod.GetTypePhotographi()); %>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>مدت زمان</label>
+                            <select id="turn_Duration">
+                                <option value="0">انتخاب زمان</option>
+                                <option value="15">15 دقیقه</option>
+                                <option value="30">30 دقیقه</option>
+                                <option value="45">45 دقیقه</option>
+                                <option value="60">1 ساعت</option>
+                                <option value="75">1 ساعت و 15 دقیقه</option>
+                                <option value="90">1 ساعت و 30 دقیقه</option>
+                                <option value="105">1 ساعت و 45 دقیقه</option>
+                                <option value="120">2 ساعت</option>
+                                <option value="135">2 ساعت و 15 دقیقه</option>
+                                <option value="150">2 ساعت و 30 دقیقه</option>
+                                <option value="165">2 ساعت و 45 دقیقه</option>
+                                <option value="180">3 ساعت</option>
+                                <option value="210">3 ساعت و 30 دقیقه</option>
+                                <option value="240">4 ساعت</option>
+                                <option value="270">4 ساعت و 30 دقیقه</option>
+                                <option value="300">5 ساعت</option>
+                                <option value="330">5 ساعت و 30 دقیقه</option>
+                                <option value="360">6 ساعت</option>
+                                <option value="390">6 ساعت و 30 دقیقه</option>
+                                <option value="420">7 ساعت</option>
+                                <option value="450">7 ساعت و 30 دقیقه</option>
+                                <option value="480">8 ساعت</option>
+                                <option value="510">8 ساعت و 30 دقیقه</option>
+                                <option value="540">9 ساعت</option>
+                                <option value="570">9 ساعت و 30 دقیقه</option>
+                                <option value="600">10 ساعت</option>
+                                <option value="630">10 ساعت و 30 دقیقه</option>
+                                <option value="660">11 ساعت</option>
+                                <option value="690">11 ساعت و 30 دقیقه</option>
+                                <option value="720">12 ساعت</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="appointmentTime">لوکیشن</label>
+                            <select id="turn_Location">
+                                <%Response.Write(PublicMethod.GetLocation()); %>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentTime">هزینه رزرو نوبت</label>
+                            <input type="text" class="form-control" style="margin: 3px" id="turn_Cost" onkeyup="TextFormatPrice(this)" placeholder="هزینه رزرو نوبت">
+                        </div>
+                    </div>
+                    <label for="appointmentTime">توضیحات</label>
+                    <textarea style="margin: 3px" placeholder="توضیحات" class="form-control" id="turn_desc"></textarea>
+                </div>
+                <!-- دکمه‌های پایین مدال -->
+                <div class="modal-footer flex-center">
+                    <button id="btn_AddEditRequeest" onclick="saveAppointment()">ثبت نوبت</button>
+                    <button class="btn btn-light me-3" onclick="closeModalRequest()">بستن</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <%-- مدال ثبت خانواده --%>
+    <div class="modal fade" id="modal_addedit_family">
+        <div class="modal-dialog modal-dialog-centered mw-950px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bolder">افزون اطلاعات</h2>
+                    <div id="btn_closeFamily" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <div class="scroll-y me-n7 pe-7" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-offset="300px">
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-3 fv-row">
+                                <input id="m_name" maxlength="20" class="form-control" placeholder="نام خانم" name="firstname" value="" />
+                            </div>
+                            <div class="col-md-3 fv-row">
+                                <input id="m_lastname" maxlength="30" onchange="ChangeTitleFamily()" class="form-control" placeholder="نام خانوادگی خانم" name="lastname" value="" />
+                            </div>
+                            <div class="col-md-3 fv-row">
+                                <input id="m_mobile" maxlength="11" class="form-control" placeholder="شماره همراه خانم" name="lastname" value="" />
+                            </div>
+                            <div class="col-md-3 fv-row">
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="m_BirthDate" placeholder="تاریخ تولد خانم">
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-3 fv-row">
+                                <input id="f_name" maxlength="20" class="form-control" placeholder="نام آقا" name="firstname" value="" />
+                            </div>
+                            <div class="col-md-3 fv-row">
+                                <input id="f_lastname" maxlength="30" onchange="ChangeTitleFamily()" class="form-control" placeholder="نام خانوادگی آقا" name="lastname" value="" />
+                            </div>
+                            <div class="col-md-3 fv-row">
+                                <input id="f_mobile" maxlength="11" class="form-control" placeholder="شماره همراه آقا" name="lastname" value="" />
+                            </div>
+                            <div class="col-md-3 fv-row">
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="f_BirthDate" placeholder="تاریخ تولد آقا">
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-4 fv-row">
+                                <input type="text" maxlength="50" id="f_title" class="form-control" placeholder="عنوان خانواده" />
+                            </div>
+                            <div class="col-md-4 fv-row">
+                                <input id="f_phone" maxlength="14" class="form-control" placeholder="شماره منزل" value="" />
+                            </div>
+                            <div class="col-md-4 fv-row">
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="f_MarriageDate" placeholder="تاریخ ازدواج">
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="form-container">
+                                <h3 class="text-center mb-4">افزودن اطلاعات فرزندان</h3>
+                                <!-- دکمه افزودن فرزند -->
+                                <div class="d-flex justify-content-end">
+                                    <button id="addRowButtonChild" class="btn btn-primary" style="margin: 7px">افزودن فرزند</button>
+                                </div>
+
+                                <!-- جدول -->
+                                <table id="tbChild" class="table table-bordered text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>نام</th>
+                                            <th>جنسیت</th>
+                                            <th>تاریخ تولد</th>
+                                            <th>بیمارستان</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="childrenTableBody">
+                                        <!-- سطرها به صورت داینامیک اضافه می‌شوند -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-4 fv-row">
+                                <div class="d-flex flex-stack">
+                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                        <input id="f_archive" class="form-check-input" name="billing" type="checkbox" value="1" checked="checked" />
+                                        <span class="form-check-label fw-bold text-muted" for="kt_modal_add_customer_billing">وضعیت</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 fv-row">
+                                <select id="f_InviteType">
+                                    <%Response.Write(PublicMethod.GetInviteType()); %>
+                                </select>
+                            </div>
+                            <div class="col-md-4 fv-row">
+                                <input type="text" id="f_address" class="form-control" placeholder="آدرس منزل" />
+                            </div>
+                        </div>
+                        <div class="fv-row mb-15">
+                            <textarea type="text" id="f_desc" class="form-control" placeholder="توضیحات" name="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center" id="div_btnAddFamily">
+                    <button id="btn_submitdataFamily" class="btn btn-primary">ثبت اطلاعات</button>
+                    <button id="btncancelFamily" class="btn btn-light me-3">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>var hostUrl = "assets/";</script>
+    <%-- script Pay Factor Modal --%>
+    <script>
+        var closeModalPayFactor = document.getElementById('closeModalBtnPayModals');
+        var modalSetPay = document.getElementById('m_SetPaidPrice');
+        var IdForPay = 0;
+        var SubjectTypePay = 0;
+        var ModPriceForPay = 0;
+        function CloseModalPayFactor() {
+            IdForPay = ModPriceForPay = 0;
+            modalSetPay.style.display = 'none';
+            $('#m_SetPaidPrice').modal('hide');
+        };
+        function PayFactor_Or_Turn(id, modPrice, subjectType, HeaderModalSetPay = "") {
+            IdForPay = id;
+            SubjectTypePay = subjectType;
+            ModPriceForPay = modPrice;
+            document.getElementById("pay_desc").value = "";
+            document.getElementById('pay_PaidType').value = '';
+            document.getElementById('pay_RefNumber').value = '';
+            $("#pay_PaidPrice").val(modPrice);
+            $("#pay_PaidPrice").change();
+            $("#header_modalSetPay").text(subjectType == 1 ? "ثبت پرداختی برای فاکتور " + IdForPay : HeaderModalSetPay);
+        };
+        function SetPay() {
+            var pay_desc = document.getElementById("pay_desc").value;
+            var pay_PaidType = document.getElementById('pay_PaidType').value;
+            var pay_RefNumber = document.getElementById('pay_RefNumber').value;
+            var pay_PaidPrice = $("#pay_PaidPrice").val();
+            pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");
+            $.ajax({
+                type: "POST",
+                url: "ManageInvoice.aspx/SetPay",
+                data: JSON.stringify({
+                    IdForPay: IdForPay,
+                    PaidPrice: parseInt(pay_PaidPrice),
+                    PaidType: pay_PaidType,
+                    RefNumber: pay_RefNumber,
+                    desc: pay_desc,
+                    SubjectTypePay
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var res = msg.d;
+                    if (res.Result == false) {//خطا داریم
+                        ShowError(res.Message);
+                    }
+                    else {
+                        toastr.success(res.Message, "موفق");
+                        CloseModalPayFactor();
+                        if (location.href.includes("ManageInvoice")) {
+                            loadTableDataFacotrs();
+                        }
+                        else if (location.href.includes("Dashboard")) {
+                            loadAppointments(currentIndex);
+                        }
+                        else if (location.href.includes("RequestStatus")){
+                            GetFactors();
+                        }
+
+
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+    </script>
+    <%-- اسکریپت مربوط به مدال ثبت درخواست --%>
+    <script>
+        var requestIdForEditTurnDate_A_Time = 0;
+        var btn_AddEditRequeest = "btn_AddEditRequeest";
+        var btn_SetFactor = "btn_SetFactor";
+
+        // باز کردن مدال
+        function openModalRequest(id = 0, time = "", date = "", turnType = "", desc = "", cost = 0, duration = 0, locationId = "") {
+            requestIdForEditTurnDate_A_Time = id;
+            btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
+            document.getElementById("appointmentModal").style.display = "flex";
+            document.getElementById("turn_Date").value = date;
+            document.getElementById("turn_Time").value = time;
+            document.getElementById("turn_desc").value = desc;
+            document.getElementById("turn_Type").value = turnType;
+            document.getElementById("turn_Duration").value = duration;
+            document.getElementById("turn_Location").value = locationId;
+            document.getElementById("turn_Cost").value = cost;
+            document.getElementById("div_Family_For_Request").style.display = "block";
+        };
+        // بستن مدال
+        function closeModalRequest() {
+            $('#appointmentModal').modal('hide');
+            requestIdForEditTurnDate_A_Time = 0;
+        };
+        function RequestDelete(id) {
+            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
+            if (userResponse) {
+                $.ajax({
+                    type: "POST",
+                    url: "Dashboard.aspx/RequestDelete",
+                    data: JSON.stringify({
+                        requestId: id
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        if (msg.d.Result == false) {//خطا داریم
+                            alert(msg.d.Message);
+                        }
+                        else {
+                            loadAppointments(0);
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        };
+        // ذخیره نوبت
+        function saveAppointment() {
+            const turn_Date = document.getElementById("turn_Date").value;
+            const turn_Time = document.getElementById("turn_Time").value;
+            const turn_desc = document.getElementById("turn_desc").value;
+            const selectedFamily = document.getElementById("turn_family").value;
+
+            const selectElement = document.getElementById("turn_family");
+            const selectedFamilyText = selectElement.options[selectElement.selectedIndex].text;
+
+            const turn_Type = document.getElementById("turn_Type").value;
+
+            var turn_Duration = document.getElementById("turn_Duration").value;
+            if (turn_Duration == null || turn_Duration == undefined) {
+                turn_Duration = "0";
+            }
+            var turn_Location = document.getElementById("turn_Location").value;
+            var turn_Cost = document.getElementById("turn_Cost").value;
+            turn_Cost = turn_Cost.replaceAll(",", "");
+            if (turn_Cost == null || turn_Cost == undefined) {
+                turn_Cost = "0";
+            }
+            btnAddEdit_ChangeDisable(btn_AddEditRequeest, true);
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/SetRequestOnMaster",
+                data: JSON.stringify({
+                    requestId: requestIdForEditTurnDate_A_Time, turn_Date: turn_Date, turn_Time: turn_Time,
+                    selectedFamily: selectedFamily, turnType: turn_Type, desc: turn_desc,
+                    Duration: parseInt(turn_Duration), Location: turn_Location, Cost: parseInt(turn_Cost)
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
+                    if (msg.d.Result == false) {//خطا داریم
+                        ShowError(msg.d.Message);
+                    }
+                    else {
+                        closeModalRequest();
+                        loadAppointments(0);
+                        toastr.success(msg.d.Message, "موفق");
+                    }
+                },
+                error: function () {
+                    btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
+                    alert("error");
+                }
+            });
+        }
+    </script>
+    <script>
+        function toggleGroupItems(groupId) {
+            // const group = document.getElementById(groupId);
+            groupId.style.display = groupId.style.display === "none" ? "block" : "none";
+        }
+
+        let Productitems = [];
+
+        function addItem(Id, price, title, gtitle) {
+            const existingItem = Productitems.find(item => item.ProductId == Id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                Productitems.push({ title, price, quantity: 1, notes: "", ProductId: Id, FCId: 0, GTitle: gtitle, ShotCount: 0, Gift: false });
+            }
+            updateTable();
+        }
+        function updateTable() {
+            const tbody = document.getElementById("itemTableBody");
+            tbody.innerHTML = "";
+
+            let total = 0;
+            Productitems.forEach((item, index) => {
+                if (item.Gift == null || item.Gift == undefined || item.Gift == false) {
+                    total += item.price * item.quantity;
+                }
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                <td><input onclick="UpdateIsGift(${index},this.checked)" name="IsGift" class="form-check-input" type="checkbox" ${item.Gift ? "checked" : ""}/></td>
+                <td>${item.GTitle}-${item.title}</td>
+                <td><input type="number" value="${item.quantity}" min="1" max="100" onchange="updateQuantity(${index}, this.value)"></td>
+                <td><input type="text" value="${CurrencyFormatted(item.price)}" min="1" max="100000000" disabled></td>
+                <td><textarea onchange="updateNotes(${index}, this.value)">${item.notes}</textarea></td>
+                <td><input type="number" maxlength="110" value="${item.ShotCount}" onchange="updateShotCount(${index}, this.value)"></td>
+                <td><button onclick="removeItem(${index})">حذف</button></td>
+            `;
+                tbody.appendChild(row);
+            });
+
+            var discount = document.getElementById("factor_discountPercent").value;
+            var paidPrice = document.getElementById("factor_PaidPrice").value;
+            paidPrice = paidPrice.replaceAll(",", "");
+            discount = discount.replaceAll(",", "");
+            const payable = total - parseInt(discount) - parseInt(paidPrice);
+
+            document.getElementById("totalAmount").textContent = CurrencyFormatted(total);
+            document.getElementById("discountAmount").textContent = CurrencyFormatted(discount);
+            document.getElementById("paidAmount").textContent = CurrencyFormatted(paidPrice);
+            document.getElementById("payableAmount").textContent = CurrencyFormatted(payable);
+        }
+
+        function updateQuantity(index, quantity) {
+            Productitems[index].quantity = parseInt(quantity, 10);
+            updateTable();
+        }
+        function updateShotCount(index, shotCount) {
+            Productitems[index].ShotCount = parseInt(shotCount, 10);
+        }
+        function updateProductPrice(index, price) {
+            Productitems[index].price = parseInt(price, 1000);
+            updateTable();
+        }
+        function UpdateIsGift(index, checked) {
+            Productitems[index].Gift = checked;
+            updateTable();
+        }
+
+        function updateNotes(index, notes) {
+            Productitems[index].notes = notes;
+        }
+        function removeItem(index) {
+            Productitems.splice(index, 1);
+            updateTable();
+        }
+        function openModalSetFactor() {
+            const tbody = document.getElementById("itemTableBody");
+            tbody.innerHTML = "";
+            factorId = "";
+            Productitems = [];
+            document.getElementById("totalAmount").textContent = 0;
+            document.getElementById("discountAmount").textContent = 0;
+            document.getElementById("payableAmount").textContent = 0;
+            document.getElementById("paidAmount").textContent = 0;
+            document.getElementById("factor_discountPercent").value = "0";
+            document.getElementById("factor_PaidPrice").value = "0";
+            document.getElementById("factor_desc").value = "";
+            document.getElementById("factor_TypePhotography").value = "";
+            document.getElementById("factor_status").value = "";
+            document.getElementById("factor_Photographer").value = "";
+            document.getElementById("div_Pay_A_Discount").style.display = "block";
+            $("#factor_ForceDesign").prop("checked", false);
+            $("#factor_OnlyEditedDelivered").prop("checked", false);
+            $("#header_modalSetFactor").text("ثبت فاکتور ");
+            document.getElementById('factor_PaidPrice').style.display = 'block';
+            document.getElementById('factor_PaidType').style.display = 'block';
+            document.getElementById('factor_RefNumber').style.display = 'block'
+            document.getElementById('factor_Family').style.display = 'block'
+        }
+    </script>
+    <!--اسکریپ مربوط به مدال ثبت فاکتور -->
+    <script>
+        var factorId = "";
+        const closeModalBtn = document.getElementById('closeModalBtnFactorModals');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const modalSetFactor = document.getElementById('m_SetFactor');
+        function closeModal() {
+            $('#m_SetFactor').modal('hide');
+            factorId = "";
+        };
+        function closeModalRerquest() {
+            $('#m_SetFactor').modal('hide');
+            factorId = "";
+        };
+
+        function SetFactor() {
+            var factor_Family = $("#factor_Family").val();
+            var factor_Date = $("#factor_Date").val();
+            var factor_desc = $("#factor_desc").val();
+            var factor_discountPrice = $("#factor_discountPercent").val();
+            var factor_PaidPrice = $("#factor_PaidPrice").val();
+            factor_PaidPrice = factor_PaidPrice.replaceAll(",", "");
+            factor_discountPrice = factor_discountPrice.replaceAll(",", "");
+            var factor_PaidType = $("#factor_PaidType").val();
+            var factor_RefNumber = $("#factor_RefNumber").val();
+            var TypePhotography = document.getElementById("factor_TypePhotography").value;
+            var factor_status = document.getElementById("factor_status").value;
+            var PhotographerId = document.getElementById("factor_Photographer").value;
+            var ForceDesign = $("#factor_ForceDesign").prop("checked");
+            var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
+            btnAddEdit_ChangeDisable(btn_SetFactor, true);
+            $.ajax({
+                type: "POST",
+                url: "ManageInvoice.aspx/SetFactor",
+                data: JSON.stringify({
+                    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
+                    paidPrice: factor_PaidPrice, paidType: factor_PaidType, refNumber: factor_RefNumber, products: Productitems, factor_desc: factor_desc,
+                    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId, ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    btnAddEdit_ChangeDisable(btn_SetFactor, false);
+                    if (msg.d.Result == false) {//خطا داریم
+                        ShowError(msg.d.Message);
+                    }
+                    else {
+                        toastr.success(msg.d.Message, "موفق");
+                        closeModal();
+                        if (msg.d.AddFactor) {
+                            const userResponse = confirm("آیا مایل به ذخیره فایل فاکتور هستین؟");
+                            if (userResponse) {
+                                PrintFactor(msg.d.FactorId);
+                            }
+                        }
+                        loadTableDataFacotrs();
+                    }
+                },
+                error: function () {
+                    btnAddEdit_ChangeDisable(btn_SetFactor, false);
+                    alert("error");
+                }
+            });
+        };
+
+        // Close Modal
+        closeModalBtn.onclick = () => {
+            factorId = "";
+            modalSetFactor.style.display = 'none';
+            $('#m_SetFactor').modal('hide');
+        };
+
+        cancelBtn.onclick = () => {
+            factorId = "";
+            modalSetFactor.style.display = 'none';
+            $('#m_SetFactor').modal('hide');
+        };
+
+        // Close modal if the user clicks outside the modal
+        window.onclick = (event) => {
+            if (event.target === modalSetFactor) {
+                modalSetFactor.style.display = 'none';
+            }
+        };
+    </script>
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+    <script src="assets/plugins/custom/datatables/record-selection.js" type="text/javascript"></script>
+    <script src="assets/plugins/custom/datatables/datatables.min.js"></script>
+    <script src="assets/plugins/custom/datatables/responsive.min.js"></script>
+    <script src="assets/plugins/custom/datatables/datatables_responsive.js"></script>
+
+    <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="assets/plugins/custom/datatables/api/events.js"></script>
+    <script src="assets/plugins/custom/datatables/api/methods.js"></script>
+    <script src="assets/plugins/custom/datatables/base/column-rendering.js"></script>
+    <script src="assets/plugins/custom/datatables/base/column-width.js"></script>
+    <script src="assets/plugins/custom/datatables/base/data-ajax.js"></script>
+    <script src="assets/plugins/custom/datatables/base/data-json.js"></script>
+    <script src="assets/plugins/custom/datatables/base/data-local.js"></script>
+    <script src="assets/plugins/custom/datatables/base/record-selection.js"></script>
+    <script src="assets/plugins/custom/datatables/base/responsive-columns.js"></script>
+    <script src="assets/plugins/custom/datatables/base/translation.js"></script>
+
+    <script src="assets/plugins/custom/datatables/child/data-ajax.js"></script>
+    <script src="assets/plugins/custom/datatables/child/data-local.js"></script>
+
+    <script src="assets/plugins/custom/datatables/locked/both.js"></script>
+    <script src="assets/plugins/custom/datatables/locked/left.js"></script>
+    <script src="assets/plugins/custom/datatables/locked/right.js"></script>
+
+    <script src="assets/plugins/custom/datatables/scrolling/both.js"></script>
+    <script src="assets/plugins/custom/datatables/scrolling/horizontal.js"></script>
+    <script src="assets/plugins/custom/datatables/scrolling/vertical.js"></script>
+
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Page Vendors Javascript(used by this page)-->
+    <script src="assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+    <!--end::Page Vendors Javascript-->
+    <!--begin::Page Custom Javascript(used by this page)-->
+    <script src="assets/js/custom/widgets.js"></script>
+    <script src="assets/js/custom/apps/invoices/create.js"></script>
+    <script src="assets/js/custom/apps/chat/chat.js"></script>
+    <script src="assets/js/custom/modals/create-app.js"></script>
+    <script src="assets/js/custom/modals/upgrade-plan.js"></script>
+    <script src="assets/js/custom/apps/customers/list/export.js"></script>
+    <script src="assets/js/custom/apps/customers/list/list.js"></script>
+    <script src="assets/js/custom/apps/customers/add.js"></script>
+    <script src="assets/js/sweetalert2.js"></script>
+    <!-- فایل JS -->
+    <script src="https://cdn.jsdelivr.net/npm/timepicker/js/timepicker.min.js"></script>
+    <!--end::Page Custom Javascript-->
+    <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+    <!--end::Javascript-->
+    <!--end::Page Custom Javascript-->
+    <!--end::Javascript-->
+    <%-- اسکریپت های مربوط به خانواده --%>
+    <script>
+        let familyId = "";
+        const childrenTableBody = document.getElementById('childrenTableBody');
+        const addRowButtonChild = document.getElementById('addRowButtonChild');
+        // افزودن سطر جدید به جدول
+        addRowButtonChild.addEventListener('click', () => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>
+                    <input name="childId" type="text" class="form-control" hidden>
+                    <input name="childName" type="text" class="form-control" placeholder="نام فرزند" required>
+                </td>
+                <td>
+                    <label class="form-check form-switch form-check-custom form-check-solid">
+                        <span class="form-check-label fw-bold text-muted" style="margin: 5px;" for="kt_modal_add_customer_billing">دختر</span>
+                        <input class="form-check-input" name="childSex" style="margin: 5px;" type="checkbox" checked="checked" />
+                        <span class="form-check-label fw-bold text-muted" style="margin: 5px;" for="kt_modal_add_customer_billing">پسر</span>
+                    </label>
+                </td>
+                <td>
+                     <input name="childBirthDate" type="text" class="form-control datepicker newdatepicker" placeholder="تاریخ تولد">
+                </td>
+                <td>
+                    <select name="childHospital">
+                        <%Response.Write(PublicMethod.GetHospitals()); %>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-remove">حذف</button>
+                </td>
+            `;
+            childrenTableBody.appendChild(newRow);
+
+            $('.newdatepicker').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: true,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
+                }
+            });
+        });
+        // حذف سطر
+        childrenTableBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-remove')) {
+                const row = e.target.closest('tr');
+                row.remove();
+            }
+        });
+        function ResetFeildsFamily() {
+            familyId = "";
+            btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
+            $("#m_name").val("");
+            $("#m_lastname").val("");
+            $("#m_mobile").val("");
+            $("#f_name").val("");
+            $("#f_lastname").val("");
+            $("#f_mobile").val("");
+            $("#f_phone").val("");
+            $("#f_BirthDate").val("");
+            $("#m_BirthDate").val("");
+            $("#f_MarriageDate").val("");
+            $("#f_title").val("");
+            $("#f_address").val("");
+            $("#f_archive").prop("checked", true);
+            $("#f_desc").val("");
+            $("#f_InviteType").val("");
+            childrenTableBody.innerHTML = "";
+            document.getElementById("div_btnAddFamily").style.display = "block";
+        };
+        function ChangeTitleFamily() {
+            var m_lastname = $("#m_lastname").val();
+            var f_lastname = $("#f_lastname").val();
+            if (m_lastname != null && m_lastname.length > 0 && f_lastname != null && f_lastname.length > 0) {
+                $("#f_title").val(m_lastname + " / " + f_lastname);
+            }
+            else if (m_lastname != null && m_lastname.length > 0) {
+                $("#f_title").val(m_lastname);
+            }
+            else if (f_lastname != null && f_lastname.length > 0) {
+                $("#f_title").val(f_lastname);
+            }
+        };
+        function closeModalFamily() {
+            $('#modal_addedit_family').modal('hide');
+            ResetFeildsFamily();
+        };
+        $('#btncancelFamily').click(function () {
+            closeModalFamily();
+        });
+        $('#btn_closeFamily').click(function () {
+            closeModalFamily();
+        });
+        function GetInfoForEditFamily(id) {
+            familyId = id;
+            $.ajax({
+                type: "POST",
+                url: "Family.aspx/GetFamilyInfo",
+                data: JSON.stringify({
+                    id: familyId
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var res = msg.d;
+                    if (msg.d.Result == false) {//خطا داریم
+                        ShowError(msg.d.Message);
+                    }
+                    else {
+                        $("#m_name").val(res.FamilyInfo.F_MotherName);
+                        $("#m_lastname").val(res.FamilyInfo.F_MotherLName);
+                        $("#f_name").val(res.FamilyInfo.F_FatherName);
+                        $("#f_lastname").val(res.FamilyInfo.F_FatherLName);
+                        $("#m_mobile").val(res.FamilyInfo.F_MotherMobile);
+                        $("#f_mobile").val(res.FamilyInfo.F_FatherMobile);
+                        $("#f_phone").val(res.FamilyInfo.F_Phone);
+                        $("#f_title").val(res.FamilyInfo.F_Title);
+                        $("#f_address").val(res.FamilyInfo.F_HomeAddress);
+                        $("#f_archive").prop("checked", !res.FamilyInfo.F_Archive);
+                        $("#f_desc").val(res.FamilyInfo.F_Desc);
+                        $("#f_BirthDate").val(res.FamilyInfo.F_FatherBirthDate);
+                        $("#m_BirthDate").val(res.FamilyInfo.F_MotherBirthDate);
+                        $("#f_MarriageDate").val(res.FamilyInfo.F_MarriageDate);
+                        $("#f_InviteType").val(res.InviteTypeIdCoded);
+                        //بچه ها
+                        childrenTableBody.innerHTML = res.Childs;
+                        $('.datepickerBirthDate').persianDatepicker({
+                            format: 'YYYY/MM/DD',
+                            initialValue: true,
+                            autoClose: true,
+                            calendar: {
+                                persian: {
+                                    locale: 'fa'
+                                }
+                            }
+                        });
+                        //برای تاریخ ها باید بعد از ایجاد مقدار دهی شوند
+                        for (var i = 0; i < res.Familychilds.length; i++) {
+                            $("#fDate_" + res.Familychilds[i].FC_Id).val(res.Familychilds[i].FC_BirthDate);
+                        }
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        };
+        function HideBtnAdd_Family(id) {
+            document.getElementById("div_btnAddFamily").style.display = "none";
+            GetInfoForEditFamily(id);
+        }
+        $("#btn_submitdataFamily").click(function () {
+            var childNames = document.getElementsByName("childName");
+            var childIds = document.getElementsByName("childId");
+            var childSexs = document.getElementsByName("childSex");
+            var childHospitals = document.getElementsByName("childHospital");
+            var childBirthDates = document.getElementsByName("childBirthDate");
+            var childNamesArray = [];
+            var childIdsArray = [];
+            var childSexArray = [];
+            var childHospitalArray = [];
+            var childBirthDateArray = [];
+            for (var i = 0; i < childNames.length; i++) {
+                if (childNames[i].value.trim() == "") {
+                    alert("لطفا نام فرزند را مشخص کنید");
+                    return;
+                }
+                if (childBirthDates[i].value.trim() == "") {
+                    alert("لطفا تاریخ تولد فرزند را مشخص کنید");
+                    return;
+                }
+                childHospitalArray.push(childHospitals[i].value);
+                childNamesArray.push(childNames[i].value);
+                childSexArray.push(childSexs[i].checked);
+                childBirthDateArray.push(childBirthDates[i].value);
+                childIdsArray.push(childIds[i].value);
+            }
+            var m_name = $("#m_name").val();
+            var m_lastname = $("#m_lastname").val();
+            var f_name = $("#f_name").val();
+            var f_lastname = $("#f_lastname").val();
+            var m_mobile = $("#m_mobile").val();
+            var f_mobile = $("#f_mobile").val();
+            var phone = $("#f_phone").val();
+            var title = $("#f_title").val();
+            var address = $("#f_address").val();
+            var archive = $("#f_archive").prop("checked");
+            var desc = $("#f_desc").val();
+            var f_BirthDate = $("#f_BirthDate").val();
+            var m_BirthDate = $("#m_BirthDate").val();
+            var f_MarriageDate = $("#f_MarriageDate").val();
+            var f_InviteType = $("#f_InviteType").val();
+            btnAddEdit_ChangeDisable("btn_submitdataFamily", true);
+            var isEdit = familyId != null && familyId.length > 1;
+            $.ajax({
+                type: "POST",
+                url: "Family.aspx/AddEditFamily",
+                data: JSON.stringify({
+                    id: familyId, m_name: m_name, m_lastname: m_lastname,
+                    f_name: f_name, f_lastname: f_lastname, archive: archive,
+                    desc: desc, f_mobile: f_mobile, m_mobile: m_mobile,
+                    phone: phone, title: title, address: address,
+                    childNames: childNamesArray, childSexs: childSexArray, childBirthDates: childBirthDateArray, childIds: childIdsArray,
+                    Hospitals: childHospitalArray, FromHospital: false,
+                    MotherBirthDate: m_BirthDate, FatherBirthDate: f_BirthDate, MarriageDate: f_MarriageDate, InviteTypeId: f_InviteType
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
+                    if (msg.d.Result == false) {//خطا داریم
+                        ShowError(msg.d.Message);
+                    }
+                    else {
+                        toastr.success(msg.d.Message, "موفق");
+                        closeModalFamily();
+                        if (!location.href.includes("Dashboard") && !isEdit) {
+                            location.href = "Dashboard.aspx";
+                        }
+                        else {
+                            GetCustomer_ForCombo();
+                            loadTableDataFamily();
+                        }
+                    }
+                },
+                error: function () {
+                    btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
+                    alert("error-btn_submitdataFamily");
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        // تابع خروج از سیستم
+        function logout() {
+            window.location.href = "Logout.aspx";
+        };
+        function GetCustomer_ForCombo() {
+            $.ajax({
+                type: "POST",
+                url: "Family.aspx/GetCustomer_ForCombo",
+                data: JSON.stringify({
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var list = msg.d;
+                    var factor_Family_Select = $('#factor_Family');
+                    var turn_family_Select = $('#turn_family');
+                    factor_Family_Select.empty();
+                    turn_family_Select.empty();
+                    list.forEach(option => {
+                        const newOption = new Option(option.Title, option.Value, false, false);
+                        factor_Family_Select.append(newOption);
+                    });
+                    list.forEach(option => {
+                        const newOption = new Option(option.Title, option.Value, false, false);
+                        turn_family_Select.append(newOption);
+                    });
+
+                    factor_Family_Select.select2();
+                    turn_family_Select.select2();
+
+                    if (list.length > 0) {
+                        factor_Family_Select.val(list[0].Value).trigger('change');
+                        turn_family_Select.val(list[0].Value).trigger('change');
+                    }
+                },
+                error: function () {
+                    toastr.error("error-GetCustomer_ForCombo", "خطا");
+                }
+            });
+        };
+        function formatNumber(value) {
+            // حذف جداکننده‌ها
+            value = value.replace(/,/g, "");
+
+            // فقط اعداد معتبر را قبول می‌کند
+            if (isNaN(value) || value === "") return "";
+
+            // اضافه کردن جداکننده‌های سه‌رقمی
+            let formattedValue = "";
+            while (value.length > 3) {
+                formattedValue = "," + value.slice(-3) + formattedValue;
+                value = value.slice(0, -3);
+            }
+            formattedValue = value + formattedValue;
+
+            return formattedValue;
+        };
+        function CurrencyFormatted(amount) {
+            return new Intl.NumberFormat().format(amount)
+        };
+        function convertPersianToEnglishNumbers(persianNumber) {
+            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+            let englishNumber = persianNumber;
+
+            // جایگزینی اعداد فارسی با معادل انگلیسی
+            for (let i = 0; i < persianDigits.length; i++) {
+                const regex = new RegExp(persianDigits[i], 'g');
+                englishNumber = englishNumber.replace(regex, englishDigits[i]);
+            }
+
+            return englishNumber;
+        };
+        function getPersianMonthAndDay(date, spliter) {
+            date = convertPersianToEnglishNumbers(date);
+            const parts = date.split(spliter);
+            const persianMonths = [
+                'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
+                'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
+            ];
+            var month = parseInt(parts[1]);
+            var day = parseInt(parts[2]);
+            // ماه‌ها و روز‌ها به صورت شمسی نمایش داده می‌شوند
+            const persianMonth = persianMonths[month - 1]; // ماه‌ها از 1 شروع می‌شوند
+            const persianDay = day; // روز شمسی
+
+            return `${persianDay} ${persianMonth}`;
+        }
+        // تابع برای نمایش/پنهان کردن دکمه‌های فرزند
+        function toggleChildButtons(button) {
+            const childButtons = button.nextElementSibling; // گرفتن div مربوط به دکمه‌های فرزند
+            if (childButtons.style.display === "block") {
+                childButtons.style.display = "none"; // اگر باز بود، ببند
+            } else {
+                childButtons.style.display = "block"; // اگر بسته بود، باز کن
+            }
+        };
+        function btnAddEdit_ChangeDisable(btnId, disable) {
+            var btnnnn = document.getElementById(btnId);
+            btnnnn.disabled = disable;
+            btnnnn.style.opacity = disable ? 0.5 : 1;
+        };
+        function TextFormatPrice(e) {
+            var vall = convertPersianToEnglishNumbers($(e).val());
+            if (vall == '' || vall == null) {
+                vall = "0";
+            }
+            vall = vall.replaceAll(",", "");
+            $(e).val(CurrencyFormatted(parseInt(vall)));
+        };
+        function addFamily_FromHospital_Setting(GotoPage) {
+            if (GotoPage) {
+                document.getElementById("openModalBtn").style.display = "none";
+                document.getElementById("Btn_AddRequest").style.display = "none";
+                document.getElementById("kt_aside_toggle").click();
+                document.getElementById("kt_aside").style.display = "none";
+
+
+            }
+            else {
+                document.getElementById("openModalBtn").style.display = "block";
+                document.getElementById("Btn_AddRequest").style.display = "block";
+                document.getElementById("kt_aside").style.display = "block";
+            }
+        };
+        function ShowError(messageText) {
+            Swal.fire({
+                type: "error",
+                title: "خطا",
+                text: messageText,
+                confirmButtonText: "متوجه شدم"
+            });
+        }
+        $(document).ready(function () {
+            GetCustomer_ForCombo();
+            addFamily_FromHospital_Setting(false);
+            document.getElementById("kt_aside_toggle").click();
+            $('.selectedShamsiDate').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: true,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
+                }
+            });
+            $('.selectedDateWithoutInitialValue').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: false,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
+                }
+            });
+            //$('#f_BirthDate').persianDatepicker({
+            //    format: 'YYYY/MM/DD',
+            //    initialValue: true,
+            //    autoClose: true,
+            //    calendar: {
+            //        persian: {
+            //            locale: 'fa'
+            //        }
+            //    }
+            //});
+            //$('#m_BirthDate').persianDatepicker({
+            //    format: 'YYYY/MM/DD',
+            //    initialValue: true,
+            //    autoClose: true,
+            //    calendar: {
+            //        persian: {
+            //            locale: 'fa'
+            //        }
+            //    }
+            //});
+            //$('#turn_Date').persianDatepicker({
+            //    format: 'YYYY/MM/DD',
+            //    initialValue: true,
+            //    autoClose: true,
+            //    calendar: {
+            //        persian: {
+            //            locale: 'fa'
+            //        }
+            //    }
+            //});
+
+        });
+    </script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-left",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+    <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>
+</body>
+</html>

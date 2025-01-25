@@ -1,0 +1,262 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+
+namespace AdakStudio
+{
+    public partial class BasicData : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (LoginedUser.Id <= 0)
+            {
+                Response.Redirect("Logout.aspx");
+            }
+            if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
+            {
+                Response.Redirect("Dashboard.aspx");
+            }
+        }
+
+
+        [WebMethod]
+        public static dynamic DeleteData(string id)
+        {
+            try
+            {
+                id = id.ToDecodeNumber();
+                if (id.IsNullOrEmpty() || id == "0")
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "شناسه مشخص نیست"
+                    };
+                }
+                string mes = "";
+                int? hasError = 0;
+                AdakDB.Db.usp_Data_Delete(id.ToLong(), LoginedUser.Id, ref mes, ref hasError);
+
+                return new
+                {
+                    Result = hasError == 0,
+                    Message = mes
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Result = false,
+                };
+            }
+
+        }
+        [WebMethod]
+        public static dynamic EditData(string id)
+        {
+            try
+            {
+                id = id.ToDecodeNumber();
+                if (id.IsNullOrEmpty() || id == "0")
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "شناسه مشخص نیست"
+                    };
+                }
+                var dataInfo = AdakDB.Db.usp_Data_Select_By_Id(id.ToLong()).SingleOrDefault();
+                dataInfo = dataInfo ?? new Bank.usp_Data_Select_By_IdResult();
+                return new
+                {
+                    Result = true,
+                    title = dataInfo.D_Title,
+                    active = dataInfo.D_Active,
+                    state = (dataInfo.D_StateId ?? 0).ToCodeNumber(),
+                    defaultsms = dataInfo.D_DefaultSMSText,
+                    desc = dataInfo.D_Desc,
+                    typeId = dataInfo.D_TypeId.ToCodeNumber(),
+                    pari = dataInfo.D_Priority == null ? "" : dataInfo.D_Priority.Value.ToString(),
+                    systematic=dataInfo.D_Systematic
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Result = false,
+                    ShowDefaultSMS = false,
+                    ShowState = false
+                };
+            }
+
+        }
+        [WebMethod]
+        public static dynamic AddEditData(string id, string typeId, string title, bool active, string desc, string defulatsms, string state, string pari)
+        {
+            try
+            {
+                typeId = typeId.ToDecodeNumber();
+                state = state.ToDecodeNumber();
+                id = id.ToDecodeNumber();
+                if (typeId.IsNullOrEmpty() || typeId.ToInt() <= 0)
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "نوع داده را مشخص کنید"
+                    };
+                }
+                if (title.Trim().IsNullOrEmpty())
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "لطفا عنوان را مشخص کنید"
+                    };
+                }
+
+                var b = AdakDB.Db;
+                int? hasError = 0;
+                long? resultId = 0;
+                string mes = "";
+                if (id.IsNullOrEmpty() || id.ToInt() == 0)
+                {
+                    b.usp_Data_Add(title, active, state.ToLong(), typeId.ToInt(), desc, defulatsms, 1, ref mes, ref hasError, ref resultId, pari.ToInt());
+                }
+                else
+                {
+                    b.usp_Data_Edit(id.ToLong(), title, active, state.ToLong(), typeId.ToInt(), desc, defulatsms, 1, ref mes, ref hasError, pari.ToInt());
+                }
+
+                if (hasError == 1)
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = mes
+                    };
+                }
+                return new
+                {
+                    Result = true,
+                    Message = "ثبت اطلاعات با موفقیت انجام شد"
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new { Result = false, Message = "error" };
+            }
+
+        }
+        [WebMethod]
+        public static dynamic ChangeType(string typeId)
+        {
+            try
+            {
+                typeId = typeId.ToDecodeNumber();
+                var cs = ConfigurationManager.ConnectionStrings["J_AdakStudioConnectionString"]?.ConnectionString;
+                Bank.AdakBankDataContext b = new Bank.AdakBankDataContext(cs);
+                var dtype = b.usp_DataType_Select_By_Id(typeId.ToInt()).SingleOrDefault();
+                if (dtype == null)
+                {
+                    return new
+                    {
+                        Result = false,
+                        ShowDefaultSMS = false,
+                        ShowState = false
+                    };
+                }
+                return new
+                {
+                    Result = true,
+                    ShowDefaultSMS = (dtype.DT_ShowDefaultSMS ?? false),
+                    ShowState = (dtype.DT_ShowState ?? false)
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    Result = false,
+                    ShowDefaultSMS = false,
+                    ShowState = false
+                };
+            }
+
+        }
+        [WebMethod]
+        public static OperationResult<ForGrid.DataTableModel> ForGrid(int page, int perPage, string searchText, string typeId)
+        {
+            perPage = perPage == 0 ? 10 : perPage;
+            searchText = searchText.Trim();
+            int? countt = 0;
+            typeId = typeId.ToDecodeNumber();
+            var data = AdakDB.Db.usp_Data_Select_For_Grid(searchText, typeId.ToInt(), ref countt, page, perPage).ToList();
+            data = data ?? new List<Bank.usp_Data_Select_For_GridResult>();
+            List<BasicDataForGrid> list = new List<BasicDataForGrid>();
+            string TextAfterPrice = Settings.TextAfterPrice;
+            data.ForEach(x => list.Add(new BasicDataForGrid()
+            {
+                Title = x.D_Title,
+                Desc = x.D_Desc.IsNullOrEmpty() ? "" : x.D_Desc,
+                TypeTitle = x.TypeTitle,
+                Priority = x.D_Priority == null ? "---" : x.D_Priority.ToString(),
+                Status = x.D_Active ? "<div class='badge badge-light-success'>فعال</div>" : "<div class='badge badge-light-danger'>غیرفعال</div>",
+                Actions = @"
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_customer' onclick='EditBasicData(""" + x.D_Id.ToCodeNumber() + @""")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData(""" + x.D_Id.ToCodeNumber() + @""")' title='حذف'>🗑</button>
+                </div>
+                "
+            })); ; ;
+
+
+            if (list == null)
+            {
+                return new OperationResult<ForGrid.DataTableModel>
+                {
+                    Success = false,
+                    Message = "اطلاعات برای نمایش وجود ندارد",
+                    Data = new ForGrid.DataTableModel() { }
+                };
+            }
+            return new OperationResult<ForGrid.DataTableModel>
+            {
+                Success = true,
+                Message = "",
+                Data = new ForGrid.DataTableModel()
+                {
+                    recordsTotal = countt ?? 0,
+                    recordsFiltered = countt ?? 0,
+                    data = list
+                }
+            };
+        }
+
+    }
+    public class BasicDataForGrid
+    {
+        public string Title { get; set; }
+        public string Desc { get; set; }
+        public string TypeTitle { get; set; }
+        public string Status { get; set; }
+        public string Priority { get; set; }
+        public string Actions { get; set; }
+
+    }
+
+}
