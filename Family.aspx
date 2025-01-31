@@ -98,11 +98,16 @@
                             <div class="col-md-2">
                                 <input type="text" id="filterInput" class="form-control" placeholder="جستجو...">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input class="form-control datepicker" placeholder="از تاریخ" id="filter_From_Date">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input class="form-control datepicker" placeholder="تا تاریخ" id="filter_To_Date">
+                            </div>
+                            <div class="col-md-3">
+                                <select id="filter_InviteType">
+                                    <%Response.Write(PublicMethod.GetInviteType()); %>
+                                </select>
                             </div>
                             <div class="col-md-2">
                                 <button id="filterBtn" class="btn btn-primary w-100">اعمال فیلتر</button>
@@ -141,7 +146,6 @@
                                     <th class="min-w-100px">ثبت کننده</th>
                                     <th class="min-w-100px">زمان ثبت</th>
                                     <th class="min-w-70px">وضعیت</th>
-                                    <th class="min-w-150px">توضیحات</th>
                                     <th class="min-w-110px">عملیات</th>
                                 </tr>
                             </thead>
@@ -254,11 +258,13 @@
             var Only_Archive = $("#filter_Archive").prop("checked");
             var Causer = $("#filter_Causer").val();
             var Hospital = $("#filter_Hospital").val();
+            var InviteType = $("#filter_InviteType").val();
+            
 
             $.ajax({
                 type: "POST",
                 url: "Family.aspx/ForGrid",
-                data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: filter, fromDate: filter_From_Date, todate: filter_To_Date, Only_Archive: Only_Archive, CauserId: Causer, HospitalId: Hospital }),
+                data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: filter, fromDate: filter_From_Date, todate: filter_To_Date, Only_Archive: Only_Archive, CauserId: Causer, HospitalId: Hospital, InviteType }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -280,7 +286,6 @@
                             <td>${row.CauserName}</td>
                             <td>${row.Date_A_Time}</td>
                             <td>${row.Status}</td>
-                            <td>${row.Desc}</td>
                             <td>${row.Actions}</td>
                         </tr>
                     `);

@@ -30,6 +30,9 @@ namespace Bank
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertTbl_AuthKey(Tbl_AuthKey instance);
+    partial void UpdateTbl_AuthKey(Tbl_AuthKey instance);
+    partial void DeleteTbl_AuthKey(Tbl_AuthKey instance);
     #endregion
 		
 		public AdakBankDataContext() : 
@@ -60,6 +63,14 @@ namespace Bank
 				base(connection, mappingSource)
 		{
 			OnCreated();
+		}
+		
+		public System.Data.Linq.Table<Tbl_AuthKey> Tbl_AuthKeys
+		{
+			get
+			{
+				return this.GetTable<Tbl_AuthKey>();
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_RequestLog_Select_By_RequestId")]
@@ -656,14 +667,6 @@ namespace Bank
 			return ((ISingleResult<usp_Factor_Select_For_GridResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Family_Select_For_Grid_New")]
-		public ISingleResult<usp_Family_Select_For_Grid_NewResult> usp_Family_Select_For_Grid_New([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="VarChar(10)")] string fromDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="VarChar(10)")] string toDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OnlyArchive", DbType="Bit")] System.Nullable<bool> onlyArchive, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HospitalId", DbType="BigInt")] System.Nullable<long> hospitalId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, page, perPage, outCount, causerId, fromDate, toDate, onlyArchive, hospitalId);
-			outCount = ((System.Nullable<int>)(result.GetParameterValue(3)));
-			return ((ISingleResult<usp_Family_Select_For_Grid_NewResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_FactorDetail_Add")]
 		public int usp_FactorDetail_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FactorId", DbType="BigInt")] System.Nullable<long> factorId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProductId", DbType="BigInt")] System.Nullable<long> productId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Count", DbType="Int")] System.Nullable<int> count, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fee", DbType="Decimal(18,0)")] System.Nullable<decimal> fee, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SumPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> sumPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(4000)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="BuyPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> buyPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ShotCount", DbType="Int")] System.Nullable<int> shotCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Gift", DbType="Bit")] System.Nullable<bool> gift)
 		{
@@ -1151,6 +1154,172 @@ namespace Bank
 			hasError = ((System.Nullable<int>)(result.GetParameterValue(10)));
 			rersultId = ((System.Nullable<long>)(result.GetParameterValue(11)));
 			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Family_Select_For_Grid_New")]
+		public ISingleResult<usp_Family_Select_For_Grid_NewResult> usp_Family_Select_For_Grid_New([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="VarChar(10)")] string fromDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="VarChar(10)")] string toDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OnlyArchive", DbType="Bit")] System.Nullable<bool> onlyArchive, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HospitalId", DbType="BigInt")] System.Nullable<long> hospitalId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="InviteType", DbType="BigInt")] System.Nullable<long> inviteType)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, page, perPage, outCount, causerId, fromDate, toDate, onlyArchive, hospitalId, inviteType);
+			outCount = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			return ((ISingleResult<usp_Family_Select_For_Grid_NewResult>)(result.ReturnValue));
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
+	public partial class Tbl_AuthKey : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private decimal _AK_ID;
+		
+		private string _AK_Key;
+		
+		private System.DateTime _AK_CreationTime;
+		
+		private bool _AK_Authenticated;
+		
+		private System.Nullable<decimal> _AK_VisitID;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAK_IDChanging(decimal value);
+    partial void OnAK_IDChanged();
+    partial void OnAK_KeyChanging(string value);
+    partial void OnAK_KeyChanged();
+    partial void OnAK_CreationTimeChanging(System.DateTime value);
+    partial void OnAK_CreationTimeChanged();
+    partial void OnAK_AuthenticatedChanging(bool value);
+    partial void OnAK_AuthenticatedChanged();
+    partial void OnAK_VisitIDChanging(System.Nullable<decimal> value);
+    partial void OnAK_VisitIDChanged();
+    #endregion
+		
+		public Tbl_AuthKey()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AK_ID", AutoSync=AutoSync.OnInsert, DbType="Decimal(18,0) NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public decimal AK_ID
+		{
+			get
+			{
+				return this._AK_ID;
+			}
+			set
+			{
+				if ((this._AK_ID != value))
+				{
+					this.OnAK_IDChanging(value);
+					this.SendPropertyChanging();
+					this._AK_ID = value;
+					this.SendPropertyChanged("AK_ID");
+					this.OnAK_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AK_Key", DbType="NVarChar(59) NOT NULL", CanBeNull=false)]
+		public string AK_Key
+		{
+			get
+			{
+				return this._AK_Key;
+			}
+			set
+			{
+				if ((this._AK_Key != value))
+				{
+					this.OnAK_KeyChanging(value);
+					this.SendPropertyChanging();
+					this._AK_Key = value;
+					this.SendPropertyChanged("AK_Key");
+					this.OnAK_KeyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AK_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime AK_CreationTime
+		{
+			get
+			{
+				return this._AK_CreationTime;
+			}
+			set
+			{
+				if ((this._AK_CreationTime != value))
+				{
+					this.OnAK_CreationTimeChanging(value);
+					this.SendPropertyChanging();
+					this._AK_CreationTime = value;
+					this.SendPropertyChanged("AK_CreationTime");
+					this.OnAK_CreationTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AK_Authenticated", DbType="Bit NOT NULL")]
+		public bool AK_Authenticated
+		{
+			get
+			{
+				return this._AK_Authenticated;
+			}
+			set
+			{
+				if ((this._AK_Authenticated != value))
+				{
+					this.OnAK_AuthenticatedChanging(value);
+					this.SendPropertyChanging();
+					this._AK_Authenticated = value;
+					this.SendPropertyChanged("AK_Authenticated");
+					this.OnAK_AuthenticatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AK_VisitID", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> AK_VisitID
+		{
+			get
+			{
+				return this._AK_VisitID;
+			}
+			set
+			{
+				if ((this._AK_VisitID != value))
+				{
+					this.OnAK_VisitIDChanging(value);
+					this.SendPropertyChanging();
+					this._AK_VisitID = value;
+					this.SendPropertyChanged("AK_VisitID");
+					this.OnAK_VisitIDChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -5949,230 +6118,6 @@ namespace Bank
 				if ((this._F_FamilyId != value))
 				{
 					this._F_FamilyId = value;
-				}
-			}
-		}
-	}
-	
-	public partial class usp_Family_Select_For_Grid_NewResult
-	{
-		
-		private long _F_Id;
-		
-		private string _FatherFullName;
-		
-		private string _MotherFullName;
-		
-		private string _F_MotherMobile;
-		
-		private string _F_FatherMobile;
-		
-		private string _F_Desc;
-		
-		private bool _F_Archive;
-		
-		private string _F_Phone;
-		
-		private long _F_Causer;
-		
-		private string _CauserName;
-		
-		private System.DateTime _F_CreationTime;
-		
-		private string _F_Title;
-		
-		public usp_Family_Select_For_Grid_NewResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Id", DbType="BigInt NOT NULL")]
-		public long F_Id
-		{
-			get
-			{
-				return this._F_Id;
-			}
-			set
-			{
-				if ((this._F_Id != value))
-				{
-					this._F_Id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FatherFullName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
-		public string FatherFullName
-		{
-			get
-			{
-				return this._FatherFullName;
-			}
-			set
-			{
-				if ((this._FatherFullName != value))
-				{
-					this._FatherFullName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MotherFullName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
-		public string MotherFullName
-		{
-			get
-			{
-				return this._MotherFullName;
-			}
-			set
-			{
-				if ((this._MotherFullName != value))
-				{
-					this._MotherFullName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_MotherMobile", DbType="VarChar(14)")]
-		public string F_MotherMobile
-		{
-			get
-			{
-				return this._F_MotherMobile;
-			}
-			set
-			{
-				if ((this._F_MotherMobile != value))
-				{
-					this._F_MotherMobile = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_FatherMobile", DbType="VarChar(14)")]
-		public string F_FatherMobile
-		{
-			get
-			{
-				return this._F_FatherMobile;
-			}
-			set
-			{
-				if ((this._F_FatherMobile != value))
-				{
-					this._F_FatherMobile = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Desc", DbType="NVarChar(4000)")]
-		public string F_Desc
-		{
-			get
-			{
-				return this._F_Desc;
-			}
-			set
-			{
-				if ((this._F_Desc != value))
-				{
-					this._F_Desc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Archive", DbType="Bit NOT NULL")]
-		public bool F_Archive
-		{
-			get
-			{
-				return this._F_Archive;
-			}
-			set
-			{
-				if ((this._F_Archive != value))
-				{
-					this._F_Archive = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Phone", DbType="VarChar(14)")]
-		public string F_Phone
-		{
-			get
-			{
-				return this._F_Phone;
-			}
-			set
-			{
-				if ((this._F_Phone != value))
-				{
-					this._F_Phone = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Causer", DbType="BigInt NOT NULL")]
-		public long F_Causer
-		{
-			get
-			{
-				return this._F_Causer;
-			}
-			set
-			{
-				if ((this._F_Causer != value))
-				{
-					this._F_Causer = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauserName", DbType="NVarChar(221)")]
-		public string CauserName
-		{
-			get
-			{
-				return this._CauserName;
-			}
-			set
-			{
-				if ((this._CauserName != value))
-				{
-					this._CauserName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_CreationTime", DbType="DateTime NOT NULL")]
-		public System.DateTime F_CreationTime
-		{
-			get
-			{
-				return this._F_CreationTime;
-			}
-			set
-			{
-				if ((this._F_CreationTime != value))
-				{
-					this._F_CreationTime = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string F_Title
-		{
-			get
-			{
-				return this._F_Title;
-			}
-			set
-			{
-				if ((this._F_Title != value))
-				{
-					this._F_Title = value;
 				}
 			}
 		}
@@ -11163,6 +11108,284 @@ namespace Bank
 				if ((this._ModPrice != value))
 				{
 					this._ModPrice = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Family_Select_For_Grid_NewResult
+	{
+		
+		private long _F_Id;
+		
+		private string _FatherFullName;
+		
+		private string _MotherFullName;
+		
+		private string _F_MotherMobile;
+		
+		private string _F_FatherMobile;
+		
+		private string _F_Desc;
+		
+		private bool _F_Archive;
+		
+		private string _F_Phone;
+		
+		private long _F_Causer;
+		
+		private string _CauserName;
+		
+		private System.DateTime _F_CreationTime;
+		
+		private string _F_Title;
+		
+		private string _F_MarriageDate;
+		
+		private string _F_MotherBirthDate;
+		
+		private string _F_FatherBirthDate;
+		
+		public usp_Family_Select_For_Grid_NewResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Id", DbType="BigInt NOT NULL")]
+		public long F_Id
+		{
+			get
+			{
+				return this._F_Id;
+			}
+			set
+			{
+				if ((this._F_Id != value))
+				{
+					this._F_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FatherFullName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
+		public string FatherFullName
+		{
+			get
+			{
+				return this._FatherFullName;
+			}
+			set
+			{
+				if ((this._FatherFullName != value))
+				{
+					this._FatherFullName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MotherFullName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
+		public string MotherFullName
+		{
+			get
+			{
+				return this._MotherFullName;
+			}
+			set
+			{
+				if ((this._MotherFullName != value))
+				{
+					this._MotherFullName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_MotherMobile", DbType="VarChar(14)")]
+		public string F_MotherMobile
+		{
+			get
+			{
+				return this._F_MotherMobile;
+			}
+			set
+			{
+				if ((this._F_MotherMobile != value))
+				{
+					this._F_MotherMobile = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_FatherMobile", DbType="VarChar(14)")]
+		public string F_FatherMobile
+		{
+			get
+			{
+				return this._F_FatherMobile;
+			}
+			set
+			{
+				if ((this._F_FatherMobile != value))
+				{
+					this._F_FatherMobile = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Desc", DbType="NVarChar(4000)")]
+		public string F_Desc
+		{
+			get
+			{
+				return this._F_Desc;
+			}
+			set
+			{
+				if ((this._F_Desc != value))
+				{
+					this._F_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Archive", DbType="Bit NOT NULL")]
+		public bool F_Archive
+		{
+			get
+			{
+				return this._F_Archive;
+			}
+			set
+			{
+				if ((this._F_Archive != value))
+				{
+					this._F_Archive = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Phone", DbType="VarChar(14)")]
+		public string F_Phone
+		{
+			get
+			{
+				return this._F_Phone;
+			}
+			set
+			{
+				if ((this._F_Phone != value))
+				{
+					this._F_Phone = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Causer", DbType="BigInt NOT NULL")]
+		public long F_Causer
+		{
+			get
+			{
+				return this._F_Causer;
+			}
+			set
+			{
+				if ((this._F_Causer != value))
+				{
+					this._F_Causer = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauserName", DbType="NVarChar(221)")]
+		public string CauserName
+		{
+			get
+			{
+				return this._CauserName;
+			}
+			set
+			{
+				if ((this._CauserName != value))
+				{
+					this._CauserName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime F_CreationTime
+		{
+			get
+			{
+				return this._F_CreationTime;
+			}
+			set
+			{
+				if ((this._F_CreationTime != value))
+				{
+					this._F_CreationTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string F_Title
+		{
+			get
+			{
+				return this._F_Title;
+			}
+			set
+			{
+				if ((this._F_Title != value))
+				{
+					this._F_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_MarriageDate", DbType="VarChar(10)")]
+		public string F_MarriageDate
+		{
+			get
+			{
+				return this._F_MarriageDate;
+			}
+			set
+			{
+				if ((this._F_MarriageDate != value))
+				{
+					this._F_MarriageDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_MotherBirthDate", DbType="VarChar(10)")]
+		public string F_MotherBirthDate
+		{
+			get
+			{
+				return this._F_MotherBirthDate;
+			}
+			set
+			{
+				if ((this._F_MotherBirthDate != value))
+				{
+					this._F_MotherBirthDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_FatherBirthDate", DbType="VarChar(10)")]
+		public string F_FatherBirthDate
+		{
+			get
+			{
+				return this._F_FatherBirthDate;
+			}
+			set
+			{
+				if ((this._F_FatherBirthDate != value))
+				{
+					this._F_FatherBirthDate = value;
 				}
 			}
 		}

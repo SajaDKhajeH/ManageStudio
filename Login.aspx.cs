@@ -18,6 +18,19 @@ namespace AdakStudio
         {
 
         }
+        [WebMethod]
+        public static dynamic RegenerateCaptchaImage()
+        {
+            var ak = Captcha.CreateAuthKey();
+            return new { ak_ID = ak.ID.ToCodeNumber(), src = ak.CaptchaImage };
+        }
+        public string CaptchaImage()
+        {
+            string result = "";
+            var ak = Captcha.CreateAuthKey();
+            result += @"<img id=""captcha59"" class=""border mb-1"" ak_ID=""" + ak.ID.ToCodeNumber() + @""" src=""" + ak.CaptchaImage + @""" />";
+            return result;
+        }
     }
     
 }

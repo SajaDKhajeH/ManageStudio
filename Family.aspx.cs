@@ -22,16 +22,17 @@ namespace AdakStudio
             }
         }
         [WebMethod]
-        public static OperationResult<ForGrid.DataTableModel> ForGrid(int page, int perPage, string searchText, string fromDate, string todate, bool Only_Archive, string CauserId, string HospitalId)
+        public static OperationResult<ForGrid.DataTableModel> ForGrid(int page, int perPage, string searchText, string fromDate, string todate, bool Only_Archive, string CauserId, string HospitalId, string InviteType)
         {
             perPage = perPage == 0 ? 10 : perPage;
             searchText = searchText.Trim();
             int? countt = 0;
             fromDate = fromDate.ToEnglishNumber();
             todate = todate.ToEnglishNumber();
+            InviteType = InviteType.ToDecodeNumber();
             CauserId = CauserId.ToDecodeNumber();
             HospitalId = HospitalId.ToDecodeNumber();
-            var data = AdakDB.Db.usp_Family_Select_For_Grid_New(searchText, page, perPage, ref countt, CauserId.ToLong(), fromDate, todate, Only_Archive, HospitalId.ToLong()).ToList();
+            var data = AdakDB.Db.usp_Family_Select_For_Grid_New(searchText, page, perPage, ref countt, CauserId.ToLong(), fromDate, todate, Only_Archive, HospitalId.ToLong(), InviteType.ToLong()).ToList();
             data = data ?? new List<Bank.usp_Family_Select_For_Grid_NewResult>();
             List<FamilyForGrid> list = new List<FamilyForGrid>();
             data.ForEach(x => list.Add(new FamilyForGrid()

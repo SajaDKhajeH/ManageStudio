@@ -1,5 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="KidsStudio" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=sql.nscom.ir,1429;Initial Catalog=KidsStudio;User ID=KidsStudio;Encrypt=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="KidsStudioConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Tbl_AuthKey" Member="Tbl_AuthKeys">
+    <Type Name="Tbl_AuthKey">
+      <Column Name="AK_ID" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AK_Key" Type="System.String" DbType="NVarChar(59) NOT NULL" CanBeNull="false" />
+      <Column Name="AK_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AK_Authenticated" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AK_VisitID" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.usp_RequestLog_Select_By_RequestId" Method="usp_RequestLog_Select_By_RequestId">
     <Parameter Name="RequestId" Parameter="requestId" Type="System.Int64" DbType="BigInt" />
     <ElementType Name="usp_RequestLog_Select_By_RequestIdResult">
@@ -789,31 +798,6 @@
       <Column Name="TypePhotographyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
       <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
       <Column Name="F_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_Family_Select_For_Grid_New" Method="usp_Family_Select_For_Grid_New">
-    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
-    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
-    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="OnlyArchive" Parameter="onlyArchive" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="HospitalId" Parameter="hospitalId" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_Family_Select_For_Grid_NewResult">
-      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
-      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
-      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
-      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
-      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
-      <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
-      <Column Name="F_Causer" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
-      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.usp_FactorDetail_Add" Method="usp_FactorDetail_Add">
@@ -1626,5 +1610,34 @@
     <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Select_For_Grid_New" Method="usp_Family_Select_For_Grid_New">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="OnlyArchive" Parameter="onlyArchive" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="HospitalId" Parameter="hospitalId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="InviteType" Parameter="inviteType" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Family_Select_For_Grid_NewResult">
+      <Column Name="F_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="MotherFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="F_Phone" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Causer" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="F_MarriageDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="F_MotherBirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="F_FatherBirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+    </ElementType>
   </Function>
 </Database>

@@ -322,8 +322,8 @@
                             <div class="char-count" id="charCount">0 کاراکتر</div>
                             <div class="keywords">
                                 <div class="keyword" onclick="addKeyword('عنوان خانوادگی')">عنوان خانوادگی</div>
-                                <div class="keyword" onclick="addKeyword('نام کامل پدر')">نام کامل پدر</div>
-                                <div class="keyword" onclick="addKeyword('نام کامل مادر')">نام کامل مادر</div>
+                                <div class="keyword" onclick="addKeyword('نام کامل آقا')">نام کامل آقا</div>
+                                <div class="keyword" onclick="addKeyword('نام کامل خانم')">نام کامل خانم</div>
                             </div>
                             <br />
                             <div class="row">
@@ -331,11 +331,11 @@
                                     <label>ارسال به: </label>
                                     <label>
                                         <input type="checkbox" id="sendToFather" />
-                                        ارسال به پدر
+                                        ارسال به آقا
                                     </label>
                                     <label>
                                         <input type="checkbox" id="sendToMother" />
-                                        ارسال به مادر
+                                        ارسال به خانم
                                     </label>
                                 </div>
                                 <div class="col-md-5">
