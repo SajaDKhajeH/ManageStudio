@@ -8,7 +8,7 @@ using System.Web;
 
 public class SetSMS
 {
-    public static bool Wellcome_To_Family(string FamilyTitle,string TurnDate,string TurnTime, string Mobile, long FamilyId, Bank.AdakBankDataContext db)
+    public static bool Wellcome_To_Family(string FamilyTitle, string TurnDate, string TurnTime, string Mobile, long FamilyId, Bank.AdakBankDataContext db)
     {
         try
         {
@@ -159,5 +159,35 @@ public class SetSMS
             db.usp_ErrorAdd("WaitForAcceptCustomer", ex.Message);
             return false;
         }
+    }
+    public static bool Send(string Text, string Phone, ref string Mes)
+    {
+        string SenderKavenegar = AdakDB.Db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_SenderKavenegar).SingleOrDefault().Se_Value;
+        string ApiKeyKavenegar = AdakDB.Db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_ApiKeyKavenegar).SingleOrDefault().Se_Value;
+        if (SenderKavenegar.IsNullOrEmpty() || ApiKeyKavenegar.IsNullOrEmpty())
+        {
+            Mes = "تنظیمات پنل ارسال پیامک مشخص نشده است";
+            AdakDB.Db.usp_ErrorAdd("SetSMS.Send", "تنظیمات پنل ارسال پیامک مشخص نشده است");
+            return false;
+        }
+        bool res = false;
+        try
+        {
+            #region KaveNegar
+            Kavenegar.KavenegarApi api = new Kavenegar.KavenegarApi(ApiKeyKavenegar);
+            var status = api.Send(SenderKavenegar, Phone, Text);
+            if (status.Messageid > 0)
+            {
+                return true;
+            }
+            #endregion
+        }
+        catch (Exception ex)
+        {
+            Mes = "خطایی در ارسال پیامک پیش آمده است";
+            AdakDB.Db.usp_ErrorAdd("SetSMS.Send", ex.Message);
+            return false;
+        }
+        return res;
     }
 }

@@ -1163,6 +1163,13 @@ namespace Bank
 			outCount = ((System.Nullable<int>)(result.GetParameterValue(3)));
 			return ((ISingleResult<usp_Family_Select_For_Grid_NewResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Family_Check_By_Mobile")]
+		public ISingleResult<usp_Family_Check_By_MobileResult> usp_Family_Check_By_Mobile([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Mobile", DbType="VarChar(15)")] string mobile)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), mobile);
+			return ((ISingleResult<usp_Family_Check_By_MobileResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
@@ -11386,6 +11393,104 @@ namespace Bank
 				if ((this._F_FatherBirthDate != value))
 				{
 					this._F_FatherBirthDate = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Family_Check_By_MobileResult
+	{
+		
+		private long _F_ID;
+		
+		private string _F_MotherMobile;
+		
+		private string _F_FatherMobile;
+		
+		private string _F_Title;
+		
+		private bool _F_Archive;
+		
+		public usp_Family_Check_By_MobileResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_ID", DbType="BigInt NOT NULL")]
+		public long F_ID
+		{
+			get
+			{
+				return this._F_ID;
+			}
+			set
+			{
+				if ((this._F_ID != value))
+				{
+					this._F_ID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_MotherMobile", DbType="VarChar(14)")]
+		public string F_MotherMobile
+		{
+			get
+			{
+				return this._F_MotherMobile;
+			}
+			set
+			{
+				if ((this._F_MotherMobile != value))
+				{
+					this._F_MotherMobile = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_FatherMobile", DbType="VarChar(14)")]
+		public string F_FatherMobile
+		{
+			get
+			{
+				return this._F_FatherMobile;
+			}
+			set
+			{
+				if ((this._F_FatherMobile != value))
+				{
+					this._F_FatherMobile = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string F_Title
+		{
+			get
+			{
+				return this._F_Title;
+			}
+			set
+			{
+				if ((this._F_Title != value))
+				{
+					this._F_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Archive", DbType="Bit NOT NULL")]
+		public bool F_Archive
+		{
+			get
+			{
+				return this._F_Archive;
+			}
+			set
+			{
+				if ((this._F_Archive != value))
+				{
+					this._F_Archive = value;
 				}
 			}
 		}

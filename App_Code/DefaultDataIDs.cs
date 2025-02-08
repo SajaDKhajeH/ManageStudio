@@ -17,6 +17,7 @@ public class DefaultDataIDs
     public static long SMSTypeId_Wellcome_ToFamily_FromHospital = 35;
     public static long SMSTypeId_AfterSetFactor = 17;
     public static long Role_Designer = 6;
+    public static long Role_Family =-1;
     public static long Role_DesignSupervisor = 3;
     public static long Role_Photographer = 7;
     public static long Role_Admin = 4;

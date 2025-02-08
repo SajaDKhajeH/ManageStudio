@@ -1640,4 +1640,14 @@
       <Column Name="F_FatherBirthDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.usp_Family_Check_By_Mobile" Method="usp_Family_Check_By_Mobile">
+    <Parameter Name="Mobile" Parameter="mobile" Type="System.String" DbType="VarChar(15)" />
+    <ElementType Name="usp_Family_Check_By_MobileResult">
+      <Column Name="F_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_MotherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_FatherMobile" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="F_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

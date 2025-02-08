@@ -93,7 +93,7 @@
                             <input class="form-control form-control-lg form-control-solid" type="password" id="password" autocomplete="off" />
                         </div>
                         <div class="text-center">
-                            <button id="btn_Login" class="btn btn-lg btn-primary w-100 mb-5">ورود</button>
+                            <button id="btn_Login" onclick="LoginToPortal()" class="btn btn-lg btn-primary w-100 mb-5">ورود</button>
                         </div>
                     </div>
 
@@ -118,8 +118,9 @@
                         <div class="fv-row mb-10" id="otp-section" style="display: none;">
                             <label class="form-label fs-6 fw-bolder text-dark">کد تأیید</label>
                             <input class="form-control form-control-lg form-control-solid" type="text" id="otp" autocomplete="off" />
+                            <br />
                             <div class="text-center">
-                                <button id="btn_VerifyOTP" class="btn btn-lg btn-primary w-100 mb-5">ورود</button>
+                                <button id="btn_VerifyOTP" onclick="LoginToPortal()" class="btn btn-lg btn-primary w-100 mb-5">ورود</button>
                             </div>
                         </div>
                     </div>
@@ -227,8 +228,6 @@
         var captchaId = $("#captcha59").attr("ak_ID");
         let capcha = $("#capchaCode").val();
 
-        let btn = $(this).find("button[type='submit']");
-        btnLoader(btn, true, true);
         $.ajax({
             type: "POST",
             url: "Login.aspx/MobileValidation",
@@ -236,20 +235,18 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
-                btnLoader(btn, false, true);
                 var res = msg.d;
-
                 if (res.Success) {
                     document.getElementById('otp-section').style.display = 'block';
+                    toastr.success("کد تایید ارسال شد");
                 }
                 else {
-                    toastr.error(res.ErrorMessage)
+                    toastr.error(res.ErrorMessage);
 
                 }
             },
             error: function (xhr) {
                 ShowError(xhr.responseText);
-                btnLoader(btn, false, true);
 
             }
         });
@@ -262,13 +259,15 @@
             document.getElementById('customer-login').style.display = customerSelect ? 'block' : 'none';
         });
     });
-    $("#btn_Login").click(function () {
+    function LoginToPortal() {
         var username = $("#username").val();
         var password = $("#password").val();
+        var phoneNumber = $("#phone").val();
+        var staffSelect = $("#ra_staff").prop("checked");
         $.ajax({
             type: "POST",
             url: "Api/Login/Login",
-            data: "{UserName:'" + username + "',Password:'" + password + "'}",
+            data: "{UserName:'" + username + "',Password:'" + password + "',Mobile:'" + phoneNumber + "',LoginPersonnel:" + staffSelect+"}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (res) {
@@ -282,7 +281,7 @@
                 alert("error");
             }
         });
-    });
+    };
     $(document).ready(function () {
         $("#ra_staff").prop("checked", true);
         $("#username").val("");
