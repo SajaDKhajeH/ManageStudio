@@ -35,14 +35,6 @@
       <Column Name="DT_ShowDefaultSMS" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.usp_DataType_Select_By_Id" Method="usp_DataType_Select_By_Id">
-    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
-    <ElementType Name="usp_DataType_Select_By_IdResult">
-      <Column Name="DT_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-      <Column Name="DT_ShowState" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="DT_ShowDefaultSMS" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.usp_ErrorAdd" Method="usp_ErrorAdd">
     <Parameter Name="FormName" Parameter="formName" Type="System.String" DbType="NVarChar(1001)" />
     <Parameter Name="Text" Parameter="text" Type="System.String" DbType="NVarChar(4000)" />
@@ -960,34 +952,6 @@
       <Column Name="D_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.usp_Data_Add" Method="usp_Data_Add">
-    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="DefaultSMSText" Parameter="defaultSMSText" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
-    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
-    <Parameter Name="Pariority" Parameter="pariority" Type="System.Int32" DbType="Int" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.usp_Data_Edit" Method="usp_Data_Edit">
-    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="DefaultSMSText" Parameter="defaultSMSText" Type="System.String" DbType="NVarChar(1001)" />
-    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
-    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="Pariority" Parameter="pariority" Type="System.Int32" DbType="Int" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.usp_Data_Select_By_TypeId" Method="usp_Data_Select_By_TypeId">
     <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
     <ElementType Name="usp_Data_Select_By_TypeIdResult">
@@ -1637,6 +1601,49 @@
       <Column Name="F_Archive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.usp_DataType_Select_By_Id" Method="usp_DataType_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_DataType_Select_By_IdResult">
+      <Column Name="DT_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="DT_ShowState" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DT_ShowDefaultSMS" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DT_ShowPariority" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Data_Add" Method="usp_Data_Add">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="DefaultSMSText" Parameter="defaultSMSText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Parameter Name="Pariority" Parameter="pariority" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DurationForSend" Parameter="durationForSend" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SendForMen" Parameter="sendForMen" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SendForWomen" Parameter="sendForWomen" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Data_Edit" Method="usp_Data_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="StateId" Parameter="stateId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TypeId" Parameter="typeId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="DefaultSMSText" Parameter="defaultSMSText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="Pariority" Parameter="pariority" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DurationForSend" Parameter="durationForSend" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SendForMen" Parameter="sendForMen" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="SendForWomen" Parameter="sendForWomen" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.usp_Data_Select_By_Id" Method="usp_Data_Select_By_Id">
     <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
     <ElementType Name="usp_Data_Select_By_IdResult">
@@ -1649,8 +1656,13 @@
       <Column Name="D_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="D_Systematic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="D_ShowDurationForSend" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="D_ShowPariority" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="D_SmsKeys" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="D_Show_SendFor_Men_Or_Women" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="D_SendForMen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="D_SendForWomen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="D_DurationForSend" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="D_Desc_For_DurationForSend" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="D_DescForUser" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

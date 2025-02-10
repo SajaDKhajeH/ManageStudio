@@ -87,7 +87,16 @@ namespace AdakStudio
                     desc = dataInfo.D_Desc,
                     typeId = dataInfo.D_TypeId.ToCodeNumber(),
                     pari = dataInfo.D_Priority == null ? "" : dataInfo.D_Priority.Value.ToString(),
-                    systematic=dataInfo.D_Systematic
+                    systematic = dataInfo.D_Systematic,
+                    dataInfo.D_SmsKeys,
+                    dataInfo.D_Show_SendFor_Men_Or_Women,
+                    dataInfo.D_SendForMen,
+                    dataInfo.D_SendForWomen,
+                    dataInfo.D_DurationForSend,
+                    dataInfo.D_Desc_For_DurationForSend,
+                    dataInfo.D_ShowDurationForSend,
+                    ShowDescForUser = !dataInfo.D_DescForUser.IsNullOrEmpty() && dataInfo.D_DescForUser.Trim().Length > 0,
+                    dataInfo.D_DescForUser
                 };
 
             }
@@ -103,7 +112,7 @@ namespace AdakStudio
 
         }
         [WebMethod]
-        public static dynamic AddEditData(string id, string typeId, string title, bool active, string desc, string defulatsms, string state, string pari)
+        public static dynamic AddEditData(string id, string typeId, string title, bool active, string desc, string defulatsms, string state, string pari, bool SendForWomen, bool SendForMen, string DurationForSend)
         {
             try
             {
@@ -126,18 +135,33 @@ namespace AdakStudio
                         Message = "لطفا عنوان را مشخص کنید"
                     };
                 }
-
+                if (DurationForSend != null && !DurationForSend.IsNumber())
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "لطفا زمان ارسال را به درستی وارد کنید"
+                    };
+                }
+                if (DurationForSend != null && DurationForSend.ToInt() > 1000)
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "لطفا زمان ارسال را کمتر از 1000 وارد کنید"
+                    };
+                }
                 var b = AdakDB.Db;
                 int? hasError = 0;
                 long? resultId = 0;
                 string mes = "";
                 if (id.IsNullOrEmpty() || id.ToInt() == 0)
                 {
-                    b.usp_Data_Add(title, active, state.ToLong(), typeId.ToInt(), desc, defulatsms, 1, ref mes, ref hasError, ref resultId, pari.ToInt());
+                    b.usp_Data_Add(title, active, state.ToLong(), typeId.ToInt(), desc, defulatsms, 1, ref mes, ref hasError, ref resultId, pari.ToInt(), (DurationForSend == null ? 0 : DurationForSend.ToInt()), SendForMen, SendForWomen);
                 }
                 else
                 {
-                    b.usp_Data_Edit(id.ToLong(), title, active, state.ToLong(), typeId.ToInt(), desc, defulatsms, 1, ref mes, ref hasError, pari.ToInt());
+                    b.usp_Data_Edit(id.ToLong(), title, active, state.ToLong(), typeId.ToInt(), desc, defulatsms, 1, ref mes, ref hasError, pari.ToInt(), (DurationForSend == null ? 0 : DurationForSend.ToInt()), SendForMen, SendForWomen);
                 }
 
                 if (hasError == 1)
@@ -176,14 +200,16 @@ namespace AdakStudio
                     {
                         Result = false,
                         ShowDefaultSMS = false,
-                        ShowState = false
+                        ShowState = false,
+                        ShowPriority = false
                     };
                 }
                 return new
                 {
                     Result = true,
                     ShowDefaultSMS = (dtype.DT_ShowDefaultSMS ?? false),
-                    ShowState = (dtype.DT_ShowState ?? false)
+                    ShowState = (dtype.DT_ShowState ?? false),
+                    ShowPriority = (dtype.DT_ShowPariority ?? false)
                 };
 
             }
@@ -193,7 +219,8 @@ namespace AdakStudio
                 {
                     Result = false,
                     ShowDefaultSMS = false,
-                    ShowState = false
+                    ShowState = false,
+                    ShowPriority = false
                 };
             }
 

@@ -96,13 +96,6 @@ namespace Bank
 			return ((ISingleResult<usp_DataType_SelectResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_DataType_Select_By_Id")]
-		public ISingleResult<usp_DataType_Select_By_IdResult> usp_DataType_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="Int")] System.Nullable<int> id)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
-			return ((ISingleResult<usp_DataType_Select_By_IdResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_ErrorAdd")]
 		public int usp_ErrorAdd([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FormName", DbType="NVarChar(1001)")] string formName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Text", DbType="NVarChar(4000)")] string text)
 		{
@@ -750,25 +743,6 @@ namespace Bank
 			return ((ISingleResult<usp_Data_Select_For_GridResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Add")]
-		public int usp_Data_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(1001)")] string title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Active", DbType="Bit")] System.Nullable<bool> active, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="StateId", DbType="BigInt")] System.Nullable<long> stateId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(1001)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DefaultSMSText", DbType="NVarChar(1001)")] string defaultSMSText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Pariority", DbType="Int")] System.Nullable<int> pariority)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), title, active, stateId, typeId, desc, defaultSMSText, causerId, message, hasError, rersultId, pariority);
-			message = ((string)(result.GetParameterValue(7)));
-			hasError = ((System.Nullable<int>)(result.GetParameterValue(8)));
-			rersultId = ((System.Nullable<long>)(result.GetParameterValue(9)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Edit")]
-		public int usp_Data_Edit([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(1001)")] string title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Active", DbType="Bit")] System.Nullable<bool> active, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="StateId", DbType="BigInt")] System.Nullable<long> stateId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(1001)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DefaultSMSText", DbType="NVarChar(1001)")] string defaultSMSText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Pariority", DbType="Int")] System.Nullable<int> pariority)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, title, active, stateId, typeId, desc, defaultSMSText, causerId, message, hasError, pariority);
-			message = ((string)(result.GetParameterValue(8)));
-			hasError = ((System.Nullable<int>)(result.GetParameterValue(9)));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_TypeId")]
 		public ISingleResult<usp_Data_Select_By_TypeIdResult> usp_Data_Select_By_TypeId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId)
 		{
@@ -1164,6 +1138,32 @@ namespace Bank
 			return ((ISingleResult<usp_Family_Check_By_MobileResult>)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_DataType_Select_By_Id")]
+		public ISingleResult<usp_DataType_Select_By_IdResult> usp_DataType_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="Int")] System.Nullable<int> id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+			return ((ISingleResult<usp_DataType_Select_By_IdResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Add")]
+		public int usp_Data_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(1001)")] string title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Active", DbType="Bit")] System.Nullable<bool> active, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="StateId", DbType="BigInt")] System.Nullable<long> stateId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(1001)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DefaultSMSText", DbType="NVarChar(1001)")] string defaultSMSText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Pariority", DbType="Int")] System.Nullable<int> pariority, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DurationForSend", DbType="Int")] System.Nullable<int> durationForSend, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SendForMen", DbType="Bit")] System.Nullable<bool> sendForMen, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SendForWomen", DbType="Bit")] System.Nullable<bool> sendForWomen)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), title, active, stateId, typeId, desc, defaultSMSText, causerId, message, hasError, rersultId, pariority, durationForSend, sendForMen, sendForWomen);
+			message = ((string)(result.GetParameterValue(7)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(8)));
+			rersultId = ((System.Nullable<long>)(result.GetParameterValue(9)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Edit")]
+		public int usp_Data_Edit([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(1001)")] string title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Active", DbType="Bit")] System.Nullable<bool> active, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="StateId", DbType="BigInt")] System.Nullable<long> stateId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(1001)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DefaultSMSText", DbType="NVarChar(1001)")] string defaultSMSText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Pariority", DbType="Int")] System.Nullable<int> pariority, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DurationForSend", DbType="Int")] System.Nullable<int> durationForSend, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SendForMen", DbType="Bit")] System.Nullable<bool> sendForMen, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SendForWomen", DbType="Bit")] System.Nullable<bool> sendForWomen)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, title, active, stateId, typeId, desc, defaultSMSText, causerId, message, hasError, pariority, durationForSend, sendForMen, sendForWomen);
+			message = ((string)(result.GetParameterValue(8)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(9)));
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_Id")]
 		public ISingleResult<usp_Data_Select_By_IdResult> usp_Data_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
 		{
@@ -1475,68 +1475,6 @@ namespace Bank
 					this._DT_ID = value;
 				}
 			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string DT_Title
-		{
-			get
-			{
-				return this._DT_Title;
-			}
-			set
-			{
-				if ((this._DT_Title != value))
-				{
-					this._DT_Title = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_ShowState", DbType="Bit")]
-		public System.Nullable<bool> DT_ShowState
-		{
-			get
-			{
-				return this._DT_ShowState;
-			}
-			set
-			{
-				if ((this._DT_ShowState != value))
-				{
-					this._DT_ShowState = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_ShowDefaultSMS", DbType="Bit")]
-		public System.Nullable<bool> DT_ShowDefaultSMS
-		{
-			get
-			{
-				return this._DT_ShowDefaultSMS;
-			}
-			set
-			{
-				if ((this._DT_ShowDefaultSMS != value))
-				{
-					this._DT_ShowDefaultSMS = value;
-				}
-			}
-		}
-	}
-	
-	public partial class usp_DataType_Select_By_IdResult
-	{
-		
-		private string _DT_Title;
-		
-		private System.Nullable<bool> _DT_ShowState;
-		
-		private System.Nullable<bool> _DT_ShowDefaultSMS;
-		
-		public usp_DataType_Select_By_IdResult()
-		{
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
@@ -11344,6 +11282,86 @@ namespace Bank
 		}
 	}
 	
+	public partial class usp_DataType_Select_By_IdResult
+	{
+		
+		private string _DT_Title;
+		
+		private System.Nullable<bool> _DT_ShowState;
+		
+		private System.Nullable<bool> _DT_ShowDefaultSMS;
+		
+		private System.Nullable<bool> _DT_ShowPariority;
+		
+		public usp_DataType_Select_By_IdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string DT_Title
+		{
+			get
+			{
+				return this._DT_Title;
+			}
+			set
+			{
+				if ((this._DT_Title != value))
+				{
+					this._DT_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_ShowState", DbType="Bit")]
+		public System.Nullable<bool> DT_ShowState
+		{
+			get
+			{
+				return this._DT_ShowState;
+			}
+			set
+			{
+				if ((this._DT_ShowState != value))
+				{
+					this._DT_ShowState = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_ShowDefaultSMS", DbType="Bit")]
+		public System.Nullable<bool> DT_ShowDefaultSMS
+		{
+			get
+			{
+				return this._DT_ShowDefaultSMS;
+			}
+			set
+			{
+				if ((this._DT_ShowDefaultSMS != value))
+				{
+					this._DT_ShowDefaultSMS = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_ShowPariority", DbType="Bit")]
+		public System.Nullable<bool> DT_ShowPariority
+		{
+			get
+			{
+				return this._DT_ShowPariority;
+			}
+			set
+			{
+				if ((this._DT_ShowPariority != value))
+				{
+					this._DT_ShowPariority = value;
+				}
+			}
+		}
+	}
+	
 	public partial class usp_Data_Select_By_IdResult
 	{
 		
@@ -11365,9 +11383,19 @@ namespace Bank
 		
 		private System.Nullable<bool> _D_ShowDurationForSend;
 		
-		private System.Nullable<bool> _D_ShowPariority;
-		
 		private string _D_SmsKeys;
+		
+		private System.Nullable<bool> _D_Show_SendFor_Men_Or_Women;
+		
+		private System.Nullable<bool> _D_SendForMen;
+		
+		private System.Nullable<bool> _D_SendForWomen;
+		
+		private System.Nullable<int> _D_DurationForSend;
+		
+		private string _D_Desc_For_DurationForSend;
+		
+		private string _D_DescForUser;
 		
 		public usp_Data_Select_By_IdResult()
 		{
@@ -11517,22 +11545,6 @@ namespace Bank
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_ShowPariority", DbType="Bit")]
-		public System.Nullable<bool> D_ShowPariority
-		{
-			get
-			{
-				return this._D_ShowPariority;
-			}
-			set
-			{
-				if ((this._D_ShowPariority != value))
-				{
-					this._D_ShowPariority = value;
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_SmsKeys", DbType="NVarChar(4000)")]
 		public string D_SmsKeys
 		{
@@ -11545,6 +11557,102 @@ namespace Bank
 				if ((this._D_SmsKeys != value))
 				{
 					this._D_SmsKeys = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Show_SendFor_Men_Or_Women", DbType="Bit")]
+		public System.Nullable<bool> D_Show_SendFor_Men_Or_Women
+		{
+			get
+			{
+				return this._D_Show_SendFor_Men_Or_Women;
+			}
+			set
+			{
+				if ((this._D_Show_SendFor_Men_Or_Women != value))
+				{
+					this._D_Show_SendFor_Men_Or_Women = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_SendForMen", DbType="Bit")]
+		public System.Nullable<bool> D_SendForMen
+		{
+			get
+			{
+				return this._D_SendForMen;
+			}
+			set
+			{
+				if ((this._D_SendForMen != value))
+				{
+					this._D_SendForMen = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_SendForWomen", DbType="Bit")]
+		public System.Nullable<bool> D_SendForWomen
+		{
+			get
+			{
+				return this._D_SendForWomen;
+			}
+			set
+			{
+				if ((this._D_SendForWomen != value))
+				{
+					this._D_SendForWomen = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_DurationForSend", DbType="Int")]
+		public System.Nullable<int> D_DurationForSend
+		{
+			get
+			{
+				return this._D_DurationForSend;
+			}
+			set
+			{
+				if ((this._D_DurationForSend != value))
+				{
+					this._D_DurationForSend = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Desc_For_DurationForSend", DbType="NVarChar(4000)")]
+		public string D_Desc_For_DurationForSend
+		{
+			get
+			{
+				return this._D_Desc_For_DurationForSend;
+			}
+			set
+			{
+				if ((this._D_Desc_For_DurationForSend != value))
+				{
+					this._D_Desc_For_DurationForSend = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_DescForUser", DbType="NVarChar(MAX)")]
+		public string D_DescForUser
+		{
+			get
+			{
+				return this._D_DescForUser;
+			}
+			set
+			{
+				if ((this._D_DescForUser != value))
+				{
+					this._D_DescForUser = value;
 				}
 			}
 		}

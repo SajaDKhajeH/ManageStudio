@@ -105,25 +105,47 @@
                             <label class="required fs-6 fw-bold mb-2">اولویت نمایش</label>
                             <input type="text" id="d_pariority" class="form-control form-control-solid" placeholder="اولویت" />
                         </div>
-                        <div class="fv-row mb-15">
+                        <%-- <div class="fv-row mb-15">
                             <label class="fs-6 fw-bold mb-2">توضیحات</label>
                             <textarea id="d_desc" class="form-control form-control-solid" placeholder="" name="description"></textarea>
-                        </div>
+                        </div>--%>
 
                         <div class="fv-row mb-15" id="div_defaultsms">
                             <label class="fs-6 fw-bold mb-2">متن پیش فرض</label>
                             <textarea type="text" id="d_defaultsms" class="form-control form-control-solid" placeholder="" name="description"></textarea>
                             <label class="fs-6 fw-bold mb-2" id="d_KeywordSMS"></label>
                         </div>
-                         <div class="fv-row mb-7" id="div_DurationForSend">
-                            <label class="required fs-6 fw-bold mb-2" id="d_lbl_DusrationForSend">مدت زمان ارسال پیام</label>
-                            <input type="text" id="d_DurationForSend" maxlength="1000" class="form-control form-control-solid" placeholder="اولویت" />
+                        <div class="fv-row mb-7" id="div_Show_SendFor_Men_Or_Women">
+                            <div class="col-md-6 fv-row">
+                                <div class="d-flex flex-stack" style="margin: 3px">
+                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                        <input id="d_SendForMen" class="form-check-input" type="checkbox" />
+                                        <span class="form-check-label fw-bold text-dark">ارسال به آقا</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <div class="d-flex flex-stack" style="margin: 3px">
+                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                        <input id="d_SendForWomen" class="form-check-input" type="checkbox" />
+                                        <span class="form-check-label fw-bold text-dark">ارسال به خانم</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="fv-row mb-15" id="div_state">
+                        <div class="fv-row mb-7" id="div_DurationForSend">
+                            <label class="fs-6 fw-bold mb-2" id="d_lbl_DusrationForSend"></label>
+                            <input type="number" id="d_DurationForSend" maxlength="1000" class="form-control form-control-solid" placeholder="مدت زمان" />
+                        </div>
+                        <div class="fv-row mb-15" id="div_DescForUser">
+                            <label class="fs-6 fw-bold mb-2">توضیحات برای کاربر</label>
+                            <textarea id="d_DescForUser" class="form-control form-control-solid" placeholder="" name="description" disabled></textarea>
+                        </div>
+                        <%-- <div class="fv-row mb-15" id="div_state">
                             <select id="d_stateid" data-placeholder="انتخاب استان" data-allow-clear="true" data-kt-customer-table-filter="state" data-dropdown-parent="#kt-toolbar-filter">
                                 <%Response.Write(PublicMethod.GetState()); %>
                             </select>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
@@ -141,19 +163,30 @@
     <script type="text/javascript">
         var d_id = "";
         var defaultsms = document.getElementById('div_defaultsms');
-        var state = document.getElementById('div_state');
+        //var state = document.getElementById('div_state');
+        var div_priority = document.getElementById('div_priority');
+        var div_DurationForSend = document.getElementById('div_DurationForSend');
+        var div_DescForUser = document.getElementById('div_DescForUser');
+        var div_Show_SendFor_Men_Or_Women = document.getElementById('div_Show_SendFor_Men_Or_Women');
+        var ShowDurationForSend = false;
         $("#btn_submitdata").click(function (e) {
             var typeId = $("#d_Typeid").val();
             var title = $("#d_title").val();
             var active = $("#d_active").prop("checked");
-            var desc = $("#d_desc").val();
+            var desc = ""; //$("#d_desc").val();
             var defulatsms = $("#d_defaultsms").val();
-            var state = $("#d_stateid").val();
+            var state = "0";// $("#d_stateid").val();
             var pari = $("#d_pariority").val();
+            var SendForWomen = $("#d_SendForWomen").prop("checked");
+            var SendForMen = $("#d_SendForMen").prop("checked");
+            var DurationForSend = $("#d_DurationForSend").val();
+            if (!ShowDurationForSend) {
+                DurationForSend = null;
+            }
             $.ajax({
                 type: "POST",
                 url: "BasicData.aspx/AddEditData",
-                data: "{id:'" + d_id + "',typeId:'" + typeId + "',title:'" + title + "',active:" + active + ",desc:'" + desc + "',defulatsms:'" + defulatsms + "',state:'" + state + "',pari:'" + pari + "'}",
+                data: "{id:'" + d_id + "',typeId:'" + typeId + "',title:'" + title + "',active:" + active + ",desc:'" + desc + "',defulatsms:'" + defulatsms + "',state:'" + state + "',pari:'" + pari + "',SendForWomen:" + SendForWomen + ",SendForMen:" + SendForMen + ",DurationForSend:'" + DurationForSend + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
@@ -208,11 +241,17 @@
                         else {
                             defaultsms.style.visibility = 'hidden';
                         }
-                        if (result.ShowState == true) {
-                            state.style.visibility = 'visible';
+                        //if (result.ShowState == true) {
+                        //    state.style.visibility = 'visible';
+                        //}
+                        //else {
+                        //    state.style.visibility = 'hidden';
+                        //}
+                        if (result.ShowPriority == true) {
+                            div_priority.style.visibility = 'visible';
                         }
                         else {
-                            state.style.visibility = 'hidden';
+                            div_priority.style.visibility = 'hidden';
                         }
 
                     }
@@ -229,9 +268,10 @@
             d_id = "";
             $("#d_pariority").val("");
             $("#d_active").prop("checked", true);
-            $("#d_desc").val("");
+            //$("#d_desc").val("");
             $("#model_basicDataHeader").text("ثبت اطلاعات پایه ");
             $("#d_defaultsms").val("");
+            $("#d_DurationForSend").val("");
             document.getElementById("div_typeData").style.display = "block";
             document.getElementById("div_priority").style.display = 'block';
         };
@@ -277,15 +317,43 @@
                         d_id = id;
                         $("#d_title").val(result.title);
                         $("#d_active").prop("checked", result.active);
-                        $("#d_desc").val(result.desc);
+                        //$("#d_desc").val(result.desc);
                         $("#d_defaultsms").val(result.defaultsms);
-                        $("#d_stateid").val(result.state);
+                        //$("#d_stateid").val(result.state);
                         $("#d_Typeid").val(result.typeId);
                         $("#d_pariority").val(result.pari);
+                        $("#d_DurationForSend").val(result.D_DurationForSend);
+                        $("#d_DescForUser").val(result.D_DescForUser);
+                        $("#d_lbl_DusrationForSend").text(result.D_Desc_For_DurationForSend);
                         $("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
+                        $("#d_KeywordSMS").text("کلید واژه ها: " + result.D_SmsKeys);
+                        $("#d_SendForMen").prop("checked", result.D_SendForMen);
+                        $("#d_SendForWomen").prop("checked", result.D_SendForWomen);
                         document.getElementById("div_typeData").style.display = 'none';
                         if (result.systematic) {
                             document.getElementById("div_priority").style.display = 'none';
+                        }
+                        ShowDurationForSend = result.D_ShowDurationForSend ?? false;
+                        //نمایش مدت زمان ارسال پیام
+                        if (result.D_ShowDurationForSend ?? false) {
+                            div_DurationForSend.style.visibility = 'visible';
+                        }
+                        else {
+                            div_DurationForSend.style.visibility = 'hidden';
+                        }
+                        //توضیحات برای کاربر
+                        if (result.ShowDescForUser ?? false) {
+                            div_DescForUser.style.visibility = 'visible';
+                        }
+                        else {
+                            div_DescForUser.style.visibility = 'hidden';
+                        }
+                        //ارسال پیام به آقا یا خانم
+                        if (result.D_Show_SendFor_Men_Or_Women ?? false) {
+                            div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
+                        }
+                        else {
+                            div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
                         }
                         $("#d_Typeid").change();
                     }
