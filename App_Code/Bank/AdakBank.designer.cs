@@ -769,13 +769,6 @@ namespace Bank
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_Id")]
-		public ISingleResult<usp_Data_Select_By_IdResult> usp_Data_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
-			return ((ISingleResult<usp_Data_Select_By_IdResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_TypeId")]
 		public ISingleResult<usp_Data_Select_By_TypeIdResult> usp_Data_Select_By_TypeId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId)
 		{
@@ -1169,6 +1162,13 @@ namespace Bank
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), mobile);
 			return ((ISingleResult<usp_Family_Check_By_MobileResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_Id")]
+		public ISingleResult<usp_Data_Select_By_IdResult> usp_Data_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+			return ((ISingleResult<usp_Data_Select_By_IdResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -7116,158 +7116,6 @@ namespace Bank
 		}
 	}
 	
-	public partial class usp_Data_Select_By_IdResult
-	{
-		
-		private string _D_Title;
-		
-		private string _D_DefaultSMSText;
-		
-		private string _D_Desc;
-		
-		private bool _D_Active;
-		
-		private int _D_TypeId;
-		
-		private System.Nullable<long> _D_StateId;
-		
-		private System.Nullable<int> _D_Priority;
-		
-		private bool _D_Systematic;
-		
-		public usp_Data_Select_By_IdResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string D_Title
-		{
-			get
-			{
-				return this._D_Title;
-			}
-			set
-			{
-				if ((this._D_Title != value))
-				{
-					this._D_Title = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_DefaultSMSText", DbType="NVarChar(1001)")]
-		public string D_DefaultSMSText
-		{
-			get
-			{
-				return this._D_DefaultSMSText;
-			}
-			set
-			{
-				if ((this._D_DefaultSMSText != value))
-				{
-					this._D_DefaultSMSText = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Desc", DbType="NVarChar(1001)")]
-		public string D_Desc
-		{
-			get
-			{
-				return this._D_Desc;
-			}
-			set
-			{
-				if ((this._D_Desc != value))
-				{
-					this._D_Desc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Active", DbType="Bit NOT NULL")]
-		public bool D_Active
-		{
-			get
-			{
-				return this._D_Active;
-			}
-			set
-			{
-				if ((this._D_Active != value))
-				{
-					this._D_Active = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_TypeId", DbType="Int NOT NULL")]
-		public int D_TypeId
-		{
-			get
-			{
-				return this._D_TypeId;
-			}
-			set
-			{
-				if ((this._D_TypeId != value))
-				{
-					this._D_TypeId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_StateId", DbType="BigInt")]
-		public System.Nullable<long> D_StateId
-		{
-			get
-			{
-				return this._D_StateId;
-			}
-			set
-			{
-				if ((this._D_StateId != value))
-				{
-					this._D_StateId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Priority", DbType="Int")]
-		public System.Nullable<int> D_Priority
-		{
-			get
-			{
-				return this._D_Priority;
-			}
-			set
-			{
-				if ((this._D_Priority != value))
-				{
-					this._D_Priority = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Systematic", DbType="Bit NOT NULL")]
-		public bool D_Systematic
-		{
-			get
-			{
-				return this._D_Systematic;
-			}
-			set
-			{
-				if ((this._D_Systematic != value))
-				{
-					this._D_Systematic = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_Data_Select_By_TypeIdResult
 	{
 		
@@ -11491,6 +11339,212 @@ namespace Bank
 				if ((this._F_Archive != value))
 				{
 					this._F_Archive = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Data_Select_By_IdResult
+	{
+		
+		private string _D_Title;
+		
+		private string _D_DefaultSMSText;
+		
+		private string _D_Desc;
+		
+		private bool _D_Active;
+		
+		private int _D_TypeId;
+		
+		private System.Nullable<long> _D_StateId;
+		
+		private System.Nullable<int> _D_Priority;
+		
+		private bool _D_Systematic;
+		
+		private System.Nullable<bool> _D_ShowDurationForSend;
+		
+		private System.Nullable<bool> _D_ShowPariority;
+		
+		private string _D_SmsKeys;
+		
+		public usp_Data_Select_By_IdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string D_Title
+		{
+			get
+			{
+				return this._D_Title;
+			}
+			set
+			{
+				if ((this._D_Title != value))
+				{
+					this._D_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_DefaultSMSText", DbType="NVarChar(1001)")]
+		public string D_DefaultSMSText
+		{
+			get
+			{
+				return this._D_DefaultSMSText;
+			}
+			set
+			{
+				if ((this._D_DefaultSMSText != value))
+				{
+					this._D_DefaultSMSText = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Desc", DbType="NVarChar(1001)")]
+		public string D_Desc
+		{
+			get
+			{
+				return this._D_Desc;
+			}
+			set
+			{
+				if ((this._D_Desc != value))
+				{
+					this._D_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Active", DbType="Bit NOT NULL")]
+		public bool D_Active
+		{
+			get
+			{
+				return this._D_Active;
+			}
+			set
+			{
+				if ((this._D_Active != value))
+				{
+					this._D_Active = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_TypeId", DbType="Int NOT NULL")]
+		public int D_TypeId
+		{
+			get
+			{
+				return this._D_TypeId;
+			}
+			set
+			{
+				if ((this._D_TypeId != value))
+				{
+					this._D_TypeId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_StateId", DbType="BigInt")]
+		public System.Nullable<long> D_StateId
+		{
+			get
+			{
+				return this._D_StateId;
+			}
+			set
+			{
+				if ((this._D_StateId != value))
+				{
+					this._D_StateId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Priority", DbType="Int")]
+		public System.Nullable<int> D_Priority
+		{
+			get
+			{
+				return this._D_Priority;
+			}
+			set
+			{
+				if ((this._D_Priority != value))
+				{
+					this._D_Priority = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Systematic", DbType="Bit NOT NULL")]
+		public bool D_Systematic
+		{
+			get
+			{
+				return this._D_Systematic;
+			}
+			set
+			{
+				if ((this._D_Systematic != value))
+				{
+					this._D_Systematic = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_ShowDurationForSend", DbType="Bit")]
+		public System.Nullable<bool> D_ShowDurationForSend
+		{
+			get
+			{
+				return this._D_ShowDurationForSend;
+			}
+			set
+			{
+				if ((this._D_ShowDurationForSend != value))
+				{
+					this._D_ShowDurationForSend = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_ShowPariority", DbType="Bit")]
+		public System.Nullable<bool> D_ShowPariority
+		{
+			get
+			{
+				return this._D_ShowPariority;
+			}
+			set
+			{
+				if ((this._D_ShowPariority != value))
+				{
+					this._D_ShowPariority = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_SmsKeys", DbType="NVarChar(4000)")]
+		public string D_SmsKeys
+		{
+			get
+			{
+				return this._D_SmsKeys;
+			}
+			set
+			{
+				if ((this._D_SmsKeys != value))
+				{
+					this._D_SmsKeys = value;
 				}
 			}
 		}

@@ -84,7 +84,7 @@
                                 <label class="fs-6 fw-bold mb-2">
                                     <span class="required">انتخاب نوع</span>
                                 </label>
-                                <select id="d_Typeid" data-control="select2" data-placeholder="انتخاب نوع" data-dropdown-parent="#kt_modal_add_customer" class="form-select form-select-solid fw-bolder">
+                                <select id="d_Typeid">
                                     <%Response.Write(PublicMethod.GetDataType()); %>
                                 </select>
                             </div>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                         <div class="fv-row mb-7" id="div_priority">
-                            <label class="required fs-6 fw-bold mb-2">اولویت</label>
+                            <label class="required fs-6 fw-bold mb-2">اولویت نمایش</label>
                             <input type="text" id="d_pariority" class="form-control form-control-solid" placeholder="اولویت" />
                         </div>
                         <div class="fv-row mb-15">
@@ -113,6 +113,11 @@
                         <div class="fv-row mb-15" id="div_defaultsms">
                             <label class="fs-6 fw-bold mb-2">متن پیش فرض</label>
                             <textarea type="text" id="d_defaultsms" class="form-control form-control-solid" placeholder="" name="description"></textarea>
+                            <label class="fs-6 fw-bold mb-2" id="d_KeywordSMS"></label>
+                        </div>
+                         <div class="fv-row mb-7" id="div_DurationForSend">
+                            <label class="required fs-6 fw-bold mb-2" id="d_lbl_DusrationForSend">مدت زمان ارسال پیام</label>
+                            <input type="text" id="d_DurationForSend" maxlength="1000" class="form-control form-control-solid" placeholder="اولویت" />
                         </div>
                         <div class="fv-row mb-15" id="div_state">
                             <select id="d_stateid" data-placeholder="انتخاب استان" data-allow-clear="true" data-kt-customer-table-filter="state" data-dropdown-parent="#kt-toolbar-filter">
