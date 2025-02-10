@@ -84,7 +84,7 @@
                                 <label class="fs-6 fw-bold mb-2">
                                     <span class="required">انتخاب نوع</span>
                                 </label>
-                                <select id="d_Typeid" data-control="select2" data-placeholder="انتخاب نوع" data-dropdown-parent="#kt_modal_add_customer" class="form-select form-select-solid fw-bolder">
+                                <select id="d_Typeid">
                                     <%Response.Write(PublicMethod.GetDataType()); %>
                                 </select>
                             </div>
