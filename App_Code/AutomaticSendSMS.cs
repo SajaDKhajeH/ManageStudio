@@ -31,12 +31,12 @@ public class AutomaticSendSMS
         //اطلاع رسانی نوبت ها
         if (ExecuteTime % 5 == 0)
         {
-
+            //dbo.usp_Remind_Turn
         }
         //ماهگرد و تولد
         else if (ExecuteTime % 72000 == 0)
         {
-
+            //dbo.usp_Remind_Lunar_A_BirthDate
         }
     }
 }
