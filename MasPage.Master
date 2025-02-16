@@ -898,22 +898,36 @@
                         <label>انتخاب خانواده</label>
                         <select id="factor_Family" data-dropdown-parent="#m_SetFactor" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" style="margin: 3px" data-placeholder="انتخاب مشتری">
                         </select>
-                        <label>تاریخ فاکتور</label>
-                        <input style="margin: 3px" class="form-control datepicker selectedShamsiDate" id="factor_Date">
-                        <label>توضیحات فاکتور</label>
-                        <textarea style="margin: 3px" placeholder="توضیحات" class="form-control" id="factor_desc"></textarea>
-                        <label>موضوع عکاسی</label>
-                        <select id="factor_TypePhotography">
-                            <%Response.Write(PublicMethod.GetTypePhotographi()); %>
-                        </select>
-                        <label>وضعیت فاکتور</label>
-                        <select id="factor_status">
-                            <%Response.Write(PublicMethod.GetFactorStatus()); %>
-                        </select>
-                        <label>عکاس</label>
-                        <select id="factor_Photographer">
-                            <%Response.Write(PublicMethod.GetPhotographer(true)); %>
-                        </select>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>تاریخ فاکتور</label>
+                                <input style="margin: 3px" class="form-control datepicker selectedShamsiDate" id="factor_Date">
+                            </div>
+                            <div class="col-lg-6">
+                                <label>موضوع عکاسی</label>
+                                <select id="factor_TypePhotography">
+                                    <%Response.Write(PublicMethod.GetTypePhotographi()); %>
+                                </select>
+                            </div>
+                        </div>
+                        <label>توضیحات برای طراح</label>
+                        <textarea style="margin: 3px" placeholder="توضیحات برای طراح" class="form-control" id="factor_desc"></textarea>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>عکاس</label>
+                                <select id="factor_Photographer">
+                                    <%Response.Write(PublicMethod.GetPhotographer(true)); %>
+                                </select>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <label>وضعیت فاکتور</label>
+                                <select id="factor_status">
+                                    <%Response.Write(PublicMethod.GetFactorStatus()); %>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="d-flex flex-stack" style="margin: 3px">
                             <label class="form-check form-switch form-check-custom form-check-solid">
                                 <input id="factor_ForceDesign" class="form-check-input" type="checkbox" />
