@@ -106,23 +106,6 @@ namespace AdakStudio
                         Message = mes.IsNullOrEmpty() ? "خطایی در ثبت اطلاعات رخ داده است" : mes
                     };
                 }
-                else
-                {
-                    #region SendSMS
-                    var FamilyInfo = db.usp_Family_Select_By_Id(FamilyId).FirstOrDefault();
-                    if (FamilyInfo != null)
-                    {
-                        if (FamilyInfo.F_MotherMobile.IsMobileNumber())
-                        {
-                            SetSMS.Wellcome_To_Family(FamilyInfo.F_Title, turn_Date, turn_Time, FamilyInfo.F_MotherMobile, (FamilyId ?? 0), db);
-                        }
-                        if (FamilyInfo.F_FatherMobile.IsMobileNumber())
-                        {
-                            SetSMS.Wellcome_To_Family(FamilyInfo.F_Title, turn_Date, turn_Time, FamilyInfo.F_FatherMobile, (FamilyId ?? 0), db);
-                        }
-                    }
-                    #endregion
-                }
                 return new
                 {
                     Result = true,
@@ -160,14 +143,14 @@ namespace AdakStudio
                     LocationId = item.R_Location.ToCodeNumber(),
                     LocationTitle = item.LocationTitle,
                     ModPrice = (item.ModPrice ?? 0).ToInt(),
-                    DurationText= (item.R_Duration ?? 0).ToTimeString()
+                    DurationText = (item.R_Duration ?? 0).ToTimeString()
                 });
             }
             return tlist;
         }
 
         [WebMethod]
-        public static dynamic RequestDelete(long requestId)
+        public static dynamic RequestDelete(long requestId, bool SendSMSCancelTurn)
         {
             var db = AdakDB.Db;
             try
@@ -183,15 +166,29 @@ namespace AdakStudio
                 int? hasError = 0;
                 string mes = "";
                 long CauserId = LoginedUser.Id;
+                if (db.Connection.State != System.Data.ConnectionState.Open)
+                {
+                    db.Connection.Open();
+                }
+                db.Transaction = db.Connection.BeginTransaction();
+                //در صورتی که خود کاربر انتخاب کنه که پیامک کنسل شدن جلسه ارسال شود
+                if (SendSMSCancelTurn)
+                {
+                    db.usp_SendSMS_WhenCancel_OR_Del_Turn(requestId);
+                }
                 db.usp_Request_Delete(requestId, CauserId, ref mes, ref hasError);
                 if (hasError == 1)
                 {
+                    CloseConnectios(db);
                     return new
                     {
                         Result = false,
                         Message = mes.IsNullOrEmpty() ? "خطایی در حذف اطلاعات رخ داده است" : mes
                     };
                 }
+                db.Transaction.Commit();
+                db.Connection.Close();
+                db.Connection.Dispose();
                 return new
                 {
                     Result = true,
@@ -247,6 +244,7 @@ namespace AdakStudio
                 }
             };
         }
+
 
 
     }

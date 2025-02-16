@@ -1665,4 +1665,14 @@
       <Column Name="D_DescForUser" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.usp_SendSMS_WhenCancel_OR_Del_Turn" Method="usp_SendSMS_WhenCancel_OR_Del_Turn">
+    <Parameter Name="TurnId" Parameter="turnId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Remind_Turn" Method="usp_Remind_Turn">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Remind_Lunar_A_BirthDate" Method="usp_Remind_Lunar_A_BirthDate">
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

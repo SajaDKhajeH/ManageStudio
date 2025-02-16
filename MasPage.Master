@@ -1182,7 +1182,7 @@
                             </div>
                             <div class="col-md-4 fv-row">
                                 <select id="f_InviteType">
-                                    <%Response.Write(PublicMethod.GetInviteType()); %>
+                                    <%Response.Write(PublicMethod.GetInviteType());%>
                                 </select>
                             </div>
                             <div class="col-md-4 fv-row">
@@ -1259,7 +1259,7 @@
                         else if (location.href.includes("Dashboard")) {
                             loadAppointments(currentIndex);
                         }
-                        else if (location.href.includes("RequestStatus")){
+                        else if (location.href.includes("RequestStatus")) {
                             GetFactors();
                         }
 
@@ -1297,14 +1297,27 @@
             $('#appointmentModal').modal('hide');
             requestIdForEditTurnDate_A_Time = 0;
         };
+        function IsActiveSendSMS_CancelTurn() {
+
+        };
         function RequestDelete(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
+                var SendSMSCancelTurn = false;
+                var ActiveSMSCancel = false;
+                <%if (IsActiveSMSText_CancelTurn())
+        {  %>
+                ActiveSMSCancel = true;
+                <%}%>
+                if (ActiveSMSCancel) {
+                    SendSMSCancelTurn = confirm("آیا پیامک لغو برای خانواده ارسال شود؟");
+                }
                 $.ajax({
                     type: "POST",
                     url: "Dashboard.aspx/RequestDelete",
                     data: JSON.stringify({
-                        requestId: id
+                        requestId: id,
+                        SendSMSCancelTurn
                     }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",

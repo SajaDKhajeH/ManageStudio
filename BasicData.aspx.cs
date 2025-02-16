@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bank;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -119,6 +120,14 @@ namespace AdakStudio
                 typeId = typeId.ToDecodeNumber();
                 state = state.ToDecodeNumber();
                 id = id.ToDecodeNumber();
+
+                bool IsEdit = id.ToLong() > 0;
+                usp_Data_Select_By_IdResult dataInfo = null;
+                if (IsEdit)
+                {
+                    dataInfo = AdakDB.Db.usp_Data_Select_By_Id(id.ToLong()).SingleOrDefault();
+                }
+
                 if (typeId.IsNullOrEmpty() || typeId.ToInt() <= 0)
                 {
                     return new
@@ -135,21 +144,24 @@ namespace AdakStudio
                         Message = "لطفا عنوان را مشخص کنید"
                     };
                 }
-                if (DurationForSend != null && !DurationForSend.IsNumber())
+                if ((dataInfo != null && (dataInfo.D_ShowDurationForSend ?? false)))
                 {
-                    return new
+                    if (DurationForSend != null && !DurationForSend.IsNumber())
                     {
-                        Result = false,
-                        Message = "لطفا زمان ارسال را به درستی وارد کنید"
-                    };
-                }
-                if (DurationForSend != null && DurationForSend.ToInt() > 1000)
-                {
-                    return new
+                        return new
+                        {
+                            Result = false,
+                            Message = "لطفا زمان ارسال را به درستی وارد کنید"
+                        };
+                    }
+                    if (DurationForSend != null && DurationForSend.ToInt() > 1000)
                     {
-                        Result = false,
-                        Message = "لطفا زمان ارسال را کمتر از 1000 وارد کنید"
-                    };
+                        return new
+                        {
+                            Result = false,
+                            Message = "لطفا زمان ارسال را کمتر از 1000 وارد کنید"
+                        };
+                    }
                 }
                 var b = AdakDB.Db;
                 int? hasError = 0;

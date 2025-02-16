@@ -358,7 +358,7 @@
                     timeSlot.textContent = time;
                     timeSlot.onclick = () => {
                         document.getElementById("btnEditRequestModal").click();
-                        openModalRequest(0, time, toJalaliDate(selectedDate), "", "");
+                        openModalRequest(0, time, toJalaliDate(selectedDate), "", "", 0, 0, "");
                     };
 
                     var appointmentsCell = document.createElement('div');
@@ -370,7 +370,7 @@
                         appointmentDiv.className = 'appointment';
                         locationTitle = app.LocationTitle == null || app.LocationTitle == undefined ? "" : " " + app.LocationTitle;
                         if (app.Duration > 0) {
-                            DurationText = " مدت زمان:"+app.DurationText;
+                            DurationText = " مدت زمان:" + app.DurationText;
                         }
                         appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.time} - ${app.TurnTitle} - ${app.Desc} ${locationTitle} ${DurationText}`;
                         appointmentDiv.ondblclick = () => updateTurn(app.RequestId, app.time, app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.Cost, app.Duration, app.LocationId);
@@ -405,7 +405,7 @@
             timeSlotRezerv.textContent = "رزروی ها";
             timeSlotRezerv.onclick = () => {
                 document.getElementById("btnEditRequestModal").click();
-                openModalRequest(0, "", toJalaliDate(selectedDate), "", "");
+                openModalRequest(0, "", toJalaliDate(selectedDate), "", "", 0, 0, "");
             };
 
             var appointmentsCellRezerv = document.createElement('div');

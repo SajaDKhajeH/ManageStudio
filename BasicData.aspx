@@ -181,7 +181,7 @@
             var SendForMen = $("#d_SendForMen").prop("checked");
             var DurationForSend = $("#d_DurationForSend").val();
             if (!ShowDurationForSend) {
-                DurationForSend = null;
+                DurationForSend = "0";
             }
             $.ajax({
                 type: "POST",
