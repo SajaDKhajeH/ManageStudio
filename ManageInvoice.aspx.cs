@@ -137,6 +137,14 @@ namespace AdakStudio
             var db = AdakDB.Db;
             try
             {
+                #region گرفتن تنظیم درصد پرداخت
+                int MinimumPaymentPercentage_for_ready = 0;
+                var setting_MinimumPaymentPercentage_for_ready = db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_MinimumPaymentPercentage_for_ReadyToDesign).SingleOrDefault();
+                if (setting_MinimumPaymentPercentage_for_ready != null)
+                {
+                    MinimumPaymentPercentage_for_ready = setting_MinimumPaymentPercentage_for_ready.Se_Value.ToInt();
+                }
+                #endregion
                 familyId = familyId.ToDecodeNumber();
                 fDate = fDate.ToEnglishNumber();
                 TypePhotography = TypePhotography.ToDecodeNumber();
@@ -248,7 +256,7 @@ namespace AdakStudio
                 if (factor_status.ToLong() == DefaultDataIDs.FactorStatus_ReadyForDesign)
                 {
                     SumPaidPrice = FactorId > 0 ? SumPaidPrice : PaidPrice;
-                    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice == 0 && ((DiscountPrice * 100) / SumPriceWithoutGift) < 50)
+                    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice == 0 && ((DiscountPrice * 100) / SumPriceWithoutGift) < MinimumPaymentPercentage_for_ready)
                     {
                         return new
                         {
@@ -256,7 +264,7 @@ namespace AdakStudio
                             Message = "فاکتور هیچ پرداختی ای نداشته است اجازه ثبت فاکتور با وضعیت آماده به طراحی رو ندارید"
                         };
                     }
-                    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice > 0 && (((SumPaidPrice + DiscountPrice) * 100) / SumPriceWithoutGift) < 50)
+                    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice > 0 && (((SumPaidPrice + DiscountPrice) * 100) / SumPriceWithoutGift) < MinimumPaymentPercentage_for_ready)
                     {
                         return new
                         {
@@ -508,7 +516,7 @@ namespace AdakStudio
                     Message = "شناسه مشخص نیست"
                 };
             }
-            if (SubjectTypePay<=0)
+            if (SubjectTypePay <= 0)
             {
                 return new
                 {

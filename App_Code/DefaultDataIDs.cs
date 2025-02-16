@@ -76,6 +76,7 @@ public class DefaultDataIDs
     #region SettingKeys
     public static string Setting_ApiKeyKavenegar { get; set; } = "ApiKeyKavenegar";
     public static string Setting_SenderKavenegar { get; set; } = "SenderKavenegar";
+    public static string Setting_MinimumPaymentPercentage_for_ReadyToDesign { get; set; } = "MinimumPaymentPercentage_for_ready-to-design";
     #endregion
 
 
