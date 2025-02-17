@@ -18,6 +18,10 @@ namespace AdakStudio
         {
 
         }
+        public string StudioName()
+        {
+            return AdakDB.Db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_Studio_Name).SingleOrDefault().Se_Value;
+        }
         [WebMethod]
         public static dynamic RegenerateCaptchaImage()
         {

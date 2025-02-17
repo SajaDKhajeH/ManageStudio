@@ -200,11 +200,6 @@ namespace AdakStudio
                         }
                     }
                 }
-                //برای خانواده هایی که در بیمارستان ثبت میکنند پیامک ارسال می شود
-                if (FromHospital)
-                {
-                    SetSMS.Wellcome_To_Family_FromHospital(title, f_mobile, m_mobile, (FamilyId ?? 0), db);
-                }
                 db.Transaction.Commit();
                 db.Connection.Close();
                 db.Connection.Dispose();

@@ -225,7 +225,7 @@
 
                 <!-- Followups Tab -->
                 <div class="tab-content" id="followupsTab">
-                  <span style="color:red">این قسمت برای شما غیرفعال هست</span>
+                  <span style="color:red">این قسمت در دست طراحی هست</span>
                 </div>
             </div>
         </div>

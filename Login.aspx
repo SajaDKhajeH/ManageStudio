@@ -5,7 +5,7 @@
 <html lang="en" direction="rtl" dir="rtl" style="direction: rtl">
 <head>
     <base href="../../../">
-    <title>سامانه محیا</title>
+    <title>سامانه مدیریت آتلیه</title>
     <meta name="description" content="" />
     <meta name="keywords" content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,18 +47,18 @@
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
                 <!--begin::Logo-->
                 <a class="mb-15">
-                    <img alt="Logo" src="assets/logo/logo.jpeg" class="h-150px" />
+                    <img alt="Logo" src="Files/Logo/logo.jpeg" class="h-150px" />
                 </a>
                 <!--end::Logo-->
                 <!--begin::Wrapper-->
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <div class="text-center mb-10">
                         <!--begin::Title-->
-                        <h1 class="text-dark mb-3">ورود به سامانه محیا</h1>
+                        <h1 class="text-dark mb-3"><%Response.Write(StudioName()); %></h1>
                     </div>
 
                     <!-- انتخاب نوع کاربر -->
-                    <div class="fv-row mb-10">
+                    <%-- <div class="fv-row mb-10">
 
                         <div class="row g-9 mb-7">
                             <div class="col-md-6 fv-row">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
 
                     <!-- فرم ورود پرسنل -->
                     <div id="staff-login" class="user-login">
@@ -263,11 +263,11 @@
         var username = $("#username").val();
         var password = $("#password").val();
         var phoneNumber = $("#phone").val();
-        var staffSelect = $("#ra_staff").prop("checked");
+        var staffSelect = true;// $("#ra_staff").prop("checked");
         $.ajax({
             type: "POST",
             url: "Api/Login/Login",
-            data: "{UserName:'" + username + "',Password:'" + password + "',Mobile:'" + phoneNumber + "',LoginPersonnel:" + staffSelect+"}",
+            data: "{UserName:'" + username + "',Password:'" + password + "',Mobile:'" + phoneNumber + "',LoginPersonnel:" + staffSelect + "}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (res) {
