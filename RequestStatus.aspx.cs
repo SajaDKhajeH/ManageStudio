@@ -198,18 +198,6 @@ namespace AdakStudio
             }
 
             AdakDB.Db.usp_FactorChangeStatus(factorId.ToLong(), sourceFS.ToLong(), DesFS.ToLong(), LoginedUser.Id, updateDesigner, designerId.ToLong(), ref mes, ref haserror);
-            if (haserror == 0 && sourceFS.ToLong() == DefaultDataIDs.FactorStatus_WaitForAcceptCustomer)
-            {
-                SetSMS.WaitForAcceptCustomer(factorId.ToLong(), AdakDB.Db);
-            }
-            else if (haserror == 0 && sourceFS.ToLong() == DefaultDataIDs.FactorStatus_ReadyToDelivered)
-            {
-                var facinfo = AdakDB.Db.usp_Factor_Select_By_Id(factorId.ToLong()).SingleOrDefault();
-                if (!(facinfo.F_OnlyEditedDelivered ?? false))//آماده به تحویل فقط زمانی ارسال میشه که فایل چاپی هم داشته باشد
-                {
-                    SetSMS.ReadyToDeliveredFactor(factorId.ToLong(), AdakDB.Db);
-                }
-            }
             return new
             {
                 Result = haserror == 0,

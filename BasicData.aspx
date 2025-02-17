@@ -241,12 +241,17 @@
                         else {
                             defaultsms.style.visibility = 'hidden';
                         }
-                        //if (result.ShowState == true) {
-                        //    state.style.visibility = 'visible';
-                        //}
-                        //else {
-                        //    state.style.visibility = 'hidden';
-                        //}
+                        //ارسال پیام به آقا یا خانم
+                        if (result.Show_SendFor_Men_Or_Women ?? false) {
+                            div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
+                            $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
+                            if (d_id == "") {
+                                $("#d_defaultsms").val(result.DefaultSMS);
+                            }
+                        }
+                        else {
+                            div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
+                        }
                         if (result.ShowPriority == true) {
                             div_priority.style.visibility = 'visible';
                         }
@@ -262,18 +267,21 @@
             });
         });
         function ResetFeilds() {
-            state.style.visibility = 'hidden';
             defaultsms.style.visibility = 'hidden';
             $("#d_title").val("");
             d_id = "";
-            $("#d_pariority").val("");
             $("#d_active").prop("checked", true);
             //$("#d_desc").val("");
             $("#model_basicDataHeader").text("ثبت اطلاعات پایه ");
             $("#d_defaultsms").val("");
             $("#d_DurationForSend").val("");
+            div_DurationForSend.style.visibility = 'hidden';
+            div_DescForUser.style.visibility = 'hidden';
+            div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
             document.getElementById("div_typeData").style.display = "block";
             document.getElementById("div_priority").style.display = 'block';
+            $("#d_pariority").val("");
+            
         };
         function DeleteBasicData(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
@@ -363,7 +371,6 @@
                 }
             });
         };
-
     </script>
     <%-- این قسمت مربوط به دیتاتیبل هست --%>
     <script type="text/javascript">
