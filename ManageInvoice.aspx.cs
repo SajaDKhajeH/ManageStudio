@@ -481,7 +481,7 @@ namespace AdakStudio
                 };
 
                 //string url = $"files/temp/{Guid.NewGuid().ToString("N")}.jpg";
-                string url = $"files/temp/{id}.jpg";
+                string url = $"Files/Factors/{id}.jpg";
                 bool ok = AdakStiReportBuilder.WithName("invoice.mrt")
                      .WithData(data)
                      .WithVaiables(variables)

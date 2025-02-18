@@ -43,6 +43,10 @@ public class AdakStiReportBuilder
         using (MemoryStream ms = new MemoryStream())
         {
             Report.ExportDocument(StiExportFormat.Image, ms);
+            if (File.Exists(HttpContext.Current.Server.MapPath(path)))
+            {
+                File.Delete(HttpContext.Current.Server.MapPath(path));
+            }
             File.WriteAllBytes(HttpContext.Current.Server.MapPath(path), ms.ToArray());
         }
         Report.Dispose();
