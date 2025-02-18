@@ -105,12 +105,12 @@
                                 </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <button id="filterBtn" class="btn btn-primary w-100">اعمال فیلتر</button>
+                                    <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
                                 </div>
                                 <div class="col-md-2">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-danger me-2 open-modal-btn" onclick="openModalProduct()" data-bs-toggle="modal" data-bs-target="#addEditProducts" id="openModalBtn">افزودن کالا</button>
+                                    <button class="btn btn-primary me-2 open-modal-btn" onclick="openModalProduct()" data-bs-toggle="modal" data-bs-target="#addEditProducts" id="openModalBtn">افزودن کالا</button>
                                 </div>
                             </div>
 

@@ -735,14 +735,6 @@ namespace Bank
 			return ((ISingleResult<usp_Cost_Select_For_GridResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_For_Grid")]
-		public ISingleResult<usp_Data_Select_For_GridResult> usp_Data_Select_For_Grid([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, typeId, outCount, page, perPage);
-			outCount = ((System.Nullable<int>)(result.GetParameterValue(2)));
-			return ((ISingleResult<usp_Data_Select_For_GridResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_TypeId")]
 		public ISingleResult<usp_Data_Select_By_TypeIdResult> usp_Data_Select_By_TypeId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId)
 		{
@@ -1190,6 +1182,14 @@ namespace Bank
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_For_Grid")]
+		public ISingleResult<usp_Data_Select_For_GridResult> usp_Data_Select_For_Grid([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, typeId, outCount, page, perPage);
+			outCount = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			return ((ISingleResult<usp_Data_Select_For_GridResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -6941,140 +6941,6 @@ namespace Bank
 		}
 	}
 	
-	public partial class usp_Data_Select_For_GridResult
-	{
-		
-		private string _D_Title;
-		
-		private string _D_Desc;
-		
-		private bool _D_Active;
-		
-		private string _ActiveText;
-		
-		private long _D_Id;
-		
-		private string _TypeTitle;
-		
-		private System.Nullable<int> _D_Priority;
-		
-		public usp_Data_Select_For_GridResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string D_Title
-		{
-			get
-			{
-				return this._D_Title;
-			}
-			set
-			{
-				if ((this._D_Title != value))
-				{
-					this._D_Title = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Desc", DbType="NVarChar(1001)")]
-		public string D_Desc
-		{
-			get
-			{
-				return this._D_Desc;
-			}
-			set
-			{
-				if ((this._D_Desc != value))
-				{
-					this._D_Desc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Active", DbType="Bit NOT NULL")]
-		public bool D_Active
-		{
-			get
-			{
-				return this._D_Active;
-			}
-			set
-			{
-				if ((this._D_Active != value))
-				{
-					this._D_Active = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActiveText", DbType="NVarChar(7) NOT NULL", CanBeNull=false)]
-		public string ActiveText
-		{
-			get
-			{
-				return this._ActiveText;
-			}
-			set
-			{
-				if ((this._ActiveText != value))
-				{
-					this._ActiveText = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Id", DbType="BigInt NOT NULL")]
-		public long D_Id
-		{
-			get
-			{
-				return this._D_Id;
-			}
-			set
-			{
-				if ((this._D_Id != value))
-				{
-					this._D_Id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string TypeTitle
-		{
-			get
-			{
-				return this._TypeTitle;
-			}
-			set
-			{
-				if ((this._TypeTitle != value))
-				{
-					this._TypeTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Priority", DbType="Int")]
-		public System.Nullable<int> D_Priority
-		{
-			get
-			{
-				return this._D_Priority;
-			}
-			set
-			{
-				if ((this._D_Priority != value))
-				{
-					this._D_Priority = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_Data_Select_By_TypeIdResult
 	{
 		
@@ -11674,6 +11540,158 @@ namespace Bank
 				if ((this._D_DescForUser != value))
 				{
 					this._D_DescForUser = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Data_Select_For_GridResult
+	{
+		
+		private string _D_Title;
+		
+		private string _D_Desc;
+		
+		private bool _D_Active;
+		
+		private string _ActiveText;
+		
+		private long _D_Id;
+		
+		private string _TypeTitle;
+		
+		private System.Nullable<int> _D_Priority;
+		
+		private bool _D_Systematic;
+		
+		public usp_Data_Select_For_GridResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string D_Title
+		{
+			get
+			{
+				return this._D_Title;
+			}
+			set
+			{
+				if ((this._D_Title != value))
+				{
+					this._D_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Desc", DbType="NVarChar(1001)")]
+		public string D_Desc
+		{
+			get
+			{
+				return this._D_Desc;
+			}
+			set
+			{
+				if ((this._D_Desc != value))
+				{
+					this._D_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Active", DbType="Bit NOT NULL")]
+		public bool D_Active
+		{
+			get
+			{
+				return this._D_Active;
+			}
+			set
+			{
+				if ((this._D_Active != value))
+				{
+					this._D_Active = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActiveText", DbType="NVarChar(7) NOT NULL", CanBeNull=false)]
+		public string ActiveText
+		{
+			get
+			{
+				return this._ActiveText;
+			}
+			set
+			{
+				if ((this._ActiveText != value))
+				{
+					this._ActiveText = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Id", DbType="BigInt NOT NULL")]
+		public long D_Id
+		{
+			get
+			{
+				return this._D_Id;
+			}
+			set
+			{
+				if ((this._D_Id != value))
+				{
+					this._D_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypeTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string TypeTitle
+		{
+			get
+			{
+				return this._TypeTitle;
+			}
+			set
+			{
+				if ((this._TypeTitle != value))
+				{
+					this._TypeTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Priority", DbType="Int")]
+		public System.Nullable<int> D_Priority
+		{
+			get
+			{
+				return this._D_Priority;
+			}
+			set
+			{
+				if ((this._D_Priority != value))
+				{
+					this._D_Priority = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D_Systematic", DbType="Bit NOT NULL")]
+		public bool D_Systematic
+		{
+			get
+			{
+				return this._D_Systematic;
+			}
+			set
+			{
+				if ((this._D_Systematic != value))
+				{
+					this._D_Systematic = value;
 				}
 			}
 		}

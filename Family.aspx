@@ -110,7 +110,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button id="filterBtn" class="btn btn-primary w-100">اعمال فیلتر</button>
+                                <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
                             </div>
                         </div>
                         <div class="row mb-3">
