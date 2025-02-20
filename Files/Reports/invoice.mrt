@@ -22,6 +22,7 @@
     <Relations isList="true" count="0" />
     <Report isRef="0" />
     <Resources isList="true" count="0" />
+    <UserFunctions isList="true" count="0" />
     <Variables isList="true" count="8">
       <value>,Date,Date,,System.String,,False,False,False,False,,_x0039_28fd8366ad747038629332609955bef</value>
       <value>,FamilyTitle,FamilyTitle,,System.String,,False,False,False,False,,e91fbc3d4f3b4237a90c20fd3635e4b5</value>
@@ -35,6 +36,7 @@
   </Dictionary>
   <EngineVersion>EngineV2</EngineVersion>
   <GlobalizationStrings isList="true" count="0" />
+  <Key>989ae35ebecc4344872a1d05fdbbaa45</Key>
   <MetaTags isList="true" count="0" />
   <Pages isList="true" count="1">
     <Page1 Ref="3" type="Page" isKey="true">
@@ -51,9 +53,9 @@
               <ClientRectangle>0,0,9.83,0.89</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Top</DockStyle>
-              <Font>Arial,18</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,18</Font>
               <HorAlignment>Center</HorAlignment>
-              <Margins>0,0,0,0</Margins>
               <Name>Text1</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
@@ -65,6 +67,7 @@
             </Text1>
           </Components>
           <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
           <Name>PageHeaderBand1</Name>
           <Page isRef="3" />
           <Parent isRef="3" />
@@ -83,6 +86,7 @@
                   <ClientRectangle>0,0,0.2,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Left</DockStyle>
+                  <Expressions isList="true" count="0" />
                   <Font>Arial,14.25</Font>
                   <Guid>6d5f898924504cd6b3458b811cb9c2a5</Guid>
                   <HorAlignment>Right</HorAlignment>
@@ -100,6 +104,7 @@
                   <ClientRectangle>9.63,0,0.2,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
+                  <Expressions isList="true" count="0" />
                   <Font>Arial,14.25</Font>
                   <Guid>2834a02ec7eb41f7a1a0d7c5d6584e58</Guid>
                   <HorAlignment>Right</HorAlignment>
@@ -117,7 +122,8 @@
                   <ClientRectangle>9.13,0,0.5,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>5425cb5e65c04569b69d9f2a0c00b3fc</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -135,7 +141,8 @@
                   <ClientRectangle>0.2,0,1.2,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Left</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>c3f12f100eea4aa0b2386e3852307881</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -153,7 +160,8 @@
                   <ClientRectangle>1.4,0,0.5,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Left</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>dcaa9a342b88456383341564013db54d</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -171,7 +179,8 @@
                   <ClientRectangle>1.9,0,0.8,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Left</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>745554b904834a678119e7b02da08c50</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -188,7 +197,8 @@
                   <Brush>Transparent</Brush>
                   <ClientRectangle>7.2,0,1.93,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>afbe8e3e1e024125a0e76403706d275c</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -205,7 +215,8 @@
                   <Brush>Transparent</Brush>
                   <ClientRectangle>2.7,0,4.48,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>83ce96750df94333877ff1e6cf8c6ee3</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -220,6 +231,7 @@
               </Components>
               <Conditions isList="true" count="0" />
               <DockStyle>Bottom</DockStyle>
+              <Expressions isList="true" count="0" />
               <Name>Panel3</Name>
               <Page isRef="3" />
               <Parent isRef="6" />
@@ -235,7 +247,8 @@
                   <ClientRectangle>9.15,0,0.68,0.36</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>3d5d2399be0c43a8925777b70a183e85</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -255,7 +268,8 @@
                   <ClientRectangle>2.56,0,6.59,0.36</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>1ba95353ba2e459e9e2b8a7318add486</Guid>
                   <HorAlignment>Center</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -275,7 +289,8 @@
                   <ClientRectangle>1.78,0,0.78,0.36</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>2ab432fd01504f0caa6a59e5a612d018</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -295,7 +310,8 @@
                   <ClientRectangle>0.4,0,1.38,0.36</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>68e1fbd51a5543af90d2e39c2d521778</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -312,6 +328,7 @@
               </Components>
               <Conditions isList="true" count="0" />
               <DockStyle>Top</DockStyle>
+              <Expressions isList="true" count="0" />
               <Name>Panel4</Name>
               <Page isRef="3" />
               <Parent isRef="6" />
@@ -322,7 +339,8 @@
               <ClientRectangle>9.05,0.36,0.78,0.43</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Right</DockStyle>
-              <Font>Arial,14.25,Bold</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25,Bold</Font>
               <Guid>52f4467985994a81ae9b11fe6f2b517d</Guid>
               <HorAlignment>Right</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -342,7 +360,8 @@
               <ClientRectangle>0.16,0.36,8.89,0.43</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Right</DockStyle>
-              <Font>Arial,14.25,Bold</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25,Bold</Font>
               <Guid>5f85583c812c4d76b304a823aeae7b7c</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -358,6 +377,7 @@
             </Text6>
           </Components>
           <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
           <Name>ReportTitleBand1</Name>
           <Page isRef="3" />
           <Parent isRef="3" />
@@ -373,6 +393,7 @@
               <ClientRectangle>0,0,0.2,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Left</DockStyle>
+              <Expressions isList="true" count="0" />
               <Font>Arial,14.25</Font>
               <Guid>8bb8d45171fe4c8a90bab3781f2ec437</Guid>
               <HorAlignment>Right</HorAlignment>
@@ -390,6 +411,7 @@
               <ClientRectangle>9.63,0,0.2,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Right</DockStyle>
+              <Expressions isList="true" count="0" />
               <Font>Arial,14.25</Font>
               <Guid>fea7146593fe490ba85a7c67532b10fd</Guid>
               <HorAlignment>Right</HorAlignment>
@@ -407,7 +429,8 @@
               <ClientRectangle>9.13,0,0.5,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Right</DockStyle>
-              <Font>Arial,14.25</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25</Font>
               <Guid>bb0129dc4a2b491693d7d09c7a20eb3f</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -425,7 +448,8 @@
               <ClientRectangle>0.2,0,1.2,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Left</DockStyle>
-              <Font>Arial,14.25</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25</Font>
               <Guid>a18eda63ab3c46c1b5a2ff18485d9a01</Guid>
               <HorAlignment>Right</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -450,7 +474,8 @@
               <ClientRectangle>1.4,0,0.5,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Left</DockStyle>
-              <Font>Arial,14.25</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25</Font>
               <Guid>6798ec9efde64b07be21661d76070ec2</Guid>
               <HorAlignment>Right</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -468,7 +493,8 @@
               <ClientRectangle>1.9,0,0.8,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
               <DockStyle>Left</DockStyle>
-              <Font>Arial,14.25</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25</Font>
               <Guid>f879f8a1b8784afeb7e0acc0c3a61e23</Guid>
               <HorAlignment>Right</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -492,7 +518,8 @@
               <Brush>Transparent</Brush>
               <ClientRectangle>7.2,0,1.93,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
-              <Font>Arial,14.25</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,14.25</Font>
               <Guid>eb6c34c82e7b4b63a0745b9171ca5d73</Guid>
               <HorAlignment>Right</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -510,7 +537,8 @@
               <Brush>Transparent</Brush>
               <ClientRectangle>2.7,0,4.48,0.32</ClientRectangle>
               <Conditions isList="true" count="0" />
-              <Font>Arial,12,Regular,Point,False,0</Font>
+              <Expressions isList="true" count="0" />
+              <Font>IRANSansWeb,12</Font>
               <Guid>cf4cac895eb645a99d41c595c6f2099e</Guid>
               <HorAlignment>Right</HorAlignment>
               <Margins>0,5,0,0</Margins>
@@ -527,6 +555,7 @@
           <Conditions isList="true" count="0" />
           <DataRelationName isNull="true" />
           <DataSourceName>Data</DataSourceName>
+          <Expressions isList="true" count="0" />
           <Filters isList="true" count="0" />
           <Name>DataBand1</Name>
           <Page isRef="3" />
@@ -548,6 +577,7 @@
                   <ClientRectangle>0,0,0.2,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Left</DockStyle>
+                  <Expressions isList="true" count="0" />
                   <Font>Arial,14.25</Font>
                   <Guid>9ee3d623127e455eb9513af672c5f940</Guid>
                   <HorAlignment>Right</HorAlignment>
@@ -565,6 +595,7 @@
                   <ClientRectangle>9.63,0,0.2,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <DockStyle>Right</DockStyle>
+                  <Expressions isList="true" count="0" />
                   <Font>Arial,14.25</Font>
                   <Guid>acc0a5cb11a3488b8b6b344b54b63b30</Guid>
                   <HorAlignment>Right</HorAlignment>
@@ -581,7 +612,8 @@
                   <Brush>Transparent</Brush>
                   <ClientRectangle>7.3,0,1.53,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>13dadc284f344e7aa0215becd06a0321</Guid>
                   <HorAlignment>Center</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -605,7 +637,8 @@
                   <Brush>Transparent</Brush>
                   <ClientRectangle>8.8,0,0.73,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>5604021a23ba42c09aa245d2385752e7</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -621,9 +654,10 @@
                 <Text4 Ref="41" type="Text" isKey="true">
                   <Border>Adv[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];2;None;False;4;[0:0:0:0]</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>4.9,0,1.43,0.32</ClientRectangle>
+                  <ClientRectangle>4.9,0,1.33,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>0dcdcfc7388149898110309e99a4911b</Guid>
                   <HorAlignment>Center</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -645,9 +679,10 @@
                 <Text22 Ref="43" type="Text" isKey="true">
                   <Border>Adv[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];1;None;[31:73:125];3;Solid;False;4;[0:0:0:0]</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>6.3,0,0.78,0.32</ClientRectangle>
+                  <ClientRectangle>6.2,0,0.88,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>bf5e0f40d396455c928ab78b4dc2df03</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -663,9 +698,10 @@
                 <Text37 Ref="44" type="Text" isKey="true">
                   <Border>Adv[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];1;Solid;[31:73:125];3;Solid;False;4;[0:0:0:0]</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>2.8,0.02,1.37,0.32</ClientRectangle>
+                  <ClientRectangle>2.7,0.02,1.37,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>c8b2e3d9beaa4cdcb71dcce14336e85b</Guid>
                   <HorAlignment>Center</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -687,9 +723,10 @@
                 <Text36 Ref="46" type="Text" isKey="true">
                   <Border>Adv[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];1;None;[31:73:125];3;Solid;False;4;[0:0:0:0]</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>4.17,0.02,0.66,0.32</ClientRectangle>
+                  <ClientRectangle>4.07,0.02,0.66,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>dcef1e62d0044dbeb631dde064d9e2cd</Guid>
                   <HorAlignment>Right</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -705,9 +742,10 @@
                 <Text35 Ref="47" type="Text" isKey="true">
                   <Border>Adv[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];2;None;False;4;[0:0:0:0]</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>0.2,0.02,1.8,0.32</ClientRectangle>
+                  <ClientRectangle>0.2,0.02,1.6,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>9f9666ec6b9d4dd991484d665cae8504</Guid>
                   <HorAlignment>Center</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -729,9 +767,10 @@
                 <Text38 Ref="49" type="Text" isKey="true">
                   <Border>Adv[31:73:125];3;Solid;[31:73:125];3;Solid;[31:73:125];1;Solid;[31:73:125];3;Solid;False;4;[0:0:0:0]</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>2,0.02,0.7,0.32</ClientRectangle>
+                  <ClientRectangle>1.8,0.02,0.7,0.32</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Arial,14.25,Bold</Font>
+                  <Expressions isList="true" count="0" />
+                  <Font>IRANSansWeb,14.25,Bold</Font>
                   <Guid>bd1b1c364526475c97614a3698d861a4</Guid>
                   <HorAlignment>Center</HorAlignment>
                   <Margins>0,5,0,0</Margins>
@@ -747,18 +786,21 @@
               </Components>
               <Conditions isList="true" count="0" />
               <DockStyle>Top</DockStyle>
+              <Expressions isList="true" count="0" />
               <Name>Panel6</Name>
               <Page isRef="3" />
               <Parent isRef="34" />
             </Panel6>
           </Components>
           <Conditions isList="true" count="0" />
+          <Expressions isList="true" count="0" />
           <Name>ReportSummaryBand1</Name>
           <Page isRef="3" />
           <Parent isRef="3" />
         </ReportSummaryBand1>
       </Components>
       <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
       <Guid>eb259068a6634e71a92eaa4070c7e0c0</Guid>
       <Margins>0.22,0.22,0.22,0.22</Margins>
       <Name>Page1</Name>
@@ -768,13 +810,8 @@
       <PaperSize>A5</PaperSize>
       <Report isRef="0" />
       <RightToLeft>True</RightToLeft>
-      <Watermark Ref="50" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
-        <Font>Arial,100</Font>
-        <TextBrush>[50:0:0:0]</TextBrush>
-      </Watermark>
     </Page1>
   </Pages>
-  <PrinterSettings Ref="51" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
   <ReferencedAssemblies isList="true" count="8">
     <value>System.Dll</value>
     <value>System.Drawing.Dll</value>
@@ -786,14 +823,13 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>12/23/2024 2:20:12 PM</ReportChanged>
+  <ReportChanged>2/20/2025 12:34:38 PM</ReportChanged>
   <ReportCreated>4/10/2017 2:01:14 AM</ReportCreated>
-  <ReportFile />
-  <ReportGuid>3e885695429444ffbf837a4be23c1de4</ReportGuid>
-  <ReportImage isNull="true" />
+  <ReportFile>C:\Users\pahlavandoost\source\repos\ManageStudio\Files\Reports\invoice.mrt</ReportFile>
+  <ReportGuid>ba7a7b6d63254e33b20761379da580ed</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
-  <ReportVersion>2017.2.2.0</ReportVersion>
+  <ReportVersion>2025.1.2.0</ReportVersion>
   <Script>using System;
 using System.Drawing;
 using System.Windows.Forms;
