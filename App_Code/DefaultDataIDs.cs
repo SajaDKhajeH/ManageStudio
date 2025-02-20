@@ -39,6 +39,7 @@ public class DefaultDataIDs
     public static int DataType_CostType = 13;
     public static int DataType_Location = 15;
     public static int DataType_State = 1;
+    public static int DataType_DefaultSMS = 7;
     /// <summary>
     /// وضعیت فاکتور آماده برای طراحی
     /// </summary>

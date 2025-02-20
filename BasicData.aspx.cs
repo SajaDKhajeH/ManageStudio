@@ -223,7 +223,7 @@ namespace AdakStudio
                     ShowDefaultSMS = (dtype.DT_ShowDefaultSMS ?? false),
                     ShowState = (dtype.DT_ShowState ?? false),
                     ShowPriority = (dtype.DT_ShowPariority ?? false),
-                    Show_SendFor_Men_Or_Women = typeId.ToInt() == DefaultDataIDs.DataType_FactorStatus,
+                    Show_SendFor_Men_Or_Women = typeId.ToInt() == DefaultDataIDs.DataType_FactorStatus || typeId.ToInt() == DefaultDataIDs.DataType_DefaultSMS,
                     DefaultSMS = "خانواده {{عنوان خانواده}} عزیز " + Environment.NewLine + " سفارش شما در مرحله {{عنوان وضعیت}} قرار گرفته است"
                 };
 

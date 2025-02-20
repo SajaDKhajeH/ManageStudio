@@ -244,8 +244,8 @@
                         //ارسال پیام به آقا یا خانم
                         if (result.Show_SendFor_Men_Or_Women ?? false) {
                             div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
-                            $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
                             if (d_id == "") {
+                                $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
                                 $("#d_defaultsms").val(result.DefaultSMS);
                             }
                         }
