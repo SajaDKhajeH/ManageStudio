@@ -22,18 +22,17 @@ namespace AdakStudio
             {
                 Response.Redirect("Logout.aspx");
             }
-            if (LoginedUser.Role!=DefaultDataIDs.Role_Admin)
+            if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
             {
                 Response.Redirect("Dashboard.aspx");
             }
         }
-
         [WebMethod]
         public static dynamic DeletePersonnel(string id)
         {
             try
             {
-                if (id.ToLong()<=0)
+                if (id.ToLong() <= 0)
                 {
                     return new
                     {
@@ -77,6 +76,9 @@ namespace AdakStudio
                 }
                 var pInfo = AdakDB.Db.usp_Personnel_Select_By_Id(id.ToLong()).SingleOrDefault();
                 pInfo = pInfo ?? new Bank.usp_Personnel_Select_By_IdResult();
+
+
+
                 return new
                 {
                     Result = true,
@@ -84,14 +86,15 @@ namespace AdakStudio
                     firstname = pInfo.P_Name,
                     lastname = pInfo.P_LastName,
                     mobile = pInfo.P_Mobile,
-                    pass = pInfo.P_Password,
+                    pass = (pInfo.P_RoleId != DefaultDataIDs.Role_Admin || pInfo.P_Id == LoginedUser.Id) ? pInfo.P_Password : "",
                     username = pInfo.UserName,
                     phone = pInfo.P_Phone,
                     address = pInfo.P_Address,
                     maxdiscount = pInfo.P_MaxPercentForSetDiscount ?? 0,
                     desc = pInfo.P_Desc,
                     sex = pInfo.P_Sex,
-                    active = pInfo.P_Active
+                    active = pInfo.P_Active,
+                    ShowPass = pInfo.P_RoleId != DefaultDataIDs.Role_Admin || pInfo.P_Id == LoginedUser.Id
                 };
 
             }
@@ -268,7 +271,6 @@ namespace AdakStudio
             }
 
         }
-
     }
     public class PersonnelForGrid
     {

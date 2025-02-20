@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 fv-row">
-                                <input id="p_maxdiscount" maxlength="15" class="form-control form-control-solid" placeholder="حداکثر اعمال تخفیف"  value="" />
+                                <input id="p_maxdiscount" maxlength="15" class="form-control form-control-solid" placeholder="حداکثر اعمال تخفیف" value="" />
                             </div>
                         </div>
                         <div class="fv-row mb-15">
@@ -247,6 +247,7 @@
         var p_Id = "";
         var regex = new RegExp('^(\\+98|0)?9\\d{9}$');
         var d_showCall_A_discount = document.getElementById('div_showCall_A_discount');
+        var p_Pass = document.getElementById('p_pass');
         $("#btn_submitdata").click(function (e) {
             var firstname = $("#p_firstname").val();
             var lastname = $("#p_lastname").val();
@@ -317,6 +318,7 @@
             $("#p_sex").prop("checked", true);
             $("#p_desc").val("");
             d_showCall_A_discount.style.visibility = 'visible';
+            p_Pass.style.visibility = 'visible';
         };
         $("#p_role").change(function (e) {
             var roleid = $("#p_role").val();
@@ -398,6 +400,7 @@
                         $("#p_active").prop("checked", result.active);
                         $("#p_sex").prop("checked", result.sex);
                         $("#p_desc").val(result.desc);
+                        p_Pass.style.visibility = result.ShowPass ? 'visible' : 'hidden';
                     }
                 },
                 error: function () {
