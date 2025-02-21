@@ -78,7 +78,7 @@ namespace AdakStudio
                 <div class='action-buttons'>
                       " + (((x.F_SumPrice - x.F_SumDiscountPrice - (x.PaidPrice ?? 0)) ?? 0) > 0 ? @"<button class='btnDataTable btnDataTable-print' data-bs-toggle='modal' data-bs-target='#m_SetPaidPrice' onclick='PayFactor_Or_Turn(" + x.F_Id + @"," + ((x.F_SumPrice - x.F_SumDiscountPrice - (x.PaidPrice ?? 0)) ?? 0) + @",1)' title='پرداخت'>💰</button>" : "") + @"  
                         <button class='btnDataTable btnDataTable-print' onclick='PrintFactor(" + x.F_Id + @")' title='چاپ'>🖨</button>
-                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#m_SetFactor' onclick='GetInfoForEditFactor(" + x.F_Id + @")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-edit' onclick='GoToAddEditFactor(" + x.F_Id + @")' title='ویرایش'>✎</button>
                         <button class='btnDataTable btnDataTable-delete' onclick='FactorDelete(" + x.F_Id + @")' title='حذف'>🗑</button>
                 </div>
                 "
@@ -130,7 +130,7 @@ namespace AdakStudio
         }
         [WebMethod]
         public static dynamic SetFactor(
-                    string factorId, string familyId, string fDate, string discountPrice, string paidPrice, string paidType, string refNumber, List<ProductDetails> products, string factor_desc,
+                    long factorId, string familyId, string fDate, string discountPrice, string paidPrice, string paidType, string refNumber, List<ProductDetails> products, string factor_desc,
                     string TypePhotography, string factor_status, string PhotographerId, bool ForceDesign, bool OnlyEditedDelivered
             )
         {
@@ -238,7 +238,7 @@ namespace AdakStudio
                 }
                 bool IsEdit = false;
                 long? FamilyId = familyId.ToLong();
-                long? FactorId = factorId.IsNullOrEmpty() || factorId == "0" ? 0 : factorId.ToLong();
+                long? FactorId = factorId;
                 long OldFactorStatus = 0;
                 //ثبت فاکتور
                 decimal SumPrice = products.Sum(a => a.price * a.quantity);

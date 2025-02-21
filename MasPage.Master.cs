@@ -35,19 +35,6 @@ namespace AdakStudio
                     htmls += @"<button class='child-button' onclick='addItem(" + pro[i].Pro_ID + @"," + pro[i].SalePrice + @",""" + pro[i].Pro_Title + @""",""" + g.PG_Title + @""")'>" + pro[i].Pro_Title + @"</button>";
                 }
                 htmls += "</div>";
-                //string groupId = "PG_" + g.PG_ID;
-                //htmls += @"<div class='group'>";
-                //htmls += @"<button onclick='toggleGroupItems(" + groupId + @")'>" + g.PG_Title + @"</button>";
-                //htmls += @"<ul name='ProductGroups' id='" + groupId + @"' style='display:none;'>";
-                //var pro = products.Where(a => a.Pro_GroupId == g.PG_ID).ToList();
-                //pro = pro ?? new List<Bank.usp_Product_Select_for_Set_FactorResult>();
-                //for (int i = 0; i < pro.Count; i++)
-                //{
-                //    htmls += @"<li>" + pro[i].Pro_Title + @"
-                //                    <button onclick='addItem(" + pro[i].Pro_ID + @"," + pro[i].SalePrice + @",""" + pro[i].Pro_Title + @""")'>افزودن</button>
-                //               </li>";
-                //}
-                //htmls += "</ul></div>";
             }
             return htmls;
         }

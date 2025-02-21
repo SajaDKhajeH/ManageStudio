@@ -302,45 +302,7 @@
                 });
             }
         };
-        function GetInfoForEditFactor(id) {
-            factorId = id;
-            $.ajax({
-                type: "POST",
-                url: "ManageInvoice.aspx/GetFactorInfo",
-                data: JSON.stringify({
-                    id: id
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        $("#factor_Family").val(res.FamilyCodeId);
-                        $("#factor_Date").val(res.FactorInfo.F_Date);
-                        $("#factor_desc").val(res.FactorInfo.F_Desc);
-                        $("#factor_discountPercent").val(res.FactorInfo.F_DiscountPercent);
-                        $("#header_modalSetFactor").text("ویرایش فاکتور " + res.FactorInfo.FamilyTitle);
-                        document.getElementById('factor_PaidPrice').style.display = 'none';
-                        document.getElementById('factor_PaidType').style.display = 'none';
-                        document.getElementById('factor_RefNumber').style.display = 'none'
-                        document.getElementById('factor_Family').style.display = 'none'
-                        Productitems = res.FactorDetails;
-                        document.getElementById("factor_TypePhotography").value = res.TypePhotographiId;
-                        document.getElementById("factor_status").value = res.FactorStatusId;
-                        document.getElementById("factor_Photographer").value = res.PhotographerId;
-                        $("#factor_ForceDesign").prop("checked", res.FactorInfo.F_ForceDesign);
-                        $("#factor_OnlyEditedDelivered").prop("checked", res.FactorInfo.F_OnlyEditedDelivered);
-                        updateTable();
-                    }
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        };
+        
         function PrintFactor(id) {
             $.ajax({
                 type: "POST",
@@ -363,7 +325,9 @@
                 }
             });
         };
-        
+        function GoToAddEditFactor(id) {
+            window.open("AddEditFactor.aspx?id=" + id, '_blank');
+        }
         $(document).ready(function () {
             $("#master_PageTitle").text("مدیریت فاکتور");
             $("#s_pageSize").val("5");

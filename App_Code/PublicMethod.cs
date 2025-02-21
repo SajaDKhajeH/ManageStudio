@@ -20,6 +20,27 @@ public class PublicMethod
                 <option value='1000000'>همه موارد</option>";
         return html;
     }
+    public static string GetProducts()
+    {
+        string htmls = "";
+        var groups = AdakDB.Db.usp_ProductGroup_Select_Active().ToList();
+        groups = groups ?? new List<Bank.usp_ProductGroup_Select_ActiveResult>();
+        var products = AdakDB.Db.usp_Product_Select_for_Set_Factor().ToList();
+        products = products ?? new List<Bank.usp_Product_Select_for_Set_FactorResult>();
+        foreach (var g in groups)
+        {
+            htmls += @"<button class='button' onclick='toggleChildButtons(this)'>" + g.PG_Title + @"</button>";
+            var pro = products.Where(a => a.Pro_GroupId == g.PG_ID).OrderBy(a => a.Pro_Priority).ToList();
+            pro = pro ?? new List<Bank.usp_Product_Select_for_Set_FactorResult>();
+            htmls += @"<div class='child-buttons'>";
+            for (int i = 0; i < pro.Count; i++)
+            {
+                htmls += @"<button class='child-button' onclick='addItem(" + pro[i].Pro_ID + @"," + pro[i].SalePrice + @",""" + pro[i].Pro_Title + @""",""" + g.PG_Title + @""")'>" + pro[i].Pro_Title + @"</button>";
+            }
+            htmls += "</div>";
+        }
+        return htmls;
+    }
     public static string GetState()
     {
         string htmls = "<option>انتخاب استان</option>";
@@ -270,5 +291,16 @@ public class PublicMethod
     public static string Tag_A_for_Family(string Title, string Id)
     {
         return @"<a style='color: blue;text-decoration: underline;cursor: pointer' onclick='HideBtnAdd_Family(""" + Id + @""")' data-bs-toggle='modal' data-bs-target='#modal_addedit_family'>" + Title + @"</a>";
+    }
+    public static string GetActiveCustomer(bool allowNull = false)
+    {
+        string htmls = allowNull ? "<option>انتخاب خانواده</option>" : "";
+        var family = AdakDB.Db.usp_Family_Select_ForCombo().ToList();
+        family = family ?? new List<Bank.usp_Family_Select_ForComboResult>();
+        foreach (var item in family)
+        {
+            htmls += "<option value='" + item.F_ID.ToCodeNumber() + "'>" + item.FamilyTitle + "</option>";
+        }
+        return htmls;
     }
 }

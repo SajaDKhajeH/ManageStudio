@@ -802,7 +802,7 @@
                             <div class="d-flex align-items-center flex-shrink-0">
                                 <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
                                     { %>
-                                <button class="btn btn-primary me-2  open-modal-btn" onclick="openModalSetFactor()" data-bs-toggle="modal" data-bs-target="#m_SetFactor" id="openModalBtn">ثبت فاکتور</button>
+                                <button class="btn btn-primary me-2" onclick="GoToAddEditFactor()" id="gotoFactor">ثبت فاکتور</button>
                                 <button class="btn btn-primary open-modal-btn" onclick="ResetFeildsFamily()" data-bs-toggle="modal" data-bs-target="#modal_addedit_family" id="Btn_AddRequest">ثبت مشتری</button>
                                 <%} %>
                                 <button class="btn btn-primary open-modal-btn" id="btnEditRequestModal" data-bs-toggle="modal" data-bs-target="#appointmentModal" style="display: none">ویرایش درخواست</button>
@@ -879,7 +879,7 @@
         </div>
     </div>
     <!-- Modal Structure -->
-    <div class="modal fade" id="m_SetFactor">
+    <%--<div class="modal fade" id="m_SetFactor">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header" id="kt_modal_add_customer_header">
@@ -1000,7 +1000,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
 
     <!--end::Main-->
 
@@ -1290,8 +1290,6 @@
     <script>
         var requestIdForEditTurnDate_A_Time = 0;
         var btn_AddEditRequeest = "btn_AddEditRequeest";
-        var btn_SetFactor = "btn_SetFactor";
-
         // باز کردن مدال
         function openModalRequest(id = 0, time = "", date = "", turnType = "", desc = "", cost = 0, duration = 0, locationId = "") {
             requestIdForEditTurnDate_A_Time = id;
@@ -1399,190 +1397,6 @@
                 }
             });
         }
-    </script>
-    <script>
-        function toggleGroupItems(groupId) {
-            // const group = document.getElementById(groupId);
-            groupId.style.display = groupId.style.display === "none" ? "block" : "none";
-        }
-
-        let Productitems = [];
-
-        function addItem(Id, price, title, gtitle) {
-            const existingItem = Productitems.find(item => item.ProductId == Id);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                Productitems.push({ title, price, quantity: 1, notes: "", ProductId: Id, FCId: 0, GTitle: gtitle, ShotCount: 0, Gift: false });
-            }
-            updateTable();
-        }
-        function updateTable() {
-            const tbody = document.getElementById("itemTableBody");
-            tbody.innerHTML = "";
-
-            let total = 0;
-            Productitems.forEach((item, index) => {
-                if (item.Gift == null || item.Gift == undefined || item.Gift == false) {
-                    total += item.price * item.quantity;
-                }
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                <td><input onclick="UpdateIsGift(${index},this.checked)" name="IsGift" class="form-check-input" type="checkbox" ${item.Gift ? "checked" : ""}/></td>
-                <td>${item.GTitle}-${item.title}</td>
-                <td><input type="number" value="${item.quantity}" min="1" max="100" onchange="updateQuantity(${index}, this.value)"></td>
-                <td><input type="text" value="${CurrencyFormatted(item.price)}" min="1" max="100000000" disabled></td>
-                <td><textarea onchange="updateNotes(${index}, this.value)">${item.notes}</textarea></td>
-                <td><input type="number" maxlength="110" value="${item.ShotCount}" onchange="updateShotCount(${index}, this.value)"></td>
-                <td><button onclick="removeItem(${index})">حذف</button></td>
-            `;
-                tbody.appendChild(row);
-            });
-
-            var discount = document.getElementById("factor_discountPercent").value;
-            var paidPrice = document.getElementById("factor_PaidPrice").value;
-            paidPrice = paidPrice.replaceAll(",", "");
-            discount = discount.replaceAll(",", "");
-            const payable = total - parseInt(discount) - parseInt(paidPrice);
-
-            document.getElementById("totalAmount").textContent = CurrencyFormatted(total);
-            document.getElementById("discountAmount").textContent = CurrencyFormatted(discount);
-            document.getElementById("paidAmount").textContent = CurrencyFormatted(paidPrice);
-            document.getElementById("payableAmount").textContent = CurrencyFormatted(payable);
-        }
-
-        function updateQuantity(index, quantity) {
-            Productitems[index].quantity = parseInt(quantity, 10);
-            updateTable();
-        }
-        function updateShotCount(index, shotCount) {
-            Productitems[index].ShotCount = parseInt(shotCount, 10);
-        }
-        function updateProductPrice(index, price) {
-            Productitems[index].price = parseInt(price, 1000);
-            updateTable();
-        }
-        function UpdateIsGift(index, checked) {
-            Productitems[index].Gift = checked;
-            updateTable();
-        }
-
-        function updateNotes(index, notes) {
-            Productitems[index].notes = notes;
-        }
-        function removeItem(index) {
-            Productitems.splice(index, 1);
-            updateTable();
-        }
-        function openModalSetFactor() {
-            const tbody = document.getElementById("itemTableBody");
-            tbody.innerHTML = "";
-            factorId = "";
-            Productitems = [];
-            document.getElementById("totalAmount").textContent = 0;
-            document.getElementById("discountAmount").textContent = 0;
-            document.getElementById("payableAmount").textContent = 0;
-            document.getElementById("paidAmount").textContent = 0;
-            document.getElementById("factor_discountPercent").value = "0";
-            document.getElementById("factor_PaidPrice").value = "0";
-            document.getElementById("factor_desc").value = "";
-            document.getElementById("factor_TypePhotography").value = "";
-            document.getElementById("factor_status").value = "";
-            document.getElementById("factor_Photographer").value = "";
-            document.getElementById("div_Pay_A_Discount").style.display = "block";
-            $("#factor_ForceDesign").prop("checked", false);
-            $("#factor_OnlyEditedDelivered").prop("checked", false);
-            $("#header_modalSetFactor").text("ثبت فاکتور ");
-            document.getElementById('factor_PaidPrice').style.display = 'block';
-            document.getElementById('factor_PaidType').style.display = 'block';
-            document.getElementById('factor_RefNumber').style.display = 'block'
-            document.getElementById('factor_Family').style.display = 'block'
-        }
-    </script>
-    <!--اسکریپ مربوط به مدال ثبت فاکتور -->
-    <script>
-        var factorId = "";
-        const closeModalBtn = document.getElementById('closeModalBtnFactorModals');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const modalSetFactor = document.getElementById('m_SetFactor');
-        function closeModal() {
-            $('#m_SetFactor').modal('hide');
-            factorId = "";
-        };
-        function closeModalRerquest() {
-            $('#m_SetFactor').modal('hide');
-            factorId = "";
-        };
-
-        function SetFactor() {
-            var factor_Family = $("#factor_Family").val();
-            var factor_Date = $("#factor_Date").val();
-            var factor_desc = $("#factor_desc").val();
-            var factor_discountPrice = $("#factor_discountPercent").val();
-            var factor_PaidPrice = $("#factor_PaidPrice").val();
-            factor_PaidPrice = factor_PaidPrice.replaceAll(",", "");
-            factor_discountPrice = factor_discountPrice.replaceAll(",", "");
-            var factor_PaidType = $("#factor_PaidType").val();
-            var factor_RefNumber = $("#factor_RefNumber").val();
-            var TypePhotography = document.getElementById("factor_TypePhotography").value;
-            var factor_status = document.getElementById("factor_status").value;
-            var PhotographerId = document.getElementById("factor_Photographer").value;
-            var ForceDesign = $("#factor_ForceDesign").prop("checked");
-            var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
-            btnAddEdit_ChangeDisable(btn_SetFactor, true);
-            $.ajax({
-                type: "POST",
-                url: "ManageInvoice.aspx/SetFactor",
-                data: JSON.stringify({
-                    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
-                    paidPrice: factor_PaidPrice, paidType: factor_PaidType, refNumber: factor_RefNumber, products: Productitems, factor_desc: factor_desc,
-                    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId, ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    btnAddEdit_ChangeDisable(btn_SetFactor, false);
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        toastr.success(msg.d.Message, "موفق");
-                        closeModal();
-                        if (msg.d.AddFactor) {
-                            const userResponse = confirm("آیا مایل به ذخیره فایل فاکتور هستین؟");
-                            if (userResponse) {
-                                PrintFactor(msg.d.FactorId);
-                            }
-                        }
-                        loadTableDataFacotrs();
-                    }
-                },
-                error: function () {
-                    btnAddEdit_ChangeDisable(btn_SetFactor, false);
-                    alert("error");
-                }
-            });
-        };
-
-        // Close Modal
-        closeModalBtn.onclick = () => {
-            factorId = "";
-            modalSetFactor.style.display = 'none';
-            $('#m_SetFactor').modal('hide');
-        };
-
-        cancelBtn.onclick = () => {
-            factorId = "";
-            modalSetFactor.style.display = 'none';
-            $('#m_SetFactor').modal('hide');
-        };
-
-        // Close modal if the user clicks outside the modal
-        window.onclick = (event) => {
-            if (event.target === modalSetFactor) {
-                modalSetFactor.style.display = 'none';
-            }
-        };
     </script>
     <!--begin::Global Javascript Bundle(used by all pages)-->
 
@@ -1874,6 +1688,9 @@
         });
     </script>
     <script type="text/javascript">
+        function GoToAddEditFactor() {
+            window.open("AddEditFactor.aspx?id=0", '_blank');
+        }
         // تابع خروج از سیستم
         function logout() {
             window.location.href = "Logout.aspx";
@@ -1888,24 +1705,19 @@
                 dataType: "json",
                 success: function (msg) {
                     var list = msg.d;
-                    var factor_Family_Select = $('#factor_Family');
+                    //var factor_Family_Select = $('#factor_Family');
                     var turn_family_Select = $('#turn_family');
-                    factor_Family_Select.empty();
+                    //factor_Family_Select.empty();
                     turn_family_Select.empty();
-                    list.forEach(option => {
-                        const newOption = new Option(option.Title, option.Value, false, false);
-                        factor_Family_Select.append(newOption);
-                    });
                     list.forEach(option => {
                         const newOption = new Option(option.Title, option.Value, false, false);
                         turn_family_Select.append(newOption);
                     });
 
-                    factor_Family_Select.select2();
+                    //factor_Family_Select.select2();
                     turn_family_Select.select2();
-
                     if (list.length > 0) {
-                        factor_Family_Select.val(list[0].Value).trigger('change');
+                        //factor_Family_Select.val(list[0].Value).trigger('change');
                         turn_family_Select.val(list[0].Value).trigger('change');
                     }
                 },
@@ -1987,15 +1799,13 @@
         };
         function addFamily_FromHospital_Setting(GotoPage) {
             if (GotoPage) {
-                document.getElementById("openModalBtn").style.display = "none";
+                document.getElementById("gotoFactor").style.display = "none";
                 document.getElementById("Btn_AddRequest").style.display = "none";
                 document.getElementById("kt_aside_toggle").click();
                 document.getElementById("kt_aside").style.display = "none";
-
-
             }
             else {
-                document.getElementById("openModalBtn").style.display = "block";
+                document.getElementById("gotoFactor").style.display = "block";
                 document.getElementById("Btn_AddRequest").style.display = "block";
                 document.getElementById("kt_aside").style.display = "block";
             }
