@@ -373,7 +373,7 @@ namespace AdakStudio
                             };
                         }
                         long? PaidId = 0;
-                        db.usp_FactorPaid_Add(FactorId, fDate, PaidPrice, paidType.ToInt(), refNumber, null, DateTime.Now.TimeOfDay, CauserId, ref mes, ref hasError, ref PaidId);
+                        db.usp_Paids_Add(FactorId, 1, fDate, PaidPrice, paidType.ToInt(), refNumber, null, DateTime.Now.TimeOfDay, CauserId, ref mes, ref hasError, ref PaidId);
                         if (hasError == 1)
                         {
                             CloseConnectios(db);
