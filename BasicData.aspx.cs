@@ -21,10 +21,9 @@ namespace AdakStudio
             {
                 Response.Redirect("Logout.aspx");
             }
-            string pageName = System.IO.Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
-            if (!AdakDB.Db.ufn_CheckPermission(pageName + ".aspx", LoginedUser.Id))
+            if (LoginedUser.Role != DefaultDataIDs.Role_Admin && LoginedUser.Role != DefaultDataIDs.Role_Secretary)
             {
-                Response.Redirect("Logout.aspx");
+                Response.Redirect("Dashboard.aspx");
             }
         }
 
