@@ -21,9 +21,10 @@ namespace AdakStudio
             {
                 Response.Redirect("Logout.aspx");
             }
-            if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
+            string pageName = System.IO.Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
+            if (!AdakDB.Db.ufn_CheckPermission(pageName + ".aspx", LoginedUser.Id))
             {
-                Response.Redirect("Dashboard.aspx");
+                Response.Redirect("Logout.aspx");
             }
         }
 
@@ -262,7 +263,7 @@ namespace AdakStudio
                 Actions = @"
                 <div class='action-buttons'>
                         <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_customer' onclick='EditBasicData(""" + x.D_Id.ToCodeNumber() + @""")' title='ویرایش'>✎</button>
-                        " + (!x.D_Systematic ? @"<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData(""" + x.D_Id.ToCodeNumber() + @""")' title='حذف'>🗑</button>" : "")+@"
+                        " + (!x.D_Systematic ? @"<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData(""" + x.D_Id.ToCodeNumber() + @""")' title='حذف'>🗑</button>" : "") + @"
                 </div>
                 "
             })); ; ;
