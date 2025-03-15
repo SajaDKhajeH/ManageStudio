@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="KidsStudio" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=sql.nscom.ir,1429;Initial Catalog=KidsStudio;User ID=KidsStudio;Encrypt=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="KidsStudioConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_Demo" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_Demo;User ID=Studio_Demo" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="J_AdakStudioConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Tbl_AuthKey" Member="Tbl_AuthKeys">
     <Type Name="Tbl_AuthKey">
       <Column Name="AK_ID" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1675,5 +1675,26 @@
       <Column Name="D_Priority" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="D_Systematic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Page_Select" Method="usp_Page_Select">
+    <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Page_SelectResult">
+      <Column Name="P_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="P_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Url" Type="System.String" DbType="VarChar(1001)" CanBeNull="true" />
+      <Column Name="P_Sort" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HasPermission" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Permission_Add" Method="usp_Permission_Add">
+    <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="PageIds" Parameter="pageIds" Type="System.String" DbType="VarChar(1001)" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.ufn_CheckPermission" Method="ufn_CheckPermission" IsComposable="true">
+    <Parameter Name="PageName" Parameter="pageName" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Boolean" />
   </Function>
 </Database>
