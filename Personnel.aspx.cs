@@ -18,14 +18,6 @@ namespace AdakStudio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (LoginedUser.Id <= 0)
-            {
-                Response.Redirect("Logout.aspx");
-            }
-            if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
-            {
-                Response.Redirect("Dashboard.aspx");
-            }
         }
         [WebMethod]
         public static dynamic DeletePersonnel(string id)

@@ -12,14 +12,6 @@ public partial class Cost : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (LoginedUser.Id <= 0)
-        {
-            Response.Redirect("Logout.aspx");
-        }
-        if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
-        {
-            Response.Redirect("Logout.aspx");
-        }
     }
     [WebMethod]
     public static dynamic AddEditCost(long id, string PaidFrom, string PaidPrice, string CostType, string PaidType, string RefNumber, string desc, string PaidTo, string PaidDate)

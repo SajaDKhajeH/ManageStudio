@@ -9,14 +9,6 @@ public partial class Permission : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (LoginedUser.Id <= 0)
-        {
-            Response.Redirect("Logout.aspx");
-        }
-        if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
-        {
-            Response.Redirect("Logout.aspx");
-        }
     }
 
     public static string GetPersonnels()

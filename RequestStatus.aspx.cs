@@ -14,10 +14,6 @@ namespace AdakStudio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (LoginedUser.Role == DefaultDataIDs.Role_PhotographerInHospital)
-            {
-                Response.Redirect("AddFamilyFromHospital.aspx");
-            }
         }
         [WebMethod]
         public static dynamic GetFactors(string searchText, string fromdate, string todate, string causer)

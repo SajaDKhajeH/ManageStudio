@@ -16,13 +16,27 @@ namespace AdakStudio
             {
                 Response.Redirect("Logout.aspx");
             }
-            if (LoginedUser.Role==DefaultDataIDs.Role_Secretary)
+            string pageName = System.IO.Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
+            if (LoginedUser.Role == DefaultDataIDs.Role_Secretary)
             {
-                string pageName = System.IO.Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
-                if (!AdakDB.Db.ufn_CheckPermission(pageName + ".aspx", LoginedUser.Id))
+                if (!(AdakDB.Db.ufn_CheckPermission(pageName + ".aspx", LoginedUser.Id) ?? false))
                 {
                     Response.Redirect("Logout.aspx");
                 }
+            }
+            else if (
+                        (
+                        LoginedUser.Role == DefaultDataIDs.Role_Designer ||
+                        LoginedUser.Role == DefaultDataIDs.Role_DesignSupervisor ||
+                        LoginedUser.Role == DefaultDataIDs.Role_Photographer
+                        ) && pageName != "RequestStatus"
+                    ) 
+            {
+                Response.Redirect("Logout.aspx");
+            }
+            else if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
+            {
+                Response.Redirect("Logout.aspx");
             }
         }
         protected string GetProducts()
