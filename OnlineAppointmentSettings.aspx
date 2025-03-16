@@ -21,7 +21,7 @@
                                 <div class="col-md-3">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-primary me-2 open-modal-btn" onclick="ResetFeildsSetting()" data-bs-toggle="modal" data-bs-target="#modal_AddEditOnlineTurnSetting">افزودن اطلاعات</button>
+                                    <button class="btn btn-primary me-2 open-modal-btn" onclick="ResetFeildsSetting()" data-bs-toggle="modal" data-bs-target="#AddEditOnlineTurnSetting">افزودن اطلاعات</button>
                                 </div>
                             </div>
                             <table class="table table-striped table-hover table-bordered">
@@ -59,12 +59,12 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modal_AddEditOnlineTurnSetting"  tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="AddEditOnlineTurnSetting"  tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered mw-950px">
             <div class="modal-content">
-                <div class="modal-header" id="modal_AddEditOnlineTurnSetting_header">
-                    <h2 class="fw-bolder" id="model_OnlineTurnSettingHeader">افزون اطلاعات</h2>
-                    <div id="btn_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                <div class="modal-header">
+                    <h2 class="fw-bolder" id="OnlineTurnSettingHeader">افزون اطلاعات</h2>
+                    <div onclick="closeModalOnlineTurnSetting()" class="btn btn-icon btn-sm btn-active-icon-primary">
                         <span class="svg-icon svg-icon-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
@@ -75,7 +75,7 @@
                     </div>
                     <!--end::Close-->
                 </div>
-                <div class="modal-body py-10 px-lg-17">
+                <div class="modal-body">
                     <!--begin::Scroll-->
                     <div class="scroll-y me-n7 pe-7">
                         <div class="row g-9 mb-7">
@@ -200,10 +200,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer flex-center">
+               <%-- <div class="modal-footer flex-center"  id="div_btnAddOnlineTurnSetting">
                     <button onclick="AddEdit()" class="btn btn-primary">ثبت اطلاعات</button>
                     <button id="btncancel" class="btn btn-light me-3">انصراف</button>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -246,7 +246,7 @@
                     }
                     else {
                         toastr.success(msg.d.Message, "موفق");
-                        closeModal();
+                        closeModalOnlineTurnSetting();
                         loadTableSettings();
                     }
                 },
@@ -260,20 +260,17 @@
                 }
             });
         };
-        $('#btn_close').click(function () {
-            closeModal();
-        });
         $('#btncancel').click(function () {
-            closeModal();
+            closeModalOnlineTurnSetting();
         });
-        function closeModal() {
-            $('#modal_AddEditOnlineTurnSetting').modal('hide');
+        function closeModalOnlineTurnSetting() {
+            $('#AddEditOnlineTurnSetting').modal('hide');
         };
         function ResetFeildsSetting() {
             $("#ots_title").val("");
             ots_Id = 0;
             $("#ots_active").prop("checked", true);
-            $("#model_OnlineTurnSettingHeader").text("ثبت تنظیمات نوبت دهی ");
+            $("#OnlineTurnSettingHeader").text("ثبت تنظیمات نوبت دهی ");
             $("#ots_depositeamount").val("0");
             $("#ots_fromdate").val("");
             $("#ots_todate").val("");
@@ -327,7 +324,7 @@
                     else {
                         $("#ots_title").val(result.Title);
                         $("#ots_active").prop("checked", result.Active);
-                        $("#model_OnlineTurnSettingHeader").text("ویرایش " + result.Title);
+                        $("#OnlineTurnSettingHeader").text("ویرایش " + result.Title);
                         $("#ots_depositeamount").val(result.DepositeAmount);
                         $("#ots_fromdate").val(result.FromDate);
                         $("#ots_todate").val(result.ToDate);

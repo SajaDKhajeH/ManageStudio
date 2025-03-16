@@ -166,7 +166,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
             Status = x.OTS_Active ? "<div class='badge badge-light-success'>فعال</div>" : "<div class='badge badge-light-danger'>غیرفعال</div>",
             Actions = @"
                 <div class='action-buttons'>
-                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#modal_AddEditOnlineTurnSetting' onclick='EditSettings(" + x.OTS_Id + @")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#AddEditOnlineTurnSetting' onclick='EditSettings(" + x.OTS_Id + @")' title='ویرایش'>✎</button>
                         <button class='btnDataTable btnDataTable-delete' onclick='DeleteOnlineAppointmentSettings(" + x.OTS_Id + @")' title='حذف'>🗑</button>
                 </div>
                 "
