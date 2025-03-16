@@ -28,7 +28,6 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker/css/timepicker.min.css">
 
-
     <style>
         @font-face {
             font-family: 'ISW';
@@ -1196,7 +1195,7 @@
                             </div>
                             <div class="col-md-4 fv-row">
                                 <select id="f_InviteType">
-                                    <%Response.Write(PublicMethod.GetInviteType());%>
+                                    <%Response.Write(PublicMethod.GetInviteType());%>
                                 </select>
                             </div>
                             <div class="col-md-4 fv-row">

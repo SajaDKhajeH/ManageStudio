@@ -1,354 +1,419 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="OnlineAppointmentSettings.aspx.cs" Inherits="OnlineAppointmentSettings" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="Head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
-    <!--begin::Container-->
-    <div id="kt_content_container" class="container-xxl">
-        <div class="card">
-            <div class="card-body pt-0">
-                <div class="container">
-                    <div class="container mt-5">
-                        <div class="row mb-3">
-                            <div class="col-md-2">
-                                <input type="text" id="filterInput" class="form-control" placeholder="جستجو...">
-                            </div>
-                            <div class="col-md-3">
-                                <select id="filter_typeId">
-                                    <%Response.Write(PublicMethod.GetDataType()); %>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
-                            </div>
-                            <div class="col-md-3">
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-primary me-2 open-modal-btn" onclick="ResetFeilds()" data-bs-toggle="modal" data-bs-target="#modal_AddEditOnlineTurnSetting">افزودن اطلاعات</button>
-                            </div>
-                        </div>
-                        <table class="table table-striped table-hover table-bordered">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th class="min-w-120px">نوع</th>
-                                    <th class="min-w-150px">عنوان</th>
-                                    <th class="min-w-150px">اولویت نمایش</th>
-                                    <th class="min-w-130px">وضعیت</th>
-                                    <th class="min-w-130px">عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dt_BasicData">
-                                <!-- داده‌ها به صورت داینامیک اضافه می‌شوند -->
-                            </tbody>
-                        </table>
+        <!--begin::Container-->
+        <div id="kt_content_container" class="container-xxl">
+            <div class="card">
+                <div class="card-body pt-0">
+                    <div class="container">
+                        <div class="container mt-5">
+                            <div class="row mb-3">
+                                <div class="col-md-5">
+                                    <input type="text" id="filterInput" class="form-control" placeholder="جستجو...">
+                                </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
-                            <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
-                            <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
-                            <span>
-                                <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataBasicData()">
-                                    <%Response.Write(PublicMethod.Pagination()); %>
-                                </select>
-                            </span>
-                            <button id="nextPageBtn" class="btn btn-secondary">صفحه بعد</button>
+                                <div class="col-md-2">
+                                    <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary me-2 open-modal-btn" onclick="ResetFeildsSetting()" data-bs-toggle="modal" data-bs-target="#modal_AddEditOnlineTurnSetting">افزودن اطلاعات</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th class="min-w-120px">عنوان</th>
+                                        <th class="min-w-110px">نوع عکاسی</th>
+                                        <th class="min-w-90px">وضعیت</th>
+                                        <th class="min-w-120px">بازه تاریخی</th>
+                                        <th class="min-w-120px">بازه زمانی</th>
+                                        <th class="min-w-110px">مبلغ بیعانه</th>
+                                        <th class="min-w-80px">ظرفیت</th>
+                                        <th class="min-w-130px">عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dt_Settings">
+                                    <!-- داده‌ها به صورت داینامیک اضافه می‌شوند -->
+                                </tbody>
+                            </table>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
+                                <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                                <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
+                                <span>
+                                    <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableSettings()">
+                                        <%Response.Write(PublicMethod.Pagination()); %>
+                                    </select>
+                                </span>
+                                <button id="nextPageBtn" class="btn btn-secondary">صفحه بعد</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="modal_AddEditOnlineTurnSetting" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <div class="modal-content">
-            <div class="modal-header" id="modal_AddEditOnlineTurnSetting_header">
-                <h2 class="fw-bolder" id="model_basicDataHeader">افزون اطلاعات</h2>
-                <div id="btn_close" class="btn btn-icon btn-sm btn-active-icon-primary">
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
-                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                </div>
-                <!--end::Close-->
-            </div>
-            <div class="modal-body py-10 px-lg-17">
-                <!--begin::Scroll-->
-                <div class="scroll-y me-n7 pe-7" id="modal_AddEditOnlineTurnSetting_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_AddEditOnlineTurnSetting_header" data-kt-scroll-wrappers="#modal_AddEditOnlineTurnSetting_scroll" data-kt-scroll-offset="300px">
-                    <div class="fv-row mb-7">
-                        <label class="required fs-6 fw-bold mb-2">عنوان</label>
-                        <input type="text" id="d_title" class="form-control form-control-solid" placeholder="" name="name" />
+    <div class="modal fade" id="modal_AddEditOnlineTurnSetting"  tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-950px">
+            <div class="modal-content">
+                <div class="modal-header" id="modal_AddEditOnlineTurnSetting_header">
+                    <h2 class="fw-bolder" id="model_OnlineTurnSettingHeader">افزون اطلاعات</h2>
+                    <div id="btn_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
                     </div>
-                    <div class="fv-row mb-7">
-                        <div class="d-flex flex-stack">
-                            <label class="form-check form-switch form-check-custom form-check-solid">
-                                <input id="d_active" class="form-check-input" name="billing" type="checkbox" value="1" checked="checked" />
-                                <span class="form-check-label fw-bold text-muted" for="modal_AddEditOnlineTurnSetting_billing">وضعیت</span>
-                            </label>
+                    <!--end::Close-->
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <!--begin::Scroll-->
+                    <div class="scroll-y me-n7 pe-7">
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">عنوان</label>
+                                <input type="text" id="ots_title" class="form-control form-control-solid" placeholder="" name="name" />
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">نوع عکاسی</label>
+                                <select id="ots_turnType">
+                                    <%Response.Write(PublicMethod.GetTypePhotographi());%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">وضعیت نمایش</label>
+                                <div class="d-flex flex-stack">
+                                    <label class="form-check form-switch form-check-custom form-check-solid">
+                                        <input id="ots_active" class="form-check-input" name="billing" type="checkbox" value="1" checked="checked" />
+                                        <span class="form-check-label fw-bold text-muted" for="modal_AddEditOnlineTurnSetting_billing">وضعیت نمایش</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">مبلغ بیعانه</label>
+                                <input type="text" onkeyup="TextFormatPrice(this)" id="ots_depositeamount" class="form-control form-control-solid" placeholder="مبلغ بیعانه" />
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">نمایش از تاریخ</label>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="ots_fromdate" placeholder="از تاریخ">
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">نمایش تا تاریخ</label>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="ots_todate" placeholder="تا تاریخ">
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">نمایش از ساعت</label>
+                                <select id="ots_fromtime">
+                                    <option value="06:00">06:00</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">نمایش تا ساعت</label>
+                                <select id="ots_totime">
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
+                                <select id="ots_TimeEachTurn">
+                                    <option value="30">سی دقیقه</option>
+                                    <option value="45">چهل و پنج دقیقه</option>
+                                    <option value="60">یک ساعت</option>
+                                    <option value="90">یک ساعت و سی دقیقه</option>
+                                    <option value="120">دو ساعت</option>
+                                    <option value="150">دو ساعت و سی دقیقه</option>
+                                    <option value="180">سه ساعت</option>
+                                    <option value="210">سه ساعت و سی دقیقه</option>
+                                    <option value="240">چهار ساعت</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <label class="required fs-6 fw-bold mb-2">ظرفیت</label>
+                                <select id="ots_capacity">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-12 fv-row">
+                                <label class="fs-6 fw-bold mb-2">عکس یا فیلم لوکیشن</label>
+                                <input type="file" class="form-control" id="ots_filepath" name="file-upload" accept="image/*,video/*">
+                            </div>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-12 fv-row">
+                                <label class="fs-6 fw-bold mb-2">توضیحات و قوانین عکاسی</label>
+                                <textarea id="ots_desc" placeholder="توضیحات و قوانین عکاسی" name="myTextarea" rows="15" cols="80" />
+                            </div>
                         </div>
                     </div>
-                    <div class="fv-row mb-7" id="div_priority">
-                        <label class="required fs-6 fw-bold mb-2">اولویت نمایش</label>
-                        <input type="text" id="d_pariority" class="form-control form-control-solid" placeholder="اولویت" />
-                    </div>
-                    <div class="fv-row mb-15" id="div_defaultsms">
-                        <label class="fs-6 fw-bold mb-2">متن پیش فرض</label>
-                        <textarea type="text" id="d_defaultsms" class="form-control form-control-solid" placeholder="" name="description"></textarea>
-                        <label class="fs-6 fw-bold mb-2" id="d_KeywordSMS"></label>
-                    </div>
-                    <div class="fv-row mb-7" id="div_DurationForSend">
-                        <label class="fs-6 fw-bold mb-2" id="d_lbl_DusrationForSend"></label>
-                        <input type="number" id="d_DurationForSend" maxlength="1000" class="form-control form-control-solid" placeholder="مدت زمان" />
-                    </div>
-                    <div class="fv-row mb-15" id="div_DescForUser">
-                        <label class="fs-6 fw-bold mb-2">توضیحات برای کاربر</label>
-                        <textarea id="d_DescForUser" class="form-control form-control-solid" placeholder="" name="description" disabled></textarea>
-                    </div>
                 </div>
-            </div>
-            <div class="modal-footer flex-center">
-                <button id="btn_submitdata" class="btn btn-primary">
-                    <span class="indicator-label">ثبت اطلاعات</span>
-                </button>
-                <button type="reset" id="btncancel" class="btn btn-light me-3">انصراف</button>
-
+                <div class="modal-footer flex-center">
+                    <button onclick="AddEdit()" class="btn btn-primary">ثبت اطلاعات</button>
+                    <button id="btncancel" class="btn btn-light me-3">انصراف</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="End" Runat="Server">
-     <script type="text/javascript">
-     
-     $("#btn_submitdata").click(function (e) {
-         var typeId = $("#d_Typeid").val();
-         var title = $("#d_title").val();
-         var active = $("#d_active").prop("checked");
-         var desc = ""; //$("#d_desc").val();
-         var defulatsms = $("#d_defaultsms").val();
-         var state = "0";// $("#d_stateid").val();
-         var pari = $("#d_pariority").val();
-         var SendForWomen = $("#d_SendForWomen").prop("checked");
-         var SendForMen = $("#d_SendForMen").prop("checked");
-         var DurationForSend = $("#d_DurationForSend").val();
-         if (!ShowDurationForSend) {
-             DurationForSend = "0";
-         }
-         $.ajax({
-             type: "POST",
-             url: "BasicData.aspx/AddEditData",
-             data: "{id:'" + d_id + "',typeId:'" + typeId + "',title:'" + title + "',active:" + active + ",desc:'" + desc + "',defulatsms:'" + defulatsms + "',state:'" + state + "',pari:'" + pari + "',SendForWomen:" + SendForWomen + ",SendForMen:" + SendForMen + ",DurationForSend:'" + DurationForSend + "'}",
-             contentType: "application/json; charset=utf-8",
-             dataType: "json",
-             success: function (msg) {
-                 if (msg.d.Result == false) {//خطا داریم
-                     ShowError(msg.d.Message);
-                 }
-                 else {
-                     toastr.success(msg.d.Message, "موفق");
-                     closeModal();
-                     loadTableDataBasicData();
-                 }
-             },
-             error: function () {
-                 Swal.fire({
-                     type: "error",
-                     title: "خطا",
-                     text: "خطا در ثبت اطلاعات",
-                     confirmButtonText: "متوجه شدم"
-                 });
-             }
-         });
-     });
-     $('#btn_close').click(function () {
-         closeModal();
-     });
-     $('#btncancel').click(function () {
-         closeModal();
-     });
-     function closeModal() {
-         $('#modal_AddEditOnlineTurnSetting').modal('hide');
-     };
-     $("#btn_add").click(function (e) {
-         ResetFeilds();
-     });
-     function ResetFeilds() {
-         defaultsms.style.visibility = 'hidden';
-         $("#d_title").val("");
-         d_id = "";
-         $("#d_active").prop("checked", true);
-         //$("#d_desc").val("");
-         $("#model_basicDataHeader").text("ثبت اطلاعات پایه ");
-         $("#d_defaultsms").val("");
-         $("#d_DurationForSend").val("");
-         div_DurationForSend.style.visibility = 'hidden';
-         div_DescForUser.style.visibility = 'hidden';
-         div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
-         document.getElementById("div_typeData").style.display = "block";
-         document.getElementById("div_priority").style.display = 'block';
-         $("#d_pariority").val("");
-         
-     };
-     function DeleteBasicData(id) {
-         const userResponse = confirm("آیا از حذف مطمئن هستین؟");
-         if (userResponse) {
-             $.ajax({
-                 type: "POST",
-                 url: "BasicData.aspx/DeleteData",
-                 data: "{id:'" + id + "'}",
-                 contentType: "application/json; charset=utf-8",
-                 dataType: "json",
-                 success: function (res) {
-                     var result = res.d;
-                     if (result.Result == false) {//خطا داریم
-                         ShowError(result.Message);
-                     }
-                     else {
-                         loadTableDataBasicData();
-                         toastr.success(result.Message, "موفق");
-                     }
+<asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
+    <script type="text/javascript">
+        var ots_Id = 0;
+        function AddEdit() {
+            alert(1);
+            var title = $("#ots_title").val();
+            var turnType = $("#ots_turnType").val();
+            var active = $("#ots_active").prop("checked");
+            alert(2);
+            var depositeamount = $("#ots_depositeamount").val();
+            depositeamount = depositeamount.replaceAll(",", "");
+            var fromdate = $("#ots_fromdate").val();
+            var todate = $("#ots_todate").val();
+            alert(3);
+            var fromtime = $("#ots_fromtime").val();
+            var totime = $("#ots_totime").val();
+            var TimeEachTurn = $("#ots_TimeEachTurn").val();
+            var capacity = $("#ots_capacity").val();
+            alert(4);
+            var fileInput = $('#ots_filepath')[0];
+            var filepath = fileInput.files.length === 0 ? null : fileInput.files[0];
+            var desc = $("#ots_desc").val();
+            alert(5);
+            $.ajax({
+                type: "POST",
+                url: "OnlineAppointmentSettings.aspx/AddEdit",
+                data: JSON.stringify({
+                    ots_Id, title, turnType, active, depositeamount, fromdate, todate,
+                    fromtime, totime, TimeEachTurn, capacity, filepath, desc
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d.Result == false) {//خطا داریم
+                        ShowError(msg.d.Message);
+                    }
+                    else {
+                        toastr.success(msg.d.Message, "موفق");
+                        closeModal();
+                        loadTableSettings();
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        type: "error",
+                        title: "خطا",
+                        text: "خطا در ثبت اطلاعات",
+                        confirmButtonText: "متوجه شدم"
+                    });
+                }
+            });
+        };
+        $('#btn_close').click(function () {
+            closeModal();
+        });
+        $('#btncancel').click(function () {
+            closeModal();
+        });
+        function closeModal() {
+            $('#modal_AddEditOnlineTurnSetting').modal('hide');
+        };
+        function ResetFeildsSetting() {
+            $("#ots_title").val("");
+            ots_Id = 0;
+            $("#ots_active").prop("checked", true);
+            $("#model_OnlineTurnSettingHeader").text("ثبت تنظیمات نوبت دهی ");
+            $("#ots_depositeamount").val("0");
+            $("#ots_fromdate").val("");
+            $("#ots_todate").val("");
+            $("#ots_fromtime").val("06:00");
+            $("#ots_totime").val("06:00");
+            $("#ots_TimeEachTurn").val("60");
+            $("#ots_capacity").val("1");
+            $("#ots_filepath").files = null;
+            $("#ots_desc").val("");
 
-                 },
-                 error: function () {
-                     alert("error");
-                 }
-             });
-         }
-     };
-     function EditBasicData(id) {
-         $.ajax({
-             type: "POST",
-             url: "BasicData.aspx/EditData",
-             data: "{id:'" + id + "'}",
-             contentType: "application/json; charset=utf-8",
-             dataType: "json",
-             success: function (res) {
-                 var result = res.d;
-                 if (result.Result == false) {//خطا داریم
-                     ShowError(result.Message);
-                 }
-                 else {
-                     d_id = id;
-                     $("#d_title").val(result.title);
-                     $("#d_active").prop("checked", result.active);
-                     //$("#d_desc").val(result.desc);
-                     $("#d_defaultsms").val(result.defaultsms);
-                     //$("#d_stateid").val(result.state);
-                     $("#d_Typeid").val(result.typeId);
-                     $("#d_pariority").val(result.pari);
-                     $("#d_DurationForSend").val(result.D_DurationForSend);
-                     $("#d_DescForUser").val(result.D_DescForUser);
-                     $("#d_lbl_DusrationForSend").text(result.D_Desc_For_DurationForSend);
-                     $("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
-                     $("#d_KeywordSMS").text("کلید واژه ها: " + result.D_SmsKeys);
-                     $("#d_SendForMen").prop("checked", result.D_SendForMen);
-                     $("#d_SendForWomen").prop("checked", result.D_SendForWomen);
-                     document.getElementById("div_typeData").style.display = 'none';
-                     if (result.systematic) {
-                         document.getElementById("div_priority").style.display = 'none';
-                     }
-                     ShowDurationForSend = result.D_ShowDurationForSend ?? false;
-                     //نمایش مدت زمان ارسال پیام
-                     if (result.D_ShowDurationForSend ?? false) {
-                         div_DurationForSend.style.visibility = 'visible';
-                     }
-                     else {
-                         div_DurationForSend.style.visibility = 'hidden';
-                     }
-                     //توضیحات برای کاربر
-                     if (result.ShowDescForUser ?? false) {
-                         div_DescForUser.style.visibility = 'visible';
-                     }
-                     else {
-                         div_DescForUser.style.visibility = 'hidden';
-                     }
-                     //ارسال پیام به آقا یا خانم
-                     if (result.D_Show_SendFor_Men_Or_Women ?? false) {
-                         div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
-                     }
-                     else {
-                         div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
-                     }
-                     $("#d_Typeid").change();
-                 }
-             },
-             error: function () {
-                 ShowError("خطا در دریافت اطلاعات");
-             }
-         });
-     };
- </script>
- <%-- این قسمت مربوط به دیتاتیبل هست --%>
- <script type="text/javascript">
-     let currentPage = 1;
-     let pageSize = 5;
-     $(document).ready(function () {
-         $("#master_PageTitle").text("تنظیمات نوبت دهی آنلاین");
-         $("#s_pageSize").val("5");
+        };
+        function DeleteOnlineAppointmentSettings(id) {
+            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
+            if (userResponse) {
+                $.ajax({
+                    type: "POST",
+                    url: "OnlineAppointmentSettings.aspx/DeleteOnlineAppointmentSettings",
+                    data: "{id:" + id + "}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        var result = res.d;
+                        if (result.Result == false) {//خطا داریم
+                            ShowError(result.Message);
+                        }
+                        else {
+                            loadTableSettings();
+                            toastr.success(result.Message, "موفق");
+                        }
 
-         loadTableDataBasicData();
-         ResetFeilds();
-     });
-     // صفحه بعد
-     $("#nextPageBtn").click(function () {
-         currentPage++;
-         loadTableDataBasicData();
-     });
-     // صفحه قبل
-     $("#prevPageBtn").click(function () {
-         currentPage--;
-         loadTableDataBasicData();
-     });
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        };
+        function EditSettings(id) {
+            ots_Id = id;
+            $.ajax({
+                type: "POST",
+                url: "OnlineAppointmentSettings.aspx/EditSettings",
+                data: "{id:" + id + "}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    var result = res.d;
+                    if (result.Result == false) {//خطا داریم
+                        ShowError(result.Message);
+                    }
+                    else {
+                        $("#ots_title").val(result.Title);
+                        $("#ots_active").prop("checked", result.Active);
+                        $("#model_OnlineTurnSettingHeader").text("ویرایش " + result.Title);
+                        $("#ots_depositeamount").val(result.DepositeAmount);
+                        $("#ots_fromdate").val(result.FromDate);
+                        $("#ots_todate").val(result.ToDate);
+                        $("#ots_fromtime").val(result.FromTime);
+                        $("#ots_totime").val(result.ToTime);
+                        $("#ots_TimeEachTurn").val(result.TimeEachTurn);
+                        $("#ots_capacity").val(result.Capacity);
+                        $("#ots_filepath").files = null;
+                        $("#ots_desc").val(result.Desc);
+                    }
+                },
+                error: function () {
+                    ShowError("خطا در دریافت اطلاعات");
+                }
+            });
+        };
+    </script>
+    <%-- این قسمت مربوط به دیتاتیبل هست --%>
+    <script type="text/javascript">
+        let currentPage = 1;
+        let pageSize = 5;
+        $(document).ready(function () {
+            $("#master_PageTitle").text("تنظیمات نوبت دهی آنلاین");
+            $("#s_pageSize").val("5");
 
-     // اعمال فیلتر
-     $("#filterBtn").click(function () {
-         currentPage = 1;
-         loadTableDataBasicData();
-     });
-     function loadTableDataBasicData() {
-         var searchText = $("#filterInput").val();
-         pageSize = parseInt($("#s_pageSize").val());
-         var filter_typeId = $("#filter_typeId").val();
-         $.ajax({
-             type: "POST",
-             url: "BasicData.aspx/ForGrid",
-             data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: searchText, typeId: filter_typeId }),
-             contentType: "application/json; charset=utf-8",
-             dataType: "json",
-             success: function (response) {
-                 const data = response.d.Data.data;
-                 var totalRecords = response.d.Data.recordsTotal;
-                 const tbody = $("#dt_BasicData");
-                 tbody.empty(); // پاک کردن داده‌های قدیمی
-                 // اضافه کردن داده‌های جدید
-                 data.forEach(row => {
-                     tbody.append(`
+            loadTableSettings();
+            ResetFeildsSetting();
+        });
+        // صفحه بعد
+        $("#nextPageBtn").click(function () {
+            currentPage++;
+            loadTableSettings();
+        });
+        // صفحه قبل
+        $("#prevPageBtn").click(function () {
+            currentPage--;
+            loadTableSettings();
+        });
+
+        // اعمال فیلتر
+        $("#filterBtn").click(function () {
+            currentPage = 1;
+            loadTableSettings();
+        });
+        function loadTableSettings() {
+            var searchText = $("#filterInput").val();
+            pageSize = parseInt($("#s_pageSize").val());
+            $.ajax({
+                type: "POST",
+                url: "OnlineAppointmentSettings.aspx/ForGrid",
+                data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: searchText }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    const data = response.d.Data.data;
+                    var totalRecords = response.d.Data.recordsTotal;
+                    const tbody = $("#dt_Settings");
+                    tbody.empty(); // پاک کردن داده‌های قدیمی
+                    // اضافه کردن داده‌های جدید
+                    data.forEach(row => {
+                        tbody.append(`
                      <tr>
-                         <td>${row.TypeTitle}</td>
                          <td>${row.Title}</td>
-                         <td>${row.Priority}</td>
+                         <td>${row.TurnType}</td>
                          <td>${row.Status}</td>
+                         <td>${row.RangeDate}</td>
+                         <td>${row.RangeTime}</td>
+                         <td>${row.DepositeAmount}</td>
+                         <td>${row.Capacity}</td>
                          <td>${row.Actions}</td>
                      </tr>
                  `);
-                 });
+                    });
 
-                 // بروزرسانی صفحه فعلی
-                 $("#currentPage").text(currentPage);
-                 $("#countAllTable").text(totalRecords);
-                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                 $("#prevPageBtn").prop("disabled", currentPage === 1);
-                 $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
-             },
-             error: function () {
-                 ShowError("خطا در دریافت اطلاعات");
-             }
-         });
-     }
- </script>
+                    // بروزرسانی صفحه فعلی
+                    $("#currentPage").text(currentPage);
+                    $("#countAllTable").text(totalRecords);
+                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
+                    $("#prevPageBtn").prop("disabled", currentPage === 1);
+                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
+                },
+                error: function () {
+                    ShowError("خطا در دریافت اطلاعات");
+                }
+            });
+        }
+    </script>
 </asp:Content>
 

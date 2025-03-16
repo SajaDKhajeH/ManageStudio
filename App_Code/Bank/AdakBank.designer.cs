@@ -1211,6 +1211,81 @@ namespace Bank
 		{
 			return ((System.Nullable<bool>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pageName, personnelId).ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_Add")]
+		public int usp_OnlineTurnSettings_Add(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(110)")] string title, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TimeEachTurn", DbType="Int")] System.Nullable<int> timeEachTurn, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DepositAmount", DbType="Decimal(18,0)")] System.Nullable<decimal> depositAmount, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(MAX)")] string desc, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TurnType", DbType="BigInt")] System.Nullable<long> turnType, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromTime", DbType="Time")] System.Nullable<System.TimeSpan> fromTime, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToTime", DbType="Time")] System.Nullable<System.TimeSpan> toTime, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="Date")] System.Nullable<System.DateTime> fromDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="Date")] System.Nullable<System.DateTime> toDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FilePath", DbType="NVarChar(1001)")] string filePath, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Capacity", DbType="Int")] System.Nullable<int> capacity, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Active", DbType="Bit")] System.Nullable<bool> active, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), title, timeEachTurn, depositAmount, desc, turnType, fromTime, toTime, fromDate, toDate, filePath, capacity, active, causerId, message, hasError, rersultId);
+			message = ((string)(result.GetParameterValue(13)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(14)));
+			rersultId = ((System.Nullable<long>)(result.GetParameterValue(15)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_Delete")]
+		public int usp_OnlineTurnSettings_Delete([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, causerId, message, hasError);
+			message = ((string)(result.GetParameterValue(2)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_Edit")]
+		public int usp_OnlineTurnSettings_Edit(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(110)")] string title, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TimeEachTurn", DbType="Int")] System.Nullable<int> timeEachTurn, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DepositAmount", DbType="Decimal(18,0)")] System.Nullable<decimal> depositAmount, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(MAX)")] string desc, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TurnType", DbType="BigInt")] System.Nullable<long> turnType, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromTime", DbType="Time")] System.Nullable<System.TimeSpan> fromTime, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToTime", DbType="Time")] System.Nullable<System.TimeSpan> toTime, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="Date")] System.Nullable<System.DateTime> fromDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="Date")] System.Nullable<System.DateTime> toDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FilePath", DbType="NVarChar(1001)")] string filePath, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Capacity", DbType="Int")] System.Nullable<int> capacity, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Active", DbType="Bit")] System.Nullable<bool> active, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, title, timeEachTurn, depositAmount, desc, turnType, fromTime, toTime, fromDate, toDate, filePath, capacity, active, causerId, message, hasError);
+			message = ((string)(result.GetParameterValue(14)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(15)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_SelectById")]
+		public ISingleResult<usp_OnlineTurnSettings_SelectByIdResult> usp_OnlineTurnSettings_SelectById([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+			return ((ISingleResult<usp_OnlineTurnSettings_SelectByIdResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_Select_For_Grid")]
+		public ISingleResult<usp_OnlineTurnSettings_Select_For_GridResult> usp_OnlineTurnSettings_Select_For_Grid([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, outCount, page, perPage);
+			outCount = ((System.Nullable<int>)(result.GetParameterValue(1)));
+			return ((ISingleResult<usp_OnlineTurnSettings_Select_For_GridResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
@@ -11810,6 +11885,580 @@ namespace Bank
 				if ((this._HasPermission != value))
 				{
 					this._HasPermission = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_OnlineTurnSettings_SelectByIdResult
+	{
+		
+		private string _OTS_Title;
+		
+		private System.Nullable<int> _OTS_TimeEachTurn;
+		
+		private System.Nullable<long> _OTS_Causer;
+		
+		private System.DateTime _OTS_CreationTime;
+		
+		private System.Nullable<decimal> _OTS_DepositAmount;
+		
+		private string _OTS_Desc;
+		
+		private System.Nullable<long> _OTS_TurnType;
+		
+		private System.Nullable<System.TimeSpan> _OTS_FromTime;
+		
+		private System.Nullable<System.TimeSpan> _OTS_ToTime;
+		
+		private System.Nullable<System.DateTime> _OTS_FromDate;
+		
+		private System.Nullable<System.DateTime> _OTS_ToDate;
+		
+		private string _OTS_FilePath;
+		
+		private System.Nullable<int> _OTS_Capacity;
+		
+		private bool _OTS_Active;
+		
+		public usp_OnlineTurnSettings_SelectByIdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string OTS_Title
+		{
+			get
+			{
+				return this._OTS_Title;
+			}
+			set
+			{
+				if ((this._OTS_Title != value))
+				{
+					this._OTS_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_TimeEachTurn", DbType="Int")]
+		public System.Nullable<int> OTS_TimeEachTurn
+		{
+			get
+			{
+				return this._OTS_TimeEachTurn;
+			}
+			set
+			{
+				if ((this._OTS_TimeEachTurn != value))
+				{
+					this._OTS_TimeEachTurn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Causer", DbType="BigInt")]
+		public System.Nullable<long> OTS_Causer
+		{
+			get
+			{
+				return this._OTS_Causer;
+			}
+			set
+			{
+				if ((this._OTS_Causer != value))
+				{
+					this._OTS_Causer = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime OTS_CreationTime
+		{
+			get
+			{
+				return this._OTS_CreationTime;
+			}
+			set
+			{
+				if ((this._OTS_CreationTime != value))
+				{
+					this._OTS_CreationTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_DepositAmount", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> OTS_DepositAmount
+		{
+			get
+			{
+				return this._OTS_DepositAmount;
+			}
+			set
+			{
+				if ((this._OTS_DepositAmount != value))
+				{
+					this._OTS_DepositAmount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Desc", DbType="NVarChar(MAX)")]
+		public string OTS_Desc
+		{
+			get
+			{
+				return this._OTS_Desc;
+			}
+			set
+			{
+				if ((this._OTS_Desc != value))
+				{
+					this._OTS_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_TurnType", DbType="BigInt")]
+		public System.Nullable<long> OTS_TurnType
+		{
+			get
+			{
+				return this._OTS_TurnType;
+			}
+			set
+			{
+				if ((this._OTS_TurnType != value))
+				{
+					this._OTS_TurnType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_FromTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> OTS_FromTime
+		{
+			get
+			{
+				return this._OTS_FromTime;
+			}
+			set
+			{
+				if ((this._OTS_FromTime != value))
+				{
+					this._OTS_FromTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_ToTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> OTS_ToTime
+		{
+			get
+			{
+				return this._OTS_ToTime;
+			}
+			set
+			{
+				if ((this._OTS_ToTime != value))
+				{
+					this._OTS_ToTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_FromDate", DbType="Date")]
+		public System.Nullable<System.DateTime> OTS_FromDate
+		{
+			get
+			{
+				return this._OTS_FromDate;
+			}
+			set
+			{
+				if ((this._OTS_FromDate != value))
+				{
+					this._OTS_FromDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_ToDate", DbType="Date")]
+		public System.Nullable<System.DateTime> OTS_ToDate
+		{
+			get
+			{
+				return this._OTS_ToDate;
+			}
+			set
+			{
+				if ((this._OTS_ToDate != value))
+				{
+					this._OTS_ToDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_FilePath", DbType="NVarChar(1001)")]
+		public string OTS_FilePath
+		{
+			get
+			{
+				return this._OTS_FilePath;
+			}
+			set
+			{
+				if ((this._OTS_FilePath != value))
+				{
+					this._OTS_FilePath = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Capacity", DbType="Int")]
+		public System.Nullable<int> OTS_Capacity
+		{
+			get
+			{
+				return this._OTS_Capacity;
+			}
+			set
+			{
+				if ((this._OTS_Capacity != value))
+				{
+					this._OTS_Capacity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Active", DbType="Bit NOT NULL")]
+		public bool OTS_Active
+		{
+			get
+			{
+				return this._OTS_Active;
+			}
+			set
+			{
+				if ((this._OTS_Active != value))
+				{
+					this._OTS_Active = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_OnlineTurnSettings_Select_For_GridResult
+	{
+		
+		private string _OTS_Title;
+		
+		private System.Nullable<int> _OTS_TimeEachTurn;
+		
+		private System.Nullable<long> _OTS_Causer;
+		
+		private System.DateTime _OTS_CreationTime;
+		
+		private System.Nullable<decimal> _OTS_DepositAmount;
+		
+		private string _OTS_Desc;
+		
+		private System.Nullable<long> _OTS_TurnType;
+		
+		private System.Nullable<System.TimeSpan> _OTS_FromTime;
+		
+		private System.Nullable<System.TimeSpan> _OTS_ToTime;
+		
+		private System.Nullable<System.DateTime> _OTS_FromDate;
+		
+		private System.Nullable<System.DateTime> _OTS_ToDate;
+		
+		private string _OTS_FilePath;
+		
+		private System.Nullable<int> _OTS_Capacity;
+		
+		private bool _OTS_Active;
+		
+		private long _OTS_Id;
+		
+		private string _TurnTypeTitle;
+		
+		private string _CauserFullName;
+		
+		public usp_OnlineTurnSettings_Select_For_GridResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string OTS_Title
+		{
+			get
+			{
+				return this._OTS_Title;
+			}
+			set
+			{
+				if ((this._OTS_Title != value))
+				{
+					this._OTS_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_TimeEachTurn", DbType="Int")]
+		public System.Nullable<int> OTS_TimeEachTurn
+		{
+			get
+			{
+				return this._OTS_TimeEachTurn;
+			}
+			set
+			{
+				if ((this._OTS_TimeEachTurn != value))
+				{
+					this._OTS_TimeEachTurn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Causer", DbType="BigInt")]
+		public System.Nullable<long> OTS_Causer
+		{
+			get
+			{
+				return this._OTS_Causer;
+			}
+			set
+			{
+				if ((this._OTS_Causer != value))
+				{
+					this._OTS_Causer = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime OTS_CreationTime
+		{
+			get
+			{
+				return this._OTS_CreationTime;
+			}
+			set
+			{
+				if ((this._OTS_CreationTime != value))
+				{
+					this._OTS_CreationTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_DepositAmount", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> OTS_DepositAmount
+		{
+			get
+			{
+				return this._OTS_DepositAmount;
+			}
+			set
+			{
+				if ((this._OTS_DepositAmount != value))
+				{
+					this._OTS_DepositAmount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Desc", DbType="NVarChar(MAX)")]
+		public string OTS_Desc
+		{
+			get
+			{
+				return this._OTS_Desc;
+			}
+			set
+			{
+				if ((this._OTS_Desc != value))
+				{
+					this._OTS_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_TurnType", DbType="BigInt")]
+		public System.Nullable<long> OTS_TurnType
+		{
+			get
+			{
+				return this._OTS_TurnType;
+			}
+			set
+			{
+				if ((this._OTS_TurnType != value))
+				{
+					this._OTS_TurnType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_FromTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> OTS_FromTime
+		{
+			get
+			{
+				return this._OTS_FromTime;
+			}
+			set
+			{
+				if ((this._OTS_FromTime != value))
+				{
+					this._OTS_FromTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_ToTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> OTS_ToTime
+		{
+			get
+			{
+				return this._OTS_ToTime;
+			}
+			set
+			{
+				if ((this._OTS_ToTime != value))
+				{
+					this._OTS_ToTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_FromDate", DbType="Date")]
+		public System.Nullable<System.DateTime> OTS_FromDate
+		{
+			get
+			{
+				return this._OTS_FromDate;
+			}
+			set
+			{
+				if ((this._OTS_FromDate != value))
+				{
+					this._OTS_FromDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_ToDate", DbType="Date")]
+		public System.Nullable<System.DateTime> OTS_ToDate
+		{
+			get
+			{
+				return this._OTS_ToDate;
+			}
+			set
+			{
+				if ((this._OTS_ToDate != value))
+				{
+					this._OTS_ToDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_FilePath", DbType="NVarChar(1001)")]
+		public string OTS_FilePath
+		{
+			get
+			{
+				return this._OTS_FilePath;
+			}
+			set
+			{
+				if ((this._OTS_FilePath != value))
+				{
+					this._OTS_FilePath = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Capacity", DbType="Int")]
+		public System.Nullable<int> OTS_Capacity
+		{
+			get
+			{
+				return this._OTS_Capacity;
+			}
+			set
+			{
+				if ((this._OTS_Capacity != value))
+				{
+					this._OTS_Capacity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Active", DbType="Bit NOT NULL")]
+		public bool OTS_Active
+		{
+			get
+			{
+				return this._OTS_Active;
+			}
+			set
+			{
+				if ((this._OTS_Active != value))
+				{
+					this._OTS_Active = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTS_Id", DbType="BigInt NOT NULL")]
+		public long OTS_Id
+		{
+			get
+			{
+				return this._OTS_Id;
+			}
+			set
+			{
+				if ((this._OTS_Id != value))
+				{
+					this._OTS_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TurnTypeTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string TurnTypeTitle
+		{
+			get
+			{
+				return this._TurnTypeTitle;
+			}
+			set
+			{
+				if ((this._TurnTypeTitle != value))
+				{
+					this._TurnTypeTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauserFullName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
+		public string CauserFullName
+		{
+			get
+			{
+				return this._CauserFullName;
+			}
+			set
+			{
+				if ((this._CauserFullName != value))
+				{
+					this._CauserFullName = value;
 				}
 			}
 		}
