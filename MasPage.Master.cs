@@ -30,7 +30,7 @@ namespace AdakStudio
                         LoginedUser.Role == DefaultDataIDs.Role_DesignSupervisor ||
                         LoginedUser.Role == DefaultDataIDs.Role_Photographer
                         ) && pageName != "RequestStatus"
-                    ) 
+                    )
             {
                 Response.Redirect("Logout.aspx");
             }
@@ -77,6 +77,12 @@ namespace AdakStudio
         {
             var dataInfo = AdakDB.Db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_CancelTurn).SingleOrDefault();
             return dataInfo.D_Active;
+        }
+
+        protected string getMenu()
+        {
+            var menus = AdakDB.Db.usp_Page_Select(LoginedUser.Id);
+            string htmls = "";
         }
     }
 }
