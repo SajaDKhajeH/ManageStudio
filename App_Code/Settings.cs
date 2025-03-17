@@ -24,6 +24,14 @@ public class Settings
             return TextAfterPrice == null ? "ریال" : TextAfterPrice.Se_Value;
         }
     }
+    public static string Website_Url
+    {
+        get
+        {
+            var website_URL = AdakDB.Db.usp_Setting_Select_By_Key("Website_URL").SingleOrDefault();
+            return website_URL?.Se_Value ?? "";
+        }
+    }
     public static string Path_SaveReports
     {
         get

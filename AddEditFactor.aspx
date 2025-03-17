@@ -252,6 +252,7 @@
                 GetInfoForEditFactor(factorId);
             }
             else {
+                factorId = 0;
                 $("#master_PageTitle").text("ثبت فاکتور جدید");
             }
             document.getElementById("gotoFactor").style.visibility = "hidden";
@@ -317,6 +318,7 @@
             $.ajax({
                 type: "POST",
                 url: "ManageInvoice.aspx/PrintFactor",
+                async: false,
                 data: JSON.stringify({
                     id: id
                 }),
@@ -485,6 +487,7 @@
                         ShowError(msg.d.Message);
                     }
                     else {
+                        alert(msg.d.FactorId);
                         toastr.success(msg.d.Message, "موفق");
                         if (factorId==0) {
                             const userResponse = confirm("آیا مایل به ذخیره فایل فاکتور هستین؟");

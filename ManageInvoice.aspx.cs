@@ -471,9 +471,8 @@ namespace AdakStudio
                     { "FactorDesc", factorDetail.FactorDesc },
                     { "FactorTitle", factorDetail.FactorTitle },
                 };
-
                 //string url = $"files/temp/{Guid.NewGuid().ToString("N")}.jpg";
-                string url = $"Files/Factors/{id}.jpg";
+                string url = $"Files/Factors/{factorDetail.UniqueKey}.jpg";
                 bool ok = AdakStiReportBuilder.WithName("invoice.mrt")
                      .WithData(data)
                      .WithVaiables(variables)

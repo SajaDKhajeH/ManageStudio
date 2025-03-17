@@ -15,7 +15,10 @@ public class SetSMS
             var factorInfo = db.usp_Factor_Select_By_Id(FactorId).SingleOrDefault();
             var familyInfo = db.usp_Family_Select_By_Id(factorInfo.F_FamilyId).SingleOrDefault();
             string TextAfterPrice = Settings.TextAfterPrice;
+            string FactorLink = "https://" + Settings.Website_Url + "/" + factorInfo.UniqueKey + ".jpg";
             var sms = db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_AfterSetFactor).FirstOrDefault();
+
+
             if (sms != null && sms.D_Active && !sms.D_DefaultSMSText.IsNullOrEmpty())
             {
                 string text = sms.D_DefaultSMSText;
@@ -26,6 +29,7 @@ public class SetSMS
                 text = text.Replace("{{مجموع تخفیف}}", (factorInfo.F_SumDiscountPrice == null || factorInfo.F_SumDiscountPrice == 0 ? "---" : factorInfo.F_SumDiscountPrice.Value.ShowPrice(TextAfterPrice)));
                 text = text.Replace("{{مجموع پرداختی}}", (factorInfo.F_PaidPrice == null || factorInfo.F_PaidPrice == 0 ? "---" : factorInfo.F_PaidPrice.ShowPrice(TextAfterPrice)));
                 text = text.Replace("{{مانده حساب}}", (ModPrice == 0 ? "---" : ModPrice.ShowPrice(TextAfterPrice)));
+                text = text.Replace("{{لینک فاکتور}}", FactorLink);
                 int? haserror = 0;
                 string mes = "";
                 if (familyInfo.F_MotherMobile.IsMobileNumber())

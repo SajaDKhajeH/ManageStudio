@@ -198,7 +198,6 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
             }
         };
     }
-
     [WebMethod]
     public static dynamic EditSettings(long id)
     {
@@ -243,8 +242,6 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
         }
 
     }
-
-
 }
 public class SettingsForGrid
 {

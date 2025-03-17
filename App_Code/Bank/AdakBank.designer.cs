@@ -498,13 +498,6 @@ namespace Bank
 			return ((ISingleResult<usp_FactorPaid_Select_GridResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.usp_Factor_Detail")]
-		public ISingleResult<usp_Factor_DetailResult> usp_Factor_Detail([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FactorId", DbType="BigInt")] System.Nullable<long> factorId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), factorId);
-			return ((ISingleResult<usp_Factor_DetailResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.usp_Factor_Select_Product")]
 		public ISingleResult<usp_Factor_Select_ProductResult> usp_Factor_Select_Product([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FactorId", DbType="BigInt")] System.Nullable<long> factorId)
 		{
@@ -815,13 +808,6 @@ namespace Bank
 			message = ((string)(result.GetParameterValue(10)));
 			hasError = ((System.Nullable<int>)(result.GetParameterValue(11)));
 			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Factor_Select_By_Id")]
-		public ISingleResult<usp_Factor_Select_By_IdResult> usp_Factor_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
-			return ((ISingleResult<usp_Factor_Select_By_IdResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Factor_Set_Delivered")]
@@ -1285,6 +1271,20 @@ namespace Bank
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, outCount, page, perPage);
 			outCount = ((System.Nullable<int>)(result.GetParameterValue(1)));
 			return ((ISingleResult<usp_OnlineTurnSettings_Select_For_GridResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.usp_Factor_Detail")]
+		public ISingleResult<usp_Factor_DetailResult> usp_Factor_Detail([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FactorId", DbType="BigInt")] System.Nullable<long> factorId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), factorId);
+			return ((ISingleResult<usp_Factor_DetailResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Factor_Select_By_Id")]
+		public ISingleResult<usp_Factor_Select_By_IdResult> usp_Factor_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+			return ((ISingleResult<usp_Factor_Select_By_IdResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -3905,140 +3905,6 @@ namespace Bank
 				if ((this._FamilyTiyle != value))
 				{
 					this._FamilyTiyle = value;
-				}
-			}
-		}
-	}
-	
-	public partial class usp_Factor_DetailResult
-	{
-		
-		private string _FamilyTitle;
-		
-		private System.Nullable<decimal> _DiscountPrice;
-		
-		private string _FactorTitle;
-		
-		private string _FactorDate;
-		
-		private System.Nullable<decimal> _PaidPrice;
-		
-		private System.Nullable<decimal> _ModPrice;
-		
-		private string _FactorDesc;
-		
-		public usp_Factor_DetailResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string FamilyTitle
-		{
-			get
-			{
-				return this._FamilyTitle;
-			}
-			set
-			{
-				if ((this._FamilyTitle != value))
-				{
-					this._FamilyTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiscountPrice", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> DiscountPrice
-		{
-			get
-			{
-				return this._DiscountPrice;
-			}
-			set
-			{
-				if ((this._DiscountPrice != value))
-				{
-					this._DiscountPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorTitle", DbType="VarChar(110)")]
-		public string FactorTitle
-		{
-			get
-			{
-				return this._FactorTitle;
-			}
-			set
-			{
-				if ((this._FactorTitle != value))
-				{
-					this._FactorTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDate", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string FactorDate
-		{
-			get
-			{
-				return this._FactorDate;
-			}
-			set
-			{
-				if ((this._FactorDate != value))
-				{
-					this._FactorDate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidPrice", DbType="Decimal(38,0)")]
-		public System.Nullable<decimal> PaidPrice
-		{
-			get
-			{
-				return this._PaidPrice;
-			}
-			set
-			{
-				if ((this._PaidPrice != value))
-				{
-					this._PaidPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModPrice", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> ModPrice
-		{
-			get
-			{
-				return this._ModPrice;
-			}
-			set
-			{
-				if ((this._ModPrice != value))
-				{
-					this._ModPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDesc", DbType="NVarChar(1001)")]
-		public string FactorDesc
-		{
-			get
-			{
-				return this._FactorDesc;
-			}
-			set
-			{
-				if ((this._FactorDesc != value))
-				{
-					this._FactorDesc = value;
 				}
 			}
 		}
@@ -7191,464 +7057,6 @@ namespace Bank
 				if ((this._Time != value))
 				{
 					this._Time = value;
-				}
-			}
-		}
-	}
-	
-	public partial class usp_Factor_Select_By_IdResult
-	{
-		
-		private long _F_FamilyId;
-		
-		private string _F_Date;
-		
-		private System.DateTime _F_DateMiladi;
-		
-		private System.Nullable<decimal> _F_SumPrice;
-		
-		private System.Nullable<long> _F_CauserId;
-		
-		private System.DateTime _F_CreationTime;
-		
-		private System.Nullable<decimal> _F_SumDiscountPrice;
-		
-		private System.Nullable<decimal> _F_TaxPrice;
-		
-		private decimal _F_PaidPrice;
-		
-		private System.Nullable<int> _F_DetailCount;
-		
-		private System.Nullable<int> _F_DiscountPercent;
-		
-		private string _F_Desc;
-		
-		private System.Nullable<int> _F_TaxPercent;
-		
-		private string _FamilyTitle;
-		
-		private System.Nullable<bool> _F_ForceDesign;
-		
-		private System.Nullable<long> _F_TypePhotographyId;
-		
-		private long _F_Status;
-		
-		private System.Nullable<long> _F_PhotographerId;
-		
-		private System.Nullable<long> _F_DesignerId;
-		
-		private System.Nullable<bool> _F_IsGift;
-		
-		private string _PhotographerFullName;
-		
-		private string _DesignerFullName;
-		
-		private string _TypePhotographyTitle;
-		
-		private string _StatusTitle;
-		
-		private System.Nullable<bool> _F_OnlyEditedDelivered;
-		
-		public usp_Factor_Select_By_IdResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_FamilyId", DbType="BigInt NOT NULL")]
-		public long F_FamilyId
-		{
-			get
-			{
-				return this._F_FamilyId;
-			}
-			set
-			{
-				if ((this._F_FamilyId != value))
-				{
-					this._F_FamilyId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Date", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string F_Date
-		{
-			get
-			{
-				return this._F_Date;
-			}
-			set
-			{
-				if ((this._F_Date != value))
-				{
-					this._F_Date = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DateMiladi", DbType="Date NOT NULL")]
-		public System.DateTime F_DateMiladi
-		{
-			get
-			{
-				return this._F_DateMiladi;
-			}
-			set
-			{
-				if ((this._F_DateMiladi != value))
-				{
-					this._F_DateMiladi = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_SumPrice", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> F_SumPrice
-		{
-			get
-			{
-				return this._F_SumPrice;
-			}
-			set
-			{
-				if ((this._F_SumPrice != value))
-				{
-					this._F_SumPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_CauserId", DbType="BigInt")]
-		public System.Nullable<long> F_CauserId
-		{
-			get
-			{
-				return this._F_CauserId;
-			}
-			set
-			{
-				if ((this._F_CauserId != value))
-				{
-					this._F_CauserId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_CreationTime", DbType="DateTime NOT NULL")]
-		public System.DateTime F_CreationTime
-		{
-			get
-			{
-				return this._F_CreationTime;
-			}
-			set
-			{
-				if ((this._F_CreationTime != value))
-				{
-					this._F_CreationTime = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_SumDiscountPrice", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> F_SumDiscountPrice
-		{
-			get
-			{
-				return this._F_SumDiscountPrice;
-			}
-			set
-			{
-				if ((this._F_SumDiscountPrice != value))
-				{
-					this._F_SumDiscountPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_TaxPrice", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> F_TaxPrice
-		{
-			get
-			{
-				return this._F_TaxPrice;
-			}
-			set
-			{
-				if ((this._F_TaxPrice != value))
-				{
-					this._F_TaxPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_PaidPrice", DbType="Decimal(38,0) NOT NULL")]
-		public decimal F_PaidPrice
-		{
-			get
-			{
-				return this._F_PaidPrice;
-			}
-			set
-			{
-				if ((this._F_PaidPrice != value))
-				{
-					this._F_PaidPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DetailCount", DbType="Int")]
-		public System.Nullable<int> F_DetailCount
-		{
-			get
-			{
-				return this._F_DetailCount;
-			}
-			set
-			{
-				if ((this._F_DetailCount != value))
-				{
-					this._F_DetailCount = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DiscountPercent", DbType="Int")]
-		public System.Nullable<int> F_DiscountPercent
-		{
-			get
-			{
-				return this._F_DiscountPercent;
-			}
-			set
-			{
-				if ((this._F_DiscountPercent != value))
-				{
-					this._F_DiscountPercent = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Desc", DbType="NVarChar(1001)")]
-		public string F_Desc
-		{
-			get
-			{
-				return this._F_Desc;
-			}
-			set
-			{
-				if ((this._F_Desc != value))
-				{
-					this._F_Desc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_TaxPercent", DbType="Int")]
-		public System.Nullable<int> F_TaxPercent
-		{
-			get
-			{
-				return this._F_TaxPercent;
-			}
-			set
-			{
-				if ((this._F_TaxPercent != value))
-				{
-					this._F_TaxPercent = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string FamilyTitle
-		{
-			get
-			{
-				return this._FamilyTitle;
-			}
-			set
-			{
-				if ((this._FamilyTitle != value))
-				{
-					this._FamilyTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_ForceDesign", DbType="Bit")]
-		public System.Nullable<bool> F_ForceDesign
-		{
-			get
-			{
-				return this._F_ForceDesign;
-			}
-			set
-			{
-				if ((this._F_ForceDesign != value))
-				{
-					this._F_ForceDesign = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_TypePhotographyId", DbType="BigInt")]
-		public System.Nullable<long> F_TypePhotographyId
-		{
-			get
-			{
-				return this._F_TypePhotographyId;
-			}
-			set
-			{
-				if ((this._F_TypePhotographyId != value))
-				{
-					this._F_TypePhotographyId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Status", DbType="BigInt NOT NULL")]
-		public long F_Status
-		{
-			get
-			{
-				return this._F_Status;
-			}
-			set
-			{
-				if ((this._F_Status != value))
-				{
-					this._F_Status = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_PhotographerId", DbType="BigInt")]
-		public System.Nullable<long> F_PhotographerId
-		{
-			get
-			{
-				return this._F_PhotographerId;
-			}
-			set
-			{
-				if ((this._F_PhotographerId != value))
-				{
-					this._F_PhotographerId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DesignerId", DbType="BigInt")]
-		public System.Nullable<long> F_DesignerId
-		{
-			get
-			{
-				return this._F_DesignerId;
-			}
-			set
-			{
-				if ((this._F_DesignerId != value))
-				{
-					this._F_DesignerId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_IsGift", DbType="Bit")]
-		public System.Nullable<bool> F_IsGift
-		{
-			get
-			{
-				return this._F_IsGift;
-			}
-			set
-			{
-				if ((this._F_IsGift != value))
-				{
-					this._F_IsGift = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhotographerFullName", DbType="NVarChar(221)")]
-		public string PhotographerFullName
-		{
-			get
-			{
-				return this._PhotographerFullName;
-			}
-			set
-			{
-				if ((this._PhotographerFullName != value))
-				{
-					this._PhotographerFullName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DesignerFullName", DbType="NVarChar(221)")]
-		public string DesignerFullName
-		{
-			get
-			{
-				return this._DesignerFullName;
-			}
-			set
-			{
-				if ((this._DesignerFullName != value))
-				{
-					this._DesignerFullName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypePhotographyTitle", DbType="NVarChar(1001)")]
-		public string TypePhotographyTitle
-		{
-			get
-			{
-				return this._TypePhotographyTitle;
-			}
-			set
-			{
-				if ((this._TypePhotographyTitle != value))
-				{
-					this._TypePhotographyTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusTitle", DbType="NVarChar(1001)")]
-		public string StatusTitle
-		{
-			get
-			{
-				return this._StatusTitle;
-			}
-			set
-			{
-				if ((this._StatusTitle != value))
-				{
-					this._StatusTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_OnlyEditedDelivered", DbType="Bit")]
-		public System.Nullable<bool> F_OnlyEditedDelivered
-		{
-			get
-			{
-				return this._F_OnlyEditedDelivered;
-			}
-			set
-			{
-				if ((this._F_OnlyEditedDelivered != value))
-				{
-					this._F_OnlyEditedDelivered = value;
 				}
 			}
 		}
@@ -12459,6 +11867,634 @@ namespace Bank
 				if ((this._CauserFullName != value))
 				{
 					this._CauserFullName = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Factor_DetailResult
+	{
+		
+		private string _FamilyTitle;
+		
+		private System.Nullable<decimal> _DiscountPrice;
+		
+		private string _FactorTitle;
+		
+		private string _FactorDate;
+		
+		private System.Nullable<decimal> _PaidPrice;
+		
+		private System.Nullable<decimal> _ModPrice;
+		
+		private string _FactorDesc;
+		
+		private string _UniqueKey;
+		
+		public usp_Factor_DetailResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1039)")]
+		public string FamilyTitle
+		{
+			get
+			{
+				return this._FamilyTitle;
+			}
+			set
+			{
+				if ((this._FamilyTitle != value))
+				{
+					this._FamilyTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiscountPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> DiscountPrice
+		{
+			get
+			{
+				return this._DiscountPrice;
+			}
+			set
+			{
+				if ((this._DiscountPrice != value))
+				{
+					this._DiscountPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorTitle", DbType="VarChar(110)")]
+		public string FactorTitle
+		{
+			get
+			{
+				return this._FactorTitle;
+			}
+			set
+			{
+				if ((this._FactorTitle != value))
+				{
+					this._FactorTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDate", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string FactorDate
+		{
+			get
+			{
+				return this._FactorDate;
+			}
+			set
+			{
+				if ((this._FactorDate != value))
+				{
+					this._FactorDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidPrice", DbType="Decimal(38,0)")]
+		public System.Nullable<decimal> PaidPrice
+		{
+			get
+			{
+				return this._PaidPrice;
+			}
+			set
+			{
+				if ((this._PaidPrice != value))
+				{
+					this._PaidPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> ModPrice
+		{
+			get
+			{
+				return this._ModPrice;
+			}
+			set
+			{
+				if ((this._ModPrice != value))
+				{
+					this._ModPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDesc", DbType="NVarChar(1001)")]
+		public string FactorDesc
+		{
+			get
+			{
+				return this._FactorDesc;
+			}
+			set
+			{
+				if ((this._FactorDesc != value))
+				{
+					this._FactorDesc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniqueKey", DbType="VarChar(110)")]
+		public string UniqueKey
+		{
+			get
+			{
+				return this._UniqueKey;
+			}
+			set
+			{
+				if ((this._UniqueKey != value))
+				{
+					this._UniqueKey = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Factor_Select_By_IdResult
+	{
+		
+		private long _F_FamilyId;
+		
+		private string _F_Date;
+		
+		private System.DateTime _F_DateMiladi;
+		
+		private System.Nullable<decimal> _F_SumPrice;
+		
+		private System.Nullable<long> _F_CauserId;
+		
+		private System.DateTime _F_CreationTime;
+		
+		private System.Nullable<decimal> _F_SumDiscountPrice;
+		
+		private System.Nullable<decimal> _F_TaxPrice;
+		
+		private decimal _F_PaidPrice;
+		
+		private System.Nullable<int> _F_DetailCount;
+		
+		private System.Nullable<int> _F_DiscountPercent;
+		
+		private string _F_Desc;
+		
+		private System.Nullable<int> _F_TaxPercent;
+		
+		private string _FamilyTitle;
+		
+		private System.Nullable<bool> _F_ForceDesign;
+		
+		private System.Nullable<long> _F_TypePhotographyId;
+		
+		private long _F_Status;
+		
+		private System.Nullable<long> _F_PhotographerId;
+		
+		private System.Nullable<long> _F_DesignerId;
+		
+		private System.Nullable<bool> _F_IsGift;
+		
+		private string _PhotographerFullName;
+		
+		private string _DesignerFullName;
+		
+		private string _TypePhotographyTitle;
+		
+		private string _StatusTitle;
+		
+		private System.Nullable<bool> _F_OnlyEditedDelivered;
+		
+		private string _UniqueKey;
+		
+		public usp_Factor_Select_By_IdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_FamilyId", DbType="BigInt NOT NULL")]
+		public long F_FamilyId
+		{
+			get
+			{
+				return this._F_FamilyId;
+			}
+			set
+			{
+				if ((this._F_FamilyId != value))
+				{
+					this._F_FamilyId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Date", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string F_Date
+		{
+			get
+			{
+				return this._F_Date;
+			}
+			set
+			{
+				if ((this._F_Date != value))
+				{
+					this._F_Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DateMiladi", DbType="Date NOT NULL")]
+		public System.DateTime F_DateMiladi
+		{
+			get
+			{
+				return this._F_DateMiladi;
+			}
+			set
+			{
+				if ((this._F_DateMiladi != value))
+				{
+					this._F_DateMiladi = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_SumPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> F_SumPrice
+		{
+			get
+			{
+				return this._F_SumPrice;
+			}
+			set
+			{
+				if ((this._F_SumPrice != value))
+				{
+					this._F_SumPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_CauserId", DbType="BigInt")]
+		public System.Nullable<long> F_CauserId
+		{
+			get
+			{
+				return this._F_CauserId;
+			}
+			set
+			{
+				if ((this._F_CauserId != value))
+				{
+					this._F_CauserId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime F_CreationTime
+		{
+			get
+			{
+				return this._F_CreationTime;
+			}
+			set
+			{
+				if ((this._F_CreationTime != value))
+				{
+					this._F_CreationTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_SumDiscountPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> F_SumDiscountPrice
+		{
+			get
+			{
+				return this._F_SumDiscountPrice;
+			}
+			set
+			{
+				if ((this._F_SumDiscountPrice != value))
+				{
+					this._F_SumDiscountPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_TaxPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> F_TaxPrice
+		{
+			get
+			{
+				return this._F_TaxPrice;
+			}
+			set
+			{
+				if ((this._F_TaxPrice != value))
+				{
+					this._F_TaxPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_PaidPrice", DbType="Decimal(38,0) NOT NULL")]
+		public decimal F_PaidPrice
+		{
+			get
+			{
+				return this._F_PaidPrice;
+			}
+			set
+			{
+				if ((this._F_PaidPrice != value))
+				{
+					this._F_PaidPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DetailCount", DbType="Int")]
+		public System.Nullable<int> F_DetailCount
+		{
+			get
+			{
+				return this._F_DetailCount;
+			}
+			set
+			{
+				if ((this._F_DetailCount != value))
+				{
+					this._F_DetailCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DiscountPercent", DbType="Int")]
+		public System.Nullable<int> F_DiscountPercent
+		{
+			get
+			{
+				return this._F_DiscountPercent;
+			}
+			set
+			{
+				if ((this._F_DiscountPercent != value))
+				{
+					this._F_DiscountPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Desc", DbType="NVarChar(1001)")]
+		public string F_Desc
+		{
+			get
+			{
+				return this._F_Desc;
+			}
+			set
+			{
+				if ((this._F_Desc != value))
+				{
+					this._F_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_TaxPercent", DbType="Int")]
+		public System.Nullable<int> F_TaxPercent
+		{
+			get
+			{
+				return this._F_TaxPercent;
+			}
+			set
+			{
+				if ((this._F_TaxPercent != value))
+				{
+					this._F_TaxPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string FamilyTitle
+		{
+			get
+			{
+				return this._FamilyTitle;
+			}
+			set
+			{
+				if ((this._FamilyTitle != value))
+				{
+					this._FamilyTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_ForceDesign", DbType="Bit")]
+		public System.Nullable<bool> F_ForceDesign
+		{
+			get
+			{
+				return this._F_ForceDesign;
+			}
+			set
+			{
+				if ((this._F_ForceDesign != value))
+				{
+					this._F_ForceDesign = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_TypePhotographyId", DbType="BigInt")]
+		public System.Nullable<long> F_TypePhotographyId
+		{
+			get
+			{
+				return this._F_TypePhotographyId;
+			}
+			set
+			{
+				if ((this._F_TypePhotographyId != value))
+				{
+					this._F_TypePhotographyId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_Status", DbType="BigInt NOT NULL")]
+		public long F_Status
+		{
+			get
+			{
+				return this._F_Status;
+			}
+			set
+			{
+				if ((this._F_Status != value))
+				{
+					this._F_Status = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_PhotographerId", DbType="BigInt")]
+		public System.Nullable<long> F_PhotographerId
+		{
+			get
+			{
+				return this._F_PhotographerId;
+			}
+			set
+			{
+				if ((this._F_PhotographerId != value))
+				{
+					this._F_PhotographerId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_DesignerId", DbType="BigInt")]
+		public System.Nullable<long> F_DesignerId
+		{
+			get
+			{
+				return this._F_DesignerId;
+			}
+			set
+			{
+				if ((this._F_DesignerId != value))
+				{
+					this._F_DesignerId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_IsGift", DbType="Bit")]
+		public System.Nullable<bool> F_IsGift
+		{
+			get
+			{
+				return this._F_IsGift;
+			}
+			set
+			{
+				if ((this._F_IsGift != value))
+				{
+					this._F_IsGift = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhotographerFullName", DbType="NVarChar(221)")]
+		public string PhotographerFullName
+		{
+			get
+			{
+				return this._PhotographerFullName;
+			}
+			set
+			{
+				if ((this._PhotographerFullName != value))
+				{
+					this._PhotographerFullName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DesignerFullName", DbType="NVarChar(221)")]
+		public string DesignerFullName
+		{
+			get
+			{
+				return this._DesignerFullName;
+			}
+			set
+			{
+				if ((this._DesignerFullName != value))
+				{
+					this._DesignerFullName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypePhotographyTitle", DbType="NVarChar(1001)")]
+		public string TypePhotographyTitle
+		{
+			get
+			{
+				return this._TypePhotographyTitle;
+			}
+			set
+			{
+				if ((this._TypePhotographyTitle != value))
+				{
+					this._TypePhotographyTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusTitle", DbType="NVarChar(1001)")]
+		public string StatusTitle
+		{
+			get
+			{
+				return this._StatusTitle;
+			}
+			set
+			{
+				if ((this._StatusTitle != value))
+				{
+					this._StatusTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F_OnlyEditedDelivered", DbType="Bit")]
+		public System.Nullable<bool> F_OnlyEditedDelivered
+		{
+			get
+			{
+				return this._F_OnlyEditedDelivered;
+			}
+			set
+			{
+				if ((this._F_OnlyEditedDelivered != value))
+				{
+					this._F_OnlyEditedDelivered = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniqueKey", DbType="VarChar(110)")]
+		public string UniqueKey
+		{
+			get
+			{
+				return this._UniqueKey;
+			}
+			set
+			{
+				if ((this._UniqueKey != value))
+				{
+					this._UniqueKey = value;
 				}
 			}
 		}

@@ -490,18 +490,6 @@
       <Column Name="FamilyTiyle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="RPT.usp_Factor_Detail" Method="usp_Factor_Detail">
-    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_Factor_DetailResult">
-      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-      <Column Name="DiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="FactorTitle" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
-      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
-      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="FactorDesc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-    </ElementType>
-  </Function>
   <Function Name="RPT.usp_Factor_Select_Product" Method="usp_Factor_Select_Product">
     <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
     <ElementType Name="usp_Factor_Select_ProductResult">
@@ -1008,36 +996,6 @@
     <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
     <Parameter Name="OnlyEditedDelivered" Parameter="onlyEditedDelivered" Type="System.Boolean" DbType="Bit" />
     <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.usp_Factor_Select_By_Id" Method="usp_Factor_Select_By_Id">
-    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_Factor_Select_By_IdResult">
-      <Column Name="F_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="F_Date" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="F_DateMiladi" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="F_SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="F_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="F_SumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="F_TaxPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="F_PaidPrice" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
-      <Column Name="F_DetailCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="F_DiscountPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="F_TaxPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-      <Column Name="F_ForceDesign" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="F_TypePhotographyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="F_Status" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="F_PhotographerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="F_DesignerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="F_IsGift" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="PhotographerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
-      <Column Name="DesignerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
-      <Column Name="TypePhotographyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="F_OnlyEditedDelivered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-    </ElementType>
   </Function>
   <Function Name="dbo.usp_Factor_Set_Delivered" Method="usp_Factor_Set_Delivered">
     <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
@@ -1784,6 +1742,50 @@
       <Column Name="OTS_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="TurnTypeTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
       <Column Name="CauserFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Factor_Detail" Method="usp_Factor_Detail">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_DetailResult">
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1039)" CanBeNull="true" />
+      <Column Name="DiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorTitle" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorDesc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Factor_Select_By_Id" Method="usp_Factor_Select_By_Id">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_Select_By_IdResult">
+      <Column Name="F_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_Date" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="F_DateMiladi" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="F_SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_CauserId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="F_SumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_TaxPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="F_PaidPrice" Type="System.Decimal" DbType="Decimal(38,0) NOT NULL" CanBeNull="false" />
+      <Column Name="F_DetailCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_DiscountPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F_Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="F_TaxPercent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="F_ForceDesign" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="F_TypePhotographyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_Status" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="F_PhotographerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_DesignerId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="F_IsGift" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PhotographerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="DesignerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="TypePhotographyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="F_OnlyEditedDelivered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>
