@@ -4,7 +4,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
-        <!--begin::Container-->
         <div id="kt_content_container" class="container-xxl">
             <div class="card">
                 <div class="card-body pt-0">
@@ -21,7 +20,7 @@
                                 <div class="col-md-3">
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-primary me-2 open-modal-btn" onclick="ResetFeildsSetting()" data-bs-toggle="modal" data-bs-target="#AddEditOnlineTurnSetting">افزودن اطلاعات</button>
+                                    <button class="btn btn-primary me-2" onclick="ResetFeildsSetting()" data-bs-toggle="modal" data-bs-target="#kt_modal_AddEditOnlineTurnSetting">افزودن اطلاعات</button>
                                 </div>
                             </div>
                             <table class="table table-striped table-hover table-bordered">
@@ -59,8 +58,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="AddEditOnlineTurnSetting"  tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered mw-950px">
+    <div class="modal fade" id="kt_modal_AddEditOnlineTurnSetting">
+        <div class="modal-dialog mw-950px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="fw-bolder" id="OnlineTurnSettingHeader">افزون اطلاعات</h2>
@@ -71,12 +70,9 @@
                                 <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
                             </svg>
                         </span>
-                        <!--end::Svg Icon-->
                     </div>
-                    <!--end::Close-->
                 </div>
                 <div class="modal-body">
-                    <!--begin::Scroll-->
                     <div class="scroll-y me-n7 pe-7">
                         <div class="row g-9 mb-7">
                             <div class="col-md-6 fv-row">
@@ -96,7 +92,7 @@
                                 <div class="d-flex flex-stack">
                                     <label class="form-check form-switch form-check-custom form-check-solid">
                                         <input id="ots_active" class="form-check-input" name="billing" type="checkbox" value="1" checked="checked" />
-                                        <span class="form-check-label fw-bold text-muted" for="modal_AddEditOnlineTurnSetting_billing">وضعیت نمایش</span>
+                                        <span class="form-check-label fw-bold text-muted" for="kt_modal_AddEditOnlineTurnSetting">وضعیت نمایش</span>
                                     </label>
                                 </div>
                             </div>
@@ -192,18 +188,18 @@
                                 <input type="file" class="form-control" id="ots_filepath" name="file-upload" accept="image/*,video/*">
                             </div>
                         </div>
-                        <div class="row g-9 mb-7">
+                        <div class="row">
                             <div class="col-md-12 fv-row">
                                 <label class="fs-6 fw-bold mb-2">توضیحات و قوانین عکاسی</label>
-                                <textarea id="ots_desc" placeholder="توضیحات و قوانین عکاسی" name="myTextarea" rows="15" cols="80" />
+                                <textarea id="ots_desc" placeholder="توضیحات و قوانین عکاسی" rows="5" ></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-               <%-- <div class="modal-footer flex-center"  id="div_btnAddOnlineTurnSetting">
+                <div class="modal-footer flex-center">
                     <button onclick="AddEdit()" class="btn btn-primary">ثبت اطلاعات</button>
                     <button id="btncancel" class="btn btn-light me-3">انصراف</button>
-                </div>--%>
+                </div>
             </div>
         </div>
     </div>
@@ -212,25 +208,20 @@
     <script type="text/javascript">
         var ots_Id = 0;
         function AddEdit() {
-            alert(1);
             var title = $("#ots_title").val();
             var turnType = $("#ots_turnType").val();
             var active = $("#ots_active").prop("checked");
-            alert(2);
             var depositeamount = $("#ots_depositeamount").val();
             depositeamount = depositeamount.replaceAll(",", "");
             var fromdate = $("#ots_fromdate").val();
             var todate = $("#ots_todate").val();
-            alert(3);
             var fromtime = $("#ots_fromtime").val();
             var totime = $("#ots_totime").val();
             var TimeEachTurn = $("#ots_TimeEachTurn").val();
             var capacity = $("#ots_capacity").val();
-            alert(4);
             var fileInput = $('#ots_filepath')[0];
             var filepath = fileInput.files.length === 0 ? null : fileInput.files[0];
             var desc = $("#ots_desc").val();
-            alert(5);
             $.ajax({
                 type: "POST",
                 url: "OnlineAppointmentSettings.aspx/AddEdit",
@@ -264,7 +255,7 @@
             closeModalOnlineTurnSetting();
         });
         function closeModalOnlineTurnSetting() {
-            $('#AddEditOnlineTurnSetting').modal('hide');
+            $('#kt_modal_AddEditOnlineTurnSetting').modal('hide');
         };
         function ResetFeildsSetting() {
             $("#ots_title").val("");
@@ -349,7 +340,6 @@
         $(document).ready(function () {
             $("#master_PageTitle").text("تنظیمات نوبت دهی آنلاین");
             $("#s_pageSize").val("5");
-
             loadTableSettings();
             ResetFeildsSetting();
         });

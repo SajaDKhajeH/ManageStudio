@@ -1022,7 +1022,7 @@
                 <div class="modal-body py-10 px-lg-20">
                     <div id="div_Family_For_Request" style="margin: 3px">
                         <label>خانواده</label>
-                        <select id="turn_family" data-dropdown-parent="#div_Family_For_Request" data-control="select2" class="form-select form-select-solid select2-hidden-accessible">
+                        <select id="turn_family" data-dropdown-parent="#appointmentModal" data-control="select2" class="form-select form-select-solid select2-hidden-accessible">
                         </select>
                     </div>
                     <div class="row mb-3">
