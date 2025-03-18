@@ -46,11 +46,11 @@
             font-family: 'ISW', Tahoma, sans-serif;
         }
 
-        .datepicker-container {
+        /* .datepicker-container {
             max-width: 400px;
             margin: 0 auto;
         }
-
+*/
         .form-control {
             padding: 10px;
             border-radius: 5px;
@@ -58,6 +58,8 @@
             width: 100%;
             text-align: right;
         }
+
+
 
 
         /*کلید های عملیات در گرید ها
@@ -489,6 +491,7 @@
                     background: #495057;
                 }
     </style>
+
     <asp:ContentPlaceHolder ID="Head" runat="server"></asp:ContentPlaceHolder>
     <!--end::Global Stylesheets Bundle-->
 </head>
@@ -516,263 +519,22 @@
                                 <path d="M8.2657 11.4343L12.45 7.25C12.8642 6.83579 12.8642 6.16421 12.45 5.75C12.0358 5.33579 11.3642 5.33579 10.95 5.75L5.40712 11.2929C5.01659 11.6834 5.01659 12.3166 5.40712 12.7071L10.95 18.25C11.3642 18.6642 12.0358 18.6642 12.45 18.25C12.8642 17.8358 12.8642 17.1642 12.45 16.75L8.2657 12.5657C7.95328 12.2533 7.95328 11.7467 8.2657 11.4343Z" fill="black" />
                             </svg>
                         </span>
-                        <!--end::Svg Icon-->
                     </div>
-                    <!--end::Aside toggler-->
                 </div>
-                <!--end::Brand-->
-                <!--begin::Aside menu-->
                 <div class="aside-menu flex-column-fluid">
-                    <!--begin::Aside Menu-->
                     <div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
                         <!--begin::Menu-->
                         <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
-                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="Dashboard.aspx">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title" id="title_MasterPage">داشبورد</span>
-                                </a>
-                            </div>
-                            <% } %>
-                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="Personnel.aspx">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">مدیریت پرسنل</span>
-                                </a>
-                            </div>
-                            <% } %>
-                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="Family.aspx">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">مدیریت خانواده ها</span>
-                                </a>
-                            </div>
-
-                            <div class="menu-item">
-                                <a class="menu-link" href="ManageInvoice.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/layouts/lay010.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z" fill="black" />
-                                                <path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">مدیریت فاکتور</span>
-                                </a>
-                            </div>
-                            <% } %>
-                            <%  if (LoginedUser.Role != DefaultDataIDs.Role_PhotographerInHospital)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="RequestStatus.aspx">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">وضعیت فاکتورها</span>
-                                </a>
-                            </div>
-                            <% } %>
-                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="FactorPaids.aspx">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
-                                                <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">مدیریت پرداختی ها</span>
-                                </a>
-                            </div>
-
-                            <div class="menu-item">
-                                <a class="menu-link" href="Products.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">مدیریت کالا</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a class="menu-link" href="Cost.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">هزینه ها</span>
-                                </a>
-                            </div>
-                            <% } %>
-                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="SendSms.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">ارسال پیامک</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a class="menu-link" href="QueueSMS.aspx">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">صف پیامک</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a class="menu-link" href="BasicData.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">اطلاعات پایه</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a class="menu-link" href="Reports.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">گزارش ها</span>
-                                </a>
-                            </div>
-                            <% } %>
-                            <%  if (LoginedUser.Id == 1)
-                                { %>
-                            <div class="menu-item">
-                                <a class="menu-link" href="PrivateManageCheque.aspx">
-                                    <span class="menu-icon">
-                                        <!--begin::Svg Icon | path: icons/duotune/communication/com001.svg-->
-                                        <span class="svg-icon svg-icon-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="black" />
-                                                <path d="M19 10.4C19 10.3 19 10.2 19 10C19 8.9 18.1 8 17 8H16.9C15.6 6.2 14.6 4.29995 13.9 2.19995C13.3 2.09995 12.6 2 12 2C11.9 2 11.8 2 11.7 2C12.4 4.6 13.5 7.10005 15.1 9.30005C15 9.50005 15 9.7 15 10C15 11.1 15.9 12 17 12C17.1 12 17.3 12 17.4 11.9C18.6 13 19.9 14 21.4 14.8C21.4 14.8 21.5 14.8 21.5 14.9C21.7 14.2 21.8 13.5 21.9 12.7C20.9 12.1 19.9 11.3 19 10.4Z" fill="black" />
-                                                <path d="M12 15C11 13.1 10.2 11.2 9.60001 9.19995C9.90001 8.89995 10 8.4 10 8C10 7.1 9.40001 6.39998 8.70001 6.09998C8.40001 4.99998 8.20001 3.90005 8.00001 2.80005C7.30001 3.10005 6.70001 3.40002 6.20001 3.90002C6.40001 4.80002 6.50001 5.6 6.80001 6.5C6.40001 6.9 6.10001 7.4 6.10001 8C6.10001 9 6.80001 9.8 7.80001 10C8.30001 11.6 9.00001 13.2 9.70001 14.7C7.10001 13.2 4.70001 11.5 2.40001 9.5C2.20001 10.3 2.10001 11.1 2.10001 11.9C4.60001 13.9 7.30001 15.7 10.1 17.2C10.2 18.2 11 19 12 19C12.6 20 13.2 20.9 13.9 21.8C14.6 21.7 15.3 21.5 15.9 21.2C15.4 20.5 14.9 19.8 14.4 19.1C15.5 19.5 16.5 19.9 17.6 20.2C18.3 19.8 18.9 19.2 19.4 18.6C17.6 18.1 15.7 17.5 14 16.7C13.9 15.8 13.1 15 12 15Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-                                    <span class="menu-title">مدیریت چک ها</span>
-                                </a>
-                            </div>
-                            <% } %>
+                            <%Response.Write(Menus()); %>
                         </div>
-                        <!--end::Menu-->
                     </div>
-                    <!--end::Aside Menu-->
                 </div>
             </div>
-            <!--end::Aside-->
-            <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-                <!--begin::Header-->
                 <div id="kt_header" style="" class="header align-items-stretch">
-                    <!--begin::Container-->
                     <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                        <!--begin::Aside mobile toggle-->
                         <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
                             <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
-                                <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
                                 <span class="svg-icon svg-icon-2x mt-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
@@ -807,42 +569,26 @@
                                 <button class="btn btn-primary open-modal-btn" id="btnEditRequestModal" data-bs-toggle="modal" data-bs-target="#appointmentModal" style="display: none">ویرایش درخواست</button>
                                 <div class="d-flex align-items-center ms-1 ms-lg-3">
 
-                                    <!--begin::Menu wrapper-->
                                     <div onclick="logout()" class="btn btn-icon btn-danger w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                         <span class="svg-icon svg-icon-1">
                                             <i class="fas fa-power-off"></i>
                                             <!-- آیکن shutdown -->
-
                                         </span>
-                                        <!--end::Svg Icon-->
                                     </div>
 
-                                    <!--end::Menu wrapper-->
                                 </div>
-                                <!--end::Toolbar wrapper-->
                             </div>
-                            <!--end::Topbar-->
                         </div>
-                        <!--end::Wrapper-->
                     </div>
-                    <!--end::Container-->
                 </div>
-                <!--end::Header-->
-                <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                    <!--begin::Post-->
                     <div class="post d-flex flex-column-fluid" id="kt_post">
                         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                         </asp:ContentPlaceHolder>
-                        <!--end::Container-->
                     </div>
-                    <!--end::Post-->
                 </div>
             </div>
-            <!--end::Wrapper-->
         </div>
-        <!--end::Page-->
     </div>
     <div class="modal fade" id="m_SetPaidPrice">
         <div class="modal-dialog modal-dialog-centered mw-450px">
@@ -1244,6 +990,7 @@
             var pay_PaidType = document.getElementById('pay_PaidType').value;
             var pay_RefNumber = document.getElementById('pay_RefNumber').value;
             var pay_PaidPrice = $("#pay_PaidPrice").val();
+            pay_PaidPrice = convertPersianToEnglishNumbers(pay_PaidPrice);
             pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");
             $.ajax({
                 type: "POST",
@@ -1354,16 +1101,17 @@
             const selectedFamily = document.getElementById("turn_family").value;
 
             const selectElement = document.getElementById("turn_family");
-            const selectedFamilyText = selectElement.options[selectElement.selectedIndex].text;
-
             const turn_Type = document.getElementById("turn_Type").value;
 
             var turn_Duration = document.getElementById("turn_Duration").value;
+            turn_Duration = convertPersianToEnglishNumbers(turn_Duration);
             if (turn_Duration == null || turn_Duration == undefined) {
                 turn_Duration = "0";
             }
             var turn_Location = document.getElementById("turn_Location").value;
+
             var turn_Cost = document.getElementById("turn_Cost").value;
+            turn_Cost = convertPersianToEnglishNumbers(turn_Cost);
             turn_Cost = turn_Cost.replaceAll(",", "");
             if (turn_Cost == null || turn_Cost == undefined) {
                 turn_Cost = "0";
@@ -1812,10 +1560,11 @@
                 confirmButtonText: "متوجه شدم"
             });
         }
+
         $(document).ready(function () {
             GetCustomer_ForCombo();
-            addFamily_FromHospital_Setting(false);
             document.getElementById("kt_aside_toggle").click();
+            addFamily_FromHospital_Setting(false);
             $('.selectedShamsiDate').persianDatepicker({
                 format: 'YYYY/MM/DD',
                 initialValue: true,
@@ -1836,36 +1585,13 @@
                     }
                 }
             });
-            //$('#f_BirthDate').persianDatepicker({
-            //    format: 'YYYY/MM/DD',
-            //    initialValue: true,
-            //    autoClose: true,
-            //    calendar: {
-            //        persian: {
-            //            locale: 'fa'
-            //        }
-            //    }
-            //});
-            //$('#m_BirthDate').persianDatepicker({
-            //    format: 'YYYY/MM/DD',
-            //    initialValue: true,
-            //    autoClose: true,
-            //    calendar: {
-            //        persian: {
-            //            locale: 'fa'
-            //        }
-            //    }
-            //});
-            //$('#turn_Date').persianDatepicker({
-            //    format: 'YYYY/MM/DD',
-            //    initialValue: true,
-            //    autoClose: true,
-            //    calendar: {
-            //        persian: {
-            //            locale: 'fa'
-            //        }
-            //    }
-            //});
+            let timerInterval;
+            $(".datepicker").focus(function () {
+                if (timerInterval) return;
+                timerInterval = setInterval(() => {
+                        $('.month-grid-box .header').remove();
+                }, 200);
+            });
 
         });
     </script>

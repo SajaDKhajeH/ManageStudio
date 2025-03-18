@@ -34,10 +34,10 @@ namespace AdakStudio
             {
                 Response.Redirect("Logout.aspx");
             }
-            else if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
-            {
-                Response.Redirect("Logout.aspx");
-            }
+            //else if (LoginedUser.Role != DefaultDataIDs.Role_Admin)
+            //{
+            //    Response.Redirect("Logout.aspx");
+            //}
         }
         protected string GetProducts()
         {
@@ -78,11 +78,38 @@ namespace AdakStudio
             var dataInfo = AdakDB.Db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_CancelTurn).SingleOrDefault();
             return dataInfo.D_Active;
         }
-
-        protected string getMenu()
+        protected string Menus()
         {
-            var menus = AdakDB.Db.usp_Page_Select(LoginedUser.Id);
             string htmls = "";
+            if (LoginedUser.Role == DefaultDataIDs.Role_Secretary || LoginedUser.Role == DefaultDataIDs.Role_Admin)
+            {
+                var menus = AdakDB.Db.usp_Page_Select(LoginedUser.Id).ToList();
+                //فقط اونهایی که باید در سایت نمایش داده شوند
+                menus = menus.Where(a => a.P_ShowOnMenu ?? false).ToList();
+                if (LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                {
+                    menus = menus.Where(a => a.HasPermission == 1).ToList();
+                }
+                menus = menus.OrderBy(b => b.P_Sort).ToList();
+                foreach (var item in menus)
+                {
+                    htmls += @"<div class='menu-item'>
+                                <a class='menu-link' href='" + item.P_Url + @"'>
+                                    <span class='menu-icon'>
+                                        <span class='svg-icon svg-icon-2'>
+                                            <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
+                                                <rect x='2' y='2' width='9' height='9' rx='2' fill='black' />
+                                                <rect opacity='0.3' x='13' y='2' width='9' height='9' rx='2' fill='black' />
+                                                <rect opacity='0.3' x='13' y='13' width='9' height='9' rx='2' fill='black' />
+                                                <rect opacity='0.3' x='2' y='13' width='9' height='9' rx='2' fill='black' />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class='menu-title' id='title_MasterPage'>" + item.P_Title + @"</span></a></div>";
+                }
+            }
+            return htmls;
         }
     }
 }

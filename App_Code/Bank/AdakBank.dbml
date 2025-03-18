@@ -1634,16 +1634,6 @@
       <Column Name="D_Systematic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.usp_Page_Select" Method="usp_Page_Select">
-    <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_Page_SelectResult">
-      <Column Name="P_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="P_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-      <Column Name="P_Url" Type="System.String" DbType="VarChar(1001)" CanBeNull="true" />
-      <Column Name="P_Sort" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="HasPermission" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.usp_Permission_Add" Method="usp_Permission_Add">
     <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
     <Parameter Name="PageIds" Parameter="pageIds" Type="System.String" DbType="VarChar(1001)" />
@@ -1786,6 +1776,17 @@
       <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
       <Column Name="F_OnlyEditedDelivered" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Page_Select" Method="usp_Page_Select">
+    <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Page_SelectResult">
+      <Column Name="P_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="P_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="P_Url" Type="System.String" DbType="VarChar(1001)" CanBeNull="true" />
+      <Column Name="P_Sort" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HasPermission" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="P_ShowOnMenu" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

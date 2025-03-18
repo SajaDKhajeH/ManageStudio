@@ -113,9 +113,13 @@ public class LoginController : ApiController
             {
                 GoToPage = "AddFamilyFromHospital.aspx";
             }
-            else if (RoleId == DefaultDataIDs.Role_Admin || RoleId == DefaultDataIDs.Role_Secretary)
+            else if (RoleId == DefaultDataIDs.Role_Admin)
             {
                 GoToPage = "Dashboard.aspx";
+            }
+            else if (RoleId == DefaultDataIDs.Role_Secretary)
+            {
+                GoToPage = AdakDB.Db.usp_Page_Select(LoginId).ToList().Where(x => (x.P_ShowOnMenu ?? false) && x.HasPermission == 1).ToList().OrderBy(b => b.P_Sort).FirstOrDefault().P_Url;
             }
             else if (RoleId == DefaultDataIDs.Role_Designer || RoleId == DefaultDataIDs.Role_DesignSupervisor)
             {

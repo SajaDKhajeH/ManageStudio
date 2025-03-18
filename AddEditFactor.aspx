@@ -326,11 +326,11 @@
                 dataType: "json",
                 success: function (msg) {
                     var res = msg.d;
-                    if (res.Result) {
-                        setTimeout(function () {
-                            window.open(res.Url, '_blank').focus();
-                        }, 110);
-                    }
+                    //if (res.Result) {
+                    //    setTimeout(function () {
+                    //        window.open(res.Url, '_blank').focus();
+                    //    }, 110);
+                    //}
                 },
                 error: function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");
@@ -418,6 +418,9 @@
 
             var discount = document.getElementById("factor_discountPercent").value;
             var paidPrice = document.getElementById("factor_PaidPrice").value;
+            discount = convertPersianToEnglishNumbers(discount);
+            paidPrice = convertPersianToEnglishNumbers(paidPrice);
+
             paidPrice = paidPrice.replaceAll(",", "");
             discount = discount.replaceAll(",", "");
             const payable = total - parseInt(discount) - parseInt(paidPrice);
@@ -460,7 +463,9 @@
             var factor_Date = $("#factor_Date").val();
             var factor_desc = $("#factor_desc").val();
             var factor_discountPrice = $("#factor_discountPercent").val();
+            factor_discountPrice = convertPersianToEnglishNumbers(factor_discountPrice);
             var factor_PaidPrice = $("#factor_PaidPrice").val();
+            factor_PaidPrice = convertPersianToEnglishNumbers(factor_PaidPrice);
             factor_PaidPrice = factor_PaidPrice.replaceAll(",", "");
             factor_discountPrice = factor_discountPrice.replaceAll(",", "");
             var factor_PaidType = $("#factor_PaidType").val();
@@ -487,13 +492,9 @@
                         ShowError(msg.d.Message);
                     }
                     else {
-                        alert(msg.d.FactorId);
                         toastr.success(msg.d.Message, "موفق");
                         if (factorId==0) {
-                            const userResponse = confirm("آیا مایل به ذخیره فایل فاکتور هستین؟");
-                            if (userResponse) {
-                                PrintFactor(msg.d.FactorId);
-                            }
+                            PrintFactor(msg.d.FactorId);
                         }
                         location.href = document.referrer;
                     }

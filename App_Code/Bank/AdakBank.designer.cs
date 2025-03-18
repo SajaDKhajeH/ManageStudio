@@ -1178,13 +1178,6 @@ namespace Bank
 			return ((ISingleResult<usp_Data_Select_For_GridResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Page_Select")]
-		public ISingleResult<usp_Page_SelectResult> usp_Page_Select([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PersonnelId", DbType="BigInt")] System.Nullable<long> personnelId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), personnelId);
-			return ((ISingleResult<usp_Page_SelectResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Permission_Add")]
 		public int usp_Permission_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PersonnelId", DbType="BigInt")] System.Nullable<long> personnelId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PageIds", DbType="VarChar(1001)")] string pageIds, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId)
 		{
@@ -1285,6 +1278,13 @@ namespace Bank
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
 			return ((ISingleResult<usp_Factor_Select_By_IdResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Page_Select")]
+		public ISingleResult<usp_Page_SelectResult> usp_Page_Select([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PersonnelId", DbType="BigInt")] System.Nullable<long> personnelId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), personnelId);
+			return ((ISingleResult<usp_Page_SelectResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -11200,104 +11200,6 @@ namespace Bank
 		}
 	}
 	
-	public partial class usp_Page_SelectResult
-	{
-		
-		private int _P_Id;
-		
-		private string _P_Title;
-		
-		private string _P_Url;
-		
-		private System.Nullable<int> _P_Sort;
-		
-		private int _HasPermission;
-		
-		public usp_Page_SelectResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Id", DbType="Int NOT NULL")]
-		public int P_Id
-		{
-			get
-			{
-				return this._P_Id;
-			}
-			set
-			{
-				if ((this._P_Id != value))
-				{
-					this._P_Id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string P_Title
-		{
-			get
-			{
-				return this._P_Title;
-			}
-			set
-			{
-				if ((this._P_Title != value))
-				{
-					this._P_Title = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Url", DbType="VarChar(1001)")]
-		public string P_Url
-		{
-			get
-			{
-				return this._P_Url;
-			}
-			set
-			{
-				if ((this._P_Url != value))
-				{
-					this._P_Url = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Sort", DbType="Int")]
-		public System.Nullable<int> P_Sort
-		{
-			get
-			{
-				return this._P_Sort;
-			}
-			set
-			{
-				if ((this._P_Sort != value))
-				{
-					this._P_Sort = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HasPermission", DbType="Int NOT NULL")]
-		public int HasPermission
-		{
-			get
-			{
-				return this._HasPermission;
-			}
-			set
-			{
-				if ((this._HasPermission != value))
-				{
-					this._HasPermission = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_OnlineTurnSettings_SelectByIdResult
 	{
 		
@@ -12495,6 +12397,122 @@ namespace Bank
 				if ((this._UniqueKey != value))
 				{
 					this._UniqueKey = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Page_SelectResult
+	{
+		
+		private int _P_Id;
+		
+		private string _P_Title;
+		
+		private string _P_Url;
+		
+		private System.Nullable<int> _P_Sort;
+		
+		private int _HasPermission;
+		
+		private System.Nullable<bool> _P_ShowOnMenu;
+		
+		public usp_Page_SelectResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Id", DbType="Int NOT NULL")]
+		public int P_Id
+		{
+			get
+			{
+				return this._P_Id;
+			}
+			set
+			{
+				if ((this._P_Id != value))
+				{
+					this._P_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string P_Title
+		{
+			get
+			{
+				return this._P_Title;
+			}
+			set
+			{
+				if ((this._P_Title != value))
+				{
+					this._P_Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Url", DbType="VarChar(1001)")]
+		public string P_Url
+		{
+			get
+			{
+				return this._P_Url;
+			}
+			set
+			{
+				if ((this._P_Url != value))
+				{
+					this._P_Url = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_Sort", DbType="Int")]
+		public System.Nullable<int> P_Sort
+		{
+			get
+			{
+				return this._P_Sort;
+			}
+			set
+			{
+				if ((this._P_Sort != value))
+				{
+					this._P_Sort = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HasPermission", DbType="Int NOT NULL")]
+		public int HasPermission
+		{
+			get
+			{
+				return this._HasPermission;
+			}
+			set
+			{
+				if ((this._HasPermission != value))
+				{
+					this._HasPermission = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_P_ShowOnMenu", DbType="Bit")]
+		public System.Nullable<bool> P_ShowOnMenu
+		{
+			get
+			{
+				return this._P_ShowOnMenu;
+			}
+			set
+			{
+				if ((this._P_ShowOnMenu != value))
+				{
+					this._P_ShowOnMenu = value;
 				}
 			}
 		}
