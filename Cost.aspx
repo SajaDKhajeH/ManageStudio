@@ -266,10 +266,12 @@
         $("#btn_submitdata").click(function (e) {
             var co_PaidFrom = $("#co_PaidFrom").val();
             var co_PaidPrice = $("#co_PaidPrice").val();
+            co_PaidPrice = convertPersianToEnglishNumbers(co_PaidPrice);
             co_PaidPrice = co_PaidPrice.replaceAll(",", "");
             var co_CostType = $("#co_CostType").val();
             var co_PaidType = $("#co_PaidType").val();
             var co_RefNumber = $("#co_RefNumber").val();
+            co_RefNumber = convertPersianToEnglishNumbers(co_RefNumber);
             var co_desc = $("#co_desc").val();
             var co_PaidTo = $("#co_PaidTo").val();
             var PaidDate = $("#co_PaidDate").val();
