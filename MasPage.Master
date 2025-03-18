@@ -1585,13 +1585,9 @@
                     }
                 }
             });
-            let timerInterval;
-            $(".datepicker").focus(function () {
-                if (timerInterval) return;
-                timerInterval = setInterval(() => {
-                        $('.month-grid-box .header').remove();
-                }, 200);
-            });
+            setInterval(() => {
+                $('.month-grid-box .header').remove();
+            }, 200);
 
         });
     </script>
