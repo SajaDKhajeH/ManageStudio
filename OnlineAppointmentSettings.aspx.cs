@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -47,7 +48,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
     }
     [WebMethod]
     public static dynamic AddEdit(long ots_Id, string title, string turnType, bool active, decimal depositeamount, string fromdate, string todate,
-                   string fromtime, string totime, int TimeEachTurn, int capacity, byte[] filepath, string desc)
+                   string fromtime, string totime, int TimeEachTurn, int capacity, string desc)
     {
         try
         {
@@ -112,22 +113,39 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                     Message = "از ساعت نمی تواند بزرگتر از تا ساعت باشد"
                 };
             }
-
-            capacity = capacity == 0 ? 1 : capacity;
+            string path = "";
             var b = AdakDB.Db;
+            //#region UploadFile
+            //if (ots_Id > 0 && isFileChanged)
+            //{
+            //    var ots_Info = b.usp_OnlineTurnSettings_SelectById(ots_Id).SingleOrDefault();
+            //    path = HttpContext.Current.Server.MapPath(ots_Info.OTS_FilePath);
+            //    if (File.Exists(path))
+            //    {
+            //        File.Delete(path);
+            //    }
+            //    filepath.SaveAs(Path.Combine(path, fileName));
+            //}
+            //else
+            //{
+            //    path = HttpContext.Current.Server.MapPath($"Files/OnlineTurnSettings/{DateTime.Now.Ticks}.jpg");
+            //    filepath.SaveAs(Path.Combine(path, fileName));
+            //}
+            //#endregion
+            capacity = capacity == 0 ? 1 : capacity;
+
             long CauserId = LoginedUser.Id;
             int? hasError = 0;
             long? resultId = 0;
             string mes = "";
             if (ots_Id <= 0)
             {
-                b.usp_OnlineTurnSettings_Add(title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), fromdate.ToMiladi(), todate.ToMiladi(), "", capacity, active, CauserId, ref mes, ref hasError, ref resultId);
+                b.usp_OnlineTurnSettings_Add(title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), fromdate.ToMiladi(), todate.ToMiladi(), path, capacity, active, CauserId, ref mes, ref hasError, ref resultId);
             }
             else
             {
-                b.usp_OnlineTurnSettings_Edit(ots_Id, title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), fromdate.ToMiladi(), todate.ToMiladi(), "", capacity, active, CauserId, ref mes, ref hasError);
+                b.usp_OnlineTurnSettings_Edit(ots_Id, title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), fromdate.ToMiladi(), todate.ToMiladi(), path, capacity, active, CauserId, ref mes, ref hasError);
             }
-
             if (hasError == 1)
             {
                 return new
@@ -227,7 +245,8 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 DepositeAmount = dataInfo.OTS_DepositAmount ?? 0,
                 Desc = dataInfo.OTS_Desc,
                 FilePath = dataInfo.OTS_FilePath,
-                TimeEachTurn = dataInfo.OTS_TimeEachTurn ?? 0
+                TimeEachTurn = dataInfo.OTS_TimeEachTurn ?? 0,
+                FileName = Path.GetFileName(dataInfo.OTS_FilePath)
             };
 
         }

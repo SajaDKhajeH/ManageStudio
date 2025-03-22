@@ -9,18 +9,16 @@ using System.Web;
 /// </summary>
 public class UploadFile
 {
-//    public bool SaveFile(string path)
-//    {
-//        using (MemoryStream ms = new MemoryStream())
-//        {
-//            Report.ExportDocument(StiExportFormat.Image, ms);
-//            if (File.Exists(HttpContext.Current.Server.MapPath(path)))
-//            {
-//                File.Delete(HttpContext.Current.Server.MapPath(path));
-//            }
-//            File.WriteAllBytes(HttpContext.Current.Server.MapPath(path), ms.ToArray());
-//        }
-//        Report.Dispose();
-//        return true;
-//    }
+    public static bool SaveFile(string path, byte[] file)
+    {
+        using (MemoryStream ms = new MemoryStream(file))
+        {
+            if (File.Exists(HttpContext.Current.Server.MapPath(path)))
+            {
+                File.Delete(HttpContext.Current.Server.MapPath(path));
+            }
+            File.WriteAllBytes(HttpContext.Current.Server.MapPath(path), ms.ToArray());
+        }
+        return true;
+    }
 }

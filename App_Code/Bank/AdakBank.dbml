@@ -1690,25 +1690,6 @@
     <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.usp_OnlineTurnSettings_SelectById" Method="usp_OnlineTurnSettings_SelectById">
-    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_OnlineTurnSettings_SelectByIdResult">
-      <Column Name="OTS_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-      <Column Name="OTS_TimeEachTurn" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="OTS_Causer" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="OTS_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="OTS_DepositAmount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="OTS_Desc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="OTS_TurnType" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="OTS_FromTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
-      <Column Name="OTS_ToTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
-      <Column Name="OTS_FromDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="OTS_ToDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="OTS_FilePath" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="OTS_Capacity" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="OTS_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.usp_OnlineTurnSettings_Select_For_Grid" Method="usp_OnlineTurnSettings_Select_For_Grid">
     <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
     <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
@@ -1787,6 +1768,26 @@
       <Column Name="P_Sort" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="HasPermission" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="P_ShowOnMenu" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_OnlineTurnSettings_SelectById" Method="usp_OnlineTurnSettings_SelectById">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_OnlineTurnSettings_SelectByIdResult">
+      <Column Name="OTS_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="OTS_TimeEachTurn" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OTS_Causer" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="OTS_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="OTS_DepositAmount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="OTS_Desc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="OTS_TurnType" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="OTS_FromTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="OTS_ToTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="OTS_FromDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="OTS_ToDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="OTS_FilePath" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="OTS_Capacity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OTS_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="OTS_UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

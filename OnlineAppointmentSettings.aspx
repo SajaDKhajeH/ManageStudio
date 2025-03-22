@@ -184,8 +184,9 @@
                         </div>
                         <div class="row g-9 mb-7">
                             <div class="col-md-12 fv-row">
-                                <label class="fs-6 fw-bold mb-2">عکس یا فیلم لوکیشن</label>
-                                <input type="file" class="form-control" id="ots_filepath" name="file-upload" accept="image/*,video/*">
+                                <label class="fs-6 fw-bold mb-2">عکس لوکیشن</label>
+                                <input type="file" class="form-control" id="ots_filepath" name="file-upload" accept="image/*">
+                                <p id="file-info"></p>
                             </div>
                         </div>
                         <div class="row">
@@ -222,12 +223,14 @@
             var fileInput = $('#ots_filepath')[0];
             var filepath = fileInput.files.length === 0 ? null : fileInput.files[0];
             var desc = $("#ots_desc").val();
+            alert(filepath);
+            var fileName = filepath === null ? "" : filepath?.name;
             $.ajax({
                 type: "POST",
                 url: "OnlineAppointmentSettings.aspx/AddEdit",
                 data: JSON.stringify({
                     ots_Id, title, turnType, active, depositeamount, fromdate, todate,
-                    fromtime, totime, TimeEachTurn, capacity, filepath, desc
+                    fromtime, totime, TimeEachTurn, capacity, desc
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -236,6 +239,12 @@
                         ShowError(msg.d.Message);
                     }
                     else {
+                        var formfiles = new FormData();
+                        formfiles.append("file", filepath);
+                        formfiles.append('createThumbnail', "0");
+                        formfiles.append('fromProfile', "1");
+
+
                         toastr.success(msg.d.Message, "موفق");
                         closeModalOnlineTurnSetting();
                         loadTableSettings();
@@ -269,7 +278,7 @@
             $("#ots_totime").val("06:00");
             $("#ots_TimeEachTurn").val("60");
             $("#ots_capacity").val("1");
-            $("#ots_filepath").files = null;
+            document.getElementById('ots_filepath').value = "";
             $("#ots_desc").val("");
 
         };
@@ -325,6 +334,7 @@
                         $("#ots_capacity").val(result.Capacity);
                         $("#ots_filepath").files = null;
                         $("#ots_desc").val(result.Desc);
+                        $('#file-info').text('فایل فعلی: ' + result.FileName);
                     }
                 },
                 error: function () {
@@ -337,11 +347,19 @@
     <script type="text/javascript">
         let currentPage = 1;
         let pageSize = 5;
+        var isFileChanged = false;
         $(document).ready(function () {
             $("#master_PageTitle").text("تنظیمات نوبت دهی آنلاین");
             $("#s_pageSize").val("5");
             loadTableSettings();
             ResetFeildsSetting();
+            isFileChanged = false;
+            $('#ots_filepath').on('change', function () {
+                isFileChanged = true;
+                var fileName = $(this)[0].files[0]?.name || 'فایلی انتخاب نشده است';
+                alert(fileName);
+                $('#file-info').text('فایل جدید: ' + fileName);
+            });
         });
         // صفحه بعد
         $("#nextPageBtn").click(function () {
