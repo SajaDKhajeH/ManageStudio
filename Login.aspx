@@ -39,26 +39,19 @@
     <!--end::Global Stylesheets Bundle-->
 </head>
 <body id="kt_body" class="bg-body">
-    <!--begin::Main-->
     <div class="d-flex flex-column flex-root">
-        <!--begin::Authentication - Sign-in -->
         <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png)">
-            <!--begin::Content-->
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-                <!--begin::Logo-->
                 <a class="mb-15">
                     <img alt="Logo" src="Files/Logo/logo.jpeg" class="h-150px" />
                 </a>
-                <!--end::Logo-->
-                <!--begin::Wrapper-->
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <div class="text-center mb-10">
-                        <!--begin::Title-->
                         <h1 class="text-dark mb-3"><%Response.Write(StudioName()); %></h1>
                     </div>
 
                     <!-- انتخاب نوع کاربر -->
-                    <%-- <div class="fv-row mb-10">
+                    <div class="fv-row mb-10">
 
                         <div class="row g-9 mb-7">
                             <div class="col-md-6 fv-row">
@@ -78,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>--%>
+                    </div>
 
                     <!-- فرم ورود پرسنل -->
                     <div id="staff-login" class="user-login">
@@ -103,7 +96,7 @@
                             <label class="form-label fs-6 fw-bolder text-dark">شماره موبایل</label>
                             <input class="form-control form-control-lg form-control-solid" type="text" id="phone" autocomplete="off" />
                         </div>
-                        <div class="fv-row mb-12">
+                        <div class="fv-row mb-12 CaptchaDiv">
                             <div class="col-lg-5 col-md-10 col-sm-5 col-10 p-3 form-group m-0">
                                 <input type="number" name="capchaCode" pattern="[0-9]*" inputmode="numeric" class="dir-ltr form-control change-align" id="capchaCode" autocomplete="off" placeholder="کد را وارد کنید">
                             </div>
@@ -112,95 +105,35 @@
                                 <i id="reGenerate" onclick="RegenerateCaptchaImage();" class="fa fa-sync mr-2 align-middle text-dark"></i>
                             </div>
                         </div>
-                        <div class="text-center">
+                        <div class="text-center CaptchaDiv">
                             <button id="btn_SendOTP" class="btn btn-lg btn-primary w-100 mb-5">ارسال کد تأیید</button>
                         </div>
                         <div class="fv-row mb-10" id="otp-section" style="display: none;">
-                            <label class="form-label fs-6 fw-bolder text-dark">کد تأیید</label>
-                            <input class="form-control form-control-lg form-control-solid" type="text" id="otp" autocomplete="off" />
+                            <%--<label class="form-label fs-6 fw-bolder text-dark">کد تأیید</label>--%>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="form-label fs-6 fw-bolder text-dark">کد تأیید</label>
+                                <a href="javascript:void(0);" onclick="ChangePhoneNumber();" class="text-primary fw-bold small">تغییر شماره موبایل؟</a>
+                            </div>
+                            <input id="otp_code" class="form-control form-control-lg form-control-solid" type="text" autocomplete="off" />
                             <br />
                             <div class="text-center">
                                 <button id="btn_VerifyOTP" onclick="LoginToPortal()" class="btn btn-lg btn-primary w-100 mb-5">ورود</button>
                             </div>
                         </div>
                     </div>
-                    <!--end::Actions-->
                 </div>
-                <!--end::Wrapper-->
             </div>
-            <!--end::Content-->
-            <!--begin::Footer-->
             <div class="d-flex flex-center flex-column-auto p-10">
-                <!--begin::Links-->
                 <div class="d-flex align-items-center fw-bold fs-6">
                 </div>
-                <!--end::Links-->
             </div>
-            <!--end::Footer-->
         </div>
-        <!--end::Authentication - Sign-in-->
     </div>
 
-    <%--<div class="d-flex flex-column flex-root">
-        <!--begin::Authentication - Sign-in -->
-        <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png">
-            <!--begin::Content-->
-            <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-                <!--begin::Logo-->
-                <a class="mb-15">
-					<img alt="Logo" src="assets/logo/logo.jpeg" class="h-150px" />
-				</a>
-                <!--end::Logo-->
-                <!--begin::Wrapper-->
-                <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
-                    <div class="text-center mb-10">
-                        <!--begin::Title-->
-                        <h1 class="text-dark mb-3">ورود به سامانه محیا</h1>
-                    </div>
-                    <div class="fv-row mb-10">
-                        <label class="form-label fs-6 fw-bolder text-dark">نام کاربری</label>
-                        <input class="form-control form-control-lg form-control-solid" type="text" id="username" autocomplete="off" />
-                    </div>
-                    <div class="fv-row mb-10">
-                        <div class="d-flex flex-stack mb-2">
-                            <label class="form-label fw-bolder text-dark fs-6 mb-0">رمز عبور</label>
-                        </div>
-                        <input class="form-control form-control-lg form-control-solid" type="password" id="password" autocomplete="off" />
-                    </div>
-                    <div class="text-center">
-                        <button id="btn_Login" class="btn btn-lg btn-primary w-100 mb-5">
-                            ورود
-                        </button>
-                    </div>
-                    <!--end::Actions-->
-
-                    <!--end::Form-->
-                </div>
-                <!--end::Wrapper-->
-            </div>
-            <!--end::Content-->
-            <!--begin::Footer-->
-            <div class="d-flex flex-center flex-column-auto p-10">
-                <!--begin::Links-->
-                <div class="d-flex align-items-center fw-bold fs-6">
-                </div>
-                <!--end::Links-->
-            </div>
-            <!--end::Footer-->
-        </div>
-        <!--end::Authentication - Sign-in-->
-    </div>--%>
-    <!--end::Main-->
     <script>var hostUrl = "assets/";</script>
-    <!--begin::Javascript-->
-    <!--begin::Global Javascript Bundle(used by all pages)-->
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <script src="assets/js/scripts.bundle.js"></script>
-    <!--end::Global Javascript Bundle-->
-    <!--begin::Page Custom Javascript(used by this page)-->
     <script src="assets/js/custom/authentication/sign-in/general.js"></script>
-    <!--end::Page Custom Javascript-->
-    <!--end::Javascript-->
 </body>
 </html>
 <script type="text/javascript">
@@ -222,6 +155,16 @@
             }
         });
     }
+    function ChangePhoneNumber() {
+        document.getElementById("otp-section").style.display = "none";
+        var elements = document.getElementsByClassName("CaptchaDiv");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].style.display = 'block';
+        }
+        RegenerateCaptchaImage();
+        $("#capchaCode").val("");
+        $("#phone").focus();
+    }
     // بررسی CAPTCHA کاربر
     document.getElementById('btn_SendOTP').addEventListener('click', function () {
         var phoneNumber = $("#phone").val();
@@ -239,6 +182,11 @@
                 if (res.Success) {
                     document.getElementById('otp-section').style.display = 'block';
                     toastr.success("کد تایید ارسال شد");
+                    $("#otp_code").val(res.acceptCode);
+                    var elements = document.getElementsByClassName("CaptchaDiv");
+                    for (var i = 0; i < elements.length; i++) {
+                        elements[i].style.display = 'none';
+                    }
                 }
                 else {
                     toastr.error(res.ErrorMessage);
@@ -263,7 +211,7 @@
         var username = $("#username").val();
         var password = $("#password").val();
         var phoneNumber = $("#phone").val();
-        var staffSelect = true;// $("#ra_staff").prop("checked");
+        var staffSelect = $("#ra_staff").prop("checked");
         $.ajax({
             type: "POST",
             url: "Api/Login/Login",
@@ -286,5 +234,9 @@
         $("#ra_staff").prop("checked", true);
         $("#username").val("");
         $("#password").val("");
+        var elements = document.getElementsByClassName("CaptchaDiv");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].style.display = 'block';
+        }
     });
 </script>

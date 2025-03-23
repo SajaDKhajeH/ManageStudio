@@ -1286,6 +1286,13 @@ namespace Bank
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
 			return ((ISingleResult<usp_OnlineTurnSettings_SelectByIdResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Factor_Select_By_FamilyId")]
+		public ISingleResult<usp_Factor_Select_By_FamilyIdResult> usp_Factor_Select_By_FamilyId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId);
+			return ((ISingleResult<usp_Factor_Select_By_FamilyIdResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
@@ -12531,6 +12538,176 @@ namespace Bank
 				if ((this._OTS_UniqueKey != value))
 				{
 					this._OTS_UniqueKey = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Factor_Select_By_FamilyIdResult
+	{
+		
+		private long _FactorId;
+		
+		private string _FactorDate;
+		
+		private string _DesignerName;
+		
+		private string _PhotographerFullName;
+		
+		private string _StatusTitle;
+		
+		private System.Nullable<decimal> _SumPrice;
+		
+		private System.Nullable<decimal> _SumDiscountPrice;
+		
+		private string _FinanStatus;
+		
+		private System.Nullable<decimal> _PaidPrice;
+		
+		public usp_Factor_Select_By_FamilyIdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorId", DbType="BigInt NOT NULL")]
+		public long FactorId
+		{
+			get
+			{
+				return this._FactorId;
+			}
+			set
+			{
+				if ((this._FactorId != value))
+				{
+					this._FactorId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDate", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string FactorDate
+		{
+			get
+			{
+				return this._FactorDate;
+			}
+			set
+			{
+				if ((this._FactorDate != value))
+				{
+					this._FactorDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DesignerName", DbType="NVarChar(221)")]
+		public string DesignerName
+		{
+			get
+			{
+				return this._DesignerName;
+			}
+			set
+			{
+				if ((this._DesignerName != value))
+				{
+					this._DesignerName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhotographerFullName", DbType="NVarChar(221)")]
+		public string PhotographerFullName
+		{
+			get
+			{
+				return this._PhotographerFullName;
+			}
+			set
+			{
+				if ((this._PhotographerFullName != value))
+				{
+					this._PhotographerFullName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string StatusTitle
+		{
+			get
+			{
+				return this._StatusTitle;
+			}
+			set
+			{
+				if ((this._StatusTitle != value))
+				{
+					this._StatusTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> SumPrice
+		{
+			get
+			{
+				return this._SumPrice;
+			}
+			set
+			{
+				if ((this._SumPrice != value))
+				{
+					this._SumPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumDiscountPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> SumDiscountPrice
+		{
+			get
+			{
+				return this._SumDiscountPrice;
+			}
+			set
+			{
+				if ((this._SumDiscountPrice != value))
+				{
+					this._SumDiscountPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FinanStatus", DbType="NVarChar(119)")]
+		public string FinanStatus
+		{
+			get
+			{
+				return this._FinanStatus;
+			}
+			set
+			{
+				if ((this._FinanStatus != value))
+				{
+					this._FinanStatus = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidPrice", DbType="Decimal(38,0)")]
+		public System.Nullable<decimal> PaidPrice
+		{
+			get
+			{
+				return this._PaidPrice;
+			}
+			set
+			{
+				if ((this._PaidPrice != value))
+				{
+					this._PaidPrice = value;
 				}
 			}
 		}

@@ -1790,4 +1790,18 @@
       <Column Name="OTS_UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.usp_Factor_Select_By_FamilyId" Method="usp_Factor_Select_By_FamilyId">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_Select_By_FamilyIdResult">
+      <Column Name="FactorId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="DesignerName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="PhotographerFullName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="StatusTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="SumPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="SumDiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FinanStatus" Type="System.String" DbType="NVarChar(119)" CanBeNull="true" />
+      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

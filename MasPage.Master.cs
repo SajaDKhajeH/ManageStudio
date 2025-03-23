@@ -24,6 +24,10 @@ namespace AdakStudio
                     Response.Redirect("Logout.aspx");
                 }
             }
+            else if (LoginedUser.Role == DefaultDataIDs.Role_Family && pageName != "CustomerOrders")
+            {
+                Response.Redirect("Logout.aspx");
+            }
             else if (
                         (
                         LoginedUser.Role == DefaultDataIDs.Role_Designer ||
