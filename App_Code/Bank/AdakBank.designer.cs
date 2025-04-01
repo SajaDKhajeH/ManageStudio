@@ -1315,6 +1315,19 @@ namespace Bank
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), key);
 			return ((ISingleResult<usp_KeyGenerator_Select_ByKeyResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_TurnInfo_By_Id")]
+		public ISingleResult<usp_TurnInfo_By_IdResult> usp_TurnInfo_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+			return ((ISingleResult<usp_TurnInfo_By_IdResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ufn_GetLastPhotographer_By_FamilyId", IsComposable=true)]
+		public System.Nullable<long> ufn_GetLastPhotographer_By_FamilyId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId)
+		{
+			return ((System.Nullable<long>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId).ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
@@ -12944,6 +12957,86 @@ namespace Bank
 				if ((this._MotherFullName != value))
 				{
 					this._MotherFullName = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_TurnInfo_By_IdResult
+	{
+		
+		private string _FamilyTitle;
+		
+		private long _FamilyId;
+		
+		private System.Nullable<long> _PhotographerId;
+		
+		private System.Nullable<long> _TurnType;
+		
+		public usp_TurnInfo_By_IdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string FamilyTitle
+		{
+			get
+			{
+				return this._FamilyTitle;
+			}
+			set
+			{
+				if ((this._FamilyTitle != value))
+				{
+					this._FamilyTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyId", DbType="BigInt NOT NULL")]
+		public long FamilyId
+		{
+			get
+			{
+				return this._FamilyId;
+			}
+			set
+			{
+				if ((this._FamilyId != value))
+				{
+					this._FamilyId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhotographerId", DbType="BigInt")]
+		public System.Nullable<long> PhotographerId
+		{
+			get
+			{
+				return this._PhotographerId;
+			}
+			set
+			{
+				if ((this._PhotographerId != value))
+				{
+					this._PhotographerId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TurnType", DbType="BigInt")]
+		public System.Nullable<long> TurnType
+		{
+			get
+			{
+				return this._TurnType;
+			}
+			set
+			{
+				if ((this._TurnType != value))
+				{
+					this._TurnType = value;
 				}
 			}
 		}

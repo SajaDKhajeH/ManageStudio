@@ -390,6 +390,15 @@
                         appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
                         appointmentBtnPay.onclick = () => PayDeposit(app.FamilyId, "دریافت بیعانه از " + app.BaseFamilyTitle, app.BedPrice);
                         appointmentsCell.appendChild(appointmentBtnPay);
+
+                        //کلید ثبت فاکتور
+                        const appointmentBtnSetFactor = document.createElement('button');
+                        appointmentBtnSetFactor.className = 'btnDataTable btnDataTable-print';
+                        appointmentBtnSetFactor.textContent = `📜`;
+                        appointmentBtnSetFactor.title = "ثبت فاکتور";
+                        appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.RequestId;
+                        appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.RequestId);
+                        appointmentsCell.appendChild(appointmentBtnSetFactor);
                     });
                     beforTime = time;
                     schedule.appendChild(timeSlot);
@@ -434,6 +443,15 @@
                 appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
                 appointmentBtnPay.onclick = () => PayDeposit(app.FamilyId, "دریافت بیعانه از " + app.BaseFamilyTitle, app.BedPrice);
                 appointmentsCellRezerv.appendChild(appointmentBtnPay);
+
+                //کلید ثبت فاکتور
+                const appointmentBtnSetFactor = document.createElement('button');
+                appointmentBtnSetFactor.className = 'btnDataTable btnDataTable-print';
+                appointmentBtnSetFactor.textContent = `📜`;
+                appointmentBtnSetFactor.title = "ثبت فاکتور";
+                appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.RequestId;
+                appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.RequestId);
+                appointmentsCell.appendChild(appointmentBtnSetFactor);
             });
             schedule.appendChild(timeSlotRezerv);
             schedule.appendChild(appointmentsCellRezerv);

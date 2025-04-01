@@ -1596,6 +1596,9 @@
         function GoToAddEditFactor() {
             window.open("AddEditFactor.aspx?id=0", '_blank');
         }
+        function GoToAddEditFactor_From_Turn(turnId) {
+            window.open("AddEditFactor.aspx?turnid=" + turnId, '_blank');
+        }
         // تابع خروج از سیستم
         function logout() {
             window.location.href = "Logout.aspx";

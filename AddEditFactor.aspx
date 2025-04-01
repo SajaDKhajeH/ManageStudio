@@ -80,8 +80,8 @@
                         <div class="col-lg-3">
                             <br />
                             <label>انتخاب خانواده</label>
-                            <select id="factor_Family" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" style="margin: 3px" data-placeholder="انتخاب مشتری">
-                               <%Response.Write(PublicMethod.GetActiveCustomer()); %>
+                            <select onchange="GetPhotographerByFamily()" id="factor_Family" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" style="margin: 3px" data-placeholder="انتخاب مشتری">
+                                <%Response.Write(PublicMethod.GetActiveCustomer()); %>
                             </select>
                             <br />
                             <div class="row">
@@ -200,8 +200,8 @@
                                     </ul>
                                 </div>
                                 <div class="tab-content" id="picTab">
-                                    <label style="color:red" title="">عکس هایی که در این قسمت آپلود می کنید پس از انتخاب مشتری به صورت اتوماتیک حذف خواهد شد</label>
-                                    <label style="color:red" title="">روی عکس ها واترمارک</label>
+                                    <label style="color: red" title="">عکس هایی که در این قسمت آپلود می کنید پس از انتخاب مشتری به صورت اتوماتیک حذف خواهد شد</label>
+                                    <label style="color: red" title="">روی عکس ها واترمارک</label>
                                 </div>
                             </div>
                         </div>
@@ -220,6 +220,7 @@
         var getLogs = false;
         var btn_SetFactor = "btn_SetFactor";
         var factorId = 0;
+        var turnId = 0;
         function GoReferer() {
             if (document.referrer != null && document.referrer != undefined) {
                 location.href = document.referrer;
@@ -247,13 +248,37 @@
             let params = new URLSearchParams(document.location.search);
             FirstLoad();
             factorId = parseInt(params.get("id")); // is the string "Jonathan"
-            if (factorId>0) {
+            turnId = parseInt(params.get("turnid"));
+            if (isNaN(turnId)) {
+                turnId = 0;
+            }
+            if (factorId > 0) {
                 $("#master_PageTitle").text("جزئیات فاکتور " + factorId);
                 GetInfoForEditFactor(factorId);
             }
             else {
                 factorId = 0;
                 $("#master_PageTitle").text("ثبت فاکتور جدید");
+                if (turnId > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "Dashboard.aspx/GetInfoBy_TurnId",
+                        data: JSON.stringify({
+                            TurnId: turnId
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (msg) {
+                            $("#factor_Family").val(msg.d.FamilyId);
+                            $("#factor_Photographer").val(msg.d.PhotographerId);
+                            $("#factor_TypePhotography").val(msg.d.TypeId);
+                            $("#factor_Family").change();
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
             }
             document.getElementById("gotoFactor").style.visibility = "hidden";
             document.getElementById("Btn_AddRequest").style.visibility = "hidden";
@@ -375,6 +400,29 @@
                 }
             });
         };
+        function GetPhotographerByFamily() {
+            if ((factorId == null || factorId == undefined || factorId == 0) && (turnId == 0 || turnId == undefined || turnId == null)) {
+                var familyId = $("#factor_Family").val();
+                $.ajax({
+                    type: "POST",
+                    url: "Dashboard.aspx/GetPhotographerByFamily",
+                    data: JSON.stringify({
+                        familyId: familyId
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        if (msg.d.Change) {
+                            $("#factor_Photographer").val(msg.d.LastPhotographerId);
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+
+        };
     </script>
     <%--اسکریپت مربوط به جدول اقلام--%>
     <script>
@@ -493,7 +541,7 @@
                     }
                     else {
                         toastr.success(msg.d.Message, "موفق");
-                        if (factorId==0) {
+                        if (factorId == 0) {
                             PrintFactor(msg.d.FactorId);
                         }
                         location.href = document.referrer;

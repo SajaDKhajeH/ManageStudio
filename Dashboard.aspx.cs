@@ -132,7 +132,8 @@ namespace AdakStudio
                     PhotographerName = item.PhotographerName,
                     FamilyId = item.R_FamilyId,
                     FamilyTitle = item.FamilyTitle,
-                    BedPrice = item.BedPrice ?? 0
+                    BedPrice = item.BedPrice ?? 0,
+
                 });
             }
             return tlist;
@@ -297,7 +298,7 @@ namespace AdakStudio
             var address = HttpContext.Current.Request.Url.Host;
             address = "https://" + address + "/pay.aspx?k=" + Key;
             SMSText = SMSText.Replace("{{لینک}}", address);
-            
+
             int? hasError = 0;
             string mes = "";
             AdakDB.Db.usp_SMS_Add((SendToFather ? familyInfo.F_FatherMobile : familyInfo.F_MotherMobile), SMSText, DefaultDataIDs.SMSTypeId_PayLink, familyId, LoginedUser.Id, ref hasError, ref mes);
@@ -306,7 +307,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = mes.IsNullOrEmpty()?"خطایی نامشخص در ارسال پیامک پیش امده است":mes
+                    Message = mes.IsNullOrEmpty() ? "خطایی نامشخص در ارسال پیامک پیش امده است" : mes
                 };
             }
             return new
@@ -315,41 +316,75 @@ namespace AdakStudio
                 Message = "ارسال پیامک با موفقیت انجام شد"
             };
         }
+        [WebMethod]
+        public static dynamic GetInfoBy_TurnId(long TurnId)
+        {
+            var TurnInfo = AdakDB.Db.usp_TurnInfo_By_Id(TurnId).SingleOrDefault();
+            TurnInfo = TurnInfo ?? new Bank.usp_TurnInfo_By_IdResult();
 
+            return new
+            {
+                FamilyId = TurnInfo.FamilyId.ToCodeNumber(),
+                TypeId = TurnInfo.TurnType.ToCodeNumber(),
+                PhotographerId = TurnInfo.PhotographerId.ToCodeNumber()
+            };
+        }
+        [WebMethod]
+        public static dynamic GetPhotographerByFamily(string familyId)
+        {
+            familyId = familyId.ToDecodeNumber();
+            if (familyId.ToLong() > 0)
+            {
+                long? lastPhotographerId = AdakDB.Db.ufn_GetLastPhotographer_By_FamilyId(familyId.ToLong());
+                if (lastPhotographerId > 0)
+                {
+                    return new
+                    {
+                        LastPhotographerId = lastPhotographerId.ToCodeNumber(),
+                        Change=true
+                    };
+                }
+            }
+            return new
+            {
+                Change = false
+            };
+        }
     }
-    public class TurnList
-    {
-        public int hour { get; set; }
-        public string title { get; set; }
-        public string time { get; set; }
-        public long RequestId { get; set; }
-        public string Date { get; set; }
-        public string TurnId { get; set; }
-        public string TurnTitle { get; set; }
-        public string Desc { get; set; }
-        public string BaseFamilyTitle { get; set; }
-        public int Duration { get; set; }
-        public int Cost { get; set; }
-        public string LocationTitle { get; set; }
-        public string LocationId { get; set; }
-        public int ModPrice { get; set; }
-        public string DurationText { get; set; }
-        public string PhotographerId { get; set; }
-        public string PhotographerName { get; set; }
-        public long FamilyId { get; set; }
-        public string FamilyTitle { get; set; }
-        public decimal BedPrice { get; set; }
-    }
-    public class LunarCalendarList
-    {
-        public int Row { get; set; }
-        public string FamilyTitle { get; set; }
-        public string MotherFullName { get; set; }
-        public string FatherFullName { get; set; }
-        public string MotherMobile { get; set; }
-        public string FatherMobile { get; set; }
-        public string BirthDate { get; set; }
-        public string ChildName { get; set; }
-        public string Desc { get; set; }
-    }
+
+}
+public class TurnList
+{
+    public int hour { get; set; }
+    public string title { get; set; }
+    public string time { get; set; }
+    public long RequestId { get; set; }
+    public string Date { get; set; }
+    public string TurnId { get; set; }
+    public string TurnTitle { get; set; }
+    public string Desc { get; set; }
+    public string BaseFamilyTitle { get; set; }
+    public int Duration { get; set; }
+    public int Cost { get; set; }
+    public string LocationTitle { get; set; }
+    public string LocationId { get; set; }
+    public int ModPrice { get; set; }
+    public string DurationText { get; set; }
+    public string PhotographerId { get; set; }
+    public string PhotographerName { get; set; }
+    public long FamilyId { get; set; }
+    public string FamilyTitle { get; set; }
+    public decimal BedPrice { get; set; }
+}
+public class LunarCalendarList
+{
+    public int Row { get; set; }
+    public string FamilyTitle { get; set; }
+    public string MotherFullName { get; set; }
+    public string FatherFullName { get; set; }
+    public string MotherMobile { get; set; }
+    public string FatherMobile { get; set; }
+    public string BirthDate { get; set; }
+    public string ChildName { get; set; }
+    public string Desc { get; set; }
 }
