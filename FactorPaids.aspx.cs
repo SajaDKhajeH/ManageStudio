@@ -32,7 +32,7 @@ public partial class FactorPaids : System.Web.UI.Page
             PaidType = x.PaidTypeTitle,
             RefNumber = x.Pa_RefNumber,
             Causer = x.CauserName,
-            SubjectText = x.SubjectTypeText,
+            SubjectText = x.Pa_Desc.IsNullOrEmpty()?"": x.Pa_Desc,
             Date_A_TimePaid = x.Pa_DateS + " " + x.Pa_CreationTime.TimeOfDay.ToString().Substring(0,5),
             Actions = @"
                 <div class='action-buttons'>

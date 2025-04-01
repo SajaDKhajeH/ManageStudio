@@ -24,13 +24,14 @@ namespace AdakStudio
         [WebMethod]
         public static dynamic SetRequestOnMaster(long requestId, string turn_Date, string turn_Time,
                         string selectedFamily, string turnType, string desc,
-                        int Duration, string Location, int Cost)
+                        int Duration, string Location, string Photographer)
         {
             var db = AdakDB.Db;
             try
             {
                 turn_Date = turn_Date.ToEnglishNumber();
                 turnType = turnType.ToDecodeNumber();
+                Photographer = Photographer.ToDecodeNumber();
                 Location = Location.ToDecodeNumber();
                 selectedFamily = selectedFamily.ToDecodeNumber();
                 if (turnType.IsNullOrEmpty() || turnType == "0")
@@ -65,14 +66,6 @@ namespace AdakStudio
                         Message = "لطفا خانواده را مشخص کنید"
                     };
                 }
-                if (Cost < 0)
-                {
-                    return new
-                    {
-                        Result = false,
-                        Message = "هزینه نوبت نمیتونه کمتر از صفر باشد"
-                    };
-                }
                 int? hasError = 0;
                 string mes = "";
                 bool IsEdit = false;
@@ -81,13 +74,13 @@ namespace AdakStudio
                 long? RequestResultId = null;
                 if (requestId == 0)
                 {
-                    db.usp_RequestTurn_Add(FamilyId, turn_Date, (turn_Time.IsNullOrEmpty() ? new TimeSpan() : TimeSpan.Parse(turn_Time)), CauserId, null, desc, CauserId, ref mes, ref hasError, ref RequestResultId, turnType.ToLong(), Location.ToLong(), Duration, Cost);
+                    db.usp_RequestTurn_Add(FamilyId, turn_Date, (turn_Time.IsNullOrEmpty() ? new TimeSpan() : TimeSpan.Parse(turn_Time)), CauserId, Photographer.ToLong(), desc, CauserId, ref mes, ref hasError, ref RequestResultId, turnType.ToLong(), Location.ToLong(), Duration, 0);
                 }
                 else
                 {
                     IsEdit = true;
                     //اصلا اطلاعات خانواده تغییر نمیکنه
-                    db.usp_RequestTurn_Edit(requestId, FamilyId, turn_Date, (turn_Time.IsNullOrEmpty() ? new TimeSpan() : TimeSpan.Parse(turn_Time)), null, desc, CauserId, ref mes, ref hasError, turnType.ToLong(), Location.ToLong(), Duration, Cost);
+                    db.usp_RequestTurn_Edit(requestId, FamilyId, turn_Date, (turn_Time.IsNullOrEmpty() ? new TimeSpan() : TimeSpan.Parse(turn_Time)), Photographer.ToLong(), desc, CauserId, ref mes, ref hasError, turnType.ToLong(), Location.ToLong(), Duration, 0);
                 }
                 if (hasError == 1)
                 {
@@ -117,6 +110,7 @@ namespace AdakStudio
             var turnList = db.usp_Request_Select_By_Date_For_Dashboard(date).ToList();
             turnList = turnList ?? new List<Bank.usp_Request_Select_By_Date_For_DashboardResult>();
             List<TurnList> tlist = new List<TurnList>();
+            DateTime CurrentDate = DateTime.Now;
             foreach (var item in turnList)
             {
                 tlist.Add(new TurnList()
@@ -130,12 +124,15 @@ namespace AdakStudio
                     TurnId = (item.R_Type ?? 0).ToCodeNumber(),
                     TurnTitle = item.TypeTitle.IsNullOrEmpty() ? "" : item.TypeTitle,
                     Desc = item.R_Desc,
-                    Cost = (item.R_Cost ?? 0).ToInt(),
                     Duration = (item.R_Duration ?? 0),
                     LocationId = item.R_Location.ToCodeNumber(),
                     LocationTitle = item.LocationTitle,
-                    ModPrice = (item.ModPrice ?? 0).ToInt(),
-                    DurationText = (item.R_Duration ?? 0).ToTimeString()
+                    DurationText = (item.R_Duration ?? 0).ToTimeString(),
+                    PhotographerId = (item.PhotographerId ?? 0).ToCodeNumber(),
+                    PhotographerName = item.PhotographerName,
+                    FamilyId = item.R_FamilyId,
+                    FamilyTitle = item.FamilyTitle,
+                    BedPrice = item.BedPrice ?? 0
                 });
             }
             return tlist;
@@ -236,8 +233,88 @@ namespace AdakStudio
                 }
             };
         }
+        [WebMethod]
+        public static dynamic GetInfoForPayBy_FamilyId(long familyId)
+        {
+            var familyInfo = AdakDB.Db.usp_Family_Select_By_Id(familyId).SingleOrDefault();
+            familyInfo = familyInfo ?? new Bank.usp_Family_Select_By_IdResult();
 
+            var defaultsms = AdakDB.Db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_GetDeposit).SingleOrDefault();
+            string sms = defaultsms.D_DefaultSMSText;
+            // sms = sms.Replace("{{عنوان خانواده}}", familyInfo.F_Title);
+            return new
+            {
+                SMSActive = defaultsms.D_Active,
+                SMSText = sms,
+                FatherHasMobile = !familyInfo.F_FatherMobile.IsNullOrEmpty() && familyInfo.F_FatherMobile.IsMobileNumber(),
+                MotherHasMobile = !familyInfo.F_MotherMobile.IsNullOrEmpty() && familyInfo.F_MotherMobile.IsMobileNumber(),
+                FatherName = familyInfo.F_FatherName.IsNullOrEmpty() && familyInfo.F_FatherLName.IsNullOrEmpty() ? "آقای خانواده " + familyInfo.F_Title : (familyInfo.F_FatherName + " " + familyInfo.F_FatherLName),
+                MotherName = familyInfo.F_MotherName.IsNullOrEmpty() && familyInfo.F_MotherLName.IsNullOrEmpty() ? "خانم خانواده" + familyInfo.F_Title : (familyInfo.F_MotherName + " " + familyInfo.F_MotherLName),
+            };
+        }
+        [WebMethod]
+        public static dynamic SendSMS_PayLink(long familyId, decimal Price, string SMSText, bool SendToFather, bool SendToMother)
+        {
+            if (familyId <= 0)
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "شناسه خانواده مشخص نیست"
+                };
+            }
+            if (Price <= 0)
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "مبلغ مشخص نیست"
+                };
+            }
+            if (SMSText.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "متن پیامک مشخص نیست"
+                };
+            }
 
+            var familyInfo = AdakDB.Db.usp_Family_Select_By_Id(familyId).SingleOrDefault();
+            familyInfo = familyInfo ?? new Bank.usp_Family_Select_By_IdResult();
+            SMSText = SMSText.Replace("{{عنوان خانواده}}", familyInfo.F_Title);
+            SMSText = SMSText.Replace("{{مبلغ}}", Price.ShowPrice(Settings.TextAfterPrice));
+            string Key = "";
+            AdakDB.Db.usp_KeyGenerator_Add(Price, familyId, ref Key);
+            if (Key.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "خطایی در ایجاد لینک رخ داده است"
+                };
+            }
+            var address = HttpContext.Current.Request.Url.Host;
+            address = "https://" + address + "/pay.aspx?k=" + Key;
+            SMSText = SMSText.Replace("{{لینک}}", address);
+            
+            int? hasError = 0;
+            string mes = "";
+            AdakDB.Db.usp_SMS_Add((SendToFather ? familyInfo.F_FatherMobile : familyInfo.F_MotherMobile), SMSText, DefaultDataIDs.SMSTypeId_PayLink, familyId, LoginedUser.Id, ref hasError, ref mes);
+            if (hasError == 1)
+            {
+                return new
+                {
+                    Result = false,
+                    Message = mes.IsNullOrEmpty()?"خطایی نامشخص در ارسال پیامک پیش امده است":mes
+                };
+            }
+            return new
+            {
+                Result = true,
+                Message = "ارسال پیامک با موفقیت انجام شد"
+            };
+        }
 
     }
     public class TurnList
@@ -257,7 +334,11 @@ namespace AdakStudio
         public string LocationId { get; set; }
         public int ModPrice { get; set; }
         public string DurationText { get; set; }
-
+        public string PhotographerId { get; set; }
+        public string PhotographerName { get; set; }
+        public long FamilyId { get; set; }
+        public string FamilyTitle { get; set; }
+        public decimal BedPrice { get; set; }
     }
     public class LunarCalendarList
     {

@@ -11,10 +11,12 @@ public class DefaultDataIDs
     public static long DefaultSMS_Wellcome_ToFamily = 15;
     public static long DefaultSMS_Wellcome_ToFamily_FromHospital = 34;
     public static long DefaultSMS_AfterSetFactor = 18;
+    public static long DefaultSMS_GetDeposit = 987;
     public static long DefaultSMS_WaitForAcceptCustomer= 55;
     public static long DefaultSMS_CancelTurn = 65;
     public static long DefaultSMS_ReadyToDeliveredToCustomer = 56;
     public static long SMSTypeId_Wellcome_ToFamily = 16;
+    public static long SMSTypeId_PayLink = 984;
     public static long SMSTypeId_Wellcome_ToFamily_FromHospital = 35;
     public static long SMSTypeId_AfterSetFactor = 17;
     public static long Role_Designer = 6;

@@ -85,7 +85,7 @@
                                     <span class="required">انتخاب نوع</span>
                                 </label>
                                 <select id="d_Typeid">
-                                    <%Response.Write(PublicMethod.GetDataType()); %>
+                                    <%Response.Write(PublicMethod.GetDataType_For_Add()); %>
                                 </select>
                             </div>
                         </div>

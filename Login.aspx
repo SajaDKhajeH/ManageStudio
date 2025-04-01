@@ -47,7 +47,7 @@
                 </a>
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <div class="text-center mb-10">
-                        <h1 class="text-dark mb-3"><%Response.Write(StudioName()); %></h1>
+                        <h1 class="text-dark mb-3"><%Response.Write(Settings.StudioName); %></h1>
                     </div>
 
                     <!-- انتخاب نوع کاربر -->

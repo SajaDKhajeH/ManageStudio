@@ -8,6 +8,7 @@ using System.Web;
 /// </summary>
 public class PublicMethod
 {
+
     public static string Pagination()
     {
         string html = "";
@@ -58,6 +59,17 @@ public class PublicMethod
         string htmls = "<option>انتخاب نوع</option>";
         var dataType = AdakDB.Db.usp_DataType_Select().ToList();
         dataType = dataType ?? new List<Bank.usp_DataType_SelectResult>();
+        foreach (var item in dataType)
+        {
+            htmls += "<option value='" + item.DT_ID.ToCodeNumber() + "'>" + item.DT_Title + "</option>";
+        }
+        return htmls;
+    }
+    public static string GetDataType_For_Add()
+    {
+        string htmls = "";
+        var dataType = AdakDB.Db.usp_DataType_Select_For_Add().ToList();
+        dataType = dataType ?? new List<Bank.usp_DataType_Select_For_AddResult>();
         foreach (var item in dataType)
         {
             htmls += "<option value='" + item.DT_ID.ToCodeNumber() + "'>" + item.DT_Title + "</option>";
@@ -235,7 +247,10 @@ public class PublicMethod
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
-            htmls += "<option value='" + item.D_ID.ToCodeNumber() + "'>" + item.D_Title + "</option>";
+            if (item.D_ID != 986 && item.D_ID != 985)
+            {
+                htmls += "<option value='" + item.D_ID.ToCodeNumber() + "'>" + item.D_Title + "</option>";
+            }
         }
         return htmls;
     }

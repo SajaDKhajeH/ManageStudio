@@ -110,6 +110,22 @@ namespace AdakStudio
                         Message = "لطفا شماره همراه پدر را بدرستی وارد کنید"
                     };
                 }
+                if ((f_name.IsNullOrEmpty() && !f_lastname.IsNullOrEmpty()) || (!f_name.IsNullOrEmpty() && f_lastname.IsNullOrEmpty()))
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "لطفا نام و نام خانوادگی آقا را به صورت کامل وارد کنید"
+                    };
+                }
+                if ((m_name.IsNullOrEmpty() && !m_lastname.IsNullOrEmpty()) || (!m_name.IsNullOrEmpty() && m_lastname.IsNullOrEmpty()))
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "لطفا نام و نام خانوادگی خانم را به صورت کامل وارد کنید"
+                    };
+                }
                 int? hasError = 0;
                 string mes = "";
                 long CauserId = LoginedUser.Id;// LoginedUser.Id == null ? 0 : LoginedUser.Id;

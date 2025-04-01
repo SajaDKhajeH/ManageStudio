@@ -164,8 +164,7 @@
                                     <th class="min-w-80px">تاریخ ثبت</th>
                                     <th class="min-w-100px">مجموع فاکتور</th>
                                     <th class="min-w-100px">مجموع تخفیف</th>
-                                    <th class="min-w-100px">مبلغ پرداختی</th>
-                                    <th class="min-w-130px">وضعیت</th>
+                                    <th class="min-w-150px">وضعیت مالی</th>
                                     <th class="min-w-130px">عملیات</th>
                                 </tr>
                             </thead>
@@ -256,7 +255,6 @@
                             <td>${row.FactorDate}</td>
                             <td>${row.SumFactor}</td>
                             <td>${row.SumDiscount}</td>
-                            <td>${row.PaidPrice}</td>
                             <td>${row.FinanStatus}</td>
                             <td>${row.Actions}</td>
                         </tr>

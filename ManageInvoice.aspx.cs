@@ -58,7 +58,6 @@ namespace AdakStudio
                 SumFactor = x.F_SumPrice.ShowPrice(TextAfterPrice),
                 Payable = ((x.F_SumPrice - x.F_SumDiscountPrice) ?? 0).ShowPrice(TextAfterPrice),
                 SumDiscount = x.F_SumDiscountPrice.ShowPrice(TextAfterPrice),
-                PaidPrice = (x.PaidPrice ?? 0).ShowPrice(TextAfterPrice),
                 FinanStatus = x.FinanStatus,
                 FactorStatus = x.StatusTitle,
                 TypePhotographi = x.TypePhotographyTitle,
@@ -68,16 +67,13 @@ namespace AdakStudio
                 ForceDesign = (x.F_ForceDesign ?? false) ? "هست" : "نیست",
                 Actions = @"
                 <div class='action-buttons'>
-                      " + (((x.F_SumPrice - x.F_SumDiscountPrice - (x.PaidPrice ?? 0)) ?? 0) > 0 ? @"<button class='btnDataTable btnDataTable-print' data-bs-toggle='modal' data-bs-target='#m_SetPaidPrice' onclick='PayFactor_Or_Turn(" + x.F_Id + @"," + ((x.F_SumPrice - x.F_SumDiscountPrice - (x.PaidPrice ?? 0)) ?? 0) + @",1)' title='پرداخت'>💰</button>" : "") + @"  
+                        <button class='btnDataTable btnDataTable-print' data-bs-toggle='modal' data-bs-target='#m_SetPaidPrice' onclick='PayDeposit(" + x.F_FamilyId + @",""" + (x.BedPrice > 0 ? "دریافت بدهی از " + x.FamilyTitle : "دریافت بیعانه از " + x.FamilyTitle) + @"""," + (x.BedPrice ?? 0) + @")' title='پرداخت'>💰</button>
                         <button class='btnDataTable btnDataTable-print' onclick='PrintFactor(" + x.F_Id + @")' title='چاپ'>🖨</button>
                         <button class='btnDataTable btnDataTable-edit' onclick='GoToAddEditFactor(" + x.F_Id + @")' title='ویرایش'>✎</button>
                         <button class='btnDataTable btnDataTable-delete' onclick='FactorDelete(" + x.F_Id + @")' title='حذف'>🗑</button>
                 </div>
                 "
             })); ;
-            //  < div class='menu-item px-3'><a data-bs-toggle='modal' data-bs-target='#m_SetFactor' onclick='GetInfoForEditFactor(" + x.F_Id + @")' class='menu-link px-3'>ویرایش</a></div>
-            //<div class='menu-item px-3'><a onclick = 'FactorDelete(" + x.F_Id + @")' class='menu-link px-3'>حذف</a></div>
-
             if (list == null)
             {
                 return new OperationResult<ForGrid.DataTableModel>
@@ -236,48 +232,45 @@ namespace AdakStudio
                 decimal SumPrice = products.Sum(a => a.price * a.quantity);
                 decimal SumPriceWithoutGift = SumPrice - sumGiftPrice;
                 decimal PaidPrice = paidPrice.IsNullOrEmpty() | !paidPrice.IsNumber() ? 0 : paidPrice.ToLong();
-                decimal SumPaidPrice = 0;
                 //گرفتن وضعیت قبلیش واسه اینکه پیامک رو بفرستیم
                 if (FactorId > 0)
                 {
                     var facInfo = db.usp_Factor_Select_By_Id(FactorId)?.SingleOrDefault();
                     OldFactorStatus = facInfo.F_Status;
-                    SumPaidPrice = facInfo.F_PaidPrice;
                 }
                 #region چک کردن اینکه نتونن فاکتور رو با وضعیت آماده به طراحی ثبت کنند زمانی که کمتر از 50 درصد فاکتور پپرپداخت شده
-                if (factor_status.ToLong() == DefaultDataIDs.FactorStatus_ReadyForDesign)
-                {
-                    SumPaidPrice = FactorId > 0 ? SumPaidPrice : PaidPrice;
-                    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice == 0 && ((DiscountPrice * 100) / SumPriceWithoutGift) < MinimumPaymentPercentage_for_ready)
-                    {
-                        return new
-                        {
-                            Result = false,
-                            Message = "فاکتور هیچ پرداختی ای نداشته است اجازه ثبت فاکتور با وضعیت آماده به طراحی رو ندارید"
-                        };
-                    }
-                    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice > 0 && (((SumPaidPrice + DiscountPrice) * 100) / SumPriceWithoutGift) < MinimumPaymentPercentage_for_ready)
-                    {
-                        return new
-                        {
-                            Result = false,
-                            Message = "حداقل باید 50 درصد فاکتور پرداخت شده باشد تا بتوانید وضعیت فاکتور را با وضعیت آماده به طراحی ثبت کنید"
-                        };
-                    }
-                }
+                //if (factor_status.ToLong() == DefaultDataIDs.FactorStatus_ReadyForDesign)
+                //{
+                //    SumPaidPrice = FactorId > 0 ? SumPaidPrice : PaidPrice;
+                //    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice == 0 && ((DiscountPrice * 100) / SumPriceWithoutGift) < MinimumPaymentPercentage_for_ready)
+                //    {
+                //        return new
+                //        {
+                //            Result = false,
+                //            Message = "فاکتور هیچ پرداختی ای نداشته است اجازه ثبت فاکتور با وضعیت آماده به طراحی رو ندارید"
+                //        };
+                //    }
+                //    if ((SumPriceWithoutGift - DiscountPrice) > 0 && SumPaidPrice > 0 && (((SumPaidPrice + DiscountPrice) * 100) / SumPriceWithoutGift) < MinimumPaymentPercentage_for_ready)
+                //    {
+                //        return new
+                //        {
+                //            Result = false,
+                //            Message = "حداقل باید 50 درصد فاکتور پرداخت شده باشد تا بتوانید وضعیت فاکتور را با وضعیت آماده به طراحی ثبت کنید"
+                //        };
+                //    }
+                //}
                 #endregion
                 DiscountPrice = DiscountPrice + sumGiftPrice;
                 List<usp_FactorDetail_By_FactorIdResult> OldDetails = new List<usp_FactorDetail_By_FactorIdResult>();
                 //چک کردن اینکه فاکتور منفی نباشه
-                if (SumPrice > 0 && (SumPrice - DiscountPrice - PaidPrice) < 0)
-                {
-                    return new
-                    {
-                        Result = false,
-                        Message = "فاکتور نمی تواند منفی باشد"
-                    };
-                }
-
+                //if (SumPrice > 0 && (SumPrice - DiscountPrice - PaidPrice) < 0)
+                //{
+                //    return new
+                //    {
+                //        Result = false,
+                //        Message = "پرداختی "
+                //    };
+                //}
                 if (db.Connection.State != System.Data.ConnectionState.Open)
                 {
                     db.Connection.Open();
@@ -365,7 +358,7 @@ namespace AdakStudio
                             };
                         }
                         long? PaidId = 0;
-                        db.usp_Paids_Add(FactorId, 1, fDate, PaidPrice, paidType.ToInt(), refNumber, null, DateTime.Now.TimeOfDay, CauserId, ref mes, ref hasError, ref PaidId);
+                        db.usp_Paids_Add(FamilyId, fDate, PaidPrice, paidType.ToInt(), refNumber, null, DateTime.Now.TimeOfDay, CauserId, ref mes, ref hasError, ref PaidId);
                         if (hasError == 1)
                         {
                             CloseConnectios(db);
@@ -377,7 +370,6 @@ namespace AdakStudio
                         }
                     }
                 }
-
                 //اگر فاکتور وضعیتش آماده برای طراحی بود پیامک ارسال شود
                 if (factor_status.ToLong() == DefaultDataIDs.FactorStatus_ReadyForDesign && (OldFactorStatus == 0 || factor_status.ToLong() != OldFactorStatus))
                 {
@@ -497,22 +489,14 @@ namespace AdakStudio
             }
         }
         [WebMethod]
-        public static dynamic SetPay(long IdForPay, long PaidPrice, string PaidType, string RefNumber, string desc, int SubjectTypePay)
+        public static dynamic SetPay(long familyId, long PaidPrice, string PaidType, string RefNumber, string desc)
         {
-            if (IdForPay == 0)
+            if (familyId == 0)
             {
                 return new
                 {
                     Result = false,
-                    Message = "شناسه مشخص نیست"
-                };
-            }
-            if (SubjectTypePay <= 0)
-            {
-                return new
-                {
-                    Result = false,
-                    Message = "موضوع پرداخت مشخص نیست"
+                    Message = "شناسه خانواده مشخص نیست"
                 };
             }
             PaidType = PaidType.ToDecodeNumber();
@@ -541,7 +525,7 @@ namespace AdakStudio
                 db.Connection.Open();
             }
             db.Transaction = db.Connection.BeginTransaction();
-            db.usp_Paids_Add(IdForPay, byte.Parse(SubjectTypePay.ToString()), DateTime.Now.ToShamsi(), PaidPrice, PaidType.ToInt(), RefNumber, desc, DateTime.Now.TimeOfDay, LoginedUser.Id, ref mes, ref haserror, ref resultId);
+            db.usp_Paids_Add(familyId, DateTime.Now.ToShamsi(), PaidPrice, PaidType.ToInt(), RefNumber, desc, DateTime.Now.TimeOfDay, LoginedUser.Id, ref mes, ref haserror, ref resultId);
             if (haserror == 1)
             {
                 CloseConnectios(db);
@@ -551,16 +535,16 @@ namespace AdakStudio
                     Message = mes.IsNullOrEmpty() ? "خطایی در ثبت اطلاعات رخ داده است" : mes
                 };
             }
-            //پرداختی بابت فاکتور بود
-            else if (SubjectTypePay == 1)
-            {
-                var facinfo = db.usp_Factor_Select_By_Id(IdForPay).SingleOrDefault();
-                facinfo = facinfo ?? new usp_Factor_Select_By_IdResult();
-                if ((facinfo.F_Status == DefaultDataIDs.FactorStatus_IncompleteFactor || facinfo.F_Status == DefaultDataIDs.FactorStatus_WaitForPaid) && facinfo.F_Status != DefaultDataIDs.FactorStatus_ReadyForDesign && (((facinfo.F_PaidPrice + facinfo.F_SumDiscountPrice) * 100) / facinfo.F_SumPrice) >= 50)
-                {
-                    db.usp_Factor_ChangeStatus(IdForPay, DefaultDataIDs.FactorStatus_ReadyForDesign, LoginedUser.Id, "تغییر وضعیت اتوماتیک پس از پرداخت فاکتور");
-                }
-            }
+            ////پرداختی بابت فاکتور بود
+            //else if (SubjectTypePay == 1)
+            //{
+            //    var facinfo = db.usp_Factor_Select_By_Id(IdForPay).SingleOrDefault();
+            //    facinfo = facinfo ?? new usp_Factor_Select_By_IdResult();
+            //    if ((facinfo.F_Status == DefaultDataIDs.FactorStatus_IncompleteFactor || facinfo.F_Status == DefaultDataIDs.FactorStatus_WaitForPaid) && facinfo.F_Status != DefaultDataIDs.FactorStatus_ReadyForDesign && (((facinfo.F_PaidPrice + facinfo.F_SumDiscountPrice) * 100) / facinfo.F_SumPrice) >= 50)
+            //    {
+            //        db.usp_Factor_ChangeStatus(IdForPay, DefaultDataIDs.FactorStatus_ReadyForDesign, LoginedUser.Id, "تغییر وضعیت اتوماتیک پس از پرداخت فاکتور");
+            //    }
+            //}
             db.Transaction.Commit();
             db.Connection.Close();
             db.Connection.Dispose();

@@ -320,7 +320,7 @@
         // گرفتن نوبت‌ها برای روز خاص
         const getAppointmentsForDay = (dayIndex) => {
             var sampleAppointments = [
-                { hour: 0, time: '', title: '', RequestId: 0, Date: "", TurnId: "", TurnTitle: "", Desc: "", BaseFamilyTitle: "", Cost: 0, Duration: 0, LocationId: "", LocationTitle: "", ModPrice: 0, DurationText: "" }
+                { hour: 0, time: '', title: '', RequestId: 0, Date: "", TurnId: "", TurnTitle: "", Desc: "", BaseFamilyTitle: "", PhotographerId: "", Duration: 0, LocationId: "", LocationTitle: "", ModPrice: 0, DurationText: "", PhotographerName: "", FamilyId: 0, FamilyTitle: "", BedPrice:0 }
             ];
             $.ajax({
                 type: "POST",
@@ -358,7 +358,7 @@
                     timeSlot.textContent = time;
                     timeSlot.onclick = () => {
                         document.getElementById("btnEditRequestModal").click();
-                        openModalRequest(0, time, toJalaliDate(selectedDate), "", "", 0, 0, "");
+                        openModalRequest(0, time, toJalaliDate(selectedDate), "", "", "", 0, "");
                     };
 
                     var appointmentsCell = document.createElement('div');
@@ -373,7 +373,7 @@
                             DurationText = " مدت زمان:" + app.DurationText;
                         }
                         appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.time} - ${app.TurnTitle} - ${app.Desc} ${locationTitle} ${DurationText}`;
-                        appointmentDiv.ondblclick = () => updateTurn(app.RequestId, app.time, app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.Cost, app.Duration, app.LocationId);
+                        appointmentDiv.ondblclick = () => updateTurn(app.RequestId, app.time, app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.PhotographerId, app.Duration, app.LocationId);
                         appointmentsCell.appendChild(appointmentDiv);
                         //افزودن یک باتن برای حذف نوبت
                         const appointmentBtnDel = document.createElement('button');
@@ -381,17 +381,15 @@
                         appointmentBtnDel.textContent = `🗑`;
                         appointmentBtnDel.onclick = () => RequestDelete(app.RequestId);
                         appointmentsCell.appendChild(appointmentBtnDel);
-                        if (app.ModPrice > 0) {
-                            //افزودن یک باتن برای حذف نوبت
-                            const appointmentBtnPay = document.createElement('button');
-                            appointmentBtnPay.className = 'btnDataTable btnDataTable-print';
-                            appointmentBtnPay.textContent = `💰`;
-                            appointmentBtnPay.id = "btnPayTurn" + app.RequestId;
-                            appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
-                            appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
-                            appointmentBtnPay.onclick = () => PayFactor_Or_Turn(app.RequestId, app.ModPrice, 2, ("پرداخت هزینه نوبت " + app.BaseFamilyTitle));
-                            appointmentsCell.appendChild(appointmentBtnPay);
-                        }
+                        //کلید دریافت بیعانه
+                        const appointmentBtnPay = document.createElement('button');
+                        appointmentBtnPay.className = 'btnDataTable btnDataTable-print';
+                        appointmentBtnPay.textContent = `💰`;
+                        appointmentBtnPay.id = "btnPayTurn" + app.RequestId;
+                        appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
+                        appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
+                        appointmentBtnPay.onclick = () => PayDeposit(app.FamilyId, "دریافت بیعانه از " + app.BaseFamilyTitle, app.BedPrice);
+                        appointmentsCell.appendChild(appointmentBtnPay);
                     });
                     beforTime = time;
                     schedule.appendChild(timeSlot);
@@ -405,7 +403,7 @@
             timeSlotRezerv.textContent = "رزروی ها";
             timeSlotRezerv.onclick = () => {
                 document.getElementById("btnEditRequestModal").click();
-                openModalRequest(0, "", toJalaliDate(selectedDate), "", "", 0, 0, "");
+                openModalRequest(0, "", toJalaliDate(selectedDate), "", "", "", 0, "");
             };
 
             var appointmentsCellRezerv = document.createElement('div');
@@ -420,7 +418,7 @@
                     DurationText = " مدت زمان:" + app.DurationText;
                 }
                 appointmentDiv.innerHTML = `${app.title} - ${app.TurnTitle} - ${app.Desc} ${locationTitle} ${DurationText}`;
-                appointmentDiv.ondblclick = () => updateTurn(app.RequestId, "", app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.Cost, app.Duration, app.LocationId);
+                appointmentDiv.ondblclick = () => updateTurn(app.RequestId, "", app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.PhotographerId, app.Duration, app.LocationId);
                 appointmentsCellRezerv.appendChild(appointmentDiv);
                 //افزودن یک باتن برای حذف نوبت
                 const appointmentBtnDel = document.createElement('button');
@@ -428,16 +426,14 @@
                 appointmentBtnDel.textContent = `🗑`;
                 appointmentBtnDel.onclick = () => RequestDelete(app.RequestId);
                 appointmentsCellRezerv.appendChild(appointmentBtnDel);
-                if (app.ModPrice > 0) {
-                    //افزودن یک باتن برای حذف نوبت
-                    const appointmentBtnPay = document.createElement('button');
-                    appointmentBtnPay.className = 'btnDataTable btnDataTable-print';
-                    appointmentBtnPay.textContent = `💰`;
-                    appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
-                    appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
-                    appointmentBtnPay.onclick = () => PayFactor_Or_Turn(app.RequestId, app.ModPrice, 2, ("پرداخت هزینه نوبت " + app.BaseFamilyTitle));
-                    appointmentsCellRezerv.appendChild(appointmentBtnPay);
-                }
+                //کلید دریافت بیعانه
+                const appointmentBtnPay = document.createElement('button');
+                appointmentBtnPay.className = 'btnDataTable btnDataTable-print';
+                appointmentBtnPay.textContent = `💰`;
+                appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
+                appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
+                appointmentBtnPay.onclick = () => PayDeposit(app.FamilyId, "دریافت بیعانه از " + app.BaseFamilyTitle, app.BedPrice);
+                appointmentsCellRezerv.appendChild(appointmentBtnPay);
             });
             schedule.appendChild(timeSlotRezerv);
             schedule.appendChild(appointmentsCellRezerv);
@@ -459,9 +455,9 @@
         document.getElementById('prevWeek').onclick = () => updateWeek(-1);
         document.getElementById('nextWeek').onclick = () => updateWeek(1);
 
-        function updateTurn(requestId, time, date, title, turnid, desc, cost, duration, locationId) {
+        function updateTurn(requestId, time, date, title, turnid, desc, photographerId, duration, locationId) {
             document.getElementById("btnEditRequestModal").click();
-            openModalRequest(requestId, time, date, turnid, desc, cost, duration, locationId);
+            openModalRequest(requestId, time, date, turnid, desc, photographerId, duration, locationId);
             document.getElementById("div_Family_For_Request").style.display = "none";
             document.getElementById("header_modalSetRequest").textContent = "اصلاح نوبت خانواده " + title;
         };
