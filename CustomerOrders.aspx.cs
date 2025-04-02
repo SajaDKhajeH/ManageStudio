@@ -87,7 +87,7 @@ public partial class CustomerOrders : System.Web.UI.Page
                 <div class='col-md-3'><strong>مجموع سفارش‌ها:</strong> <span id='totalOrders'>" + orders.SumOrders.ShowPrice(TextAfterPrice) + @"</span></div>
                 <div class='col-md-3'><strong>مجموع تخفیف‌ها:</strong> <span id='totalDiscounts'>" + orders.SumDiscount.ShowPrice(TextAfterPrice) + @"</span></div>
                 <div class='col-md-3'><strong>مجموع پرداختی‌ها:</strong> <span id='totalPayments'>" + orders.SumPaid.ShowPrice(TextAfterPrice) + @"</span> </div>
-                <div class='col-md-3'><strong>مانده حساب:</strong> <span id='accountBalance' class='fw-bold text-danger'>" + orders.ModPrice.ShowPrice(TextAfterPrice) + @"</span></div>
+                <div class='col-md-3'><strong>مانده حساب:</strong> <span id='accountBalance' class='fw-bold text-" + (orders.ModPrice > 0 ? "danger" : "success") + @"'>" + (orders.ModPrice > 0 ? orders.ModPrice.ShowPrice(TextAfterPrice) + " بدهکار" : (orders.ModPrice == 0 ? "تسویه" : (orders.ModPrice * -1).ShowPrice(TextAfterPrice) + " بستانکار")) + @"</span></div>
             </div>
             <button onclick='PayOnline()' id='payOnlineBtn' class='btn btn-success " + (orders.ModPrice > 0 ? "" : "d-none") + @"'>پرداخت آنلاین</button>";
 
