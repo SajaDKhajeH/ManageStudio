@@ -561,6 +561,42 @@
 
                             </div>
                             <div class="d-flex align-items-center flex-shrink-0">
+                                 <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                                    { %>
+                                <button class="btn btn-primary me-2" onclick="GoToAddEditFactor()" id="gotoFactor">ثبت فاکتور</button>
+                                <button class="btn btn-primary open-modal-btn" onclick="ResetFeildsFamily()" data-bs-toggle="modal" data-bs-target="#modal_addedit_family" id="Btn_AddRequest">
+                                    ثبت مشتری
+   
+                                </button>
+                                <button class="btn btn-primary open-modal-btn" id="btnEditRequestModal" data-bs-toggle="modal" data-bs-target="#appointmentModal" style="display: none">
+                                    ویرایش درخواست
+   
+                                </button>
+                                <%} %>
+                                <div class="d-flex align-items-center ms-1 ms-lg-3">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-user-cog"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
+                                            <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                                    { %>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                                    <i class="fas fa-key me-2"></i>ویرایش رمز
+                                                </a>
+                                            </li>
+                                             <%} %>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center text-danger" href="#" onclick="logout()">
+                                                    <i class="fas fa-power-off me-2"></i>خروج
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--<div class="d-flex align-items-center flex-shrink-0">
                                 <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
                                     { %>
                                 <button class="btn btn-primary me-2" onclick="GoToAddEditFactor()" id="gotoFactor">ثبت فاکتور</button>
@@ -577,7 +613,7 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            </div>--%>
                         </div>
                     </div>
                 </div>
@@ -824,7 +860,27 @@
     </div>--%>
 
     <!--end::Main-->
-
+    <%--ویرایش رمز عبور--%>
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ویرایش رمز عبور</h5>
+                    <button type="button" class="btn-close" id="btnClose_changePassModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">رمز عبور جدید</label>
+                    <input type="password" class="form-control mb-3" id="newPassword" placeholder="رمز جدید را وارد کنید">
+                    <label class="form-label">تکرار رمز عبور</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="رمز جدید را دوباره وارد کنید">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">ذخیره تغییرات</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <%-- مدال ثبت درخواست عکاسی --%>
     <!-- مدال -->
     <div class="modal fade" id="appointmentModal">
@@ -1044,6 +1100,53 @@
     </div>
 
     <script>var hostUrl = "assets/";</script>
+    <%--ویرایش رمز عبور--%>
+    <script>
+        function toggleAccountMenu() {
+            var menu = document.getElementById("accountMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+        function changePassword() {
+            var newPassword = document.getElementById("newPassword").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (newPassword === "" || confirmPassword === "") {
+                ShowError("لطفا رمز عبور را وارد کنید.");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                ShowError("رمز عبور با تاییدیه آن مطابقت ندارد!");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "Personnel.aspx/ChangePass",
+                data: JSON.stringify({
+                    newPassword,
+                    confirmPassword
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var res = msg.d;
+                    if (res.Result == false) {//خطا داریم
+                        ShowError(res.Message);
+                    }
+                    else {
+                        toastr.success(res.Message, "موفق");
+                        $("#btnClose_changePassModal").click();
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+           
+        }
+</script>
+
+
     <%-- script Pay Factor Modal --%>
     <script>
         var closeModalPayFactor = document.getElementById('closeModalBtnPayModals');
@@ -1110,7 +1213,7 @@
             $("#pay_PaidPrice").change();
             $("#header_modalSetPay").text(subjectType == 1 ? "ثبت پرداختی برای فاکتور " + IdForPay : HeaderModalSetPay);
         };
-        function PayDeposit(familyId, desc,paidPrice=0) {
+        function PayDeposit(familyId, desc, paidPrice = 0) {
             familyId_ForPay = familyId;
             $("#payInPerson").prop("checked", true);
             togglePaymentFields();

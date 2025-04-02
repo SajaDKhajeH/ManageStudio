@@ -1842,4 +1842,54 @@
     <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
     <Return Type="System.Int64" />
   </Function>
+  <Function Name="dbo.usp_Personnel_ChangePass" Method="usp_Personnel_ChangePass">
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="NewPass" Parameter="newPass" Type="System.String" DbType="NVarChar(1001)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Family_Summery_ForCustomerPanel" Method="usp_Family_Summery_ForCustomerPanel">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Family_Summery_ForCustomerPanelResult">
+      <Column Name="SumOrders" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="SumDiscount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="SumPaid" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_OnlinePay_Add" Method="usp_OnlinePay_Add">
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Price" Parameter="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="DiscountPrice" Parameter="discountPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="TaxPrice" Parameter="taxPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="Token" Parameter="token" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Key" Parameter="key" Type="System.String" DbType="VarChar(59)" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_OnlinePay_Edit_TraceNumber" Method="usp_OnlinePay_Edit_TraceNumber">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TraceNumber" Parameter="traceNumber" Type="System.String" DbType="VarChar(1001)" />
+    <Parameter Name="Paid" Parameter="paid" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="PaidId" Parameter="paidId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_OnlinePay_Select" Method="usp_OnlinePay_Select">
+    <Parameter Name="Key" Parameter="key" Type="System.String" DbType="VarChar(59)" />
+    <Parameter Name="Token" Parameter="token" Type="System.String" DbType="VarChar(1001)" />
+    <ElementType Name="usp_OnlinePay_SelectResult">
+      <Column Name="OP_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="OP_FamilyId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="OP_Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="OP_Paid" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="OP_DiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="OP_Key" Type="System.String" DbType="VarChar(59) NOT NULL" CanBeNull="false" />
+      <Column Name="OP_Token" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="OP_TraceNumber" Type="System.String" DbType="VarChar(1001)" CanBeNull="true" />
+      <Column Name="OP_PaidId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

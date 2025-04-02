@@ -1328,6 +1328,46 @@ namespace Bank
 		{
 			return ((System.Nullable<long>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId).ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Personnel_ChangePass")]
+		public int usp_Personnel_ChangePass([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="NewPass", DbType="NVarChar(1001)")] string newPass)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), causerId, newPass);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Family_Summery_ForCustomerPanel")]
+		public ISingleResult<usp_Family_Summery_ForCustomerPanelResult> usp_Family_Summery_ForCustomerPanel([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId);
+			return ((ISingleResult<usp_Family_Summery_ForCustomerPanelResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlinePay_Add")]
+		public int usp_OnlinePay_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Price", DbType="Decimal(18,0)")] System.Nullable<decimal> price, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DiscountPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> discountPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TaxPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> taxPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Token", DbType="NVarChar(1001)")] string token, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Key", DbType="VarChar(59)")] string key, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId, price, discountPrice, taxPrice, token, key, message, hasError, rersultId);
+			message = ((string)(result.GetParameterValue(6)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(7)));
+			rersultId = ((System.Nullable<long>)(result.GetParameterValue(8)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlinePay_Edit_TraceNumber")]
+		public int usp_OnlinePay_Edit_TraceNumber([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TraceNumber", DbType="VarChar(1001)")] string traceNumber, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Paid", DbType="Bit")] System.Nullable<bool> paid, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaidId", DbType="BigInt")] System.Nullable<long> paidId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, traceNumber, paid, paidId, message, hasError);
+			message = ((string)(result.GetParameterValue(4)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(5)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlinePay_Select")]
+		public ISingleResult<usp_OnlinePay_SelectResult> usp_OnlinePay_Select([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Key", DbType="VarChar(59)")] string key, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Token", DbType="VarChar(1001)")] string token)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), key, token);
+			return ((ISingleResult<usp_OnlinePay_SelectResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
@@ -13037,6 +13077,256 @@ namespace Bank
 				if ((this._TurnType != value))
 				{
 					this._TurnType = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Family_Summery_ForCustomerPanelResult
+	{
+		
+		private System.Nullable<decimal> _SumOrders;
+		
+		private System.Nullable<decimal> _SumDiscount;
+		
+		private System.Nullable<decimal> _ModPrice;
+		
+		private System.Nullable<decimal> _SumPaid;
+		
+		public usp_Family_Summery_ForCustomerPanelResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumOrders", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> SumOrders
+		{
+			get
+			{
+				return this._SumOrders;
+			}
+			set
+			{
+				if ((this._SumOrders != value))
+				{
+					this._SumOrders = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumDiscount", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> SumDiscount
+		{
+			get
+			{
+				return this._SumDiscount;
+			}
+			set
+			{
+				if ((this._SumDiscount != value))
+				{
+					this._SumDiscount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> ModPrice
+		{
+			get
+			{
+				return this._ModPrice;
+			}
+			set
+			{
+				if ((this._ModPrice != value))
+				{
+					this._ModPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SumPaid", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> SumPaid
+		{
+			get
+			{
+				return this._SumPaid;
+			}
+			set
+			{
+				if ((this._SumPaid != value))
+				{
+					this._SumPaid = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_OnlinePay_SelectResult
+	{
+		
+		private long _OP_Id;
+		
+		private System.Nullable<long> _OP_FamilyId;
+		
+		private decimal _OP_Price;
+		
+		private System.Nullable<bool> _OP_Paid;
+		
+		private System.Nullable<decimal> _OP_DiscountPrice;
+		
+		private string _OP_Key;
+		
+		private string _OP_Token;
+		
+		private string _OP_TraceNumber;
+		
+		private System.Nullable<long> _OP_PaidId;
+		
+		public usp_OnlinePay_SelectResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_Id", DbType="BigInt NOT NULL")]
+		public long OP_Id
+		{
+			get
+			{
+				return this._OP_Id;
+			}
+			set
+			{
+				if ((this._OP_Id != value))
+				{
+					this._OP_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_FamilyId", DbType="BigInt")]
+		public System.Nullable<long> OP_FamilyId
+		{
+			get
+			{
+				return this._OP_FamilyId;
+			}
+			set
+			{
+				if ((this._OP_FamilyId != value))
+				{
+					this._OP_FamilyId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_Price", DbType="Decimal(18,0) NOT NULL")]
+		public decimal OP_Price
+		{
+			get
+			{
+				return this._OP_Price;
+			}
+			set
+			{
+				if ((this._OP_Price != value))
+				{
+					this._OP_Price = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_Paid", DbType="Bit")]
+		public System.Nullable<bool> OP_Paid
+		{
+			get
+			{
+				return this._OP_Paid;
+			}
+			set
+			{
+				if ((this._OP_Paid != value))
+				{
+					this._OP_Paid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_DiscountPrice", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> OP_DiscountPrice
+		{
+			get
+			{
+				return this._OP_DiscountPrice;
+			}
+			set
+			{
+				if ((this._OP_DiscountPrice != value))
+				{
+					this._OP_DiscountPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_Key", DbType="VarChar(59) NOT NULL", CanBeNull=false)]
+		public string OP_Key
+		{
+			get
+			{
+				return this._OP_Key;
+			}
+			set
+			{
+				if ((this._OP_Key != value))
+				{
+					this._OP_Key = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_Token", DbType="NVarChar(1001)")]
+		public string OP_Token
+		{
+			get
+			{
+				return this._OP_Token;
+			}
+			set
+			{
+				if ((this._OP_Token != value))
+				{
+					this._OP_Token = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_TraceNumber", DbType="VarChar(1001)")]
+		public string OP_TraceNumber
+		{
+			get
+			{
+				return this._OP_TraceNumber;
+			}
+			set
+			{
+				if ((this._OP_TraceNumber != value))
+				{
+					this._OP_TraceNumber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OP_PaidId", DbType="BigInt")]
+		public System.Nullable<long> OP_PaidId
+		{
+			get
+			{
+				return this._OP_PaidId;
+			}
+			set
+			{
+				if ((this._OP_PaidId != value))
+				{
+					this._OP_PaidId = value;
 				}
 			}
 		}

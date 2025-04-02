@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -26,7 +27,7 @@ public partial class CustomerOrders : System.Web.UI.Page
             foreach (var item in details)
             {
                 htmlDetails += @"<tr>
-                  <td>"+item.ProductGroupTitle+ @"</td>
+                  <td>" + item.ProductGroupTitle + @"</td>
                   <td>" + item.ProductTitle + @"</td>
                   <td>" + item.FD_Count + @"</td>
                   <td>" + item.FD_Fee.ShowPrice(TextAfterPrice) + @"</td>
@@ -47,8 +48,6 @@ public partial class CustomerOrders : System.Web.UI.Page
           <div class='row g-3 mb-3'>
             <div class='col-md-4'><strong>مبلغ کل:</strong> " + o.SumPrice.ShowPrice(TextAfterPrice) + @"</div>
             <div class='col-md-4'><strong>تخفیف:</strong> " + o.SumDiscountPrice.ShowPrice(TextAfterPrice) + @"</div>
-            <div class='col-md-4'><strong>مبلغ پرداختی:</strong> " + o.PaidPrice.ShowPrice(TextAfterPrice) + @"</div>
-            <div class='col-md-4'><strong>باقی‌مانده:</strong> " + o.FinanStatus + @"</div>
             <div class='col-md-4'><strong>طراح:</strong> " + o.DesignerName + @"</div>
             <div class='col-md-4'><strong>عکاس:</strong> " + o.PhotographerFullName + @"</div>
           </div>
@@ -77,5 +76,44 @@ public partial class CustomerOrders : System.Web.UI.Page
         }
 
         return htmls;
+    }
+    protected string Summery()
+    {
+        string htmls = "";
+        var orders = AdakDB.Db.usp_Family_Summery_ForCustomerPanel(LoginedUser.Id).SingleOrDefault();
+        orders = orders ?? new Bank.usp_Family_Summery_ForCustomerPanelResult();
+        string TextAfterPrice = Settings.TextAfterPrice;
+        htmls = @"<div class='row g-3'>
+                <div class='col-md-3'><strong>مجموع سفارش‌ها:</strong> <span id='totalOrders'>" + orders.SumOrders.ShowPrice(TextAfterPrice) + @"</span></div>
+                <div class='col-md-3'><strong>مجموع تخفیف‌ها:</strong> <span id='totalDiscounts'>" + orders.SumDiscount.ShowPrice(TextAfterPrice) + @"</span></div>
+                <div class='col-md-3'><strong>مجموع پرداختی‌ها:</strong> <span id='totalPayments'>" + orders.SumPaid.ShowPrice(TextAfterPrice) + @"</span> </div>
+                <div class='col-md-3'><strong>مانده حساب:</strong> <span id='accountBalance' class='fw-bold text-danger'>" + orders.ModPrice.ShowPrice(TextAfterPrice) + @"</span></div>
+            </div>
+            <button onclick='PayOnline()' id='payOnlineBtn' class='btn btn-success " + (orders.ModPrice > 0 ? "" : "d-none") + @"'>پرداخت آنلاین</button>";
+
+        return htmls;
+    }
+    [WebMethod]
+    public static dynamic PayOnline()
+    {
+        var summ = AdakDB.Db.usp_Family_Summery_ForCustomerPanel(LoginedUser.Id).SingleOrDefault();
+        string mes = "";
+        int? haserror = 0;
+        long? resultId = 0;
+        AdakDB.Db.usp_OnlinePay_Add(LoginedUser.Id, summ.ModPrice, 0, 0, "", "", ref mes, ref haserror, ref resultId);
+        if (haserror == 1)
+        {
+            return new
+            {
+                Result = true,
+                Messgae = mes.IsNullOrEmpty() ? "خطایی در ثبت اطلاعات رخ داده است" : mes
+            };
+        }
+
+        return new
+        {
+            Result = true,
+            Messgae = "برای ورود به درگاه منتظر بمانید"
+        };
     }
 }

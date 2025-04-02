@@ -263,6 +263,33 @@ namespace AdakStudio
             }
 
         }
+        [WebMethod]
+        public static dynamic ChangePass(string newPassword, string confirmPassword)
+        {
+            if (newPassword.IsNullOrEmpty() || confirmPassword.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result=false,
+                    Message="لطفا رمزهارو بدرستی وارد کنید"
+                };
+            }
+            if (newPassword!=confirmPassword)
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "رمزها همخوانی ندارند"
+                };
+            }
+            AdakDB.Db.usp_Personnel_ChangePass(LoginedUser.Id, newPassword);
+            return new
+            {
+                Result = true,
+                Message = "رمز عبور با موفقیت  ویرایش"
+            };
+
+        }
     }
     public class PersonnelForGrid
     {
