@@ -130,7 +130,7 @@
                             <textarea style="margin: 3px" placeholder="توضیحات برای طراح" class="form-control" id="factor_desc"></textarea>
                             <br />
                             <label>آدرس فایل ها</label>
-                            <input style="margin: 3px" class="form-control" id="factor_PathFiles">
+                            <input style="margin: 3px;display:none" class="form-control" id="factor_PathFiles">
                         </div>
                         <div class="col-lg-9">
                             <div class="tabs-container">

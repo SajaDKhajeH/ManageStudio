@@ -18,17 +18,13 @@ public class SetSMS
             string FactorLink = "https://" + Settings.Website_Url + "/" + factorInfo.UniqueKey + ".jpg";
             var sms = db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_AfterSetFactor).FirstOrDefault();
 
-
             if (sms != null && sms.D_Active && !sms.D_DefaultSMSText.IsNullOrEmpty())
             {
                 string text = sms.D_DefaultSMSText;
-                decimal ModPrice = 0;
-                ModPrice = (factorInfo.F_SumPrice ?? 0) - (factorInfo.F_SumDiscountPrice ?? 0) - (factorInfo.F_PaidPrice);
                 text = text.Replace("{{عنوان خانواده}}", familyInfo.F_Title);
                 text = text.Replace("{{مجموع فاکتور}}", factorInfo.F_SumPrice.ShowPrice(TextAfterPrice));
                 text = text.Replace("{{مجموع تخفیف}}", (factorInfo.F_SumDiscountPrice == null || factorInfo.F_SumDiscountPrice == 0 ? "---" : factorInfo.F_SumDiscountPrice.Value.ShowPrice(TextAfterPrice)));
-                text = text.Replace("{{مجموع پرداختی}}", (factorInfo.F_PaidPrice == null || factorInfo.F_PaidPrice == 0 ? "---" : factorInfo.F_PaidPrice.ShowPrice(TextAfterPrice)));
-                text = text.Replace("{{مانده حساب}}", (ModPrice == 0 ? "---" : ModPrice.ShowPrice(TextAfterPrice)));
+                text = text.Replace("{{مانده حساب}}", (factorInfo.ModPrice == 0 ? "---" : factorInfo.ModPrice.ShowPrice(TextAfterPrice)));
                 text = text.Replace("{{لینک فاکتور}}", FactorLink);
                 int? haserror = 0;
                 string mes = "";
