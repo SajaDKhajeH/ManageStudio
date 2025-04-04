@@ -223,7 +223,6 @@
             var fileInput = $('#ots_filepath')[0];
             var filepath = fileInput.files.length === 0 ? null : fileInput.files[0];
             var desc = $("#ots_desc").val();
-            alert(filepath);
             var fileName = filepath === null ? "" : filepath?.name;
             $.ajax({
                 type: "POST",

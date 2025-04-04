@@ -182,7 +182,7 @@
                 if (res.Success) {
                     document.getElementById('otp-section').style.display = 'block';
                     toastr.success("کد تایید ارسال شد");
-                    $("#otp_code").val(res.acceptCode);
+                    //$("#otp_code").val(res.acceptCode);
                     var elements = document.getElementsByClassName("CaptchaDiv");
                     for (var i = 0; i < elements.length; i++) {
                         elements[i].style.display = 'none';

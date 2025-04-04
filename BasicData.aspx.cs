@@ -193,9 +193,7 @@ namespace AdakStudio
             try
             {
                 typeId = typeId.ToDecodeNumber();
-                var cs = ConfigurationManager.ConnectionStrings["J_AdakStudioConnectionString"]?.ConnectionString;
-                Bank.AdakBankDataContext b = new Bank.AdakBankDataContext(cs);
-                var dtype = b.usp_DataType_Select_By_Id(typeId.ToInt()).SingleOrDefault();
+                var dtype = AdakDB.Db.usp_DataType_Select_By_Id(typeId.ToInt()).SingleOrDefault();
                 if (dtype == null)
                 {
                     return new

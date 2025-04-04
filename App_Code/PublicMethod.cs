@@ -54,6 +54,17 @@ public class PublicMethod
         }
         return htmls;
     }
+    public static string GetCash_A_Bank(bool allowNull = false)
+    {
+        string htmls = allowNull ? "<option>انتخاب صندوق و بانک</option>" : "";
+        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Cash_A_Bank).ToList();
+        dataType = dataType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
+        foreach (var item in dataType)
+        {
+            htmls += "<option value='" + item.D_ID.ToCodeNumber() + "'>" + item.D_Title + "</option>";
+        }
+        return htmls;
+    }
     public static string GetDataType()
     {
         string htmls = "<option>انتخاب نوع</option>";

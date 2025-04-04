@@ -169,8 +169,13 @@
         var div_DescForUser = document.getElementById('div_DescForUser');
         var div_Show_SendFor_Men_Or_Women = document.getElementById('div_Show_SendFor_Men_Or_Women');
         var ShowDurationForSend = false;
+        var currentTypeId = "";
+        var editData = false;
         $("#btn_submitdata").click(function (e) {
             var typeId = $("#d_Typeid").val();
+            if (editData) {
+                typeId = currentTypeId;
+            }
             var title = $("#d_title").val();
             var active = $("#d_active").prop("checked");
             var desc = ""; //$("#d_desc").val();
@@ -223,6 +228,10 @@
         });
         $("#d_Typeid").change(function (e) {
             var typeId = $("#d_Typeid").val();
+
+            if (typeId == null || typeId == undefined || typeId == "") {
+                typeId = currentTypeId
+            }
             $.ajax({
                 type: "POST",
                 url: "BasicData.aspx/ChangeType",
@@ -270,6 +279,7 @@
             defaultsms.style.visibility = 'hidden';
             $("#d_title").val("");
             d_id = "";
+            editData = false;
             $("#d_active").prop("checked", true);
             //$("#d_desc").val("");
             $("#model_basicDataHeader").text("ثبت اطلاعات پایه ");
@@ -322,12 +332,14 @@
                         ShowError(result.Message);
                     }
                     else {
+                        editData = true;
                         d_id = id;
                         $("#d_title").val(result.title);
                         $("#d_active").prop("checked", result.active);
                         //$("#d_desc").val(result.desc);
                         $("#d_defaultsms").val(result.defaultsms);
                         //$("#d_stateid").val(result.state);
+                        currentTypeId = result.typeId;
                         $("#d_Typeid").val(result.typeId);
                         $("#d_pariority").val(result.pari);
                         $("#d_DurationForSend").val(result.D_DurationForSend);
