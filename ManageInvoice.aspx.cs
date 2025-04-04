@@ -489,7 +489,7 @@ namespace AdakStudio
             }
         }
         [WebMethod]
-        public static dynamic SetPay(long familyId, long PaidPrice, string PaidType, string RefNumber, string desc)
+        public static dynamic SetPay(long familyId, long PaidPrice, string PaidType, string RefNumber, string desc,string cash_A_Bank)
         {
             if (familyId == 0)
             {
@@ -500,6 +500,7 @@ namespace AdakStudio
                 };
             }
             PaidType = PaidType.ToDecodeNumber();
+            cash_A_Bank = cash_A_Bank.ToDecodeNumber();
             if (PaidType.IsNullOrEmpty())
             {
                 return new
@@ -525,7 +526,7 @@ namespace AdakStudio
                 db.Connection.Open();
             }
             db.Transaction = db.Connection.BeginTransaction();
-            db.usp_Paids_Add(familyId, DateTime.Now.ToShamsi(), PaidPrice, PaidType.ToInt(), RefNumber, desc, DateTime.Now.TimeOfDay, LoginedUser.Id, ref mes, ref haserror, ref resultId);
+            db.usp_Paids_Add(familyId, DateTime.Now.ToShamsi(), PaidPrice, PaidType.ToInt(), RefNumber, desc, DateTime.Now.TimeOfDay, LoginedUser.Id, ref mes, ref haserror, ref resultId, cash_A_Bank.ToLong());
             if (haserror == 1)
             {
                 CloseConnectios(db);

@@ -1269,29 +1269,11 @@ namespace Bank
 			return ((ISingleResult<usp_Factor_Select_For_GridResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Paids_Add")]
-		public int usp_Paids_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="VarChar(10)")] string date, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Price", DbType="Decimal(18,0)")] System.Nullable<decimal> price, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaidType", DbType="Int")] System.Nullable<int> paidType, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RefNumber", DbType="VarChar(50)")] string refNumber, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(1001)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Time", DbType="Time")] System.Nullable<System.TimeSpan> time, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId, date, price, paidType, refNumber, desc, time, causerId, message, hasError, rersultId);
-			message = ((string)(result.GetParameterValue(8)));
-			hasError = ((System.Nullable<int>)(result.GetParameterValue(9)));
-			rersultId = ((System.Nullable<long>)(result.GetParameterValue(10)));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Request_Select_By_Date_For_Dashboard")]
 		public ISingleResult<usp_Request_Select_By_Date_For_DashboardResult> usp_Request_Select_By_Date_For_Dashboard([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="Date")] System.Nullable<System.DateTime> date)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), date);
 			return ((ISingleResult<usp_Request_Select_By_Date_For_DashboardResult>)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Paids_Select_Grid")]
-		public ISingleResult<usp_Paids_Select_GridResult> usp_Paids_Select_Grid([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="VarChar(10)")] string fromDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="VarChar(10)")] string toDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaidType", DbType="BigInt")] System.Nullable<long> paidType, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, fromDate, toDate, familyId, paidType, page, perPage, outCount, causerId);
-			outCount = ((System.Nullable<int>)(result.GetParameterValue(7)));
-			return ((ISingleResult<usp_Paids_Select_GridResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_KeyGenerator_Add")]
@@ -1367,6 +1349,24 @@ namespace Bank
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
 			return ((ISingleResult<usp_Factor_Select_By_IdResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Paids_Add")]
+		public int usp_Paids_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="VarChar(10)")] string date, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Price", DbType="Decimal(18,0)")] System.Nullable<decimal> price, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaidType", DbType="Int")] System.Nullable<int> paidType, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RefNumber", DbType="VarChar(50)")] string refNumber, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(1001)")] string desc, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Time", DbType="Time")] System.Nullable<System.TimeSpan> time, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Cash_A_BankId", DbType="BigInt")] System.Nullable<long> cash_A_BankId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), familyId, date, price, paidType, refNumber, desc, time, causerId, message, hasError, rersultId, cash_A_BankId);
+			message = ((string)(result.GetParameterValue(8)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(9)));
+			rersultId = ((System.Nullable<long>)(result.GetParameterValue(10)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Paids_Select_Grid")]
+		public ISingleResult<usp_Paids_Select_GridResult> usp_Paids_Select_Grid([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="VarChar(10)")] string fromDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="VarChar(10)")] string toDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaidType", DbType="BigInt")] System.Nullable<long> paidType, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, fromDate, toDate, familyId, paidType, page, perPage, outCount, causerId);
+			outCount = ((System.Nullable<int>)(result.GetParameterValue(7)));
+			return ((ISingleResult<usp_Paids_Select_GridResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -12150,230 +12150,6 @@ namespace Bank
 		}
 	}
 	
-	public partial class usp_Paids_Select_GridResult
-	{
-		
-		private long _Pa_Id;
-		
-		private string _Pa_DateS;
-		
-		private System.Nullable<decimal> _Pa_Price;
-		
-		private System.Nullable<int> _Pa_PaidType;
-		
-		private string _Pa_RefNumber;
-		
-		private System.Nullable<long> _Pa_CauserId;
-		
-		private System.DateTime _Pa_CreationTime;
-		
-		private string _Pa_Desc;
-		
-		private string _PaidTypeTitle;
-		
-		private string _CauserName;
-		
-		private System.Nullable<long> _SubjectId;
-		
-		private string _FamilyTiyle;
-		
-		public usp_Paids_Select_GridResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_Id", DbType="BigInt NOT NULL")]
-		public long Pa_Id
-		{
-			get
-			{
-				return this._Pa_Id;
-			}
-			set
-			{
-				if ((this._Pa_Id != value))
-				{
-					this._Pa_Id = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_DateS", DbType="VarChar(10)")]
-		public string Pa_DateS
-		{
-			get
-			{
-				return this._Pa_DateS;
-			}
-			set
-			{
-				if ((this._Pa_DateS != value))
-				{
-					this._Pa_DateS = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_Price", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> Pa_Price
-		{
-			get
-			{
-				return this._Pa_Price;
-			}
-			set
-			{
-				if ((this._Pa_Price != value))
-				{
-					this._Pa_Price = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_PaidType", DbType="Int")]
-		public System.Nullable<int> Pa_PaidType
-		{
-			get
-			{
-				return this._Pa_PaidType;
-			}
-			set
-			{
-				if ((this._Pa_PaidType != value))
-				{
-					this._Pa_PaidType = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_RefNumber", DbType="VarChar(50)")]
-		public string Pa_RefNumber
-		{
-			get
-			{
-				return this._Pa_RefNumber;
-			}
-			set
-			{
-				if ((this._Pa_RefNumber != value))
-				{
-					this._Pa_RefNumber = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_CauserId", DbType="BigInt")]
-		public System.Nullable<long> Pa_CauserId
-		{
-			get
-			{
-				return this._Pa_CauserId;
-			}
-			set
-			{
-				if ((this._Pa_CauserId != value))
-				{
-					this._Pa_CauserId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_CreationTime", DbType="DateTime NOT NULL")]
-		public System.DateTime Pa_CreationTime
-		{
-			get
-			{
-				return this._Pa_CreationTime;
-			}
-			set
-			{
-				if ((this._Pa_CreationTime != value))
-				{
-					this._Pa_CreationTime = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_Desc", DbType="NVarChar(1001)")]
-		public string Pa_Desc
-		{
-			get
-			{
-				return this._Pa_Desc;
-			}
-			set
-			{
-				if ((this._Pa_Desc != value))
-				{
-					this._Pa_Desc = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidTypeTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string PaidTypeTitle
-		{
-			get
-			{
-				return this._PaidTypeTitle;
-			}
-			set
-			{
-				if ((this._PaidTypeTitle != value))
-				{
-					this._PaidTypeTitle = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauserName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
-		public string CauserName
-		{
-			get
-			{
-				return this._CauserName;
-			}
-			set
-			{
-				if ((this._CauserName != value))
-				{
-					this._CauserName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubjectId", DbType="BigInt")]
-		public System.Nullable<long> SubjectId
-		{
-			get
-			{
-				return this._SubjectId;
-			}
-			set
-			{
-				if ((this._SubjectId != value))
-				{
-					this._SubjectId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTiyle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
-		public string FamilyTiyle
-		{
-			get
-			{
-				return this._FamilyTiyle;
-			}
-			set
-			{
-				if ((this._FamilyTiyle != value))
-				{
-					this._FamilyTiyle = value;
-				}
-			}
-		}
-	}
-	
 	public partial class usp_KeyGenerator_Select_ByKeyResult
 	{
 		
@@ -13327,6 +13103,266 @@ namespace Bank
 				if ((this._UniqueKey != value))
 				{
 					this._UniqueKey = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Paids_Select_GridResult
+	{
+		
+		private long _Pa_Id;
+		
+		private string _Pa_DateS;
+		
+		private System.Nullable<decimal> _Pa_Price;
+		
+		private System.Nullable<int> _Pa_PaidType;
+		
+		private string _Pa_RefNumber;
+		
+		private System.Nullable<long> _Pa_CauserId;
+		
+		private System.DateTime _Pa_CreationTime;
+		
+		private string _Pa_Desc;
+		
+		private string _PaidTypeTitle;
+		
+		private string _CauserName;
+		
+		private System.Nullable<long> _SubjectId;
+		
+		private string _FamilyTiyle;
+		
+		private string _CashBankTitle;
+		
+		private System.Nullable<long> _CashBankId;
+		
+		public usp_Paids_Select_GridResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_Id", DbType="BigInt NOT NULL")]
+		public long Pa_Id
+		{
+			get
+			{
+				return this._Pa_Id;
+			}
+			set
+			{
+				if ((this._Pa_Id != value))
+				{
+					this._Pa_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_DateS", DbType="VarChar(10)")]
+		public string Pa_DateS
+		{
+			get
+			{
+				return this._Pa_DateS;
+			}
+			set
+			{
+				if ((this._Pa_DateS != value))
+				{
+					this._Pa_DateS = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_Price", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Pa_Price
+		{
+			get
+			{
+				return this._Pa_Price;
+			}
+			set
+			{
+				if ((this._Pa_Price != value))
+				{
+					this._Pa_Price = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_PaidType", DbType="Int")]
+		public System.Nullable<int> Pa_PaidType
+		{
+			get
+			{
+				return this._Pa_PaidType;
+			}
+			set
+			{
+				if ((this._Pa_PaidType != value))
+				{
+					this._Pa_PaidType = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_RefNumber", DbType="VarChar(50)")]
+		public string Pa_RefNumber
+		{
+			get
+			{
+				return this._Pa_RefNumber;
+			}
+			set
+			{
+				if ((this._Pa_RefNumber != value))
+				{
+					this._Pa_RefNumber = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_CauserId", DbType="BigInt")]
+		public System.Nullable<long> Pa_CauserId
+		{
+			get
+			{
+				return this._Pa_CauserId;
+			}
+			set
+			{
+				if ((this._Pa_CauserId != value))
+				{
+					this._Pa_CauserId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime Pa_CreationTime
+		{
+			get
+			{
+				return this._Pa_CreationTime;
+			}
+			set
+			{
+				if ((this._Pa_CreationTime != value))
+				{
+					this._Pa_CreationTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Pa_Desc", DbType="NVarChar(1001)")]
+		public string Pa_Desc
+		{
+			get
+			{
+				return this._Pa_Desc;
+			}
+			set
+			{
+				if ((this._Pa_Desc != value))
+				{
+					this._Pa_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidTypeTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string PaidTypeTitle
+		{
+			get
+			{
+				return this._PaidTypeTitle;
+			}
+			set
+			{
+				if ((this._PaidTypeTitle != value))
+				{
+					this._PaidTypeTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauserName", DbType="NVarChar(221) NOT NULL", CanBeNull=false)]
+		public string CauserName
+		{
+			get
+			{
+				return this._CauserName;
+			}
+			set
+			{
+				if ((this._CauserName != value))
+				{
+					this._CauserName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubjectId", DbType="BigInt")]
+		public System.Nullable<long> SubjectId
+		{
+			get
+			{
+				return this._SubjectId;
+			}
+			set
+			{
+				if ((this._SubjectId != value))
+				{
+					this._SubjectId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTiyle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string FamilyTiyle
+		{
+			get
+			{
+				return this._FamilyTiyle;
+			}
+			set
+			{
+				if ((this._FamilyTiyle != value))
+				{
+					this._FamilyTiyle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CashBankTitle", DbType="NVarChar(1001)")]
+		public string CashBankTitle
+		{
+			get
+			{
+				return this._CashBankTitle;
+			}
+			set
+			{
+				if ((this._CashBankTitle != value))
+				{
+					this._CashBankTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CashBankId", DbType="BigInt")]
+		public System.Nullable<long> CashBankId
+		{
+			get
+			{
+				return this._CashBankId;
+			}
+			set
+			{
+				if ((this._CashBankId != value))
+				{
+					this._CashBankId = value;
 				}
 			}
 		}

@@ -41,6 +41,7 @@
                                         <th class="min-w-100px">مبلغ پرداختی</th>
                                         <th class="min-w-100px">طریقه پرداخت</th>
                                         <th class="min-w-100px">شماره پیگیری</th>
+                                        <th class="min-w-100px">صندوق/بانک</th>
                                         <th class="min-w-150px">توضیحات</th>
                                         <th class="min-w-130px">ثبت کننده</th>
                                         <th class="min-w-130px">تاریخ و ساعت ثبت</th>
@@ -132,6 +133,7 @@
                             <td>${row.PaidPrice}</td>
                             <td>${row.PaidType}</td>
                             <td>${row.RefNumber}</td>
+                            <td>${row.CashBankTitle}</td>
                             <td>${row.SubjectText}</td>
                             <td>${row.Causer}</td>
                             <td>${row.Date_A_TimePaid}</td>

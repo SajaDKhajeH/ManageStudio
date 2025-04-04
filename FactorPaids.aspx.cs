@@ -32,6 +32,7 @@ public partial class FactorPaids : System.Web.UI.Page
             PaidType = x.PaidTypeTitle,
             RefNumber = x.Pa_RefNumber,
             Causer = x.CauserName,
+            CashBankTitle=x.CashBankTitle,
             SubjectText = x.Pa_Desc.IsNullOrEmpty()?"": x.Pa_Desc,
             Date_A_TimePaid = x.Pa_DateS + " " + x.Pa_CreationTime.TimeOfDay.ToString().Substring(0,5),
             Actions = @"
@@ -94,6 +95,7 @@ public class PaidForGrid
     public string Date_A_TimePaid { get; set; }
     public string Actions { get; set; }
     public string SubjectText { get; set; }
+    public string CashBankTitle { get; set; }
 
 
 }

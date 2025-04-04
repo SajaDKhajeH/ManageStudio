@@ -696,6 +696,10 @@
                         <select id="pay_PaidType" data-control="select" data-placeholder="نوع پرداخت" class="form-select form-select-solid fw-bolder mb-3">
                             <%Response.Write(PublicMethod.GetPaidType()); %>
                         </select>
+                        <label class="fs-6 fw-bold mb-2">صندوق/بانک</label>
+                        <select id="pay_Cash_A_Bank" data-control="select" data-placeholder="صندوق/بانک" class="form-select form-select-solid fw-bolder mb-3">
+                            <%Response.Write(PublicMethod.GetCash_A_Bank()); %>
+                        </select>
 
                         <label class="fs-6 fw-bold mb-2">شماره پیگیری</label>
                         <input type="text" maxlength="20" id="pay_RefNumber" class="form-control mb-3" placeholder="شماره پیگیری">
@@ -1209,6 +1213,7 @@
             document.getElementById("pay_desc").value = "";
             document.getElementById('pay_PaidType').value = '';
             document.getElementById('pay_RefNumber').value = '';
+            document.getElementById('pay_Cash_A_Bank').value = '';
             $("#pay_PaidPrice").val(modPrice);
             $("#pay_PaidPrice").change();
             $("#header_modalSetPay").text(subjectType == 1 ? "ثبت پرداختی برای فاکتور " + IdForPay : HeaderModalSetPay);
@@ -1220,6 +1225,7 @@
             document.getElementById("pay_desc").value = desc;
             document.getElementById('pay_PaidType').value = '';
             document.getElementById('pay_RefNumber').value = '';
+            document.getElementById('pay_Cash_A_Bank').value = '';
             $("#pay_PaidPrice").val(paidPrice);
             $("#pay_PaidPrice").change();
             $("#pay_PaidPriceOnline").val(paidPrice);
@@ -1262,6 +1268,7 @@
             var pay_desc = document.getElementById("pay_desc").value;
             var pay_PaidType = document.getElementById('pay_PaidType').value;
             var pay_RefNumber = document.getElementById('pay_RefNumber').value;
+            var pay_Cash_A_Bank = document.getElementById('pay_Cash_A_Bank').value = '';
             var pay_PaidPrice = $("#pay_PaidPrice").val();
             pay_PaidPrice = convertPersianToEnglishNumbers(pay_PaidPrice);
             pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");
@@ -1273,7 +1280,8 @@
                     PaidPrice: parseInt(pay_PaidPrice),
                     PaidType: pay_PaidType,
                     RefNumber: pay_RefNumber,
-                    desc: pay_desc
+                    desc: pay_desc,
+                    cash_A_Bank: pay_Cash_A_Bank
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
