@@ -1368,6 +1368,20 @@ namespace Bank
 			outCount = ((System.Nullable<int>)(result.GetParameterValue(7)));
 			return ((ISingleResult<usp_Paids_Select_GridResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_For_Website")]
+		public ISingleResult<usp_OnlineTurnSettings_For_WebsiteResult> usp_OnlineTurnSettings_For_Website()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<usp_OnlineTurnSettings_For_WebsiteResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnSettings_GetTimes_ForWebsite")]
+		public ISingleResult<usp_OnlineTurnSettings_GetTimes_ForWebsiteResult> usp_OnlineTurnSettings_GetTimes_ForWebsite([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+			return ((ISingleResult<usp_OnlineTurnSettings_GetTimes_ForWebsiteResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
@@ -13363,6 +13377,202 @@ namespace Bank
 				if ((this._CashBankId != value))
 				{
 					this._CashBankId = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_OnlineTurnSettings_For_WebsiteResult
+	{
+		
+		private string _Title;
+		
+		private System.Nullable<int> _TimeEachTurn;
+		
+		private System.Nullable<decimal> _DepositAmount;
+		
+		private string _Desc;
+		
+		private string _FilePath;
+		
+		private long _SettingId;
+		
+		public usp_OnlineTurnSettings_For_WebsiteResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this._Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeEachTurn", DbType="Int")]
+		public System.Nullable<int> TimeEachTurn
+		{
+			get
+			{
+				return this._TimeEachTurn;
+			}
+			set
+			{
+				if ((this._TimeEachTurn != value))
+				{
+					this._TimeEachTurn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepositAmount", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> DepositAmount
+		{
+			get
+			{
+				return this._DepositAmount;
+			}
+			set
+			{
+				if ((this._DepositAmount != value))
+				{
+					this._DepositAmount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Desc]", Storage="_Desc", DbType="NVarChar(MAX)")]
+		public string Desc
+		{
+			get
+			{
+				return this._Desc;
+			}
+			set
+			{
+				if ((this._Desc != value))
+				{
+					this._Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FilePath", DbType="NVarChar(1001)")]
+		public string FilePath
+		{
+			get
+			{
+				return this._FilePath;
+			}
+			set
+			{
+				if ((this._FilePath != value))
+				{
+					this._FilePath = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SettingId", DbType="BigInt NOT NULL")]
+		public long SettingId
+		{
+			get
+			{
+				return this._SettingId;
+			}
+			set
+			{
+				if ((this._SettingId != value))
+				{
+					this._SettingId = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_OnlineTurnSettings_GetTimes_ForWebsiteResult
+	{
+		
+		private string _DateS;
+		
+		private System.Nullable<System.TimeSpan> _StartTime;
+		
+		private System.Nullable<System.TimeSpan> _EndTime;
+		
+		private System.Nullable<bool> _Reserved;
+		
+		public usp_OnlineTurnSettings_GetTimes_ForWebsiteResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateS", DbType="VarChar(10)")]
+		public string DateS
+		{
+			get
+			{
+				return this._DateS;
+			}
+			set
+			{
+				if ((this._DateS != value))
+				{
+					this._DateS = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> StartTime
+		{
+			get
+			{
+				return this._StartTime;
+			}
+			set
+			{
+				if ((this._StartTime != value))
+				{
+					this._StartTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> EndTime
+		{
+			get
+			{
+				return this._EndTime;
+			}
+			set
+			{
+				if ((this._EndTime != value))
+				{
+					this._EndTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reserved", DbType="Bit")]
+		public System.Nullable<bool> Reserved
+		{
+			get
+			{
+				return this._Reserved;
+			}
+			set
+			{
+				if ((this._Reserved != value))
+				{
+					this._Reserved = value;
 				}
 			}
 		}
