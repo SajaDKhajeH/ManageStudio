@@ -118,7 +118,7 @@ namespace AdakStudio
         }
         [WebMethod]
         public static dynamic SetFactor(
-                    long factorId, string familyId, string fDate, string discountPrice, string paidPrice, string paidType, string refNumber, List<ProductDetails> products, string factor_desc,
+                    long factorId, string familyId, string fDate, string discountPrice, List<ProductDetails> products, string factor_desc,
                     string TypePhotography, string factor_status, string PhotographerId, bool ForceDesign, bool OnlyEditedDelivered
             )
         {
@@ -231,7 +231,7 @@ namespace AdakStudio
                 //ثبت فاکتور
                 decimal SumPrice = products.Sum(a => a.price * a.quantity);
                 decimal SumPriceWithoutGift = SumPrice - sumGiftPrice;
-                decimal PaidPrice = paidPrice.IsNullOrEmpty() | !paidPrice.IsNumber() ? 0 : paidPrice.ToLong();
+                //decimal PaidPrice = paidPrice.IsNullOrEmpty() | !paidPrice.IsNumber() ? 0 : paidPrice.ToLong();
                 //گرفتن وضعیت قبلیش واسه اینکه پیامک رو بفرستیم
                 if (FactorId > 0)
                 {
@@ -343,33 +343,33 @@ namespace AdakStudio
                         }
                     }
                 }
-                if (!IsEdit)
-                {
-                    if (PaidPrice > 0)
-                    {
-                        paidType = paidType.ToDecodeNumber();
-                        if (paidType.IsNullOrEmpty() || paidType == "0")
-                        {
-                            CloseConnectios(db);
-                            return new
-                            {
-                                Result = false,
-                                Message = "لطفا نوع پرداخت را مشخص کنید"
-                            };
-                        }
-                        long? PaidId = 0;
-                        db.usp_Paids_Add(FamilyId, fDate, PaidPrice, paidType.ToInt(), refNumber, null, DateTime.Now.TimeOfDay, CauserId, ref mes, ref hasError, ref PaidId);
-                        if (hasError == 1)
-                        {
-                            CloseConnectios(db);
-                            return new
-                            {
-                                Result = false,
-                                Message = mes.IsNullOrEmpty() ? "خطایی در ثبت پرداختی فاکتور رخ داده است" : mes
-                            };
-                        }
-                    }
-                }
+                //if (!IsEdit)
+                //{
+                //    if (PaidPrice > 0)
+                //    {
+                //        paidType = paidType.ToDecodeNumber();
+                //        if (paidType.IsNullOrEmpty() || paidType == "0")
+                //        {
+                //            CloseConnectios(db);
+                //            return new
+                //            {
+                //                Result = false,
+                //                Message = "لطفا نوع پرداخت را مشخص کنید"
+                //            };
+                //        }
+                //        long? PaidId = 0;
+                //        db.usp_Paids_Add(FamilyId, fDate, PaidPrice, paidType.ToInt(), refNumber, null, DateTime.Now.TimeOfDay, CauserId, ref mes, ref hasError, ref PaidId);
+                //        if (hasError == 1)
+                //        {
+                //            CloseConnectios(db);
+                //            return new
+                //            {
+                //                Result = false,
+                //                Message = mes.IsNullOrEmpty() ? "خطایی در ثبت پرداختی فاکتور رخ داده است" : mes
+                //            };
+                //        }
+                //    }
+                //}
                 //اگر فاکتور وضعیتش آماده برای طراحی بود پیامک ارسال شود
                 if (factor_status.ToLong() == DefaultDataIDs.FactorStatus_ReadyForDesign && (OldFactorStatus == 0 || factor_status.ToLong() != OldFactorStatus))
                 {
@@ -489,7 +489,7 @@ namespace AdakStudio
             }
         }
         [WebMethod]
-        public static dynamic SetPay(long familyId, long PaidPrice, string PaidType, string RefNumber, string desc,string cash_A_Bank)
+        public static dynamic SetPay(long familyId, long PaidPrice, string PaidType, string RefNumber, string desc, string cash_A_Bank)
         {
             if (familyId == 0)
             {
@@ -507,6 +507,14 @@ namespace AdakStudio
                 {
                     Result = false,
                     Message = "طریقه پرداخت را مشخص کنید"
+                };
+            }
+            if (cash_A_Bank.IsNullOrEmpty() || cash_A_Bank == "0")
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "لطفا صندوق و بانک رو مشخص کنید" +Environment.NewLine +"برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
                 };
             }
             if (PaidPrice <= 0)

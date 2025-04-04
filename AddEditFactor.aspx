@@ -169,7 +169,7 @@
                                                             <label class="fs-6 fw-bold mb-2">مبلغ تخفیف</label>
                                                             <input type="text" class="form-control" style="margin: 3px" id="factor_discountPercent" onkeyup="TextFormatPrice(this)" onchange="updateTable()" placeholder="مبلغ تخفیف">
                                                         </div>
-                                                        <div class="col-lg-3">
+                                                        <%--<div class="col-lg-3">
                                                             <label class="fs-6 fw-bold mb-2">مبلغ پرداختی</label>
                                                             <input type="text" class="form-control" style="margin: 3px" id="factor_PaidPrice" onkeyup="TextFormatPrice(this)" onchange="updateTable()" placeholder="مبلغ پرداختی">
                                                         </div>
@@ -182,14 +182,14 @@
                                                         <div class="col-lg-3">
                                                             <label class="fs-6 fw-bold mb-2">شماره پیگیری</label>
                                                             <input style="margin: 3px" type="text" id="factor_RefNumber" class="form-control" placeholder="شماره پیگیری">
-                                                        </div>
+                                                        </div>--%>
                                                     </div>
                                                 </div>
                                                 <div class="summary row">
-                                                    <div class="col-lg-3">مجموع فاکتور: <span id="totalAmount">0</span> <%Response.Write(Settings.TextAfterPrice); %></div>
-                                                    <div class="col-lg-3">تخفیف: <span id="discountAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
-                                                    <div class="col-lg-3">مبلغ پرداختی: <span id="paidAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
-                                                    <div class="col-lg-3">قابل پرداخت: <span id="payableAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                                                    <div class="col-lg-4">مجموع فاکتور: <span id="totalAmount">0</span> <%Response.Write(Settings.TextAfterPrice); %></div>
+                                                    <div class="col-lg-4">تخفیف: <span id="discountAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                                                    <%--<div class="col-lg-3">مبلغ پرداختی: <span id="paidAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>--%>
+                                                    <div class="col-lg-4">قابل پرداخت: <span id="payableAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -298,9 +298,9 @@
             document.getElementById("totalAmount").textContent = 0;
             document.getElementById("discountAmount").textContent = 0;
             document.getElementById("payableAmount").textContent = 0;
-            document.getElementById("paidAmount").textContent = 0;
+            //document.getElementById("paidAmount").textContent = 0;
             document.getElementById("factor_discountPercent").value = "0";
-            document.getElementById("factor_PaidPrice").value = "0";
+            //document.getElementById("factor_PaidPrice").value = "0";
             document.getElementById("factor_desc").value = "";
             document.getElementById("factor_TypePhotography").value = "";
             document.getElementById("factor_status").value = "";
@@ -308,9 +308,9 @@
             document.getElementById("div_Pay_A_Discount").style.display = "block";
             $("#factor_ForceDesign").prop("checked", false);
             $("#factor_OnlyEditedDelivered").prop("checked", false);
-            document.getElementById('factor_PaidPrice').style.display = 'block';
-            document.getElementById('factor_PaidType').style.display = 'block';
-            document.getElementById('factor_RefNumber').style.display = 'block';
+            //document.getElementById('factor_PaidPrice').style.display = 'block';
+            //document.getElementById('factor_PaidType').style.display = 'block';
+            //document.getElementById('factor_RefNumber').style.display = 'block';
             document.getElementById('factor_Family').style.display = 'block';
         }
         function GetLogs() {
@@ -381,9 +381,9 @@
                         $("#factor_Date").val(res.FactorInfo.F_Date);
                         $("#factor_desc").val(res.FactorInfo.F_Desc);
                         $("#factor_discountPercent").val(res.FactorInfo.F_DiscountPercent);
-                        document.getElementById('factor_PaidPrice').style.display = 'none';
-                        document.getElementById('factor_PaidType').style.display = 'none';
-                        document.getElementById('factor_RefNumber').style.display = 'none';
+                        //document.getElementById('factor_PaidPrice').style.display = 'none';
+                        //document.getElementById('factor_PaidType').style.display = 'none';
+                        //document.getElementById('factor_RefNumber').style.display = 'none';
                         document.getElementById('factor_Family').style.display = 'none';
                         $("#factor_Family").change();
                         Productitems = res.FactorDetails;
@@ -465,17 +465,18 @@
             });
 
             var discount = document.getElementById("factor_discountPercent").value;
-            var paidPrice = document.getElementById("factor_PaidPrice").value;
+            //var paidPrice = document.getElementById("factor_PaidPrice").value;
             discount = convertPersianToEnglishNumbers(discount);
-            paidPrice = convertPersianToEnglishNumbers(paidPrice);
+            //paidPrice = convertPersianToEnglishNumbers(paidPrice);
 
-            paidPrice = paidPrice.replaceAll(",", "");
+            //paidPrice = paidPrice.replaceAll(",", "");
             discount = discount.replaceAll(",", "");
-            const payable = total - parseInt(discount) - parseInt(paidPrice);
+            //const payable = total - parseInt(discount) - parseInt(paidPrice);
+            const payable = total - parseInt(discount);
 
             document.getElementById("totalAmount").textContent = CurrencyFormatted(total);
             document.getElementById("discountAmount").textContent = CurrencyFormatted(discount);
-            document.getElementById("paidAmount").textContent = CurrencyFormatted(paidPrice);
+            //document.getElementById("paidAmount").textContent = CurrencyFormatted(paidPrice);
             document.getElementById("payableAmount").textContent = CurrencyFormatted(payable);
         }
 
@@ -512,12 +513,12 @@
             var factor_desc = $("#factor_desc").val();
             var factor_discountPrice = $("#factor_discountPercent").val();
             factor_discountPrice = convertPersianToEnglishNumbers(factor_discountPrice);
-            var factor_PaidPrice = $("#factor_PaidPrice").val();
-            factor_PaidPrice = convertPersianToEnglishNumbers(factor_PaidPrice);
-            factor_PaidPrice = factor_PaidPrice.replaceAll(",", "");
+            //var factor_PaidPrice = $("#factor_PaidPrice").val();
+            //factor_PaidPrice = convertPersianToEnglishNumbers(factor_PaidPrice);
+            //factor_PaidPrice = factor_PaidPrice.replaceAll(",", "");
             factor_discountPrice = factor_discountPrice.replaceAll(",", "");
-            var factor_PaidType = $("#factor_PaidType").val();
-            var factor_RefNumber = $("#factor_RefNumber").val();
+            //var factor_PaidType = $("#factor_PaidType").val();
+            //var factor_RefNumber = $("#factor_RefNumber").val();
             var TypePhotography = document.getElementById("factor_TypePhotography").value;
             var factor_status = document.getElementById("factor_status").value;
             var PhotographerId = document.getElementById("factor_Photographer").value;
@@ -527,9 +528,14 @@
             $.ajax({
                 type: "POST",
                 url: "ManageInvoice.aspx/SetFactor",
+                //data: JSON.stringify({
+                //    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
+                //    paidPrice: factor_PaidPrice, paidType: factor_PaidType, refNumber: factor_RefNumber, products: Productitems, factor_desc: factor_desc,
+                //    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId, ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
+                //}),
                 data: JSON.stringify({
                     factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
-                    paidPrice: factor_PaidPrice, paidType: factor_PaidType, refNumber: factor_RefNumber, products: Productitems, factor_desc: factor_desc,
+                    products: Productitems, factor_desc: factor_desc,
                     TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId, ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
                 }),
                 contentType: "application/json; charset=utf-8",

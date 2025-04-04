@@ -15,6 +15,7 @@
     <meta property="og:site_name" content="مدیریت آتلیه" />
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+    <%--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.4.0/dist/css/persian-datepicker.min.css">--%>
     <link href="assets/css/sweetalert2.min.css" rel="stylesheet" />
     <!--begin::Fonts-->
     <!--end::Fonts-->
@@ -1469,6 +1470,8 @@
     <script src="https://cdn.jsdelivr.net/npm/timepicker/js/timepicker.min.js"></script>
     <!--end::Page Custom Javascript-->
     <script src="https://cdn.jsdelivr.net/npm/persian-date/dist/persian-date.min.js"></script>
+    
+    <%--<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
     <!--end::Javascript-->
     <!--end::Page Custom Javascript-->
@@ -1844,8 +1847,9 @@
             addFamily_FromHospital_Setting(false);
             $('.selectedShamsiDate').persianDatepicker({
                 format: 'YYYY/MM/DD',
-                initialValue: true,
+                initialValue: false,
                 autoClose: true,
+                responsive: true,
                 calendar: {
                     persian: {
                         locale: 'fa'
@@ -1856,6 +1860,7 @@
                 format: 'YYYY/MM/DD',
                 initialValue: false,
                 autoClose: true,
+                responsive: true,
                 calendar: {
                     persian: {
                         locale: 'fa'
