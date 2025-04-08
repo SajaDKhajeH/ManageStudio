@@ -11,6 +11,18 @@ using System.Web.Http;
 
 public class OnlineTurnBookingController : ApiController
 {
+    public OnlineTurnBookingController()
+    {
+        if (HttpContext.Current.Response.Headers.AllKeys.Any(x => x == "Access-Control-Allow-Origin"))
+        {
+            HttpContext.Current.Response.Headers["Access-Control-Allow-Origin"] = "*";
+        }
+        else
+        {
+            HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Methods", "*");
+        }
+    }
     [HttpGet, Route("Api/OnlineTurnBooking/Get_Package")]
     public IHttpActionResult Get_Package()
     {
