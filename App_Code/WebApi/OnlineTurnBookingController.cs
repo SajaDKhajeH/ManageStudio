@@ -1,11 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Http;
 
@@ -13,15 +6,7 @@ public class OnlineTurnBookingController : ApiController
 {
     public OnlineTurnBookingController()
     {
-        if (HttpContext.Current.Response.Headers.AllKeys.Any(x => x == "Access-Control-Allow-Origin"))
-        {
-            HttpContext.Current.Response.Headers["Access-Control-Allow-Origin"] = "*";
-        }
-        else
-        {
-            HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            HttpContext.Current.Response.Headers.Add("Access-Control-Allow-Methods", "*");
-        }
+        HttpContext.Current.Response.SetCORSOrigin();
     }
     [HttpGet, Route("Api/OnlineTurnBooking/Get_Package")]
     public IHttpActionResult Get_Package()
