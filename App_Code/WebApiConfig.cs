@@ -1,14 +1,12 @@
-﻿//using Microsoft.Owin.Security.OAuth;
-using System.Web.Http;
+﻿using System.Web.Http;
+using System.Web.Http.Cors;
 
-/// <summary>
-/// Summary description for WebApiConfig
-/// </summary>
 public static class WebApiConfig
 {
     public static void Register(HttpConfiguration config)
     {
-  
+        var cors = new EnableCorsAttribute("*", "*", "*");
+        config.EnableCors(cors);
 
         config.MapHttpAttributeRoutes();
 
@@ -17,13 +15,5 @@ public static class WebApiConfig
             routeTemplate: "api/{controller}/{id}",
             defaults: new { id = RouteParameter.Optional }
         );
-
-        //config.Routes.MapHttpRoute(
-        //    name: "StudentApi",
-        //    routeTemplate: "api/Student/{controller}/{id}",
-        //    defaults: new { cootroller = "StudentController", id = RouteParameter.Optional }
-        //);
-        //config.MapHttpAttributeRoutes();
-        //config.Routes.MapHttpRoute("DefaultAPI", "api/{contoroller}/{id}", defaults: new { id = RouteParameter.Optional });
     }
 }

@@ -43,6 +43,15 @@ public static class ExtentionMethods
             {
                 response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             }
+            if (response.Headers.AllKeys.Any(x => x == "Access-Control-Allow-Headers"))
+            {
+                response.Headers["Access-Control-Allow-Headers"] = "*";
+            }
+            else
+            {
+                response.Headers.Add("Access-Control-Allow-Headers", "*");
+            }
+            //
         }
         catch { }
     }

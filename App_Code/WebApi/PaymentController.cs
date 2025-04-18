@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Configuration;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Text;
 
 public class PaymentController : ApiController
 {
     IPaymentGateway _zarrinpal;
     public PaymentController()
     {
-        HttpContext.Current.Response.SetCORSOrigin();
         _zarrinpal = new Zarrinpal();
     }
+    [HttpOptions, Route("Api/Payment/GoToGateway")]
+    public IHttpActionResult HandlePreflight()
+    {
+        return Ok();
+    }
     [HttpPost, Route("Api/Payment/GoToGateway")]
-    public async Task<OperationResult<PGResponseData>> GoToGatewayAsync([FromBody] PaymentGoToGateway input)
+    public async Task<IHttpActionResult> GoToGatewayAsync([FromBody] PaymentGoToGateway input)
     {
         string baseUrl = ConfigurationSettings.AppSettings["PortalUrl"];
         string callbackUrl = $"{baseUrl}/payresult?tran={"tran.Guid"}";
@@ -40,7 +44,7 @@ public class PaymentController : ApiController
         //    tran.Fee = result.Data?.Fee;
         //}
         //await _db.SaveChangesAsync();
-        return result;
+        return Ok(result);
     }
     [HttpGet, Route("Api/Payment/GetReceiptInfo")]
     public async Task<OperationResult<ReceiptDto>> GetReceiptInfoAsync(string tran)
@@ -66,11 +70,11 @@ public class PaymentController : ApiController
         //    }).SingleOrDefaultAsync();
         if (transaction == null)
         {
-            return  OperationResult<ReceiptDto>.Failed("تراکنش یافت نشد!");
+            return OperationResult<ReceiptDto>.Failed("تراکنش یافت نشد!");
         }
         if (string.IsNullOrEmpty(transaction.VerifiedRefId))
         {
-            return  OperationResult<ReceiptDto>.Failed("کد پیگیری پرداخت یافت نشد!");
+            return OperationResult<ReceiptDto>.Failed("کد پیگیری پرداخت یافت نشد!");
         }
         StringBuilder sbReceipt = new StringBuilder();
 
