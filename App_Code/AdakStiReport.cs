@@ -37,6 +37,7 @@ public class AdakStiReportBuilder
     }
     public bool SaveImage(string path)
     {
+        path = GetSpecialPath(path);
         Report.RegReportDataSources();
         Report.Compile();
         Report.Render();
@@ -54,6 +55,7 @@ public class AdakStiReportBuilder
     }
     public bool SavePNG(string path)
     {
+        path = GetSpecialPath(path);
         Report.RegReportDataSources();
         Report.Compile();
         Report.Render();
@@ -67,6 +69,7 @@ public class AdakStiReportBuilder
     }
     public bool SavePDF(string path)
     {
+        path = GetSpecialPath(path);
         Report.RegReportDataSources();
         Report.Compile();
         Report.Render();
@@ -84,6 +87,7 @@ public class AdakStiReportBuilder
     }
     public bool SaveExcel(string path)
     {
+        path = GetSpecialPath(path);
         Report.RegReportDataSources();
         Report.Compile();
         Report.Render();
@@ -94,5 +98,15 @@ public class AdakStiReportBuilder
         }
         Report.Dispose();
         return true;
+    }
+    private string GetSpecialPath(string path)
+    {
+        string name = HttpContext.Current?.Request.Url.Host;
+        if (string.IsNullOrEmpty(name))
+        {
+            name = "unknown";
+        }
+        path = path.Replace("Files/", $"Files/{name}/");
+        return path;
     }
 }

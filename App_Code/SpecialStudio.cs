@@ -8,8 +8,8 @@ public class SpecialStudio
         {
             string name = HttpContext.Current.Request.Url.Host;
             if (string.IsNullOrEmpty(name))
-                name = "logo";
-            return $"Files/Logo/{name}.png";
+                name = "unknown";
+            return $"Files/{name}/Logo/logo.png";
         }
     }
 }
