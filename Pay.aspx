@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://keenthemes.com/metronic" />
     <meta property="og:site_name" content="Keenthemes | Metronic" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-    <link rel="shortcut icon" href="Files/Logo/logo.jpeg" />
+    <link rel="shortcut icon" href="<%Response.Write(SpecialStudio.Logo); %>" />
     <!--begin::Fonts-->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -58,7 +58,7 @@
 </head>
 <body>
     <div class="payment-container">
-        <img src="Files/Logo/logo.jpeg" alt="لوگوی آتلیه" class="payment-logo">
+        <img src="<%Response.Write(SpecialStudio.Logo); %>" alt="لوگوی آتلیه" class="payment-logo">
         <h3 class="fw-bold"><%Response.Write(Settings.StudioName); %></h3>
         <hr>
         <h5 class="text-primary">نام خانواده: <span class="fw-bold" id="familyTitle"></span></h5>

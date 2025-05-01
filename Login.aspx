@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://keenthemes.com/metronic" />
     <meta property="og:site_name" content="Keenthemes | Metronic" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-    <link rel="shortcut icon" href="Files/Logo/logo.jpeg" />
+    <link rel="shortcut icon" href="<%Response.Write(SpecialStudio.Logo); %>" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
@@ -43,7 +43,7 @@
         <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png)">
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
                 <a class="mb-15">
-                    <img alt="Logo" src="Files/Logo/logo.jpeg" class="h-150px" />
+                    <img alt="Logo" src="<%Response.Write(SpecialStudio.Logo); %>" class="h-150px" />
                 </a>
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <div class="text-center mb-10">

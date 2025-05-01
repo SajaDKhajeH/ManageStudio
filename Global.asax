@@ -6,23 +6,25 @@
     {
         System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
         RouteConfig.RegisterRoutes(System.Web.Routing.RouteTable.Routes);
+        string baseUrl = HttpContext.Current.Server.MapPath("~");
+        AdakLogger.Init(baseUrl);
     }
     void Application_End(object sender, EventArgs e)
     {
-       
+
     }
     void Application_Error(object sender, EventArgs e)
     {
-     
+
     }
     void Session_Start(object sender, EventArgs e)
     {
     }
     void Session_End(object sender, EventArgs e)
     {
-       
+
     }
-void Application_BeginRequest(Object sender, EventArgs e)
+    void Application_BeginRequest(Object sender, EventArgs e)
     {
         var c = HttpContext.Current.Request?.Cookies;
         var cc = c["Authorization"];
@@ -40,6 +42,6 @@ void Application_BeginRequest(Object sender, EventArgs e)
     }
     void Application_EndRequest(Object sender, EventArgs e)
     {
-       
+
     }
 </script>

@@ -32,22 +32,29 @@ public class SmsSender
 
     private void Timer_Elapsed(object sender, ElapsedEventArgs e)
     {
-        string SenderKavenegar=AdakDB.Db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_SenderKavenegar).SingleOrDefault().Se_Value;
-        string ApiKeyKavenegar = AdakDB.Db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_ApiKeyKavenegar).SingleOrDefault().Se_Value;
-        if (SenderKavenegar.IsNullOrEmpty() || ApiKeyKavenegar.IsNullOrEmpty())
-        {
-            return;
-        }
         if (isSending)
             return;
         isSending = true;
-        SendSMS(SenderKavenegar, ApiKeyKavenegar);
+        var css = AdakDB.ConnectionStrings;
+        foreach (var cs in css)
+        {
+            using (var db = AdakDB.GetDb(cs))
+            {
+                string SenderKavenegar = db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_SenderKavenegar).SingleOrDefault().Se_Value;
+                string ApiKeyKavenegar = db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_ApiKeyKavenegar).SingleOrDefault().Se_Value;
+                if (SenderKavenegar.IsNullOrEmpty() || ApiKeyKavenegar.IsNullOrEmpty())
+                {
+                    continue;
+                }
+                SendSMS(db, SenderKavenegar, ApiKeyKavenegar);
+            }
+        }
         isSending = false;
     }
     bool isSending = false;
-    private void SendSMS(string SenderKavenegar,string ApiKeyKavenegar)
+    private void SendSMS(Bank.AdakBankDataContext db, string SenderKavenegar, string ApiKeyKavenegar)
     {
-        var smss = AdakDB.Db.usp_Sms_Select_For_Send().ToList();
+        var smss = db.usp_Sms_Select_For_Send().ToList();
 
         var list = smss.Select(item => new SmsModel()
         {
@@ -58,7 +65,7 @@ public class SmsSender
 
         Parallel.ForEach(list, (service) =>
         {
-            SendAllSms(service, SenderKavenegar,ApiKeyKavenegar);
+            SendAllSms(service, SenderKavenegar, ApiKeyKavenegar);
         });
 
         string ids = string.Join(",", list.Where(a => a.Success).Select(x => x.SMSId));
@@ -67,11 +74,11 @@ public class SmsSender
         {
             int? hasError = 0;
             string mes = "";
-            AdakDB.Db.usp_SMS_SetSended(ids, ref hasError, ref mes);
+            db.usp_SMS_SetSended(ids, ref hasError, ref mes);
         }
         foreach (var er in list.Where(x => !x.Success))
         {
-            AdakDB.Db.usp_ErrorAdd("SendSMS", er.ErrorText);
+            db.usp_ErrorAdd("SendSMS", er.ErrorText);
         }
     }
     private static void SendAllSms(SmsModel service, string SenderKavenegar, string ApiKeyKavenegar)

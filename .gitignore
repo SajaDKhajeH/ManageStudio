@@ -4,3 +4,11 @@
 
 /.vs
 /packages
+/Bin/Serilog.dll.refresh
+/Bin/Serilog.Sinks.File.dll.refresh
+/Bin/Serilog.Sinks.File.xml
+/Bin/Serilog.xml
+/Bin/System.Diagnostics.DiagnosticSource.dll.refresh
+/Bin/System.Diagnostics.DiagnosticSource.xml
+/Bin/System.Threading.Channels.dll.refresh
+/Bin/System.Threading.Channels.xml
