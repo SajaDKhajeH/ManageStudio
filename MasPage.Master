@@ -1269,7 +1269,7 @@
             var pay_desc = document.getElementById("pay_desc").value;
             var pay_PaidType = document.getElementById('pay_PaidType').value;
             var pay_RefNumber = document.getElementById('pay_RefNumber').value;
-            var pay_Cash_A_Bank = document.getElementById('pay_Cash_A_Bank').value = '';
+            var pay_Cash_A_Bank = document.getElementById('pay_Cash_A_Bank').value;
             var pay_PaidPrice = $("#pay_PaidPrice").val();
             pay_PaidPrice = convertPersianToEnglishNumbers(pay_PaidPrice);
             pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");

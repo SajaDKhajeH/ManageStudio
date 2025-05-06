@@ -125,7 +125,7 @@ namespace AdakStudio
                     TurnTitle = item.TypeTitle.IsNullOrEmpty() ? "" : item.TypeTitle,
                     Desc = item.R_Desc,
                     Duration = (item.R_Duration ?? 0),
-                    LocationId = item.R_Location.ToCodeNumber(),
+                    LocationId = item.R_Location?.ToCodeNumber(),
                     LocationTitle = item.LocationTitle,
                     DurationText = (item.R_Duration ?? 0).ToTimeString(),
                     PhotographerId = (item.PhotographerId ?? 0).ToCodeNumber(),
