@@ -259,35 +259,26 @@
         };
         function GetInfoForEditProduct(id) {
             productId = id;
-            $.ajax({
-                type: "POST",
-                url: "Products.aspx/GetProductInfo",
-                data: JSON.stringify({
-                    id: productId
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        $("#p_productgroup").val(res.GroupdProductId);
-                        $("#p_Title").val(res.ProductInfo.Pro_Title);
-                        $("#p_buyPrice").val(CurrencyFormatted(res.ProductInfo.Pro_BuyPrice_InitialInventory));
-                        $("#p_salePrice").val(CurrencyFormatted(res.ProductInfo.Pro_SalePrice));
-                        $("#p_pariority").val(res.ProductInfo.Pro_Priority);
-                        $("#p_Inventory").val(res.ProductInfo.Pro_InitialInventoryCount);
-                        $("#p_checkInventory").prop("checked", res.ProductInfo.Pro_CheckInventory);
-                        $("#p_active").prop("checked", res.ProductInfo.Pro_Active);
-                        $("#p_desc").val(res.ProductInfo.Pro_Desc);
-                        $("#header_modalSetProduct").text("ویرایش " + res.ProductInfo.Pro_Title);
-                    }
-                },
-                error: function () {
-                    alert("error");
+            let query = `?id=${productId}`;
+            ajaxGet('/Product/GetProduct' + query, function (res) {
+                if (res.success) {
+                    let data = res.data;
+                    $("#p_productgroup").val(data.groupId);
+                    $("#p_Title").val(data.title);
+                    $("#p_buyPrice").val(CurrencyFormatted(data.buyPrice));
+                    $("#p_salePrice").val(CurrencyFormatted(data.salePrice));
+                    $("#p_pariority").val(data.priority);
+                    $("#p_Inventory").val(data.inventory);
+                    $("#p_checkInventory").prop("checked", data.checkInventory);
+                    $("#p_active").prop("checked", data.active);
+                    $("#p_desc").val(data.desc);
+                    $("#header_modalSetProduct").text("ویرایش " + data.title);
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function () {
+                alert("error");
             });
         };
 
@@ -345,7 +336,7 @@
             }
             pageSize = parseInt($("#s_pageSize").val());
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}&groupId=${groupId}`;
-            ajaxGet('/Product/Get' + query, function (res) {
+            ajaxGet('/Product/GetProducts' + query, function (res) {
                 const data = res.items;
                 const totalRecords = res.totalCount;
                 const tbody = $("#dt_Products");
