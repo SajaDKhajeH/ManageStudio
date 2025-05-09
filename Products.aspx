@@ -101,7 +101,6 @@
                                 </div>
                                  <div class="col-md-2">
                                    <select id="filter_productgroup">
-                                    <%Response.Write(PublicMethod.GetProductGroup(true)); %>
                                 </select>
                                 </div>
                                 <div class="col-md-2">
@@ -134,7 +133,7 @@
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
-                                <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                                <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                                 <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                                 <span>
                                     <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataProduct()">
@@ -169,7 +168,7 @@
                             <div class="col-md-6 fv-row">
                                 <label>گروه کالا</label>
                                 <select id="p_productgroup" onchange="GetLastPariority()">
-                                    <%Response.Write(PublicMethod.GetProductGroup()); %>
+                                    
                                 </select>
                             </div>
                             <div class="col-md-6 fv-row">
@@ -291,33 +290,110 @@
                 }
             });
         };
-        function ProductDelete(id) {
-            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
-            if (userResponse) {
-                $.ajax({
-                    type: "POST",
-                    url: "Products.aspx/ProductDelete",
-                    data: JSON.stringify({
-                        id: id
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        var res = msg.d;
-                        if (msg.d.Result == false) {//خطا داریم
-                            ShowError(msg.d.Message);
-                        }
-                        else {
-                            toastr.success(msg.d.Message, "موفق");
-                            loadTableDataProduct();
-                        }
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-            }
+
+        function GetLastPariority() {
+            var gproduct = document.getElementById("p_productgroup").value;
+            $.ajax({
+                type: "POST",
+                url: "Products.aspx/GetLastPariority",
+                data: JSON.stringify({
+                    gproduct: gproduct
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    document.getElementById("p_pariority").value = msg.d.lastPari;
+                },
+                error: function () {
+                    toastr.error("خطا در دریافت اولویت ", "خطا");
+                }
+            });
         };
+        $(document).ready(function () {
+            $("#master_PageTitle").text("کالاها");
+            $("#s_pageSize").val("5");
+            fillProductGroupsAsync();
+            loadTableDataProduct();
+            // صفحه بعد
+            $("#nextPageBtn").click(function () {
+                pageIndex++;
+                loadTableDataProduct();
+            });
+
+            // صفحه قبل
+            $("#prevPageBtn").click(function () {
+                pageIndex--;
+                loadTableDataProduct();
+            });
+
+            // اعمال فیلتر
+            $("#filterBtn").click(function () {
+                pageIndex = 0;
+                loadTableDataProduct();
+            });
+        });
+    </script>
+    <script>
+        let pageIndex = 0;
+        let pageSize = 5;
+
+        function loadTableDataProduct() {
+            var filter = $("#filterInput").val();
+            var groupId = $("#filter_productgroup").val();
+            if (groupId == null || groupId == undefined) {
+                groupId = 0;
+            }
+            pageSize = parseInt($("#s_pageSize").val());
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}&groupId=${groupId}`;
+            ajaxGet('/Product/Get' + query, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
+                const tbody = $("#dt_Products");
+
+                tbody.empty(); // پاک کردن داده‌های قدیمی
+
+                // اضافه کردن داده‌های جدید
+                data.forEach(row => {
+                    let actions =
+                        `
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#addEditProducts' onclick='GetInfoForEditProduct("${row.id}")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-delete' onclick='ProductDelete("${row.id}")' title='حذف'>🗑</button>
+                </div>
+                        `;
+                    let status = '';
+                    if (row.active) {
+                        status = `<div class='badge badge-light-success'>فعال</div>`;
+                    } else {
+                        status = `<div class='badge badge-light-danger'>غیرفعال</div>`;
+                    }
+                    tbody.append(`
+                <tr>
+                    <td>${row.groupTitle}</td>
+                    <td>${row.title}</td>
+                    <td>${row.buyPrice}</td>
+                    <td>${row.salePrice}</td>
+                    <td>${(row.checkInventory ? "بله" : "خیر") }</td>
+                    <td>${row.inventory}</td>
+                    <td>${status}</td>
+                    <td>${actions}</td>
+                </tr>
+            `);
+                });
+
+                // بروزرسانی صفحه فعلی
+                $("#pageIndex").text(pageIndex);
+                $("#countAllTable").text(totalRecords);
+                // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
+                $("#prevPageBtn").prop("disabled", pageIndex === 0);
+                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+            },
+                function () {
+                    toastr.error("خطا در دریافت اطلاعات", "خطا");
+                });
+        }
+    </script>
+    <script>
         function AddEditProduct() {
             var gproduct = document.getElementById("p_productgroup").value;
             var Title = document.getElementById("p_Title").value;
@@ -352,122 +428,65 @@
                 return;
             }
             var desc = document.getElementById("p_desc").value;
-            $.ajax({
-                type: "POST",
-                url: "Products.aspx/ProductAddEdit",
-                data: JSON.stringify({
-                    id: productId, gproduct: gproduct, Title: Title, buyPrice: parseFloat(buyPrice), salePrice: parseFloat(salePrice),
-                    checkInventory: checkInventory, active: active, pariority: parseInt(pariority), desc: desc,
-                    Inventory: parseInt(Inventory)
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        toastr.success(msg.d.Message, "موفق");
-                        closeModalProduct();
-                        loadTableDataProduct();
-                    }
-                },
-                error: function () {
-                    alert("error");
+
+            let createProductCommand =
+            {
+                groupId: gproduct,
+                title: Title,
+                buyPrice: parseFloat(buyPrice),
+                salePrice: parseFloat(salePrice),
+                checkInventory: checkInventory,
+                active: active,
+                priority: parseInt(pariority),
+                desc: desc,
+                inventoryCount: parseInt(Inventory)
+            };
+
+            ajaxPost("/Product/Create", createProductCommand, function (res) {
+                if (!res.success) {//خطا داریم
+                    ShowError(res.message);
                 }
+                else {
+                    toastr.success('اطلاعات ذخیره شد', "موفق");
+                    closeModalProduct();
+                    loadTableDataProduct();
+                }
+            }, function () {
+                alert("error");
             });
         };
-        function GetLastPariority() {
-            var gproduct = document.getElementById("p_productgroup").value;
-            $.ajax({
-                type: "POST",
-                url: "Products.aspx/GetLastPariority",
-                data: JSON.stringify({
-                    gproduct: gproduct
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    document.getElementById("p_pariority").value = msg.d.lastPari;
-                },
-                error: function () {
-                    toastr.error("خطا در دریافت اولویت ", "خطا");
-                }
-            });
-        };
-        $(document).ready(function () {
-            $("#master_PageTitle").text("کالاها");
-            $("#s_pageSize").val("5");
-            loadTableDataProduct();
 
-            // صفحه بعد
-            $("#nextPageBtn").click(function () {
-                currentPage++;
-                loadTableDataProduct();
-            });
-
-            // صفحه قبل
-            $("#prevPageBtn").click(function () {
-                currentPage--;
-                loadTableDataProduct();
-            });
-
-            // اعمال فیلتر
-            $("#filterBtn").click(function () {
-                currentPage = 1;
-                loadTableDataProduct();
-            });
-        });
     </script>
     <script>
-        let currentPage = 1;
-        let pageSize = 5;
-
-        function loadTableDataProduct() {
-            var filter = $("#filterInput").val();
-            var groupId = $("#filter_productgroup").val();
-            pageSize = parseInt($("#s_pageSize").val());
-            $.ajax({
-                type: "POST",
-                url: "Products.aspx/ForGrid",
-                data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: filter, gproduct: groupId}),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    const totalRecords = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_Products");
-
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
-
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
-                        <tr>
-                            <td>${row.ProductGroup}</td>
-                            <td>${row.Title}</td>
-                            <td>${row.BuyPrice}</td>
-                            <td>${row.SalePrice}</td>
-                            <td>${row.CheckInventory}</td>
-                            <td>${row.Inventory}</td>
-                            <td>${row.Status}</td>
-                            <td>${row.Actions}</td>
-                        </tr>
-                    `);
-                    });
-
-                    // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
-                    $("#countAllTable").text(totalRecords);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
-                },
-                error: function () {
-                    toastr.error("خطا در دریافت اطلاعات", "خطا");
-                }
+        function fillProductGroupsAsync() {
+            let defaultOption = '<option value="0">انتخاب گروه کالا</option>';
+            ajaxGet('/ProductGroup/GetGroups', function (hospitals) {
+                const hospitalOptions = hospitals.map(hospital =>
+                    `<option value="${hospital.id}">${hospital.title}</option>`
+                ).join('');
+                $("#filter_productgroup").html(defaultOption + hospitalOptions);
+                $("#p_productgroup").html(hospitalOptions);
             });
         }
+    </script>
+    <script>
+        function ProductDelete(id) {
+            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
+            if (userResponse) {
+                let query = `?id=${id}`;
+                ajaxDelete('/Product/Delete' + query, function (res) {
+                    if (res.success) {
+                        toastr.success('محصول حذف شد', "موفق");
+                        loadTableDataProduct();
+                    }
+                    else {
+                        ShowError(res.message);
+                    }
+                },
+                    function () {
+                        alert("error");
+                    });
+            }
+        };
     </script>
 </asp:Content>

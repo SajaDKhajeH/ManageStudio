@@ -525,8 +525,7 @@
                 <div class="aside-menu flex-column-fluid">
                     <div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
                         <!--begin::Menu-->
-                        <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
-                            <%Response.Write(Menus()); %>
+                        <div id="menu_div" class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
                         </div>
                     </div>
                 </div>
@@ -562,7 +561,7 @@
 
                             </div>
                             <div class="d-flex align-items-center flex-shrink-0">
-                                 <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
+                                <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
                                     { %>
                                 <button class="btn btn-primary me-2" onclick="GoToAddEditFactor()" id="gotoFactor">ثبت فاکتور</button>
                                 <button class="btn btn-primary open-modal-btn" onclick="ResetFeildsFamily()" data-bs-toggle="modal" data-bs-target="#modal_addedit_family" id="Btn_AddRequest">
@@ -581,13 +580,13 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
                                             <%  if (LoginedUser.Role == DefaultDataIDs.Role_Admin || LoginedUser.Role == DefaultDataIDs.Role_Secretary)
-                                    { %>
+                                                { %>
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                                                     <i class="fas fa-key me-2"></i>ویرایش رمز
                                                 </a>
                                             </li>
-                                             <%} %>
+                                            <%} %>
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center text-danger" href="#" onclick="logout()">
                                                     <i class="fas fa-power-off me-2"></i>خروج
@@ -1147,9 +1146,9 @@
                     alert("error");
                 }
             });
-           
+
         }
-</script>
+    </script>
 
 
     <%-- script Pay Factor Modal --%>
@@ -1891,6 +1890,106 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
+    </script>
+    <script>
+
+        function ajaxGet(route, success, error) {
+            ajaxAuthCall('GET', route, null, success, error);
+        }
+        function ajaxPost(route, data, success, error) {
+            ajaxAuthCall('POST', route, data, success, error);
+        }
+        function ajaxDelete(route, success, error) {
+            ajaxAuthCall('DELETE', route, null, success, error);
+        }
+        function ajaxAuthCall(method, route, data, success, error) {
+            let loginJson = getLocalStorage('login');
+            let login = JSON.parse(loginJson);
+            let baseUrl = 'https://localhost:44393';
+            $.ajax({
+                type: method,
+                url: baseUrl + route,
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", "Bearer " + login.token);
+                },
+                success: success,
+                error: function (err) {
+                    if (err.status) {
+                        if (err.status == 400) {
+                            let errors = err.responseJSON.errors;
+                            for (const field in errors) {
+                                toastr.warning(errors[field], field);
+                            }
+                        }
+                        else if (err.status == 401) {
+                            logout();
+                        } else {
+                            error(err);
+                        }
+                    } else {
+                        error(err);
+                    }
+                }
+            });
+        }
+
+        function getLocalStorage(key) {
+            let cache = localStorage.getItem(key);
+            if (cache == null)
+                return null;
+            let data = JSON.parse(cache);
+            return data.data;
+            //const now = new Date();
+            //if (data.expire < now.toUTCString()) {
+            //    return null;
+            //}
+            //else {
+            //    return data.data;
+            //}
+        }
+        function logout() {
+            localStorage.removeItem('login');
+            location.href = 'Logout.aspx';
+        }
+        $(document).ready(function () {
+            let login = getLocalStorage('login');
+            if (login == null || login.token == '') {
+                logout();
+            } else {
+                showMenusAsync();
+            }
+        });
+    </script>
+    <script>
+        function showMenusAsync() {
+            ajaxGet("/Permission/GetMenus", function (menus) {
+                const menusHtml = menus.map(menu =>
+                    `
+                        <div class='menu-item'>
+                              <a class='menu-link' href='${menu.name}'>
+                                  <span class='menu-icon'>
+                                      <span class='svg-icon svg-icon-2'>
+                                          <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
+                                              <rect x='2' y='2' width='9' height='9' rx='2' fill='black' />
+                                              <rect opacity='0.3' x='13' y='2' width='9' height='9' rx='2' fill='black' />
+                                              <rect opacity='0.3' x='13' y='13' width='9' height='9' rx='2' fill='black' />
+                                              <rect opacity='0.3' x='2' y='13' width='9' height='9' rx='2' fill='black' />
+                                          </svg>
+                                      </span>
+                                      <!--end::Svg Icon-->
+                                  </span>
+                                  <span class='menu-title' id='title_MasterPage'>${menu.title}</span>
+                               </a>
+                         </div>
+                    `
+                ).join('');
+                $("#menu_div").html(menusHtml);
+            });
+
+        }
     </script>
     <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>
 </body>

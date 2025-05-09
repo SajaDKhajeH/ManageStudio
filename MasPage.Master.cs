@@ -12,10 +12,10 @@ namespace AdakStudio
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (LoginedUser.Id <= 0)
-            {
-                Response.Redirect("Logout.aspx");
-            }
+            //if (LoginedUser.Id <= 0)
+            //{
+            //    Response.Redirect("Logout.aspx");
+            //}
             string pageName = System.IO.Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
             if (LoginedUser.Role == DefaultDataIDs.Role_Secretary)
             {

@@ -10,6 +10,7 @@
             overflow-x: auto;
             padding: 10px;
         }
+
         .invoice-card {
             border-radius: 8px;
             padding: 15px;
@@ -18,6 +19,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* شادو اولیه */
             transition: box-shadow 0.3s ease; /* انیمیشن تغییر شادو */
         }
+
         .column {
             background: #f9f9f9;
             border-radius: 10px;
@@ -50,7 +52,7 @@
         }
 
 
-       /* .task {
+        /* .task {
             background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -59,7 +61,7 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }*/
-       .task {
+        .task {
             background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -68,17 +70,17 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-       /* استایل فاکتورهای بدهکار */
-        .task.unpaid {
-            box-shadow: 0 4px 8px #dc994a; /* سایه قرمز ملایم */
-            border: 2px solid #e2a309; /* حاشیه قرمز کم‌رنگ */
-        }
+            /* استایل فاکتورهای بدهکار */
+            .task.unpaid {
+                box-shadow: 0 4px 8px #dc994a; /* سایه قرمز ملایم */
+                border: 2px solid #e2a309; /* حاشیه قرمز کم‌رنگ */
+            }
 
-        /* افکت هنگام هاور */
-        /*.task.unpaid:hover {
+            /* افکت هنگام هاور */
+            /*.task.unpaid:hover {
             box-shadow: 0 6px 12px rgba(255, 0, 0, 0.4);*/ /* شادو قوی‌تر */
             /*transform: translateY(-2px);*/ /* حرکت جزئی به بالا */
-        /*}*/
+            /*}*/
 
             .task:hover {
                 transform: scale(1.03);
@@ -418,7 +420,7 @@
                     alert("error");
                 }
             });
-           
+
         };
     </script>
     <%-- اسکریپت مربوط به لاگ فاکتور --%>
@@ -578,11 +580,37 @@
                 }
             });
         };
+        function GetInvoices() {
+            var searchText = $("#filterInput").val();
+            var fromdate = $("#filter_From_Date").val();
+            var todate = $("#filter_To_Date").val();
+            var causer = $("#filter_Causer").val();
+            ajaxGet('/RequestTracking/GetInvoices', function (res) {
+                if (!res.success) {//خطا داریم
+                    ShowError(res.message);
+                }
+                else {
+                    $("#div_FactorStaus").innerHTML = "";
+                    $("#div_FactorStaus").children().remove();
+                    var res = res.Htmls;
+                    for (var i = 0; i < res.length; i++) {
+                        $("#div_FactorStaus").append(res[i].ColumnHtml);
+                    }
+                    document.querySelectorAll('.dropzone_FS').forEach(dropzone => {
+                        dropzone.addEventListener('dragover', allowDrop);
+                        dropzone.addEventListener('drop', ev => drop(ev, dropzone.parentNode.id));
+                    });
+                }
+            },
+            function (err) {
+                console.log(err);
+            });
+        };
         $(document).ready(function () {
             $("#itemTableBodyDetailFactor").attr("disabled", "disabled");
             $("#master_PageTitle").text("وضعیت فاکتورها");
 
-            GetFactors();
+            GetInvoices();
             $('#filter_From_Date').persianDatepicker({
                 format: 'YYYY/MM/DD',
                 initialValue: false,
@@ -604,5 +632,63 @@
                 }
             });
         });
+    </script>
+
+    <script>
+
+
+
+
+        function createFactorHtml(groupedFactors) {
+            const container = document.getElementById('div_FactorStaus');
+            container.innerHTML = ''; // پاک کردن محتوای قبلی
+
+            groupedFactors.forEach(status => {
+                const column = document.createElement('div');
+                column.className = 'column';
+                column.id = `column_${status.StatusId}`;
+
+                const header = document.createElement('h3');
+                header.innerHTML = `${status.Title} <span style="background-color: #08c5f7; color: white; padding:3px; border-radius: 5px;">${status.Factors.length}</span>`;
+                column.appendChild(header);
+
+                const dropzone = document.createElement('div');
+                dropzone.className = 'dropzone_FS h-100';
+                dropzone.id = `dz_${status.StatusId}`;
+                column.appendChild(dropzone);
+
+                status.Factors.forEach(factor => {
+                    const task = document.createElement('div');
+                    task.className = 'task';
+                    task.id = `task_${status.StatusId}_${factor.FactorID}`;
+
+                    const header = document.createElement('div');
+                    header.className = 'task-header';
+                    header.innerHTML = `
+        <span class="customer-name">${factor.FamilyTitle}</span>
+        <span class="date">${factor.FactorDate}</span>
+      `;
+
+                    const footer = document.createElement('div');
+                    footer.className = 'task-footer';
+                    footer.innerHTML = `
+        ${factor.ForceDesign ? '<span class="force-design-label">طراحی فورس</span>' : ''}
+        <button class="edit-btn" onclick="FactorDetail(${factor.FactorID})">جزئیات</button>
+      `;
+
+                    task.appendChild(header);
+                    task.appendChild(footer);
+                    dropzone.appendChild(task);
+                });
+
+                container.appendChild(column);
+            });
+            document.querySelectorAll('.dropzone_FS').forEach(dropzone => {
+                dropzone.addEventListener('dragover', allowDrop);
+                dropzone.addEventListener('drop', ev => drop(ev, dropzone.parentNode.id));
+        }
+
+
+
     </script>
 </asp:Content>

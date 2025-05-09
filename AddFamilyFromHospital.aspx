@@ -111,7 +111,7 @@
                 </td>
                 <td>
                     <select name="childHospital">
-                        <%Response.Write(PublicMethod.GetHospitals()); %>
+                        ${hospitalsHtml}
                     </select>
                 </td>
                 <td>
@@ -202,41 +202,77 @@
             var address = $("#h_f_address").val();
             var desc = $("#h_f_desc").val();
             btnAddEdit_ChangeDisable("btn_submitdataFamily_FromHospital", true);
-            $.ajax({
-                type: "POST",
-                url: "Family.aspx/AddEditFamily",
-                data: JSON.stringify({
-                    id: "", m_name: m_name, m_lastname: m_lastname,
-                    f_name: f_name, f_lastname: f_lastname, archive: false,
-                    desc: desc, f_mobile: f_mobile, m_mobile: m_mobile,
-                    phone: phone, title: title, address: address,
-                    childNames: childNamesArray, childSexs: childSexArray, childBirthDates: childBirthDateArray, childIds: childIdsArray,
-                    Hospitals: childHospitalArray, FromHospital: true,
-                    MotherBirthDate: "", FatherBirthDate: "", MarriageDate: "", InviteTypeId: ""
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    btnAddEdit_ChangeDisable("btn_submitdataFamily_FromHospital", false);
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        ResetFeildsFamily_Hospital();
-                        toastr.success(msg.d.Message, "موفق");
-                    }
+
+            //let data = {
+            //    id: "", m_name: m_name, m_lastname: m_lastname,
+            //    f_name: f_name, f_lastname: f_lastname, archive: false,
+            //    desc: desc, f_mobile: f_mobile, m_mobile: m_mobile,
+            //    phone: phone, title: title, address: address,
+            //    childNames: childNamesArray, childSexs: childSexArray, childBirthDates: childBirthDateArray, childIds: childIdsArray,
+            //    Hospitals: childHospitalArray, FromHospital: true,
+            //    MotherBirthDate: "", FatherBirthDate: "", MarriageDate: "", InviteTypeId: ""
+            //};
+
+            let createFamilyWithDetailsCommand = {
+                title: title, // نام خانواده
+                father: {
+                    firstName: f_name, // نام پدر
+                    lastName: f_lastname, // نام خانوادگی پدر
+                    mobile: f_mobile, // شماره موبایل پدر
+                    birthDate: "", // تاریخ تولد پدر
+                    //birthDateMiladi: FatherBirthDate ? new Date(FatherBirthDate) : null, // تاریخ میلادی تولد پدر
+                    gender: 1 // جنسیت پدر (اگر مشخص باشد، اینجا مقدار استاتیک قرار داده شود)
                 },
-                error: function () {
-                    btnAddEdit_ChangeDisable("btn_submitdataFamily_FromHospital", false);
-                    alert("خطا هنگام ثبت اطلاعات");
+                mother: {
+                    firstName: m_name, // نام مادر
+                    lastName: m_lastname, // نام خانوادگی مادر
+                    mobile: m_mobile, // شماره موبایل مادر
+                    birthDate: "", // تاریخ تولد مادر
+                    //birthDateMiladi: MotherBirthDate ? new Date(MotherBirthDate) : null, // تاریخ میلادی تولد مادر
+                    gender: 2 // جنسیت مادر (اگر مشخص باشد، اینجا مقدار استاتیک قرار داده شود)
+                },
+                children: childNamesArray.map((name, index) => ({
+                    firstName: name, // نام کودک
+                    gender: childSexArray[index] ? 1 : 2, // جنسیت کودک 
+                    birthDate: childBirthDateArray[index], // تاریخ تولد کودک
+                    //birthDateMiladi: childBirthDateArray[index] ? new Date(childBirthDateArray[index]) : null, // تاریخ میلادی تولد کودک
+                    hospitalId: childHospitalArray[index] // آیدی بیمارستان مربوط به کودک
+                }))
+            };
+
+            ajaxPost("/Family/CreateFamilyWithDetails", createFamilyWithDetailsCommand, function (msg) {
+                btnAddEdit_ChangeDisable("btn_submitdataFamily_FromHospital", false);
+                if (msg.d.Result == false) {//خطا داریم
+                    ShowError(msg.d.Message);
                 }
+                else {
+                    ResetFeildsFamily_Hospital();
+                    toastr.success(msg.d.Message, "موفق");
+                }
+            }, function () {
+                btnAddEdit_ChangeDisable("btn_submitdataFamily_FromHospital", false);
+                alert("خطا هنگام ثبت اطلاعات");
             });
         });
         $(document).ready(function () {
+            fillInfoAsync();
             $("#master_PageTitle").text("ثبت خانواده در بیمارستان");
             addFamily_FromHospital_Setting(true);
             ResetFeildsFamily_Hospital();
         });
+        function fillInfoAsync() {
+            fillChildHospitalAsync();
+        }
+        let hospitalsHtml = '';
+        function fillChildHospitalAsync() {
+            let defaultOption = '<option>انتخاب بیمارستان</option>';
+            ajaxGet('/BasicData/Hospitals', function (hospitals) {
+                const hospitalOptions = hospitals.map(hospital =>
+                    `<option value="${hospital.id}">${hospital.title}</option>`
+                ).join('');
+                hospitalsHtml = defaultOption + hospitalOptions;
+            });
+        }
     </script>
 </asp:Content>
 

@@ -64,8 +64,7 @@
                                         <h5 class="mb-0">👤 لیست پرسنل</h5>
                                     </div>
                                     <div class="card-body p-3">
-                                        <ul class="list-group list-group-flush">
-                                            <%Response.Write(GetPersonnels()); %>
+                                        <ul id="divSecretaries" class="list-group list-group-flush">
                                         </ul>
                                     </div>
                                 </div>
@@ -91,71 +90,63 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script type="text/javascript">
-        var personnelId = 0;
+        var personnelId = '';
+        function showSecretariesAsync() {
+            ajaxGet("/User/GetAllSecretaries", function (users) {
+                const usersHtml = users.map(user =>
+                    `<li class='list-group-item employee-item' data-id='${user.id}'>${user.title}</li>`
+                ).join('');
+                $("#divSecretaries").html(usersHtml);
+
+                document.querySelectorAll(".employee-item").forEach((item) => {
+                    item.addEventListener("click", function () {
+                        document.querySelectorAll(".employee-item").forEach(e => e.classList.remove("active"));
+                        this.classList.add("active");
+                        var userId = this.getAttribute("data-id");
+                        GetPermissions(userId);
+                    });
+                });
+            });
+        }
         function SavePermission() {
-
             var Pages = document.getElementsByName("PagesPermission");
-            var pageIds = "";
 
-            for (var i = 0; i < Pages.length; i++) {
-                if (Pages[i].checked) {
-                    pageIds += Pages[i].id + ",";
-                }
-            }
-            $.ajax({
-                type: "POST",
-                url: "Permission.aspx/SavePermission",
-                data: JSON.stringify({
-                    personnelId: personnelId,
-                    pageIds
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        toastr.success("ثبت دسترسی ها با موفقیت انجام شد");
-                    }
-                },
-                error: function () {
-                    toastr.error("خطا", "خطا");
+            const pageIds = new Set(
+                Array.from(Pages)
+                    .filter(page => page.checked)
+                    .map(page => page.id)
+            );
+            console.log(pageIds);
+            let createPermissionCommand =
+            {
+                pageIds: Array.from(pageIds),
+                personId: personnelId
+            };
+            ajaxPost("/Permission/CreatePermission", createPermissionCommand, function (res) {
+                if (res.success) {
+                    toastr.success("ثبت دسترسی ها با موفقیت انجام شد");
+                } else {
+                    ShowError(res.message);
                 }
             });
         }
         function GetPermissions(id) {
             personnelId = id;
-            $.ajax({
-                type: "POST",
-                url: "Permission.aspx/GetPermissions",
-                data: JSON.stringify({
-                    id: id
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        document.getElementById("pagess").innerHTML = msg.d.Pages;
-                    }
-                },
-                error: function () {
-                    toastr.error("خطا", "خطا");
-                }
+            let query ='?userId=' + personnelId;
+            ajaxGet("/Permission/GetPermissions" + query, function (permissions) {
+                const permissionsHtml = permissions.map(permission =>
+                    `
+                     <div class='form-check custom-checkbox'>
+                        <input class='form-check-input access-checkbox' name='PagesPermission' type='checkbox' id='${permission.id}' ${(permission.hasPermission ? "checked" : "")}>
+                        <label class='form-check-label' for='dashboard'>${permission.title}</label>
+                     </div>
+                    `
+                ).join('');
+                $("#pagess").html(permissionsHtml);
             });
         };
-        document.querySelectorAll(".employee-item").forEach((item) => {
-            item.addEventListener("click", function () {
-                document.querySelectorAll(".employee-item").forEach(e => e.classList.remove("active"));
-                this.classList.add("active");
-                var userId = this.getAttribute("data-id");
-                GetPermissions(userId);
-            });
+        $(document).ready(function () {
+            showSecretariesAsync();
         });
     </script>
 </asp:Content>

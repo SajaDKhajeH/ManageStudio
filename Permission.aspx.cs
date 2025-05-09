@@ -10,18 +10,6 @@ public partial class Permission : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
     }
-
-    public static string GetPersonnels()
-    {
-        string htmls = "";
-        var dataType = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Secretary).ToList();
-        dataType = dataType ?? new List<Bank.usp_Personnel_By_RoleResult>();
-        foreach (var item in dataType)
-        {
-            htmls += @"<li class='list-group-item employee-item' data-id='" + item.P_Id + @"'>" + item.FullName + @"</li>";
-        }
-        return htmls;
-    }
     [WebMethod]
     public static dynamic GetPermissions(long id)
     {

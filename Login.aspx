@@ -137,6 +137,8 @@
 </body>
 </html>
 <script type="text/javascript">
+    let baseUrl = 'https://localhost:44393';
+
     //====دریافت مجدد کپچا====\\
     function RegenerateCaptchaImage() {
         $.ajax({
@@ -208,28 +210,79 @@
         });
     });
     function LoginToPortal() {
-        var username = $("#username").val();
-        var password = $("#password").val();
-        var phoneNumber = $("#phone").val();
         var staffSelect = $("#ra_staff").prop("checked");
+        if (staffSelect) {
+            var username = $("#username").val();
+            var password = $("#password").val();
+            loginStaffAsync(username, password);
+        } else {
+            var phoneNumber = $("#phone").val();
+            loginFamilyAsync(phoneNumber);
+        }
+    };
+    function loginFamilyAsync(phoneNumber) {
+        alert(phoneNumber);
+        //CustomerOrders.aspx
+    }
+    function loginStaffAsync(username, password) {
+        let data =
+        {
+            username: username,
+            password: password
+        };
         $.ajax({
             type: "POST",
-            url: "Api/Login/Login",
-            data: "{UserName:'" + username + "',Password:'" + password + "',Mobile:'" + phoneNumber + "',LoginPersonnel:" + staffSelect + "}",
+            url: baseUrl + "/Authentication/Login",
+            data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (res) {
-                if (res.Success) {
-                    location.href = res.Message;
+                if (res.success) {
+                    let role = res.data.roles[0];
+                    saveLocalStorage('login', JSON.stringify({
+                        token: res.data.token,
+                        role: role
+                    }), 90000);
+                    let redirectPage = '';
+                    if (role == 'Admin') {
+                        redirectPage = 'Dashboard.aspx';
+                    } else if (role == 'Secretary') {
+                        //GoToPage = AdakDB.Db.usp_Page_Select(LoginId).ToList().Where(x => (x.P_ShowOnMenu ?? false) && x.HasPermission == 1).ToList().OrderBy(b => b.P_Sort).FirstOrDefault().P_Url;
+                    } else if (role == 'Photographer') {
+                        redirectPage = 'AddFamilyFromHospital.aspx';
+                    } else if (role == 'DesignSupervisor' || role == 'Designer') {
+                        redirectPage = 'RequestStatus.aspx';
+                    }
+                    location.href = redirectPage;
                 } else {
-                    alert(res.Message);
+                    alert(res.message);
                 }
             },
             error: function () {
                 alert("error");
             }
         });
-    };
+    }
+    let cachePreKey = '';
+    function saveLocalStorage(key, data, expireAfterSec) {
+    <%--    if (cachePreKey == '') {
+            cachePreKey = '<%Response.Write(DefaultId.Causer);%>';
+         }--%>
+         const expireDate = new Date();
+         if (!expireAfterSec)
+             expireAfterSec = 90
+         expireDate.setSeconds(expireDate.getSeconds() + expireAfterSec);
+         var lsData = {
+             data: data,
+             expire: expireDate.toUTCString()
+        };
+        if (cachePreKey != '') {
+            key = cachePreKey + '_' + key;
+        }
+         localStorage.setItem(key, JSON.stringify(lsData));
+    }
+
+
     $(document).ready(function () {
         $("#ra_staff").prop("checked", true);
         $("#username").val("");
