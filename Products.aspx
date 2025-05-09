@@ -99,9 +99,9 @@
                                 <div class="col-md-4">
                                     <input type="text" id="filterInput" class="form-control" placeholder="جستجو...">
                                 </div>
-                                 <div class="col-md-2">
-                                   <select id="filter_productgroup">
-                                </select>
+                                <div class="col-md-2">
+                                    <select id="filter_productgroup">
+                                    </select>
                                 </div>
                                 <div class="col-md-2">
                                     <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
@@ -168,7 +168,6 @@
                             <div class="col-md-6 fv-row">
                                 <label>گروه کالا</label>
                                 <select id="p_productgroup" onchange="GetLastPariority()">
-                                    
                                 </select>
                             </div>
                             <div class="col-md-6 fv-row">
@@ -216,16 +215,16 @@
                         </div>
                         <div class="row g-9 mb-7">
                             <div class="col-md-12 fv-row">
-                                 <label>توضیحات</label>
- <textarea style="margin: 3px" placeholder="توضیحات" class="form-control" id="p_desc"></textarea>
+                                <label>توضیحات</label>
+                                <textarea style="margin: 3px" placeholder="توضیحات" class="form-control" id="p_desc"></textarea>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 <!-- دکمه‌های پایین مدال -->
                 <div class="modal-footer flex-center">
-                    <button id="btn_AddEditProduct" onclick="AddEditProduct()">ثبت</button>
+                    <button id="btn_AddEditProduct" onclick="AddEditProduct()">ذخیره</button>
                     <button class="btn btn-light me-3" onclick="closeModalProduct()">بستن</button>
                 </div>
             </div>
@@ -235,10 +234,10 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
     <script type="text/javascript">
-        var productId = 0;
+        var productId = '';
         // باز کردن مدال
         function openModalProduct() {
-            productId = 0;
+            productId = '';
             $("#header_modalSetProduct").text("ثبت کالا ");
             btnAddEdit_ChangeDisable("btn_AddEditProduct", false);
             document.getElementById("addEditProducts").style.display = "flex";
@@ -251,11 +250,11 @@
             GetLastPariority();
             $("#p_checkInventory").prop("checked", false);
             $("#p_active").prop("checked", true);
-            
+
         };
         function closeModalProduct() {
             $('#addEditProducts').modal('hide');
-            productId = 0;
+            productId = '';
         };
         function GetInfoForEditProduct(id) {
             productId = id;
@@ -364,7 +363,7 @@
                     <td>${row.title}</td>
                     <td>${row.buyPrice}</td>
                     <td>${row.salePrice}</td>
-                    <td>${(row.checkInventory ? "بله" : "خیر") }</td>
+                    <td>${(row.checkInventory ? "بله" : "خیر")}</td>
                     <td>${row.inventory}</td>
                     <td>${status}</td>
                     <td>${actions}</td>
@@ -422,6 +421,7 @@
 
             let createProductCommand =
             {
+                id: productId,
                 groupId: gproduct,
                 title: Title,
                 buyPrice: parseFloat(buyPrice),
@@ -432,8 +432,13 @@
                 desc: desc,
                 inventoryCount: parseInt(Inventory)
             };
-
-            ajaxPost("/Product/Create", createProductCommand, function (res) {
+            let method = 'POST';
+            let route = '/Product/Create';
+            if (productId != '') {
+                method = 'PUT';
+                route = '/Product/Update';
+            }
+            ajaxAuthCall(method, route, createProductCommand, function (res) {
                 if (!res.success) {//خطا داریم
                     ShowError(res.message);
                 }
