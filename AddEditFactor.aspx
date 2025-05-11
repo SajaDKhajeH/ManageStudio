@@ -81,7 +81,6 @@
                             <br />
                             <label>انتخاب خانواده</label>
                             <select onchange="GetPhotographerByFamily()" id="factor_Family" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" style="margin: 3px" data-placeholder="انتخاب مشتری">
-                                <%Response.Write(PublicMethod.GetActiveCustomer()); %>
                             </select>
                             <br />
                             <div class="row">
@@ -186,10 +185,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="summary row">
-                                                    <div class="col-lg-4">مجموع فاکتور: <span id="totalAmount">0</span> <%Response.Write(Settings.TextAfterPrice); %></div>
-                                                    <div class="col-lg-4">تخفیف: <span id="discountAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                                                    <div class="col-lg-4">مجموع فاکتور: <span id="totalAmount">0</span> </div>
+                                                    <div class="col-lg-4">تخفیف: <span id="discountAmount">0</span> </div>
                                                     <%--<div class="col-lg-3">مبلغ پرداختی: <span id="paidAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>--%>
-                                                    <div class="col-lg-4">قابل پرداخت: <span id="payableAmount">0</span>  <%Response.Write(Settings.TextAfterPrice); %></div>
+                                                    <div class="col-lg-4">قابل پرداخت: <span id="payableAmount">0</span>  </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,6 +215,17 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
+    <script>
+        function fillControls() {
+            $('#totalAmount').parent().append(getCurrency());
+            $('#discountAmount').parent().append(getCurrency());
+            $('#payableAmount').parent().append(getCurrency());
+        }
+        $(document).ready(function () {
+            fillControls();
+            fillFamiliesAsync();
+        });
+    </script>
     <script type="text/javascript">
         var getLogs = false;
         var btn_SetFactor = "btn_SetFactor";
@@ -559,6 +569,22 @@
                 }
             });
         };
+    </script>
+
+
+
+
+    <script>
+
+        function fillFamiliesAsync() {
+            ajaxGet('/Family/GetAllFamilies', function (families) {
+                const hospitalOptions = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#factor_Family').html(hospitalOptions);
+            });
+        }
+
     </script>
 </asp:Content>
 

@@ -118,8 +118,8 @@
                                     <tr>
                                         <th data-priority="1">گروه کالا</th>
                                         <th class="min-w-150px">عنوان</th>
-                                        <th class="min-w-150px">قیمت خرید</th>
-                                        <th class="min-w-150px">قیمت فروش</th>
+                                        <th id="buyPriceLabel" class="min-w-150px">قیمت خرید</th>
+                                        <th id="sellPriceLabel" class="min-w-150px">قیمت فروش</th>
                                         <th class="min-w-100px">موجودی چک شود؟</th>
                                         <th class="min-w-100px">موجودی</th>
                                         <th class="min-w-70px">وضعیت</th>
@@ -300,6 +300,8 @@
             });
         };
         $(document).ready(function () {
+            $("#buyPriceLabel").text(`قیمت خرید(${currency})`);
+            $("#sellPriceLabel").text(`قیمت فروش(${currency})`);
             $("#master_PageTitle").text("کالاها");
             $("#s_pageSize").val("5");
             fillProductGroupsAsync();
@@ -439,13 +441,13 @@
                 route = '/Product/Update';
             }
             ajaxAuthCall(method, route, createProductCommand, function (res) {
-                if (!res.success) {//خطا داریم
-                    ShowError(res.message);
-                }
-                else {
+                if (res.success) {
                     toastr.success('اطلاعات ذخیره شد', "موفق");
                     closeModalProduct();
                     loadTableDataProduct();
+                }
+                else {
+                    ShowError(res.message);
                 }
             }, function () {
                 alert("error");

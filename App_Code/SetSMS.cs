@@ -14,7 +14,7 @@ public class SetSMS
         {
             var factorInfo = db.usp_Factor_Select_By_Id(FactorId).SingleOrDefault();
             var familyInfo = db.usp_Family_Select_By_Id(factorInfo.F_FamilyId).SingleOrDefault();
-            string TextAfterPrice = Settings.TextAfterPrice;
+            string TextAfterPrice = "Settings.TextAfterPrice";
             string FactorLink = "https://" + Settings.Website_Url + "/" + factorInfo.UniqueKey + ".jpg";
             var sms = db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_AfterSetFactor).FirstOrDefault();
 

@@ -174,7 +174,7 @@
                         </table>
                         <div class="d-flex justify-content-between align-items-center">
                             <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
-                            <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                            <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                             <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                             <span>
                                 <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataFacotrs()">
@@ -192,29 +192,29 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
     <script>
-        let currentPage = 1;
+        let pageIndex = 0;
         let pageSize = 5;
         
         
         // صفحه بعد
         $("#nextPageBtn").click(function () {
-            currentPage++;
+            pageIndex++;
             loadTableDataFacotrs();
         });
         
         // صفحه قبل
         $("#prevPageBtn").click(function () {
-            currentPage--;
+            pageIndex--;
             loadTableDataFacotrs();
         });
 
         // اعمال فیلتر
         $("#filterBtn").click(function () {
-            currentPage = 1;
+            pageIndex = 0;
             loadTableDataFacotrs();
         });
         
-        function loadTableDataFacotrs() {
+        function loadTableDataFacotrsOld() {
             var filter_From_Date = $("#filter_From_Date").val();
             var filter_To_Date = $("#filter_To_Date").val();
             var filter_Family = $("#filter_Family").val();
@@ -230,7 +230,7 @@
                 type: "POST",
                 url: "ManageInvoice.aspx/ForGrid",
                 data: JSON.stringify({
-                    page: currentPage, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
+                    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
                     causer: filter_Causer, status: filter_factorStatus, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
                     designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
                 }),
@@ -262,11 +262,11 @@
                     });
 
                     // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
+                    $("#pageIndex").text(pageIndex);
                     $("#countAllTable").text(totalRecords);
                     // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
+                    $("#prevPageBtn").prop("disabled", pageIndex === 0);
+                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
                 },
                 error: function () {
                     alert("خطا در دریافت داده‌ها");
@@ -351,5 +351,65 @@
                 }
             });
         });
+    </script>
+
+
+
+    <script>
+        function loadTableDataFacotrs() {
+            var filter_From_Date = $("#filter_From_Date").val();
+            var filter_To_Date = $("#filter_To_Date").val();
+            var filter_Family = $("#filter_Family").val();
+            var filter_Causer = $("#filter_Causer").val();
+            var filter_factorStatus = $("#filter_factorStatus").val();
+            var filter_TypePhotographi = $("#filter_TypePhotographi").val();
+            var filter_Photographer = $("#filter_Photographer").val();
+            var filter_Designer = $("#filter_Designer").val();
+            var filter_ForceDesign = $("#filter_ForceDesign").prop("checked");
+            var searchText = $("#filterInput").val();
+            pageSize = parseInt($("#s_pageSize").val());
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}`;
+            query += `&fromDate=${filter_From_Date}&toDate=${filter_To_Date}`;
+            //data: JSON.stringify({
+            //    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
+            //    causer: filter_Causer, status: filter_factorStatus, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
+            //    designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
+            //}),
+            ajaxGet('/Invoice/GetInvoices' + query, function (response) {
+                const data = response.d.Data.data;
+                var totalRecords = response.d.Data.recordsTotal;
+                const tbody = $("#dt_Invoice");
+
+                tbody.empty(); // پاک کردن داده‌های قدیمی
+
+                // اضافه کردن داده‌های جدید
+                data.forEach(row => {
+                    tbody.append(`
+                <tr>
+                    <td>${row.FactorNumber}</td>
+                    <td>${row.FamilyTitle}</td>
+                    <td>${row.FactorStatus}</td>
+                    <td>${row.Photographer}</td>
+                    <td>${row.Designer}</td>
+                    <td>${row.FactorDate}</td>
+                    <td>${row.SumFactor}</td>
+                    <td>${row.SumDiscount}</td>
+                    <td>${row.FinanStatus}</td>
+                    <td>${row.Actions}</td>
+                </tr>
+            `);
+                });
+
+                // بروزرسانی صفحه فعلی
+                $("#pageIndex").text(pageIndex);
+                $("#countAllTable").text(totalRecords);
+                // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
+                $("#prevPageBtn").prop("disabled", pageIndex === 1);
+                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+            },
+                 function () {
+                    alert("خطا در دریافت داده‌ها");
+                });
+        }
     </script>
 </asp:Content>

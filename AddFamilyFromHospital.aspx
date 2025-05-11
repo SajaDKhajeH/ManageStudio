@@ -88,6 +88,7 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
+    <script src="assets/js/hospital/forcmb.js"></script>
     <script>
         const childrenTableBody_H = document.getElementById('childrenTableBody_Hospital');
         const addRowButtonChild_H = document.getElementById('addRowButtonChild_Hospital');
@@ -254,25 +255,15 @@
                 alert("خطا هنگام ثبت اطلاعات");
             });
         });
+        let hospitalsHtml = '';
         $(document).ready(function () {
-            fillInfoAsync();
+            getHospitalsForCMBAsync(false, (html) => {
+                hospitalsHtml = html;
+            });
             $("#master_PageTitle").text("ثبت خانواده در بیمارستان");
             addFamily_FromHospital_Setting(true);
             ResetFeildsFamily_Hospital();
         });
-        function fillInfoAsync() {
-            fillChildHospitalAsync();
-        }
-        let hospitalsHtml = '';
-        function fillChildHospitalAsync() {
-            let defaultOption = '<option>انتخاب بیمارستان</option>';
-            ajaxGet('/BasicData/Hospitals', function (hospitals) {
-                const hospitalOptions = hospitals.map(hospital =>
-                    `<option value="${hospital.id}">${hospital.title}</option>`
-                ).join('');
-                hospitalsHtml = defaultOption + hospitalOptions;
-            });
-        }
     </script>
 </asp:Content>
 

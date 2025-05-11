@@ -155,7 +155,7 @@
                         </table>
                         <div class="d-flex justify-content-between align-items-center">
                             <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
-                            <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                            <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                             <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                             <span>
                                 <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataFamily()">
@@ -177,29 +177,20 @@
         function FamilyDelete(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
-                $.ajax({
-                    type: "POST",
-                    url: "Family.aspx/FamilyDelete",
-                    data: JSON.stringify({
-                        id: id
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        var res = msg.d;
-                        if (msg.d.Result == false) {//خطا داریم
-                            ShowError(msg.d.Message);
-                        }
-                        else {
-                            toastr.success(msg.d.Message, "موفق");
-                            loadTableDataFamily();
-                            GetCustomer_ForCombo();
-                        }
-                    },
-                    error: function () {
-                        toastr.error("خطا", "خطا");
+                let query = `?id=${id}`;
+                ajaxDelete('/Family/Delete' + query, function (res) {
+                    if (res.success) {
+                        toastr.success(msg.d.Message, "موفق");
+                        loadTableDataFamily();
+                        GetCustomer_ForCombo();
                     }
-                });
+                    else {
+                        ShowError(res.message);
+                    }
+                },
+                    function () {
+                        alert("error");
+                    });
             }
         };
 
@@ -229,25 +220,25 @@
             });
             // صفحه بعد
             $("#nextPageBtn").click(function () {
-                currentPage++;
+                pageIndex++;
                 loadTableDataFamily();
             });
 
             // صفحه قبل
             $("#prevPageBtn").click(function () {
-                currentPage--;
+                pageIndex--;
                 loadTableDataFamily();
             });
 
             // اعمال فیلتر
             $("#filterBtn").click(function () {
-                currentPage = 1;
+                pageIndex = 0;
                 loadTableDataFamily();
             });
         });
     </script>
     <script>
-        let currentPage = 1;
+        let pageIndex = 0;
         let pageSize = 5;
 
         function loadTableDataFamily() {
@@ -259,49 +250,59 @@
             var Causer = $("#filter_Causer").val();
             var Hospital = $("#filter_Hospital").val();
             var InviteType = $("#filter_InviteType").val();
-            
 
-            $.ajax({
-                type: "POST",
-                url: "Family.aspx/ForGrid",
-                data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: filter, fromDate: filter_From_Date, todate: filter_To_Date, Only_Archive: Only_Archive, CauserId: Causer, HospitalId: Hospital, InviteType }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    const totalRecords = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_Family");
 
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
+            //data: JSON.stringify({ page: pageIndex, perPage: pageSize, searchText: filter, fromDate: filter_From_Date, todate: filter_To_Date, Only_Archive: Only_Archive, CauserId: Causer, HospitalId: Hospital, InviteType }),
 
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}`;
+
+            ajaxGet('/Family/GetFamilies' + query, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
+                const tbody = $("#dt_Family");
+
+                tbody.empty(); // پاک کردن داده‌های قدیمی
+
+                // اضافه کردن داده‌های جدید
+                data.forEach(row => {
+                    let actions =
+                        `
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#modal_addedit_family' onclick='GetInfoForEditFamily("${row.id}")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-delete' onclick='FamilyDelete("${row.id}")' title='حذف'>🗑</button>
+                </div>
+                        `;
+                    let status = '';
+                    if (row.active) {
+                        status = `<div class='badge badge-light-success'>فعال</div>`;
+                    } else {
+                        status = `<div class='badge badge-light-danger'>غیرفعال</div>`;
+                    }
+                    tbody.append(`
                         <tr>
-                            <td>${row.Title}</td>
-                            <td>${row.MotherFullName}</td>
-                            <td>${row.FatherFullName}</td>
-                            <td>${row.MotherMobile}</td>
-                            <td>${row.FatherMobile}</td>
-                            <td>${row.CauserName}</td>
-                            <td>${row.Date_A_Time}</td>
-                            <td>${row.Status}</td>
-                            <td>${row.Actions}</td>
+                            <td>${row.title}</td>
+                            <td>${row.motherFullName}</td>
+                            <td>${row.fatherFullName}</td>
+                            <td>${row.motherMobile}</td>
+                            <td>${row.fatherMobile}</td>
+                            <td>${row.creationBy}</td>
+                            <td>${row.creationTime}</td>
+                            <td>${status}</td>
+                            <td>${actions}</td>
                         </tr>
                     `);
-                    });
+                });
 
-                    // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
-                    $("#countAllTable").text(totalRecords);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
-                },
-                error: function () {
+                // بروزرسانی صفحه فعلی
+                $("#pageIndex").text(pageIndex);
+                $("#countAllTable").text(totalRecords);
+                // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
+                $("#prevPageBtn").prop("disabled", pageIndex === 0);
+                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+            },
+                function () {
                     toastr.error("خطا در دریافت داده‌ها", "خطا");
-                }
-            });
+                });
         }
     </script>
 </asp:Content>
