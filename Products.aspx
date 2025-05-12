@@ -458,12 +458,12 @@
     <script>
         function fillProductGroupsAsync() {
             let defaultOption = '<option value="0">انتخاب گروه کالا</option>';
-            ajaxGet('/ProductGroup/GetGroups', function (hospitals) {
-                const hospitalOptions = hospitals.map(hospital =>
-                    `<option value="${hospital.id}">${hospital.title}</option>`
+            ajaxGet('/ProductGroup/GetGroups', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
                 ).join('');
-                $("#filter_productgroup").html(defaultOption + hospitalOptions);
-                $("#p_productgroup").html(hospitalOptions);
+                $("#filter_productgroup").html(defaultOption + options);
+                $("#p_productgroup").html(options);
             });
         }
     </script>

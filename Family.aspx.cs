@@ -224,59 +224,59 @@ namespace AdakStudio
                 return new { Result = false, Message = ex.Message };
             }
         }
-        [WebMethod]
-        public static dynamic GetFamilyInfo(string id)
-        {
-            id = id.ToDecodeNumber();
-            if (id.IsNullOrEmpty() || id == "0")
-            {
-                return new
-                {
-                    Result = false,
-                    Message = "شناسه خانواده مشخص نیست"
-                };
-            }
-            var db = AdakDB.Db;
-            var FamilyInfo = db.usp_Family_Select_By_Id(id.ToLong()).SingleOrDefault();
-            var Familychilds = db.usp_FamilyChild_By_FamilyId(id.ToLong()).ToList();
-            Familychilds = Familychilds ?? new List<usp_FamilyChild_By_FamilyIdResult>();
-            string childsInnerHtml = "";
-            foreach (var child in Familychilds)
-            {
-                childsInnerHtml += @"<tr>
-                                <td>
-                                    <input name='childId' value=""" + child.FC_Id.ToCodeNumber() + @""" type='text' class='form - control' hidden>
-                                    <input name = 'childName' value=""" + child.FC_Name + @""" type='text' class='form-control' placeholder='نام فرزند' required>
-                                </td>
-                                <td>
-                                    <label class='form-check form-switch form-check-custom form-check-solid'>
-                                        <span class='form-check-label fw-bold text-muted' style ='margin: 5px;' for='kt_modal_add_customer_billing'>دختر</span>
-                                        <input class='form-check-input' name='childSex' style ='margin: 5px;' type='checkbox' " + (child.FC_Sex ? "checked" : "") + @" />
-                                        <span class='form-check-label fw-bold text-muted' style ='margin: 5px;' for='kt_modal_add_customer_billing'>پسر</span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <input id='fDate_" + child.FC_Id + @"' name='childBirthDate' type='text' class='form-control datepickerBirthDate' placeholder='تاریخ تولد'>
-                                </td>
-                                <td>
-                                    <select name='childHospital'>
-                                        " + PublicMethod.GetHospitals(child.FC_HospitalId ?? 0) + @"
-                                    </select>
-                                </td>
-                                <td>
-                                    <button class='btn btn-danger btn-remove'>حذف</button>
-                                </td></tr>";
-            }
+        //[WebMethod]
+        //public static dynamic GetFamilyInfo(string id)
+        //{
+        //    id = id.ToDecodeNumber();
+        //    if (id.IsNullOrEmpty() || id == "0")
+        //    {
+        //        return new
+        //        {
+        //            Result = false,
+        //            Message = "شناسه خانواده مشخص نیست"
+        //        };
+        //    }
+        //    var db = AdakDB.Db;
+        //    var FamilyInfo = db.usp_Family_Select_By_Id(id.ToLong()).SingleOrDefault();
+        //    var Familychilds = db.usp_FamilyChild_By_FamilyId(id.ToLong()).ToList();
+        //    Familychilds = Familychilds ?? new List<usp_FamilyChild_By_FamilyIdResult>();
+        //    string childsInnerHtml = "";
+        //    foreach (var child in Familychilds)
+        //    {
+        //        childsInnerHtml += @"<tr>
+        //                        <td>
+        //                            <input name='childId' value=""" + child.FC_Id.ToCodeNumber() + @""" type='text' class='form - control' hidden>
+        //                            <input name = 'childName' value=""" + child.FC_Name + @""" type='text' class='form-control' placeholder='نام فرزند' required>
+        //                        </td>
+        //                        <td>
+        //                            <label class='form-check form-switch form-check-custom form-check-solid'>
+        //                                <span class='form-check-label fw-bold text-muted' style ='margin: 5px;' for='kt_modal_add_customer_billing'>دختر</span>
+        //                                <input class='form-check-input' name='childSex' style ='margin: 5px;' type='checkbox' " + (child.FC_Sex ? "checked" : "") + @" />
+        //                                <span class='form-check-label fw-bold text-muted' style ='margin: 5px;' for='kt_modal_add_customer_billing'>پسر</span>
+        //                            </label>
+        //                        </td>
+        //                        <td>
+        //                            <input id='fDate_" + child.FC_Id + @"' name='childBirthDate' type='text' class='form-control datepickerBirthDate' placeholder='تاریخ تولد'>
+        //                        </td>
+        //                        <td>
+        //                            <select name='childHospital'>
+        //                                " + PublicMethod.GetHospitals(child.FC_HospitalId ?? 0) + @"
+        //                            </select>
+        //                        </td>
+        //                        <td>
+        //                            <button class='btn btn-danger btn-remove'>حذف</button>
+        //                        </td></tr>";
+        //    }
 
-            return new
-            {
-                Result = true,
-                FamilyInfo = FamilyInfo,
-                Childs = childsInnerHtml,
-                Familychilds,
-                InviteTypeIdCoded = FamilyInfo.F_InviteTypeId.ToCodeNumber()
-            };
-        }
+        //    return new
+        //    {
+        //        Result = true,
+        //        FamilyInfo = FamilyInfo,
+        //        Childs = childsInnerHtml,
+        //        Familychilds,
+        //        InviteTypeIdCoded = FamilyInfo.F_InviteTypeId.ToCodeNumber()
+        //    };
+        //}
 
         [WebMethod]
         public static dynamic FamilyDelete(string id)

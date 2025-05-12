@@ -129,7 +129,6 @@
                             </div>
                             <div class="col-md-3">
                                 <select id="filter_Hospital">
-                                    <%Response.Write(PublicMethod.GetHospitals()); %>
                                 </select>
                             </div>
                         </div>
@@ -172,6 +171,7 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
+    <script src="assets/js/hospital/forcmb.js"></script>
     <script type="text/javascript">
 
         function FamilyDelete(id) {
@@ -182,7 +182,7 @@
                     if (res.success) {
                         toastr.success(msg.d.Message, "موفق");
                         loadTableDataFamily();
-                        GetCustomer_ForCombo();
+                        //GetCustomer_ForCombo();//TODO::????
                     }
                     else {
                         ShowError(res.message);
@@ -197,6 +197,7 @@
         $(document).ready(function () {
             $("#master_PageTitle").text("خانواده ها");
             $("#s_pageSize").val("5");
+            fillHospitalsCMBAsync('filter_Hospital', false);
             loadTableDataFamily();
             $('#filter_From_Date').persianDatepicker({
                 format: 'YYYY/MM/DD',

@@ -2,14 +2,16 @@
     const defaultOption = '<option value="0">انتخاب بیمارستان</option>';
     ajaxGet('/BasicData/Hospitals', function (hospitals) {
         let hospitalOptions = hospitals.map(hospital =>
-            `<option value="${hospital.id}">${hospital.title}</option>`
+            `<option value='${hospital.id}'>${hospital.title}</option>`
         ).join('');
         if (!required)
             hospitalOptions = defaultOption + hospitalOptions;
-        callBack(hospitalOptions);
+        if (callBack)
+            callBack(hospitalOptions);
     });
 }
-function fillHospitalsCMBAsync(cmbId, required, callBack) {
-    const html = getHospitalsForCMBAsync(required, callBack);
-    $('#' + cmbId).html(html);
+function fillHospitalsCMBAsync(cmbId, required) {
+   getHospitalsForCMBAsync(required, function (html) {
+       $('#' + cmbId).html(html);
+    });
 }

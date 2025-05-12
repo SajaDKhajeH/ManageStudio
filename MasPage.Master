@@ -1581,37 +1581,37 @@
         });
         function GetInfoForEditFamily(id) {
             familyId = id;
-            $.ajax({
-                type: "POST",
-                url: "Family.aspx/GetFamilyInfo",
-                data: JSON.stringify({
-                    id: familyId
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
+            let query = '?id=' + id;
+            ajaxGet('/Family/GetFamily' + query, function (res) {
+                if (res.success) {
+                    var data = res.data;
+                    $("#m_name").attr('m_name_id', data.mother.id);
+                    $("#m_name").val(data.mother.firstName);
+                    $("#m_lastname").val(data.mother.lastName);
+                    $("#m_mobile").val(data.mother.mobile);
+                    $("#m_BirthDate").val(data.mother.birthDate);
+
+                    $("#f_name").attr('f_name_id', data.father.id);
+                    $("#f_name").val(data.father.firstName);
+                    $("#f_lastname").val(data.father.lastName);
+                    $("#f_mobile").val(data.father.mobile);
+                    $("#f_BirthDate").val(data.father.birthDate);
+
+                    $("#f_phone").val(data.tel);
+                    $("#f_title").val(data.title);
+                    $("#f_address").val(data.address);
+                    $("#f_archive").prop("checked", data.active);
+                    $("#f_desc").val(data.desc);
+                    $("#f_MarriageDate").val(data.marriageDate);
+                    if (data.discoveryMethodId) {
+                        $("#f_InviteType").val(data.discoveryMethodId);
+                    } else {
+                        $("#f_InviteType").val('0');
                     }
-                    else {
-                        $("#m_name").val(res.FamilyInfo.F_MotherName);
-                        $("#m_lastname").val(res.FamilyInfo.F_MotherLName);
-                        $("#f_name").val(res.FamilyInfo.F_FatherName);
-                        $("#f_lastname").val(res.FamilyInfo.F_FatherLName);
-                        $("#m_mobile").val(res.FamilyInfo.F_MotherMobile);
-                        $("#f_mobile").val(res.FamilyInfo.F_FatherMobile);
-                        $("#f_phone").val(res.FamilyInfo.F_Phone);
-                        $("#f_title").val(res.FamilyInfo.F_Title);
-                        $("#f_address").val(res.FamilyInfo.F_HomeAddress);
-                        $("#f_archive").prop("checked", !res.FamilyInfo.F_Archive);
-                        $("#f_desc").val(res.FamilyInfo.F_Desc);
-                        $("#f_BirthDate").val(res.FamilyInfo.F_FatherBirthDate);
-                        $("#m_BirthDate").val(res.FamilyInfo.F_MotherBirthDate);
-                        $("#f_MarriageDate").val(res.FamilyInfo.F_MarriageDate);
-                        $("#f_InviteType").val(res.InviteTypeIdCoded);
-                        //بچه ها
-                        childrenTableBody.innerHTML = res.Childs;
+                    getHospitalsForCMBAsync(false, function (htmlCmb) {
+
+                        childrenTableBody.innerHTML = getChildrenHtml(data.children, htmlCmb);
+
                         $('.datepickerBirthDate').persianDatepicker({
                             format: 'YYYY/MM/DD',
                             initialValue: true,
@@ -1622,17 +1622,50 @@
                                 }
                             }
                         });
-                        //برای تاریخ ها باید بعد از ایجاد مقدار دهی شوند
-                        for (var i = 0; i < res.Familychilds.length; i++) {
-                            $("#fDate_" + res.Familychilds[i].FC_Id).val(res.Familychilds[i].FC_BirthDate);
+                        for (var i = 0; i < data.children.length; i++) {
+                            $("#fDate_" + data.children[i].id).val(data.children[i].birthDate);
                         }
-                    }
-                },
-                error: function () {
-                    alert("error");
+                    });
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function (xhr) {
+                alert("error");
             });
-        };
+        }
+        function getChildrenHtml(children, htmlCmb) {
+            let html = '';
+            html = children.map(child =>
+                `
+             <tr>
+                 <td>
+                     <input name='childId' value='${child.id}' type='text' class='form - control' hidden>
+                     <input name = 'childName' value='${child.name}' type='text' class='form-control' placeholder='نام فرزند' required>
+                 </td>
+                 <td>
+                     <label class='form-check form-switch form-check-custom form-check-solid'>
+                         <span class='form-check-label fw-bold text-muted' style ='margin: 5px;' for='kt_modal_add_customer_billing'>دختر</span>
+                         <input class='form-check-input' name='childSex' style ='margin: 5px;' type='checkbox' ${(child.gender == 1 ? "checked" : "")} />
+                         <span class='form-check-label fw-bold text-muted' style ='margin: 5px;' for='kt_modal_add_customer_billing'>پسر</span>
+                     </label>
+                 </td>
+                 <td>
+                     <input id='fDate_${child.id}' name='childBirthDate' type='text' class='form-control datepickerBirthDate' placeholder='تاریخ تولد'>
+                 </td>
+                 <td>
+                     <select name='childHospital'>
+                     ${(child.hospitalId ? (htmlCmb.replace("'" + child.hospitalId + "'", "'" + child.hospitalId + "' selected ")) : htmlCmb)}
+                     </select>
+                 </td>
+                 <td>
+                     <button class='btn btn-danger btn-remove'>حذف</button>
+                 </td>
+             </tr>
+                `
+            ).join('');
+            return html;
+        }
         function HideBtnAdd_Family(id) {
             document.getElementById("div_btnAddFamily").style.display = "none";
             GetInfoForEditFamily(id);
@@ -1663,8 +1696,10 @@
                 childBirthDateArray.push(childBirthDates[i].value);
                 childIdsArray.push(childIds[i].value);
             }
+            var m_id = $("#m_name").attr('m_name_id');
             var m_name = $("#m_name").val();
             var m_lastname = $("#m_lastname").val();
+            var f_id = $("#f_name").attr('f_name_id');
             var f_name = $("#f_name").val();
             var f_lastname = $("#f_lastname").val();
             var m_mobile = $("#m_mobile").val();
@@ -1681,25 +1716,17 @@
             btnAddEdit_ChangeDisable("btn_submitdataFamily", true);
             var isEdit = familyId != null && familyId.length > 1;
 
-
-            //JSON.stringify({
-            //    id: familyId, m_name: m_name, m_lastname: m_lastname,
-            //    f_name: f_name, f_lastname: f_lastname, archive: archive,
-            //    desc: desc, f_mobile: f_mobile, m_mobile: m_mobile,
-            //    phone: phone, title: title, address: address,
-            //    childNames: childNamesArray, childSexs: childSexArray, childBirthDates: childBirthDateArray, childIds: childIdsArray,
-            //    Hospitals: childHospitalArray, FromHospital: false,
-            //    MotherBirthDate: m_BirthDate, FatherBirthDate: f_BirthDate, MarriageDate: f_MarriageDate, InviteTypeId: f_InviteType
-            //})
             let createFamilyCommand =
             {
-                id: familyId,
+                id: isEdit? familyId : null,
                 title: title,
                 desc: desc,
+                MarriageDate: f_MarriageDate,
                 tel: phone,
                 address: address,
                 active: archive,
                 father: {
+                    id: f_id,
                     firstName: f_name,
                     lastName: f_lastname,
                     mobile: f_mobile,
@@ -1707,24 +1734,26 @@
                     gender: 2
                 },
                 mother: {
+                    id: isEdit? m_id : null,
                     firstName: m_name,
                     lastName: m_lastname,
                     mobile: m_mobile,
                     birthDate: m_BirthDate,
                     gender: 1
                 },
-                    children: childNamesArray.map((name, index) => ({
-                        firstName: name, 
-                        gender: childSexArray[index] ? 1 : 2, 
-                        birthDate: childBirthDateArray[index],
-                        hospitalId: childHospitalArray[index]
-                    }))
+                children:  childIdsArray.map((childId, index) => ({
+                    id: childId == '' ? null : childId,
+                    firstName: childNamesArray[index],
+                    gender: childSexArray[index] ? 1 : 2,
+                    birthDate: childBirthDateArray[index],
+                    hospitalId: childHospitalArray[index]
+                }))
             };
             let method = 'POST';
             let route = '/Family/CreateFamilyWithDetails';
             if (familyId != '') {
                 method = 'PUT';
-                route = '/Family/Update';
+                route = '/Family/UpdateFamilyWithDetails';
             }
             ajaxAuthCall(method, route, createFamilyCommand, function (res) {
                 btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
@@ -1741,7 +1770,7 @@
                 function () {
                     btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
                     alert("error-btn_submitdataFamily");
-            }
+                }
             );
         });
     </script>
@@ -1836,15 +1865,6 @@
 
             return `${persianDay} ${persianMonth}`;
         }
-        // تابع برای نمایش/پنهان کردن دکمه‌های فرزند
-        function toggleChildButtons(button) {
-            const childButtons = button.nextElementSibling; // گرفتن div مربوط به دکمه‌های فرزند
-            if (childButtons.style.display === "block") {
-                childButtons.style.display = "none"; // اگر باز بود، ببند
-            } else {
-                childButtons.style.display = "block"; // اگر بسته بود، باز کن
-            }
-        };
         function btnAddEdit_ChangeDisable(btnId, disable) {
             var btnnnn = document.getElementById(btnId);
             btnnnn.disabled = disable;

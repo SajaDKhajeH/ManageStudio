@@ -276,7 +276,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <select id="filter_Hospital">
-                                            <%Response.Write(PublicMethod.GetHospitals()); %>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -474,6 +473,7 @@
 
         $(document).ready(function () {
             $("#master_PageTitle").text("ارسال پیامک");
+            fillHospitalsCMBAsync('filter_Hospital', false);
             loadTableDataFamily();
             selectedFamily_SMS = 0;
             document.getElementById("messageText").value = "";

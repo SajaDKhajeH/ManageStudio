@@ -134,7 +134,7 @@ public class PublicMethod
     }
     public static string GetInviteType(bool allowNull = true)
     {
-        string htmls = allowNull ? "<option>انتخاب نحوه آشنایی</option>" : "";
+        string htmls = allowNull ? "<option value='0'>انتخاب نحوه آشنایی</option>" : "";
         var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_InviteType).ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
@@ -297,19 +297,6 @@ public class PublicMethod
         foreach (var item in dataType)
         {
             htmls += "<option value='" + item.D_ID.ToCodeNumber() + "'>" + item.D_Title + "</option>";
-        }
-        return htmls;
-    }
-
-    public static string GetHospitals(long selectedId = 0)
-    {
-        string htmls = "<option>انتخاب بیمارستان</option>";
-        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Hospital).ToList();
-
-        dataType = dataType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
-        foreach (var item in dataType)
-        {
-            htmls += "<option " + (item.D_ID == selectedId ? "selected='selected'" : "") + @" value='" + item.D_ID.ToCodeNumber() + "'>" + item.D_Title + "</option>";
         }
         return htmls;
     }

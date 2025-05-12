@@ -100,7 +100,7 @@
                                 <div class="col-lg-6">
                                     <label>عکاس</label>
                                     <select id="factor_Photographer">
-                                        <%Response.Write(PublicMethod.GetPhotographer(true)); %>
+                                        
                                     </select>
                                 </div>
                                 <div class="col-lg-6" style="margin-top: 3px">
@@ -141,8 +141,7 @@
                                 <div class="tab-content active" id="productsTab">
                                     <div class="row g-12">
                                         <div class="col-lg-3">
-                                            <div class="item-selection">
-                                                <%Response.Write(PublicMethod.GetProducts()); %>
+                                            <div id="divProductGroups" class="item-selection">
                                             </div>
                                         </div>
                                         <div class="col-lg-9">
@@ -215,6 +214,8 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
+    <script src="assets/js/photo-topic/forcmb.js"></script>
+    <script src="assets/js/photograprhers/forcmb.js"></script>
     <script>
         function fillControls() {
             $('#totalAmount').parent().append(getCurrency());
@@ -254,7 +255,7 @@
                 }
             });
         });
-        $(document).ready(function () {
+        function documentReady() {
             let params = new URLSearchParams(document.location.search);
             FirstLoad();
             factorId = parseInt(params.get("id")); // is the string "Jonathan"
@@ -299,6 +300,21 @@
                 this.style.height =
                     (this.scrollHeight) + 'px';
             });
+        }
+        $(document).ready(function () {
+            let dataLoaded = 0;
+            fillProductGroupsAsync();
+            fillPhotoTopicsCMBAsync('factor_TypePhotography', false, function () {
+                dataLoaded += 1;
+            });
+            fillPhotographersCMBAsync('factor_Photographer', false, function () {
+                dataLoaded += 1;
+            });
+            setTimeout(function () {
+                while (dataLoaded != 2) {
+                }
+                documentReady();
+            }, 256);
         });
         function FirstLoad() {
             const tbody = document.getElementById("itemTableBody");
@@ -585,6 +601,33 @@
             });
         }
 
+    </script>
+    <script>
+        function fillProductGroupsAsync() {
+            ajaxGet('/ProductGroup/GetGroups', function (items) {
+                const options = items.map(item =>
+                    `<button class='button' onclick='toggleChildButtons(this,"${item.id}")'>${item.title}</button>
+                    <div id='product-group-${item.id}' class='child-buttons'>
+                    </div>`
+                ).join('');
+                $("#divProductGroups").html( options);
+            });
+        }
+        function toggleChildButtons(button, groupId) {
+            let groupHtml = '';
+            for (var i = 0; i < 10; i++) {
+                //@"<button class='child-button' onclick='addItem(" + pro[i].Pro_ID + @"," + pro[i].SalePrice + @",""" + pro[i].Pro_Title + @""",""" + g.PG_Title + @""")'>" + pro[i].Pro_Title + @"</button>";
+                groupHtml += `<button class='child-button' onclick='addItem(${i},${i},"${i}","${i}")'>${i}</button>`;
+            }
+            
+            $('#product-group-' + groupId).html(groupHtml);
+            const childButtons = button.nextElementSibling; 
+            if (childButtons.style.display === "block") {
+                childButtons.style.display = "none";
+            } else {
+                childButtons.style.display = "block";
+            }
+        };
     </script>
 </asp:Content>
 
