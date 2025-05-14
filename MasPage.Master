@@ -28,7 +28,7 @@
     <link href="assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker/css/timepicker.min.css">
-
+    <link href="assets/css/progress.threedot.css" rel="stylesheet" />
     <style>
         @font-face {
             font-family: 'ISW';
@@ -1718,7 +1718,7 @@
 
             let createFamilyCommand =
             {
-                id: isEdit? familyId : null,
+                id: isEdit ? familyId : null,
                 title: title,
                 desc: desc,
                 MarriageDate: f_MarriageDate,
@@ -1734,14 +1734,14 @@
                     gender: 2
                 },
                 mother: {
-                    id: isEdit? m_id : null,
+                    id: isEdit ? m_id : null,
                     firstName: m_name,
                     lastName: m_lastname,
                     mobile: m_mobile,
                     birthDate: m_BirthDate,
                     gender: 1
                 },
-                children:  childIdsArray.map((childId, index) => ({
+                children: childIdsArray.map((childId, index) => ({
                     id: childId == '' ? null : childId,
                     firstName: childNamesArray[index],
                     gender: childSexArray[index] ? 1 : 2,
@@ -2105,6 +2105,25 @@
                 $("#menu_div").html(menusHtml);
             });
 
+        }
+    </script>
+      <div class="overlay" style="display:none" id="loader">
+    <div class="dot-progress">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+    <script>
+        function showProgress() {
+            const loader = document.getElementById("loader");
+            loader.style.display = "flex"; 
+            document.body.classList.add("disable-scroll"); 
+        }
+        function hideProgress() {
+            const loader = document.getElementById("loader");
+            loader.style.display = "none"; 
+            document.body.classList.remove("disable-scroll"); 
         }
     </script>
     <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>
