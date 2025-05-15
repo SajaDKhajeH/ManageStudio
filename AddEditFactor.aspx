@@ -91,7 +91,6 @@
                                 <div class="col-lg-6">
                                     <label>موضوع عکاسی</label>
                                     <select id="factor_TypePhotography">
-                                        <%Response.Write(PublicMethod.GetTypePhotographi()); %>
                                     </select>
                                 </div>
                             </div>
@@ -100,13 +99,11 @@
                                 <div class="col-lg-6">
                                     <label>عکاس</label>
                                     <select id="factor_Photographer">
-                                        
                                     </select>
                                 </div>
                                 <div class="col-lg-6" style="margin-top: 3px">
                                     <label>وضعیت فاکتور</label>
                                     <select id="factor_status">
-                                        <%Response.Write(PublicMethod.GetFactorStatus()); %>
                                     </select>
                                 </div>
                             </div>
@@ -129,7 +126,7 @@
                             <textarea style="margin: 3px" placeholder="توضیحات برای طراح" class="form-control" id="factor_desc"></textarea>
                             <br />
                             <label>آدرس فایل ها</label>
-                            <input style="margin: 3px;display:none" class="form-control" id="factor_PathFiles">
+                            <input style="margin: 3px; display: none" class="form-control" id="factor_PathFiles">
                         </div>
                         <div class="col-lg-9">
                             <div class="tabs-container">
@@ -217,6 +214,26 @@
     <script src="assets/js/photo-topic/forcmb.js"></script>
     <script src="assets/js/photograprhers/forcmb.js"></script>
     <script>
+
+        function fillFamiliesAsync() {
+            ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#factor_Family').html(options);
+            });
+        }
+        function fillInvoiceStatusesAsync() {
+            ajaxGet('/InvoiceStatus/GetAll', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+                $('#factor_status').html(options);
+            });
+        }
+
+    </script>
+    <script>
         function fillControls() {
             $('#totalAmount').parent().append(getCurrency());
             $('#discountAmount').parent().append(getCurrency());
@@ -225,6 +242,7 @@
         $(document).ready(function () {
             fillControls();
             fillFamiliesAsync();
+            fillInvoiceStatusesAsync();
         });
     </script>
     <script type="text/javascript">
@@ -258,17 +276,16 @@
         function documentReady() {
             let params = new URLSearchParams(document.location.search);
             FirstLoad();
-            factorId = parseInt(params.get("id")); // is the string "Jonathan"
+            factorId = params.get("id");
             turnId = parseInt(params.get("turnid"));
             if (isNaN(turnId)) {
                 turnId = 0;
             }
-            if (factorId > 0) {
-                $("#master_PageTitle").text("جزئیات فاکتور " + factorId);
+            if (factorId) {
                 GetInfoForEditFactor(factorId);
             }
             else {
-                factorId = 0;
+                factorId = '';
                 $("#master_PageTitle").text("ثبت فاکتور جدید");
                 if (turnId > 0) {
                     $.ajax({
@@ -311,8 +328,6 @@
                 dataLoaded += 1;
             });
             setTimeout(function () {
-                while (dataLoaded != 2) {
-                }
                 documentReady();
             }, 256);
         });
@@ -389,42 +404,32 @@
             });
         };
         function GetInfoForEditFactor(id) {
-            $.ajax({
-                type: "POST",
-                url: "ManageInvoice.aspx/GetFactorInfo",
-                data: JSON.stringify({
-                    id: id
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        $("#factor_Family").val(res.FamilyCodeId);
-                        $("#factor_Date").val(res.FactorInfo.F_Date);
-                        $("#factor_desc").val(res.FactorInfo.F_Desc);
-                        $("#factor_discountPercent").val(res.FactorInfo.F_DiscountPercent);
-                        //document.getElementById('factor_PaidPrice').style.display = 'none';
-                        //document.getElementById('factor_PaidType').style.display = 'none';
-                        //document.getElementById('factor_RefNumber').style.display = 'none';
-                        document.getElementById('factor_Family').style.display = 'none';
-                        $("#factor_Family").change();
-                        Productitems = res.FactorDetails;
-                        document.getElementById("factor_TypePhotography").value = res.TypePhotographiId;
-                        document.getElementById("factor_status").value = res.FactorStatusId;
-                        document.getElementById("factor_Photographer").value = res.PhotographerId;
-                        $("#factor_ForceDesign").prop("checked", res.FactorInfo.F_ForceDesign);
-                        $("#factor_OnlyEditedDelivered").prop("checked", res.FactorInfo.F_OnlyEditedDelivered);
-                        updateTable();
-                    }
-                },
-                error: function () {
-                    alert("error");
+            let query = `?id=${id}`;
+            ajaxGet('/Invoice/Get' + query, function (res) {
+                if (res.success) {
+                    let data = res.data;
+                    $("#master_PageTitle").text("جزئیات فاکتور " + data.invoiceNumber);
+                    $("#factor_Family").val(data.familyId);
+                    $("#factor_Date").val(data.date);
+                    $("#factor_desc").val(data.desc);
+                    $("#factor_discountPercent").val(data.discountPercent);
+                    document.getElementById('factor_Family').style.display = 'none';
+                    $("#factor_Family").change();
+                    Productitems = data.invoiceDetails;
+                    document.getElementById("factor_TypePhotography").value = data.typePhotographiId;
+                    document.getElementById("factor_status").value = data.statusId;
+                    document.getElementById("factor_Photographer").value = data.photographerId;
+                    $("#factor_ForceDesign").prop("checked", data.forceDesign);
+                    $("#factor_OnlyEditedDelivered").prop("checked", data.onlyEditedDelivered);
+                    updateTable();
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function () {
+                alert("error");
             });
+
         };
         function GetPhotographerByFamily() {
             if ((factorId == null || factorId == undefined || factorId == 0) && (turnId == 0 || turnId == undefined || turnId == null)) {
@@ -474,17 +479,17 @@
 
             let total = 0;
             Productitems.forEach((item, index) => {
-                if (item.Gift == null || item.Gift == undefined || item.Gift == false) {
-                    total += item.price * item.quantity;
+                if (item.isGift == null || item.isGift == undefined || item.isGift == false) {
+                    total += item.price * item.count;
                 }
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                <td><input onclick="UpdateIsGift(${index},this.checked)" name="IsGift" class="form-check-input" type="checkbox" ${item.Gift ? "checked" : ""}/></td>
-                <td>${item.GTitle}-${item.title}</td>
-                <td><input type="number" value="${item.quantity}" min="1" max="100" onchange="updateQuantity(${index}, this.value)"></td>
+                <td><input onclick="UpdateIsGift(${index},this.checked)" name="IsGift" class="form-check-input" type="checkbox" ${item.isGift ? "checked" : ""}/></td>
+                <td>${item.productGroupTitle}-${item.productTitle}</td>
+                <td><input type="number" value="${item.count}" min="1" max="100" onchange="updateQuantity(${index}, this.value)"></td>
                 <td><input type="text" value="${CurrencyFormatted(item.price)}" min="1" max="100000000" disabled></td>
-                <td><textarea onchange="updateNotes(${index}, this.value)">${item.notes}</textarea></td>
-                <td><input type="number" maxlength="110" value="${item.ShotCount}" onchange="updateShotCount(${index}, this.value)"></td>
+                <td><textarea onchange="updateNotes(${index}, this.value)">${item.desc}</textarea></td>
+                <td><input type="number" maxlength="110" value="${item.shotCount}" onchange="updateShotCount(${index}, this.value)"></td>
                 <td><button class="btn btn-danger" onclick="removeItem(${index})">حذف</button></td>
             `;
                 tbody.appendChild(row);
@@ -551,57 +556,56 @@
             var ForceDesign = $("#factor_ForceDesign").prop("checked");
             var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
             btnAddEdit_ChangeDisable(btn_SetFactor, true);
-            $.ajax({
-                type: "POST",
-                url: "ManageInvoice.aspx/SetFactor",
-                //data: JSON.stringify({
-                //    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
-                //    paidPrice: factor_PaidPrice, paidType: factor_PaidType, refNumber: factor_RefNumber, products: Productitems, factor_desc: factor_desc,
-                //    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId, ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
-                //}),
-                data: JSON.stringify({
-                    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
-                    products: Productitems, factor_desc: factor_desc,
-                    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId, ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    btnAddEdit_ChangeDisable(btn_SetFactor, false);
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
+            //data: JSON.stringify({
+            //    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
+            //    products: Productitems, factor_desc: factor_desc,
+            //    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId,
+            //ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
+            //}),
+            let createInvoiceCommand =
+            {
+                id: factorId,
+                familyId: factor_Family,
+                date: factor_Date,
+                sumDiscount: factor_discountPrice,
+                typePhotographyId: (TypePhotography && TypePhotography != 0) ? TypePhotography : null,
+                status: factor_status,
+                photographerId: (PhotographerId && PhotographerId != 0) ? PhotographerId : null,
+                isForceDesign: ForceDesign,
+                desc: factor_desc,
+                invoiceDetails: Productitems.map(item => ({
+                    productId: item.ProductId,
+                    price: item.price,
+                    count: item.quantity,
+                    shotCount: item.ShotCount,
+                    desc: item.notes
+                }))
+            };
+            let method = 'POST';
+            let route = '/Invoice/Create';
+            if (factorId != '') {
+                method = 'PUT';
+                route = '/Invoice/Update';
+            }
+            ajaxAuthCall(method, route, createInvoiceCommand, function (res) {
+                btnAddEdit_ChangeDisable(btn_SetFactor, false);
+                if (res.success) {
+                    toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
+                    if (factorId == 0) {
+                        PrintFactor(res.data);
                     }
-                    else {
-                        toastr.success(msg.d.Message, "موفق");
-                        if (factorId == 0) {
-                            PrintFactor(msg.d.FactorId);
-                        }
-                        location.href = document.referrer;
-                    }
-                },
-                error: function () {
-                    btnAddEdit_ChangeDisable(btn_SetFactor, false);
-                    alert("error");
+                    location.href = document.referrer;
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function (err) {
+                btnAddEdit_ChangeDisable(btn_SetFactor, false);
             });
         };
     </script>
 
 
-
-
-    <script>
-
-        function fillFamiliesAsync() {
-            ajaxGet('/Family/GetAllFamilies', function (families) {
-                const hospitalOptions = families.map(family =>
-                    `<option value="${family.id}">${family.title}</option>`
-                ).join('');
-                $('#factor_Family').html(hospitalOptions);
-            });
-        }
-
-    </script>
     <script>
         function fillProductGroupsAsync() {
             ajaxGet('/ProductGroup/GetGroups', function (items) {
@@ -610,23 +614,38 @@
                     <div id='product-group-${item.id}' class='child-buttons'>
                     </div>`
                 ).join('');
-                $("#divProductGroups").html( options);
+                $("#divProductGroups").html(options);
             });
         }
+        let productsOfGroup = new Map();
         function toggleChildButtons(button, groupId) {
-            let groupHtml = '';
-            for (var i = 0; i < 10; i++) {
-                //@"<button class='child-button' onclick='addItem(" + pro[i].Pro_ID + @"," + pro[i].SalePrice + @",""" + pro[i].Pro_Title + @""",""" + g.PG_Title + @""")'>" + pro[i].Pro_Title + @"</button>";
-                groupHtml += `<button class='child-button' onclick='addItem(${i},${i},"${i}","${i}")'>${i}</button>`;
-            }
-            
-            $('#product-group-' + groupId).html(groupHtml);
-            const childButtons = button.nextElementSibling; 
+            const childButtons = button.nextElementSibling;
             if (childButtons.style.display === "block") {
                 childButtons.style.display = "none";
-            } else {
-                childButtons.style.display = "block";
+                return;
             }
+
+            if (productsOfGroup.has(groupId)) {
+                $('#product-group-' + groupId).html(productsOfGroup.get(groupId));
+                childButtons.style.display = "block";
+                return;
+            }
+
+            let groupHtml = '';
+            let query = `?GroupId=${groupId}&PageIndex=0&PageSize=50`;
+            ajaxGet('/Product/GetProducts' + query, function (res) {
+
+                hideProgress();
+                const items = res.items;
+                groupHtml = items.map(item =>
+                    `<button class='child-button' onclick='addItem("${item.id}",${item.salePrice},"${item.title}","${item.groupTitle}")'>${item.title}</button>`
+                ).join('');
+                productsOfGroup.set(groupId, groupHtml);
+                $('#product-group-' + groupId).html(groupHtml);
+                childButtons.style.display = "block";
+            }, function () {
+                hideProgress();
+            });
         };
     </script>
 </asp:Content>

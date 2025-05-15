@@ -1978,17 +1978,18 @@
                 success: success,
                 error: function (err) {
                     if (err.status) {
-                        if (err.status == 400) {
-                            let errors = err.responseJSON.errors;
-                            for (const field in errors) {
-                                toastr.warning(errors[field], field);
-                            }
-                        }
-                        else if (err.status == 401) {
+                        if (err.status == 401) {
                             logout();
                         } else {
+                            if (err.status == 400) {
+                                let errors = err.responseJSON.errors;
+                                for (const field in errors) {
+                                    toastr.warning(errors[field], field);
+                                }
+                            }
                             error(err);
                         }
+                       
                     } else {
                         error(err);
                     }

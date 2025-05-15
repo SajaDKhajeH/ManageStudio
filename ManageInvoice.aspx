@@ -276,28 +276,19 @@
         function FactorDelete(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
-                $.ajax({
-                    type: "POST",
-                    url: "ManageInvoice.aspx/FactorDelete",
-                    data: JSON.stringify({
-                        id: id
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        var res = msg.d;
-                        if (msg.d.Result == false) {//خطا داریم
-                            ShowError(msg.d.Message);
-                        }
-                        else {
-                            toastr.success(msg.d.Message, "موفق");
-                            loadTableDataFacotrs();
-                        }
-                    },
-                    error: function () {
-                        alert("error");
+                let query = `?id=${id}`;
+                ajaxDelete('/Invoice/Delete' + query, function (res) {
+                    if (res.success) {
+                        toastr.success("فاکتور حذف شد", "موفق");
+                        loadTableDataFacotrs();
                     }
-                });
+                    else {
+                        ShowError(res.message);
+                    }
+                },
+                    function () {
+                        alert("error");
+                    });
             }
         };
         
@@ -375,27 +366,37 @@
             //    causer: filter_Causer, status: filter_factorStatus, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
             //    designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
             //}),
-            ajaxGet('/Invoice/GetInvoices' + query, function (response) {
-                const data = response.d.Data.data;
-                var totalRecords = response.d.Data.recordsTotal;
+            ajaxGet('/Invoice/GetInvoices' + query, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
                 const tbody = $("#dt_Invoice");
 
                 tbody.empty(); // پاک کردن داده‌های قدیمی
 
                 // اضافه کردن داده‌های جدید
                 data.forEach(row => {
+                    let actions =
+                        `
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-print' data-bs-toggle='modal' data-bs-target='#m_SetPaidPrice' onclick='PayDeposit("${row.familyId}",""" + (x.BedPrice > 0 ? "دریافت بدهی از " + x.FamilyTitle : "دریافت بیعانه از " + x.FamilyTitle) + @"""," + (x.BedPrice ?? 0) + @")' title='پرداخت'>💰</button>
+                        <button class='btnDataTable btnDataTable-print' onclick='PrintFactor("${row.id}")' title='چاپ'>🖨</button>
+                        <button class='btnDataTable btnDataTable-edit' onclick='GoToAddEditFactor("${row.id}")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-delete' onclick='FactorDelete("${row.id}")' title='حذف'>🗑</button>
+                </div>
+                        `;
+                    let familyTitle = `<a style='color: blue;text-decoration: underline;cursor: pointer' onclick='HideBtnAdd_Family("${row.familyId}")' data-bs-toggle='modal' data-bs-target='#modal_addedit_family'>${row.familyTitle}</a>`;
                     tbody.append(`
                 <tr>
-                    <td>${row.FactorNumber}</td>
-                    <td>${row.FamilyTitle}</td>
-                    <td>${row.FactorStatus}</td>
-                    <td>${row.Photographer}</td>
-                    <td>${row.Designer}</td>
-                    <td>${row.FactorDate}</td>
-                    <td>${row.SumFactor}</td>
-                    <td>${row.SumDiscount}</td>
-                    <td>${row.FinanStatus}</td>
-                    <td>${row.Actions}</td>
+                    <td>${row.invoiceNumber}</td>
+                    <td>${familyTitle}</td>
+                    <td>${row.statusTitle}</td>
+                    <td>${row.photographer}</td>
+                    <td>${row.designer}</td>
+                    <td>${row.date}</td>
+                    <td>${row.sumPrice}</td>
+                    <td>${row.sumDiscount}</td>
+                    <td>${row.finanStatus}</td>
+                    <td>${actions}</td>
                 </tr>
             `);
                 });
@@ -404,7 +405,7 @@
                 $("#pageIndex").text(pageIndex);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                $("#prevPageBtn").prop("disabled", pageIndex === 1);
+                $("#prevPageBtn").prop("disabled", pageIndex === 0);
                 $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
             },
                  function () {
