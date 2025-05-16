@@ -176,6 +176,9 @@
             var title = $("#d_title").val();
             var active = $("#d_active").prop("checked");
             var priority = $("#d_pariority").val();
+            if (!priority || priority == undefined) {
+                priority = '0';
+            }
             var success = function (res) {
                 if (res.success) {
                     toastr.success('اطلاعات ذخیره شد', "موفق");
@@ -319,32 +322,31 @@
             div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
             document.getElementById("div_typeData").style.display = "block";
             document.getElementById("div_priority").style.display = 'block';
-            $("#d_pariority").val("");
+            $("#d_pariority").val("0");
+            $('#d_Typeid').trigger('change');
 
         };
-        function DeleteBasicData(id) {
+        function DeleteBasicData(id, filterTypeId) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
-                $.ajax({
-                    type: "POST",
-                    url: "BasicData.aspx/DeleteData",
-                    data: "{id:'" + id + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (res) {
-                        var result = res.d;
-                        if (result.Result == false) {//خطا داریم
-                            ShowError(result.Message);
-                        }
-                        else {
-                            loadTableDataBasicData();
-                            toastr.success(result.Message, "موفق");
-                        }
-
-                    },
-                    error: function () {
-                        alert("error");
+                let query = `?id=${id}`;
+                let route = '';
+                if (filterTypeId == '1001') {
+                    route = '/InvoiceStatus/Delete';
+                } else {
+                    route = '/BasicData/Delete';
+                }
+                ajaxDelete(route + query, function (res) {
+                    if (res.success) {
+                        toastr.success('با موفقیت حذف شد', "موفق");
+                        loadTableDataBasicData();
                     }
+                    else {
+                        ShowError(res.message);
+                    }
+                },
+                function () {
+                    alert("error");
                 });
             }
         };
@@ -486,7 +488,7 @@
                 const totalRecords = res.totalCount;
 
                 data.forEach(row => {
-                    let deleteAction = `<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData("${row.id}")' title='حذف'>🗑</button>`;
+                    let deleteAction = `<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData("${row.id}","${filter_typeId}")' title='حذف'>🗑</button>`;
                     if (filter_typeId == '1001' || filter_typeId == 1001) {
                         if (!row.isRemovable) {
                             deleteAction = '';

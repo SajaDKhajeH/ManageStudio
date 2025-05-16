@@ -1081,7 +1081,6 @@
                             </div>
                             <div class="col-md-4 fv-row">
                                 <select id="f_InviteType">
-                                    <%Response.Write(PublicMethod.GetInviteType());%>
                                 </select>
                             </div>
                             <div class="col-md-4 fv-row">
@@ -1606,7 +1605,7 @@
                     if (data.discoveryMethodId) {
                         $("#f_InviteType").val(data.discoveryMethodId);
                     } else {
-                        $("#f_InviteType").val('0');
+                        $("#f_InviteType").val('');
                     }
                     getHospitalsForCMBAsync(false, function (htmlCmb) {
 
@@ -1721,10 +1720,11 @@
                 id: isEdit ? familyId : null,
                 title: title,
                 desc: desc,
-                MarriageDate: f_MarriageDate,
-                tel: phone,
+                marriageDate: f_MarriageDate,
+                phone: phone,
                 address: address,
                 active: archive,
+                discoveryMethod: f_InviteType ? f_InviteType : null,
                 father: {
                     id: f_id,
                     firstName: f_name,
@@ -2069,9 +2069,23 @@
                 getSetting();
                 //getStudioName();
                 setViewByRole(login.role);
-                showMenusAsync();
+                getAllDiscoveryMethods(function () {
+                    showMenusAsync();
+                });
             }
         });
+        
+        function getAllDiscoveryMethods(callBack) {
+            const defaultOption = '<option value="">انتخاب نحوه آشنایی</option>';
+            ajaxGet('/BasicData/DiscoveryMethods', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                options = defaultOption + options;
+                $('#f_InviteType').html(options);
+                callBack();
+            });
+        }
         function setViewByRole(role) {
             if (role == 'Admin' || role == "Secretary") {
                 $('#divAdminActions').removeAttr('hidden');

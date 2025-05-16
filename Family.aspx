@@ -106,7 +106,6 @@
                             </div>
                             <div class="col-md-3">
                                 <select id="filter_InviteType">
-                                    <%Response.Write(PublicMethod.GetInviteType()); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -124,7 +123,6 @@
                             </div>
                             <div class="col-md-3">
                                 <select id="filter_Causer">
-                                    <%Response.Write(PublicMethod.GetAdmin_A_Monshi_PhotographerHospital()); %>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -171,7 +169,6 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
-    <script src="assets/js/hospital/forcmb.js"></script>
     <script type="text/javascript">
 
         function FamilyDelete(id) {
@@ -193,12 +190,52 @@
                     });
             }
         };
-
+        function fillInfo() {
+            getAllDiscoveryMethods(function () {
+                getAllUsersForFamilyFilter(function () {
+                    getHospitalsForCMB(function () {
+                        loadTableDataFamily();
+                    });
+                });
+            });
+        }
+        function getAllUsersForFamilyFilter(callBack) {
+            const defaultOption = '<option value="">انتخاب ثبت کننده</option>';
+            ajaxGet('/User/GetAllUsersForFamilyFilter', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                options = defaultOption + options;
+                $('#filter_Causer').html(options);
+                callBack();
+            });
+        }
+        function getAllDiscoveryMethods(callBack) {
+            const defaultOption = '<option value="">انتخاب نحوه آشنایی</option>';
+            ajaxGet('/BasicData/DiscoveryMethods', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                options = defaultOption + options;
+                $('#filter_InviteType').html(options);
+                callBack();
+            });
+        }
+        function getHospitalsForCMB(callBack) {
+            const defaultOption = '<option value="">انتخاب بیمارستان</option>';
+            ajaxGet('/BasicData/Hospitals', function (hospitals) {
+                let options = hospitals.map(hospital =>
+                    `<option value='${hospital.id}'>${hospital.title}</option>`
+                ).join('');
+                options = defaultOption + options;
+                $('#filter_Hospital').html(options);
+                callBack();
+            });
+        }
         $(document).ready(function () {
             $("#master_PageTitle").text("خانواده ها");
             $("#s_pageSize").val("5");
-            fillHospitalsCMBAsync('filter_Hospital', false);
-            loadTableDataFamily();
+            fillInfo();
             $('#filter_From_Date').persianDatepicker({
                 format: 'YYYY/MM/DD',
                 initialValue: false,
@@ -252,10 +289,9 @@
             var Hospital = $("#filter_Hospital").val();
             var InviteType = $("#filter_InviteType").val();
 
-
-            //data: JSON.stringify({ page: pageIndex, perPage: pageSize, searchText: filter, fromDate: filter_From_Date, todate: filter_To_Date, Only_Archive: Only_Archive, CauserId: Causer, HospitalId: Hospital, InviteType }),
-
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}`;
+            query += `&fromDate=${filter_From_Date}&todate=${filter_To_Date}`;
+            query += `&active=${!Only_Archive}&creator=${Causer}&hospitalId=${Hospital}&discoveryMethod=${InviteType}`;
 
             ajaxGet('/Family/GetFamilies' + query, function (res) {
                 const data = res.items;
