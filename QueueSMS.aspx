@@ -161,7 +161,7 @@
                         </table>
                         <div class="d-flex justify-content-between align-items-center">
                             <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
-                            <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                            <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                             <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                             <span>
                                 <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataSMS()">
@@ -179,7 +179,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
-        let currentPage = 1;
+        let pageIndex = 1;
         let pageSize = 5;
         var totalRecordsSMSQueue = 0;
         var selectedSMSs = 0;
@@ -227,17 +227,17 @@
             checkboxes.forEach(cb => cb.checked = checkbox.checked);
         }
         $("#nextPageBtn").click(function () {
-            currentPage++;
+            pageIndex++;
             loadTableDataSMS();
         });
         // صفحه قبل
         $("#prevPageBtn").click(function () {
-            currentPage--;
+            pageIndex--;
             loadTableDataSMS();
         });
         // اعمال فیلتر
         $("#filterBtn").click(function () {
-            currentPage = 1;
+            pageIndex = 1;
             loadTableDataSMS();
         });
         function loadTableDataSMS() {
@@ -253,7 +253,7 @@
                 type: "POST",
                 url: "QueueSMS.aspx/ForGrid",
                 data: JSON.stringify({
-                    page: currentPage, perPage: pageSize, SearchText: searchText,
+                    page: pageIndex, perPage: pageSize, SearchText: searchText,
                     Fromdate: filter_From_Date, Todate: filter_To_Date, FamilyId: filter_Family,
                     CauserId: filter_Causer, OnlyQueued: OnlyQueued, TypeId: filter_typeId
                 }),
@@ -283,11 +283,11 @@
                     });
 
                     // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
+                    $("#pageIndex").text(pageIndex);
                     $("#countAllTable").text(totalRecordsSMSQueue);
                     // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecordsSMSQueue);
+                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
+                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecordsSMSQueue);
                 },
                 error: function () {
                     alert("خطا در دریافت داده‌ها");

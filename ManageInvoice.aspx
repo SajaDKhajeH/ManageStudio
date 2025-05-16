@@ -106,12 +106,10 @@
                             </div>
                             <div class="col-md-2">
                                 <select id="filter_Family" data-dropdown-parent="#kt_post" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" data-placeholder="انتخاب مشتری">
-                                    <%Response.Write(PublicMethod.GetCustomer()); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <select id="filter_Causer">
-                                    <%Response.Write(PublicMethod.GetAdmin_A_Monshi()); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -121,22 +119,18 @@
                         <div class="row mb-3">
                             <div class="col-md-2">
                                 <select id="filter_factorStatus">
-                                    <%Response.Write(PublicMethod.GetFactorStatus(true)); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <select id="filter_TypePhotographi">
-                                    <%Response.Write(PublicMethod.GetTypePhotographi(true)); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <select id="filter_Photographer">
-                                    <%Response.Write(PublicMethod.GetPhotographer(true)); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <select id="filter_Designer">
-                                    <%Response.Write(PublicMethod.GetDesigner()); %>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -178,7 +172,7 @@
                             <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                             <span>
                                 <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataFacotrs()">
-                                   <%Response.Write(PublicMethod.Pagination()); %>
+                                    <%Response.Write(PublicMethod.Pagination()); %>
                                 </select>
                             </span>
                             <button id="nextPageBtn" class="btn btn-secondary">صفحه بعد</button>
@@ -191,17 +185,19 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
+    <script src="assets/js/photo-topic/forcmb.js"></script>
+    <script src="assets/js/photograprhers/forcmb.js"></script>
     <script>
         let pageIndex = 0;
         let pageSize = 5;
-        
-        
+
+
         // صفحه بعد
         $("#nextPageBtn").click(function () {
             pageIndex++;
             loadTableDataFacotrs();
         });
-        
+
         // صفحه قبل
         $("#prevPageBtn").click(function () {
             pageIndex--;
@@ -213,7 +209,7 @@
             pageIndex = 0;
             loadTableDataFacotrs();
         });
-        
+
         function loadTableDataFacotrsOld() {
             var filter_From_Date = $("#filter_From_Date").val();
             var filter_To_Date = $("#filter_To_Date").val();
@@ -291,7 +287,7 @@
                     });
             }
         };
-        
+
         function PrintFactor(id) {
             $.ajax({
                 type: "POST",
@@ -318,6 +314,7 @@
             window.open("AddEditFactor.aspx?id=" + id, '_blank');
         }
         $(document).ready(function () {
+            fillInfo();
             $("#master_PageTitle").text("مدیریت فاکتور");
             $("#s_pageSize").val("5");
             loadTableDataFacotrs();
@@ -408,9 +405,40 @@
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);
                 $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
             },
-                 function () {
+                function () {
                     alert("خطا در دریافت داده‌ها");
                 });
         }
+    </script>
+    <script>
+        function fillInfo() {
+            fillFamiliesAsync();
+            fillInvoiceStatusesAsync();
+            fillPhotoTopicsCMBAsync('filter_TypePhotographi', false);
+            fillPhotographersCMBAsync('filter_Photographer', false);
+            //filter_Designer
+            //filter_Causer
+        }
+        function fillInvoiceStatusesAsync() {
+            const defaultOption = '<option value="0">وضعیت فاکتور</option>';
+            ajaxGet('/InvoiceStatus/GetAll', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+                $('#filter_factorStatus').html(defaultOption + options);
+            });
+        }
+        function fillFamiliesAsync() {
+            const defaultOption = '<option value="0">انتخاب خانواده</option>';
+            ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#filter_Family').html(defaultOption + options);
+            });
+        }
+
+
+
     </script>
 </asp:Content>

@@ -56,7 +56,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
                                 <span>مجموع: <span id="sumPricePaids" class="fw-bold">0</span></span>
-                                <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                                <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                                 <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                                 <span>
                                     <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataPaids()">
@@ -75,7 +75,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" Runat="Server">
     <script>
-        let currentPage = 1;
+        let pageIndex = 1;
         let pageSize = 5;
         function PaidDelete(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
@@ -114,7 +114,7 @@
             $.ajax({
                 type: "POST",
                 url: "FactorPaids.aspx/ForGrid",
-                data: JSON.stringify({ page: currentPage, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText, PaidType: filter_PaidType }),
+                data: JSON.stringify({ page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText, PaidType: filter_PaidType }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -143,11 +143,11 @@
                     });
 
                     // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
+                    $("#pageIndex").text(pageIndex);
                     $("#countAllTable").text(totalRecords);
                     // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
+                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
+                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
                 },
                 error: function () {
                     alert("خطا در دریافت داده‌ها");
@@ -156,18 +156,18 @@
         }
         // صفحه قبل
         $("#prevPageBtn").click(function () {
-            currentPage--;
+            pageIndex--;
             loadTableDataPaids();
         });
 
         // اعمال فیلتر
         $("#filterBtn").click(function () {
-            currentPage = 1;
+            pageIndex = 1;
             loadTableDataPaids();
         });
         // صفحه بعد
         $("#nextPageBtn").click(function () {
-            currentPage++;
+            pageIndex++;
             loadTableDataPaids();
         });
         $(document).ready(function () {

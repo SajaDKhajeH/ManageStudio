@@ -319,17 +319,15 @@
             });
         }
         $(document).ready(function () {
-            let dataLoaded = 0;
-            fillProductGroupsAsync();
-            fillPhotoTopicsCMBAsync('factor_TypePhotography', false, function () {
-                dataLoaded += 1;
+            showProgress();
+            fillProductGroupsAsync(function () {
+                fillPhotoTopicsCMBAsync('factor_TypePhotography', false, function () {
+                    fillPhotographersCMBAsync('factor_Photographer', false, function () {
+                        documentReady();
+                        hideProgress();
+                    });
+                });
             });
-            fillPhotographersCMBAsync('factor_Photographer', false, function () {
-                dataLoaded += 1;
-            });
-            setTimeout(function () {
-                documentReady();
-            }, 256);
         });
         function FirstLoad() {
             const tbody = document.getElementById("itemTableBody");
@@ -607,7 +605,7 @@
 
 
     <script>
-        function fillProductGroupsAsync() {
+        function fillProductGroupsAsync(callback) {
             ajaxGet('/ProductGroup/GetGroups', function (items) {
                 const options = items.map(item =>
                     `<button class='button' onclick='toggleChildButtons(this,"${item.id}")'>${item.title}</button>
@@ -615,6 +613,7 @@
                     </div>`
                 ).join('');
                 $("#divProductGroups").html(options);
+                callback();
             });
         }
         let productsOfGroup = new Map();

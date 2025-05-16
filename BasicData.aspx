@@ -45,7 +45,7 @@
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
-                                <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                                <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                                 <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                                 <span>
                                     <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataBasicData()">
@@ -386,7 +386,7 @@
     </script>
     <%-- این قسمت مربوط به دیتاتیبل هست --%>
     <script type="text/javascript">
-        let currentPage = 1;
+        let pageIndex = 1;
         let pageSize = 5;
         $(document).ready(function () {
             $("#master_PageTitle").text("مدیریت اطلاعات پایه");
@@ -397,18 +397,18 @@
         });
         // صفحه بعد
         $("#nextPageBtn").click(function () {
-            currentPage++;
+            pageIndex++;
             loadTableDataBasicData();
         });
         // صفحه قبل
         $("#prevPageBtn").click(function () {
-            currentPage--;
+            pageIndex--;
             loadTableDataBasicData();
         });
 
         // اعمال فیلتر
         $("#filterBtn").click(function () {
-            currentPage = 1;
+            pageIndex = 1;
             loadTableDataBasicData();
         });
         function loadTableDataBasicData() {
@@ -418,7 +418,7 @@
             $.ajax({
                 type: "POST",
                 url: "BasicData.aspx/ForGrid",
-                data: JSON.stringify({ page: currentPage, perPage: pageSize, searchText: searchText, typeId: filter_typeId }),
+                data: JSON.stringify({ page: pageIndex, perPage: pageSize, searchText: searchText, typeId: filter_typeId }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -440,11 +440,11 @@
                     });
 
                     // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
+                    $("#pageIndex").text(pageIndex);
                     $("#countAllTable").text(totalRecords);
                     // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
+                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
+                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
                 },
                 error: function () {
                     ShowError("خطا در دریافت اطلاعات");

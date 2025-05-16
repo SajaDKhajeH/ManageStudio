@@ -164,7 +164,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <button id="prevPageBtn" class="btn btn-secondary">صفحه قبل</button>
                                 <span>مجموع: <span id="sumPriceCheque" class="fw-bold">0</span></span>
-                                <span>صفحه فعلی: <span id="currentPage" class="fw-bold">1</span></span>
+                                <span>صفحه فعلی: <span id="pageIndex" class="fw-bold">1</span></span>
                                 <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                                 <span>
                                     <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataCheque()">
@@ -462,23 +462,23 @@
             });
             // صفحه بعد
             $("#nextPageBtn").click(function () {
-                currentPage++;
+                pageIndex++;
                 loadTableDataCheque();
             });
             // صفحه قبل
             $("#prevPageBtn").click(function () {
-                currentPage--;
+                pageIndex--;
                 loadTableDataCheque();
             });
             // اعمال فیلتر
             $("#filterBtn").click(function () {
-                currentPage = 1;
+                pageIndex = 1;
                 loadTableDataCheque();
             });
         });
     </script>
     <script>
-        let currentPage = 1;
+        let pageIndex = 1;
         let pageSize = 5;
         function loadTableDataCheque() {
             var filter = $("#filterInput").val();
@@ -493,7 +493,7 @@
                 type: "POST",
                 url: "PrivateManageCheque.aspx/ForGrid",
                 data: JSON.stringify({
-                    page: currentPage, perPage: pageSize, fromDate: filter_From_Date,
+                    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date,
                     toDate: filter_To_Date, filter_Registered, filter_Recived, searchText: filter,
                     spent: filter_Spent, bank: filter_bank
                 }),
@@ -525,11 +525,11 @@
                     });
 
                     // بروزرسانی صفحه فعلی
-                    $("#currentPage").text(currentPage);
+                    $("#pageIndex").text(pageIndex);
                     $("#countAllTable").text(totalRecords);
                     // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", currentPage === 1);
-                    $("#nextPageBtn").prop("disabled", currentPage * pageSize >= totalRecords);
+                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
+                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
                 },
                 error: function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");
