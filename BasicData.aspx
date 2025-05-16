@@ -16,7 +16,6 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select id="filter_typeId">
-                                        <%Response.Write(PublicMethod.GetDataType()); %>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -31,7 +30,6 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th class="min-w-120px">نوع</th>
                                         <th class="min-w-150px">عنوان</th>
                                         <th class="min-w-150px">اولویت نمایش</th>
                                         <th class="min-w-130px">وضعیت</th>
@@ -85,7 +83,6 @@
                                     <span class="required">انتخاب نوع</span>
                                 </label>
                                 <select id="d_Typeid">
-                                    <%Response.Write(PublicMethod.GetDataType_For_Add()); %>
                                 </select>
                             </div>
                         </div>
@@ -178,41 +175,54 @@
             }
             var title = $("#d_title").val();
             var active = $("#d_active").prop("checked");
-            var desc = ""; //$("#d_desc").val();
-            var defulatsms = $("#d_defaultsms").val();
-            var state = "0";// $("#d_stateid").val();
-            var pari = $("#d_pariority").val();
-            var SendForWomen = $("#d_SendForWomen").prop("checked");
-            var SendForMen = $("#d_SendForMen").prop("checked");
-            var DurationForSend = $("#d_DurationForSend").val();
-            if (!ShowDurationForSend) {
-                DurationForSend = "0";
-            }
-            $.ajax({
-                type: "POST",
-                url: "BasicData.aspx/AddEditData",
-                data: "{id:'" + d_id + "',typeId:'" + typeId + "',title:'" + title + "',active:" + active + ",desc:'" + desc + "',defulatsms:'" + defulatsms + "',state:'" + state + "',pari:'" + pari + "',SendForWomen:" + SendForWomen + ",SendForMen:" + SendForMen + ",DurationForSend:'" + DurationForSend + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        toastr.success(msg.d.Message, "موفق");
-                        closeModal();
-                        loadTableDataBasicData();
-                    }
-                },
-                error: function () {
-                    Swal.fire({
-                        type: "error",
-                        title: "خطا",
-                        text: "خطا در ثبت اطلاعات",
-                        confirmButtonText: "متوجه شدم"
-                    });
+            var priority = $("#d_pariority").val();
+            var success = function (res) {
+                if (res.success) {
+                    toastr.success('اطلاعات ذخیره شد', "موفق");
+                    closeModal();
+                    loadTableDataBasicData();
                 }
-            });
+                else {
+                    ShowError(res.message);
+                }
+            }
+            var error = function (err) {
+            }
+            if (typeId == '1001') {
+                var defulatsms = $("#d_defaultsms").val();
+                var SendForWomen = $("#d_SendForWomen").prop("checked");
+                var SendForMen = $("#d_SendForMen").prop("checked");
+                let createInvoiceStatusCommand =
+                {
+                    title: title,
+                    active: active,
+                    notificationTemplate: defulatsms,
+                    priority: priority,
+                    sendToFather: SendForMen,
+                    sendToMother: SendForWomen,
+                    isRemovable: true,
+                    isEditable: true
+                };
+                ajaxPost('/InvoiceStatus/Create', createInvoiceStatusCommand, success, error);
+            } else {
+                let createItemCommand =
+                {
+                    title: title,
+                    categoryId: typeId,
+                    active: active,
+                    priority: priority
+                };
+                ajaxPost('/BasicData/Create', createItemCommand, success, error);
+            }
+
+            //var desc = ""; //$("#d_desc").val();
+            //var state = "0";// $("#d_stateid").val();
+            //var SendForWomen = $("#d_SendForWomen").prop("checked");
+            //var SendForMen = $("#d_SendForMen").prop("checked");
+            //var DurationForSend = $("#d_DurationForSend").val();
+            //if (!ShowDurationForSend) {
+            //    DurationForSend = "0";
+            //}
         });
         $('#btn_close').click(function () {
             closeModal();
@@ -232,6 +242,25 @@
             if (typeId == null || typeId == undefined || typeId == "") {
                 typeId = currentTypeId
             }
+
+            if (typeId == '1001') {
+                //invoiceStatus
+                $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
+                $("#d_defaultsms").val(`خانواده {{عنوان خانواده}} عزیز سفارش شما در مرحله { {عنوان وضعیت } } قرار گرفته است`);
+                div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
+                defaultsms.style.visibility = 'visible';
+            } else {
+                div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
+                defaultsms.style.visibility = 'hidden';
+            }
+            if (typeId == '13') {
+                //نوع هزینه
+                div_priority.style.visibility = 'hidden';
+            } else {
+                div_priority.style.visibility = 'visible';
+            }
+
+            return;
             $.ajax({
                 type: "POST",
                 url: "BasicData.aspx/ChangeType",
@@ -291,7 +320,7 @@
             document.getElementById("div_typeData").style.display = "block";
             document.getElementById("div_priority").style.display = 'block';
             $("#d_pariority").val("");
-            
+
         };
         function DeleteBasicData(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
@@ -386,15 +415,42 @@
     </script>
     <%-- این قسمت مربوط به دیتاتیبل هست --%>
     <script type="text/javascript">
-        let pageIndex = 1;
-        let pageSize = 5;
+        let pageIndex = 0;
+        let pageSize = 10;
         $(document).ready(function () {
             $("#master_PageTitle").text("مدیریت اطلاعات پایه");
-            $("#s_pageSize").val("5");
-
-            loadTableDataBasicData();
+            $("#s_pageSize").val("10");
             ResetFeilds();
+            fillInfo();
         });
+        function fillInfo() {
+            fillCmbCategories(function () {
+                fillCmbFilters(function () {
+                    loadTableDataBasicData();
+                });
+            });
+
+        }
+        function fillCmbCategories(callback) {
+            ajaxGet('/BasicData/GetCategories', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                options += `<option value='${1001}'>وضعیت فاکتور</option>`;
+                $("#d_Typeid").html(options);
+                callback();
+            });
+        }
+        function fillCmbFilters(callback) {
+            ajaxGet('/BasicData/GetCategories', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                options += `<option value='${1001}'>وضعیت فاکتور</option>`;
+                $("#filter_typeId").html(options);
+                callback();
+            });
+        }
         // صفحه بعد
         $("#nextPageBtn").click(function () {
             pageIndex++;
@@ -408,47 +464,67 @@
 
         // اعمال فیلتر
         $("#filterBtn").click(function () {
-            pageIndex = 1;
+            pageIndex = 0;
             loadTableDataBasicData();
         });
         function loadTableDataBasicData() {
             var searchText = $("#filterInput").val();
             pageSize = parseInt($("#s_pageSize").val());
             var filter_typeId = $("#filter_typeId").val();
-            $.ajax({
-                type: "POST",
-                url: "BasicData.aspx/ForGrid",
-                data: JSON.stringify({ page: pageIndex, perPage: pageSize, searchText: searchText, typeId: filter_typeId }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    var totalRecords = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_BasicData");
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
+            let route = '';
+            //let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}&groupId=${groupId}`;
+            if (filter_typeId == '1001' || filter_typeId == 1001) {
+                route = '/InvoiceStatus/GetStatuses';
+            } else {
+                route = '/BasicData/GetItems?category=' + filter_typeId;
+            }
+
+            const tbody = $("#dt_BasicData");
+            tbody.empty();
+            ajaxGet(route, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
+
+                data.forEach(row => {
+                    let deleteAction = `<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData("${row.id}")' title='حذف'>🗑</button>`;
+                    if (filter_typeId == '1001' || filter_typeId == 1001) {
+                        if (!row.isRemovable) {
+                            deleteAction = '';
+                        }
+                    }
+                    let actions =
+                        `
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_customer' onclick='EditBasicData("${row.id}")' title='ویرایش'>✎</button>
+                        ${deleteAction}
+                        </div>
+                `;
+
+                    let status = '';
+                    if (row.active) {
+                        status = `<div class='badge badge-light-success'>فعال</div>`;
+                    } else {
+                        status = `<div class='badge badge-light-danger'>غیرفعال</div>`;
+                    }
+
+                    tbody.append(`
                         <tr>
-                            <td>${row.TypeTitle}</td>
-                            <td>${row.Title}</td>
-                            <td>${row.Priority}</td>
-                            <td>${row.Status}</td>
-                            <td>${row.Actions}</td>
+                            <td>${row.title}</td>
+                            <td>${row.priority}</td>
+                            <td>${status}</td>
+                            <td>${actions}</td>
                         </tr>
                     `);
-                    });
+                });
 
-                    // بروزرسانی صفحه فعلی
-                    $("#pageIndex").text(pageIndex);
-                    $("#countAllTable").text(totalRecords);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
-                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
-                },
-                error: function () {
-                    ShowError("خطا در دریافت اطلاعات");
-                }
+                // بروزرسانی صفحه فعلی
+                $("#pageIndex").text(pageIndex);
+                $("#countAllTable").text(totalRecords);
+                // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
+                $("#prevPageBtn").prop("disabled", pageIndex === 0);
+                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+            }, function (err) {
+
             });
         }
     </script>
