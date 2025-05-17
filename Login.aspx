@@ -43,11 +43,11 @@
         <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png)">
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
                 <a class="mb-15">
-                    <img alt="Logo" src="<%Response.Write(SpecialStudio.Logo); %>" class="h-150px" />
+                    <img id="logo" alt="Logo" class="h-150px" />
                 </a>
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <div class="text-center mb-10">
-                        <h1 class="text-dark mb-3"><%Response.Write(Settings.StudioName); %></h1>
+                        <h1 id="studioName" class="text-dark mb-3"></h1>
                     </div>
 
                     <!-- انتخاب نوع کاربر -->
@@ -281,9 +281,48 @@
         }
          localStorage.setItem(key, JSON.stringify(lsData));
     }
-
-
+    function getLocalStorage(key) {
+        let cache = localStorage.getItem(key);
+        if (cache == null)
+            return null;
+        let data = JSON.parse(cache);
+        return data.data;
+        //const now = new Date();
+        //if (data.expire < now.toUTCString()) {
+        //    return null;
+        //}
+        //else {
+        //    return data.data;
+        //}
+    }
+    function getStudioName() {
+        $('#logo').attr('src', `Files/${window.location.hostname}/Logo/logo.png`);
+        let name = getLocalStorage('studioName');
+        if (!name) {
+            ajaxGet('/Setting/StudioName', function (res) {
+                name = res;
+                saveLocalStorage('studioName', name, 600);
+                $('#studioName').html(name);
+            });
+            return;
+        }
+        $('#studioName').html(name);
+        
+    }
+    function ajaxGet(route, success, error) {
+        let baseUrl = 'https://localhost:44393';
+        $.ajax({
+            type: 'GET',
+            url: baseUrl + route,
+            success: success,
+            error: function (err) {
+                console.log(err);
+                alert('err');
+            }
+        });
+    }
     $(document).ready(function () {
+        getStudioName();
         $("#ra_staff").prop("checked", true);
         $("#username").val("");
         $("#password").val("");
