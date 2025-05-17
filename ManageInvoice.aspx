@@ -185,8 +185,8 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
-    <script src="assets/js/photo-topic/forcmb.js"></script>
-    <script src="assets/js/photograprhers/forcmb.js"></script>
+    <script src="assets/js/basic-data/forcmb.js"></script>
+    <script src="assets/js/users/forcmb.js"></script>
     <script>
         let pageIndex = 0;
         let pageSize = 5;
@@ -416,8 +416,8 @@
             fillInvoiceStatusesAsync();
             fillPhotoTopicsCMBAsync('filter_TypePhotographi', false);
             fillPhotographersCMBAsync('filter_Photographer', false);
-            //filter_Designer
-            //filter_Causer
+            fillDesignersCMBAsync('filter_Designer', false);
+            fillInvoiceCreatorsCMBAsync('filter_Causer', false);
         }
         function fillInvoiceStatusesAsync() {
             const defaultOption = '<option value="0">وضعیت فاکتور</option>';

@@ -332,8 +332,8 @@
             $("#p_active").prop("checked", true);
             $("#p_sex").prop("checked", true);
             $("#p_desc").val("");
-            $("#p_role").trigger('change');
             p_Pass.style.visibility = 'visible';
+            $("#p_role").trigger('change');
         };
         $("#p_role").change(function (e) {
             var roleid = $("#p_role").val();
@@ -383,6 +383,7 @@
                     $("#p_active").prop("checked", data.active);
                     $("#p_sex").prop("checked", data.gender == 2 ? true : false);
                     $("#p_desc").val(data.desc);
+                    $("#p_role").trigger('change');
                     //p_Pass.style.visibility = data.ShowPass ? 'visible' : 'hidden';//TODO::
                 }
                 else {

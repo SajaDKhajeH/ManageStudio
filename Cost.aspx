@@ -121,22 +121,18 @@
                             <div class="row mb-3">
                                 <div class="col-md-2">
                                     <select id="filter_CauserId">
-                                        <%Response.Write(PublicMethod.GetAdmin_A_Monshi(true)); %>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <select id="filter_PaidFrom">
-                                        <%Response.Write(PublicMethod.GetAllPersonnels(true, "پرداخت کننده")); %>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <select id="filter_PaidTo">
-                                        <%Response.Write(PublicMethod.GetAllPersonnels(true, "دریافت کننده")); %>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <select id="filter_CostType">
-                                        <%Response.Write(PublicMethod.GetCostType(true)); %>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -204,7 +200,6 @@
                             <div class="col-md-6 fv-row">
                                 <label>شخص پرداخت کننده</label>
                                 <select id="co_PaidFrom">
-                                    <%Response.Write(PublicMethod.GetAllPersonnels()); %>
                                 </select>
                             </div>
                             <div class="col-md-6 fv-row">
@@ -216,7 +211,6 @@
                             <div class="col-md-6 fv-row">
                                 <label>نوع هزینه</label>
                                 <select id="co_CostType">
-                                    <%Response.Write(PublicMethod.GetCostType()); %>
                                 </select>
                             </div>
                             <div class="col-md-6 fv-row">
@@ -238,7 +232,6 @@
                             <div class="col-md-4 fv-row">
                                 <label>پرداخت به</label>
                                 <select id="co_PaidTo">
-                                    <%Response.Write(PublicMethod.GetAllPersonnels(true)); %>
                                 </select>
                             </div>
                         </div>
@@ -260,6 +253,7 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
+    <script src="assets/js/users/forcmb.js"></script>
     <script type="text/javascript">
         var c_Id = 0;
         var loginedUser = "";
@@ -379,7 +373,44 @@
                 }
             });
         };
+
+        function fillAllUsers() {
+            let defaultOption = '<option value="">انتخاب پرسنل</option>';
+            ajaxGet('/User/GetAllUsers', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+
+                $('#co_PaidTo').html(defaultOption + options);
+
+                defaultOption = '<option value="">پرداخت کننده</option>';
+                $('#filter_PaidFrom').html(defaultOption + options);
+
+                defaultOption = '<option value="">دریافت کننده</option>';
+                $('#filter_PaidTo').html(defaultOption + options);
+
+                $('#co_PaidFrom').html(options);
+
+            });
+        }
+        function fillExpenseTypes() {
+            const defaultOption = '<option value="">انتخاب هزینه</option>';
+            ajaxGet('/BasicData/ExpenseTypes', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+
+                $('#filter_CostType').html(defaultOption + options);
+                $('#co_CostType').html(options);
+            });
+        }
+        function fillInfo() {
+            fillAllUsers();
+            fillInvoiceCreatorsCMBAsync('filter_CauserId', false);
+            fillExpenseTypes();
+        }
         $(document).ready(function () {
+            fillInfo();
             $("#master_PageTitle").text("هزینه ها");
             $("#s_pageSize").val("5");
             $.ajax({

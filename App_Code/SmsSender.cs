@@ -24,10 +24,10 @@ public class SmsSender
 
     public void BeginSend()
     {
-        timer = new Timer(10000);
-        timer.Elapsed += Timer_Elapsed;
-        timer.Enabled = true;
-        timer.Start();
+        //timer = new Timer(10000);
+        //timer.Elapsed += Timer_Elapsed;
+        //timer.Enabled = true;
+        //timer.Start();
     }
 
     private void Timer_Elapsed(object sender, ElapsedEventArgs e)

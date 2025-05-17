@@ -24,14 +24,14 @@ public class PublicMethod
     public static string GetProducts()
     {
         string htmls = "";
-        var groups = AdakDB.Db.usp_ProductGroup_Select_Active().ToList();
+        var groups = AdakDB.Db.usp_ProductGroup_Select_Active()?.ToList();
         groups = groups ?? new List<Bank.usp_ProductGroup_Select_ActiveResult>();
-        var products = AdakDB.Db.usp_Product_Select_for_Set_Factor().ToList();
+        var products = AdakDB.Db.usp_Product_Select_for_Set_Factor()?.ToList();
         products = products ?? new List<Bank.usp_Product_Select_for_Set_FactorResult>();
         foreach (var g in groups)
         {
             htmls += @"<button class='button' onclick='toggleChildButtons(this)'>" + g.PG_Title + @"</button>";
-            var pro = products.Where(a => a.Pro_GroupId == g.PG_ID).OrderBy(a => a.Pro_Priority).ToList();
+            var pro = products.Where(a => a.Pro_GroupId == g.PG_ID).OrderBy(a => a.Pro_Priority)?.ToList();
             pro = pro ?? new List<Bank.usp_Product_Select_for_Set_FactorResult>();
             htmls += @"<div class='child-buttons'>";
             for (int i = 0; i < pro.Count; i++)
@@ -45,7 +45,7 @@ public class PublicMethod
     public static string GetState()
     {
         string htmls = "<option>انتخاب استان</option>";
-        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_State).ToList();
+        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_State)?.ToList();
 
         dataType = dataType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in dataType)
@@ -57,7 +57,7 @@ public class PublicMethod
     public static string GetCash_A_Bank(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب صندوق و بانک</option>" : "";
-        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Cash_A_Bank).ToList();
+        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Cash_A_Bank)?.ToList();
         dataType = dataType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in dataType)
         {
@@ -68,7 +68,7 @@ public class PublicMethod
     public static string GetDataType()
     {
         string htmls = "<option>انتخاب نوع</option>";
-        var dataType = AdakDB.Db.usp_DataType_Select().ToList();
+        var dataType = AdakDB.Db.usp_DataType_Select()?.ToList();
         dataType = dataType ?? new List<Bank.usp_DataType_SelectResult>();
         foreach (var item in dataType)
         {
@@ -79,7 +79,7 @@ public class PublicMethod
     public static string GetDataType_For_Add()
     {
         string htmls = "";
-        var dataType = AdakDB.Db.usp_DataType_Select_For_Add().ToList();
+        var dataType = AdakDB.Db.usp_DataType_Select_For_Add()?.ToList();
         dataType = dataType ?? new List<Bank.usp_DataType_Select_For_AddResult>();
         foreach (var item in dataType)
         {
@@ -90,7 +90,7 @@ public class PublicMethod
     public static string GetSMSType(bool allowNull = true)
     {
         string htmls = allowNull ? "<option>انتخاب نوع پیام</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_SMSType).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_SMSType)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -102,7 +102,7 @@ public class PublicMethod
     {
         string htmls = allowNull ? "<option>" + NullTitle + "</option>" : "";
         int? outCount = 0;
-        var personnels = AdakDB.Db.usp_Personnel_Select_For_Grid(null, ref outCount, 1, 1001).ToList();
+        var personnels = AdakDB.Db.usp_Personnel_Select_For_Grid(null, ref outCount, 1, 1001)?.ToList();
         personnels = personnels ?? new List<Bank.usp_Personnel_Select_For_GridResult>();
         foreach (var item in personnels)
         {
@@ -113,7 +113,7 @@ public class PublicMethod
     public static string GetTypePhotographi(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب موضوع</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_TurnType).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_TurnType)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -124,7 +124,7 @@ public class PublicMethod
     public static string GetLocation(bool allowNull = true)
     {
         string htmls = allowNull ? "<option>انتخاب لوکیشن</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Location).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Location)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -135,7 +135,7 @@ public class PublicMethod
     public static string GetInviteType(bool allowNull = true)
     {
         string htmls = allowNull ? "<option value='0'>انتخاب نحوه آشنایی</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_InviteType).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_InviteType)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -146,7 +146,7 @@ public class PublicMethod
     public static string GetBank(bool allowNull = true)
     {
         string htmls = allowNull ? "<option>انتخاب بانک</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Bank).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Bank)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -157,7 +157,7 @@ public class PublicMethod
     public static string GetCostType(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب هزینه</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_CostType).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_CostType)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -168,7 +168,7 @@ public class PublicMethod
     public static string GetDesigner(bool allowNull = true)
     {
         string htmls = allowNull ? "<option>انتخاب طراح</option>" : "";
-        var personnel = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Designer).ToList();
+        var personnel = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Designer)?.ToList();
         personnel = personnel ?? new List<Bank.usp_Personnel_By_RoleResult>();
         foreach (var item in personnel)
         {
@@ -179,8 +179,8 @@ public class PublicMethod
     public static string GetAdmin_A_Monshi(bool allowNull = true, string NullOptionText = "انتخاب ثبت کننده")
     {
         string htmls = allowNull ? "<option>" + NullOptionText + "</option>" : "";
-        var admins = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Admin).ToList();
-        var secretary = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Secretary).ToList();
+        var admins = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Admin)?.ToList();
+        var secretary = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Secretary)?.ToList();
         admins = admins ?? new List<Bank.usp_Personnel_By_RoleResult>();
         secretary = secretary ?? new List<Bank.usp_Personnel_By_RoleResult>();
         foreach (var item in secretary)
@@ -196,9 +196,9 @@ public class PublicMethod
     public static string GetAdmin_A_Monshi_PhotographerHospital(bool allowNull = true)
     {
         string htmls = allowNull ? "<option>انتخاب ثبت کننده</option>" : "";
-        var admins = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Admin).ToList();
-        var secretary = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Secretary).ToList();
-        var hospital = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_PhotographerInHospital).ToList();
+        var admins = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Admin)?.ToList();
+        var secretary = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Secretary)?.ToList();
+        var hospital = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_PhotographerInHospital)?.ToList();
         admins = admins ?? new List<Bank.usp_Personnel_By_RoleResult>();
         secretary = secretary ?? new List<Bank.usp_Personnel_By_RoleResult>();
         hospital = hospital ?? new List<Bank.usp_Personnel_By_RoleResult>();
@@ -219,9 +219,9 @@ public class PublicMethod
     public static string GetFactorStatus(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>وضعیت فاکتور</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_FactorStatus).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_FactorStatus)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
-        var fs = paidType.Where(a => a.D_ID <= DefaultDataIDs.FactorStatus_ReadyForDesign).ToList();//فقط وضعیت های بیعانه نداده فاکتور ناقص  و در دست طراحی رو اینجا نشون بده
+        var fs = paidType.Where(a => a.D_ID <= DefaultDataIDs.FactorStatus_ReadyForDesign)?.ToList();//فقط وضعیت های بیعانه نداده فاکتور ناقص  و در دست طراحی رو اینجا نشون بده
                                                                                                     //چون بقیه مراحلش رو باید طراح انجام بده
         foreach (var item in fs)
         {
@@ -232,7 +232,7 @@ public class PublicMethod
     public static string GetFactorStatusAll(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>وضعیت فاکتور</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_FactorStatus).ToList().OrderBy(a => a.D_Priority).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_FactorStatus)?.ToList().OrderBy(a => a.D_Priority)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -243,7 +243,7 @@ public class PublicMethod
     public static string GetPhotographer(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب عکاس</option>" : "";
-        var personnel = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Photographer).ToList();
+        var personnel = AdakDB.Db.usp_Personnel_By_Role(DefaultDataIDs.Role_Photographer)?.ToList();
         personnel = personnel ?? new List<Bank.usp_Personnel_By_RoleResult>();
         foreach (var item in personnel)
         {
@@ -254,7 +254,7 @@ public class PublicMethod
     public static string GetPaidType(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب نوع پرداخت</option>" : "";
-        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(9).ToList();
+        var paidType = AdakDB.Db.usp_Data_Select_By_TypeId(9)?.ToList();
         paidType = paidType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in paidType)
         {
@@ -269,7 +269,7 @@ public class PublicMethod
     {
         string htmls = allowNull ? "<option>انتخاب خانواده</option>" : "";
         int? outcount = 0;
-        var family = AdakDB.Db.usp_Family_Select_All().ToList();
+        var family = AdakDB.Db.usp_Family_Select_All()?.ToList();
         family = family ?? new List<Bank.usp_Family_Select_AllResult>();
         foreach (var item in family)
         {
@@ -280,7 +280,7 @@ public class PublicMethod
     public static string GetProductGroup(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب گروه کالا</option>" : "";
-        var family = AdakDB.Db.usp_ProductGroup_Select_Active().ToList();
+        var family = AdakDB.Db.usp_ProductGroup_Select_Active()?.ToList();
         family = family ?? new List<Bank.usp_ProductGroup_Select_ActiveResult>();
         foreach (var item in family)
         {
@@ -291,7 +291,7 @@ public class PublicMethod
     public static string GetRols()
     {
         string htmls = "";
-        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Role).ToList();
+        var dataType = AdakDB.Db.usp_Data_Select_By_TypeId(DefaultDataIDs.DataType_Role)?.ToList();
 
         dataType = dataType ?? new List<Bank.usp_Data_Select_By_TypeIdResult>();
         foreach (var item in dataType)
@@ -308,7 +308,7 @@ public class PublicMethod
     public static string GetActiveCustomer(bool allowNull = false)
     {
         string htmls = allowNull ? "<option>انتخاب خانواده</option>" : "";
-        var family = AdakDB.Db.usp_Family_Select_ForCombo().ToList();
+        var family = AdakDB.Db.usp_Family_Select_ForCombo()?.ToList();
         family = family ?? new List<Bank.usp_Family_Select_ForComboResult>();
         foreach (var item in family)
         {

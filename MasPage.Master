@@ -1099,7 +1099,7 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/hospital/forcmb.js"></script>
+    <script src="assets/js/basic-data/forcmb.js"></script>
     <script>var hostUrl = "assets/";</script>
     <%--ویرایش رمز عبور--%>
     <script>
@@ -1596,7 +1596,7 @@
                     $("#f_mobile").val(data.father.mobile);
                     $("#f_BirthDate").val(data.father.birthDate);
 
-                    $("#f_phone").val(data.tel);
+                    $("#f_phone").val(data.phone);
                     $("#f_title").val(data.title);
                     $("#f_address").val(data.address);
                     $("#f_archive").prop("checked", data.active);
@@ -1724,7 +1724,7 @@
                 phone: phone,
                 address: address,
                 active: archive,
-                discoveryMethod: f_InviteType ? f_InviteType : null,
+                discoveryMethodId: f_InviteType ? f_InviteType : null,
                 father: {
                     id: f_id,
                     firstName: f_name,
@@ -1769,7 +1769,6 @@
             },
                 function () {
                     btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
-                    alert("error-btn_submitdataFamily");
                 }
             );
         });
@@ -1786,6 +1785,7 @@
             window.location.href = "Logout.aspx";
         };
         function GetCustomer_ForCombo() {
+            return;
             $.ajax({
                 type: "POST",
                 url: "Family.aspx/GetCustomer_ForCombo",
@@ -2057,6 +2057,18 @@
             }
             studioName = name;
         }
+        function getAllDiscoveryMethodsMaster(callBack) {
+            const defaultOption = '<option value="">انتخاب نحوه آشنایی</option>';
+            ajaxGet('/BasicData/DiscoveryMethods', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                options = defaultOption + options;
+                $('#f_InviteType').html(options);
+                callBack();
+            });
+        }
+
         let currency = '';
         let isToman = false;
         let studioName = '';
@@ -2069,23 +2081,12 @@
                 getSetting();
                 //getStudioName();
                 setViewByRole(login.role);
-                getAllDiscoveryMethods(function () {
+                getAllDiscoveryMethodsMaster(function () {
                     showMenusAsync();
                 });
             }
         });
         
-        function getAllDiscoveryMethods(callBack) {
-            const defaultOption = '<option value="">انتخاب نحوه آشنایی</option>';
-            ajaxGet('/BasicData/DiscoveryMethods', function (items) {
-                let options = items.map(item =>
-                    `<option value='${item.id}'>${item.title}</option>`
-                ).join('');
-                options = defaultOption + options;
-                $('#f_InviteType').html(options);
-                callBack();
-            });
-        }
         function setViewByRole(role) {
             if (role == 'Admin' || role == "Secretary") {
                 $('#divAdminActions').removeAttr('hidden');

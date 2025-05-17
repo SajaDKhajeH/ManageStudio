@@ -79,8 +79,8 @@ namespace AdakStudio
         }
         public static bool IsActiveSMSText_CancelTurn()
         {
-            var dataInfo = AdakDB.Db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_CancelTurn).SingleOrDefault();
-            return dataInfo.D_Active;
+            var dataInfo = AdakDB.Db.usp_Data_Select_By_Id(DefaultDataIDs.DefaultSMS_CancelTurn)?.SingleOrDefault();
+            return dataInfo?.D_Active ?? false;
         }
         protected string Menus()
         {

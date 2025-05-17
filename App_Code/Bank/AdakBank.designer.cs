@@ -559,8 +559,15 @@ namespace Bank
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Personnel_By_Role")]
 		public ISingleResult<usp_Personnel_By_RoleResult> usp_Personnel_By_Role([global::System.Data.Linq.Mapping.ParameterAttribute(Name="RoleId", DbType="BigInt")] System.Nullable<long> roleId)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), roleId);
-			return ((ISingleResult<usp_Personnel_By_RoleResult>)(result.ReturnValue));
+			try
+			{
+				IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), roleId);
+				return ((ISingleResult<usp_Personnel_By_RoleResult>)(result.ReturnValue));
+			}
+			catch
+			{
+				return null;
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Product_Add")]
@@ -723,8 +730,15 @@ namespace Bank
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_TypeId")]
 		public ISingleResult<usp_Data_Select_By_TypeIdResult> usp_Data_Select_By_TypeId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypeId", DbType="Int")] System.Nullable<int> typeId)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), typeId);
-			return ((ISingleResult<usp_Data_Select_By_TypeIdResult>)(result.ReturnValue));
+			try
+			{
+				IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), typeId);
+				return ((ISingleResult<usp_Data_Select_By_TypeIdResult>)(result.ReturnValue));
+			}
+			catch
+			{
+				return null;
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_FactorLog_Select")]
@@ -1112,8 +1126,15 @@ namespace Bank
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Data_Select_By_Id")]
 		public ISingleResult<usp_Data_Select_By_IdResult> usp_Data_Select_By_Id([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
-			return ((ISingleResult<usp_Data_Select_By_IdResult>)(result.ReturnValue));
+			try
+			{
+				IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
+				return ((ISingleResult<usp_Data_Select_By_IdResult>)(result.ReturnValue));
+			}
+			catch
+			{
+				return null;
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_SendSMS_WhenCancel_OR_Del_Turn")]

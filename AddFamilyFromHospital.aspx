@@ -88,7 +88,7 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
-    <script src="assets/js/hospital/forcmb.js"></script>
+    <script src="assets/js/basic-data/forcmb.js"></script>
     <script>
         const childrenTableBody_H = document.getElementById('childrenTableBody_Hospital');
         const addRowButtonChild_H = document.getElementById('addRowButtonChild_Hospital');

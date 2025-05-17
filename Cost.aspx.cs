@@ -135,6 +135,8 @@ public partial class Cost : System.Web.UI.Page
             string causerId, string CostTypeId, string PaidFromId, string PaidToId
             )
     {
+        if (string.IsNullOrEmpty(PaidFromId))
+            return new OperationResult<ForGrid.DataTableModel>();
         perPage = perPage == 0 ? 10 : perPage;
         searchText = searchText.Trim();
         int? countt = 0;

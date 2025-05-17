@@ -211,8 +211,8 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
-    <script src="assets/js/photo-topic/forcmb.js"></script>
-    <script src="assets/js/photograprhers/forcmb.js"></script>
+    <script src="assets/js/basic-data/forcmb.js"></script>
+    <script src="assets/js/users/forcmb.js"></script>
     <script>
 
         function fillFamiliesAsync() {
@@ -277,6 +277,9 @@
             let params = new URLSearchParams(document.location.search);
             FirstLoad();
             factorId = params.get("id");
+            if (factorId == undefined || factorId == '0' || factorId == 0)
+                factorId = '';
+
             turnId = parseInt(params.get("turnid"));
             if (isNaN(turnId)) {
                 turnId = 0;
@@ -353,29 +356,19 @@
             document.getElementById('factor_Family').style.display = 'block';
         }
         function GetLogs() {
+            if (!factorId)
+                document.getElementById('logList').innerHTML = "";
+
             if (!getLogs) {
-                $.ajax({
-                    type: "POST",
-                    url: "RequestStatus.aspx/FactorLogs",
-                    data: JSON.stringify({
-                        FactorId: factorId
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        getLogs = true;
-                        if (msg.d.Result == false) {//خطا داریم
-                            ShowError(msg.d.Message);
-                        }
-                        else {
-                            document.getElementById('logList').innerHTML = "";
-                            document.getElementById('logList').innerHTML = msg.d.Message;
-                        }
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
+                let query = '?invoiceId=' + factorId;
+                ajaxGet('/InvoiceChange/GetAll' + query, function (items) {
+                    document.getElementById('logList').innerHTML = items.map(item => `
+                    <li class='log-item'>
+                            <span class='log-text'>${item.title}</span>
+                         </li>
+                    `).join("");
+                    getLogs = true;
+                })
             }
         }
         function PrintFactor(id) {
@@ -467,7 +460,17 @@
             if (existingItem) {
                 existingItem.quantity++;
             } else {
-                Productitems.push({ title, price, quantity: 1, notes: "", ProductId: Id, FCId: 0, GTitle: gtitle, ShotCount: 0, Gift: false });
+                Productitems.push({
+                    productTitle: title,
+                    price,
+                    count: 1,
+                    desc: "",
+                    productId: Id,
+                    FCId: 0,
+                    productGroupTitle: gtitle,
+                    shotCount: 0,
+                    isGift: false
+                });
             }
             updateTable();
         }
@@ -572,11 +575,11 @@
                 isForceDesign: ForceDesign,
                 desc: factor_desc,
                 invoiceDetails: Productitems.map(item => ({
-                    productId: item.ProductId,
+                    productId: item.productId,
                     price: item.price,
-                    count: item.quantity,
-                    shotCount: item.ShotCount,
-                    desc: item.notes
+                    count: item.count,
+                    shotCount: item.shotCount,
+                    desc: item.desc
                 }))
             };
             let method = 'POST';
