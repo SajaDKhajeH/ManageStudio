@@ -273,6 +273,22 @@
             var co_PaidTo = $("#co_PaidTo").val();
             var PaidDate = $("#co_PaidDate").val();
 
+            if (!co_PaidFrom) {
+                toastr.warning('شخص پرداخت کننده را انتخاب کنید', 'هشدار');
+                return;
+            }
+            if (!co_CostType) {
+                toastr.warning('موضوع پرداخت را مشخص کنید', 'هشدار');
+                return;
+            }
+            if (!co_PaidType) {
+                toastr.warning('طریقه پرداخت را مشخص کنید', 'هشدار');
+                return;
+            }
+            if (!PaidDate) {
+                toastr.warning('تاریخ پرداخت را مشخص کنید', 'هشدار');
+                return;
+            }
             let createCostCommand =
             {
                 id: c_Id,
@@ -282,7 +298,7 @@
                 date: PaidDate,
                 payTypeId: co_PaidType,
                 trackingCode: co_RefNumber,
-                payToId: co_PaidTo,
+                payToId: co_PaidTo || null,
                 desc: co_desc,
             };
             let method = 'POST';
@@ -505,10 +521,9 @@
             ajaxGet('/Cost/GetCosts' + query, function (res) {
                 const data = res.items;
                 const totalRecords = res.totalCount;
-                $("#sumPriceCost").text('response.d.Message');
 
 
-
+                let sumPrice = 0;
                 data.forEach(row => {
 
                     let actions =
@@ -518,7 +533,7 @@
                         <button class='btnDataTable btnDataTable-delete' onclick='DeleteCost("${row.id}")' title='حذف'>🗑</button>
                 </div>
                         `;
-
+                    sumPrice += row.price;
                     tbody.append(`
                         <tr>
                             <td>${row.payFrom}</td>
@@ -533,6 +548,8 @@
                             <td>${actions}</td>
                         </tr>
                     `);
+                    $("#sumPriceCost").text(sumPrice);
+
                 });
 
                 // بروزرسانی صفحه فعلی
