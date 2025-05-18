@@ -1,5 +1,5 @@
 ﻿function getPhotographersForCMBAsync(required, callBack) {
-    const defaultOption = '<option value="0">انتخاب عکاس</option>';
+    const defaultOption = '<option value="">انتخاب عکاس</option>';
     ajaxGet('/User/GetAllPhotographers', function (items) {
         let options = items.map(item =>
             `<option value='${item.id}'>${item.title}</option>`
@@ -20,7 +20,7 @@ function fillPhotographersCMBAsync(cmbId, required, callBack) {
 }
 
 function getDesignersForCMBAsync(required, callBack) {
-    const defaultOption = '<option value="0">انتخاب طراح</option>';
+    const defaultOption = '<option value="">انتخاب طراح</option>';
     ajaxGet('/User/GetAllDesigners', function (items) {
         let options = items.map(item =>
             `<option value='${item.id}'>${item.title}</option>`
@@ -40,7 +40,7 @@ function fillDesignersCMBAsync(cmbId, required, callBack) {
     });
 }
 function getInvoiceCreatorsForCMBAsync(required, callBack) {
-    const defaultOption = '<option value="0">انتخاب ثبت کننده</option>';
+    const defaultOption = '<option value="">انتخاب ثبت کننده</option>';
     ajaxGet('/User/GetInvoiceCreators', function (items) {
         let options = items.map(item =>
             `<option value='${item.id}'>${item.title}</option>`

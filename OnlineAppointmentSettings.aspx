@@ -3,6 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <%-- 
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <div id="kt_content_container" class="container-xxl">
             <div class="card">
@@ -82,7 +83,6 @@
                             <div class="col-md-6 fv-row">
                                 <label class="required fs-6 fw-bold mb-2">نوع عکاسی</label>
                                 <select id="ots_turnType">
-                                    <%Response.Write(PublicMethod.GetTypePhotographi());%>
                                 </select>
                             </div>
                         </div>
@@ -204,6 +204,7 @@
             </div>
         </div>
     </div>
+     --%>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script type="text/javascript">
@@ -348,6 +349,11 @@
         let pageSize = 5;
         var isFileChanged = false;
         $(document).ready(function () {
+
+            alert('این صفحه در بروز رسانی های بعدی در دسترس خواهد بود');
+            return;
+
+
             $("#master_PageTitle").text("تنظیمات نوبت دهی آنلاین");
             $("#s_pageSize").val("5");
             loadTableSettings();

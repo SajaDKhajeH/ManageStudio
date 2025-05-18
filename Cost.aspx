@@ -121,23 +121,27 @@
                             <div class="row mb-3">
                                 <div class="col-md-2">
                                     <select id="filter_CauserId">
+                                        <option value="">انتخاب ثبت کننده</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <select id="filter_PaidFrom">
+                                        <option value="">پرداخت کننده</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <select id="filter_PaidTo">
+                                        <option value="">دریافت کننده</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <select id="filter_CostType">
+                                        <option value="">انتخاب هزینه</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <select id="filter_PaidType">
-                                        <%Response.Write(PublicMethod.GetPaidType(true)); %>
+                                        <option value="">انتخاب نوع پرداخت</option>
                                     </select>
                                 </div>
                             </div>
@@ -216,7 +220,6 @@
                             <div class="col-md-6 fv-row">
                                 <label>طریقه پرداخت</label>
                                 <select id="co_PaidType">
-                                    <%Response.Write(PublicMethod.GetPaidType()); %>
                                 </select>
                             </div>
                         </div>
@@ -255,7 +258,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script src="assets/js/users/forcmb.js"></script>
     <script type="text/javascript">
-        var c_Id = 0;
+        var c_Id = "";
         var loginedUser = "";
         $("#btn_submitdata").click(function (e) {
             var co_PaidFrom = $("#co_PaidFrom").val();
@@ -269,28 +272,36 @@
             var co_desc = $("#co_desc").val();
             var co_PaidTo = $("#co_PaidTo").val();
             var PaidDate = $("#co_PaidDate").val();
-            $.ajax({
-                type: "POST",
-                url: "Cost.aspx/AddEditCost",
-                data: JSON.stringify({
-                    id: c_Id, PaidFrom: co_PaidFrom, PaidPrice: co_PaidPrice, CostType: co_CostType, PaidType: co_PaidType,
-                    RefNumber: co_RefNumber, desc: co_desc, PaidTo: co_PaidTo, PaidDate: PaidDate
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        loadTableDataCost();
-                        toastr.success(msg.d.Message, "موفق");
-                        closeModal();
-                    }
-                },
-                error: function () {
-                    alert("error");
+
+            let createCostCommand =
+            {
+                id: c_Id,
+                payFromId: co_PaidFrom,
+                price: co_PaidPrice,
+                expenseTypeId: co_CostType,
+                date: PaidDate,
+                payTypeId: co_PaidType,
+                trackingCode: co_RefNumber,
+                payToId: co_PaidTo,
+                desc: co_desc,
+            };
+            let method = 'POST';
+            let route = '/Cost/Create';
+            if (c_Id != '') {
+                method = 'PUT';
+                route = '/Cost/Update';
+            }
+            ajaxAuthCall(method, route, createCostCommand, function (res) {
+                if (res.success) {
+                    toastr.success('اطلاعات ذخیره شد', "موفق");
+                    closeModal();
+                    loadTableDataCost();
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function () {
+                toastr.error("خطا در ذخیره اطلاعات", "خطا");
             });
         });
         $('#btn_close').click(function () {
@@ -301,7 +312,7 @@
         });
         function closeModal() {
             $('#model_AddEditCost').modal('hide');
-            c_Id = 0;
+            c_Id = "";
         };
         $("#btn_add").click(function (e) {
             ResetFeilds();
@@ -315,62 +326,48 @@
             $("#co_desc").val("");
             $("#co_PaidTo").val("");
             $("#co_PaidFrom").val(loginedUser);
-            c_Id = 0;
+            c_Id = "";
         };
         function DeleteCost(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
-                $.ajax({
-                    type: "POST",
-                    url: "Cost.aspx/DeleteCost",
-                    data: "{id:'" + id + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (res) {
-                        var result = res.d;
-                        if (result.Result == false) {//خطا داریم
-                            ShowError(result.Message);
-                        }
-                        else {
-                            toastr.success(result.Message, "موفق");
-                            loadTableDataCost();
-                        }
-                    },
-                    error: function () {
-                        toastr.error("خطا در حذف اطلاعات", "خطا");
-                    }
-                });
-            }
-        };
-        function EditCost(id) {
-            $.ajax({
-                type: "POST",
-                url: "Cost.aspx/EditCost",
-                data: "{id:" + id + "}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (res) {
-                    var result = res.d;
-                    if (result.Result == false) {//خطا داریم
-                        ShowError(result.Message);
+                let query = `?id=${id}`;
+                ajaxDelete('/Cost/Delete' + query, function (res) {
+                    if (res.success) {
+                        toastr.success('هزینه حذف شد', "موفق");
+                        loadTableDataCost();
                     }
                     else {
-                        c_Id = id;
-                        $("#header_AddEidtCost").text("ویرایش هزینه " + result.CostTitle + "- پرداخت کننده:" + result.PaidFromFullName);
-                        $("#co_PaidFrom").val(result.PaidFrom);
-                        $("#co_PaidPrice").val(result.PaidPrice);
-                        $("#co_CostType").val(result.CostType);
-                        $("#co_PaidDate").val(result.PaidDate);
-                        $("#co_PaidType").val(result.PaidType);
-                        $("#co_RefNumber").val(result.RefNumber);
-                        $("#co_desc").val(result.Desc);
-                        $("#co_PaidTo").val(result.PaidTo);
-                        TextFormatPrice($("#co_PaidPrice"));
+                        ShowError(res.message);
                     }
                 },
-                error: function () {
-                    toastr.error("خطا در دریافت داده‌ها", "خطا");
+                    function () {
+                        toastr.error("خطا در حذف اطلاعات", "خطا");
+                    });
+            }
+        }
+        function EditCost(id) {
+            c_Id = id;
+            let query = `?id=${id}`;
+            ajaxGet('/Cost/GetCost' + query, function (res) {
+                if (res.success) {
+                    let data = res.data;
+                    $("#header_AddEidtCost").text("ویرایش هزینه " + data.expenseTitle + "- پرداخت کننده:" + data.payFrom);
+                    $("#co_PaidFrom").val(data.payFromId);
+                    $("#co_PaidPrice").val(data.price);
+                    $("#co_CostType").val(data.expenseTypeId);
+                    $("#co_PaidType").val(data.payTypeId);
+                    $("#co_PaidDate").val(data.date);
+                    $("#co_RefNumber").val(data.trackingCode);
+                    $("#co_PaidTo").val(data.payToId);
+                    $("#co_desc").val(data.desc);
+                    TextFormatPrice($("#co_PaidPrice"));
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function () {
+                toastr.error("خطا در دریافت اطلاعات", "خطا");
             });
         };
 
@@ -404,10 +401,22 @@
                 $('#co_CostType').html(options);
             });
         }
+        function fillPayTypes() {
+            const defaultOption = '<option value="">انتخاب نوع پرداخت</option>';
+            ajaxGet('/BasicData/PayTypes', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+
+                $('#filter_PaidType').html(defaultOption + options);
+                $('#co_PaidType').html(options);
+            });
+        }
         function fillInfo() {
             fillAllUsers();
             fillInvoiceCreatorsCMBAsync('filter_CauserId', false);
             fillExpenseTypes();
+            fillPayTypes();
         }
         $(document).ready(function () {
             fillInfo();
@@ -457,25 +466,22 @@
                     }
                 }
             });
-            // صفحه بعد
             $("#nextPageBtn").click(function () {
                 pageIndex++;
                 loadTableDataCost();
             });
-            // صفحه قبل
             $("#prevPageBtn").click(function () {
                 pageIndex--;
                 loadTableDataCost();
             });
-            // اعمال فیلتر
             $("#filterBtn").click(function () {
-                pageIndex = 1;
+                pageIndex = 0;
                 loadTableDataCost();
             });
         });
     </script>
     <script>
-        let pageIndex = 1;
+        let pageIndex = 0;
         let pageSize = 5;
         function loadTableDataCost() {
             var filter = $("#filterInput").val();
@@ -487,52 +493,58 @@
             var filter_CostType = $("#filter_CostType").val();
             var filter_PaidType = $("#filter_PaidType").val();
             pageSize = parseInt($("#s_pageSize").val());
-            $.ajax({
-                type: "POST",
-                url: "Cost.aspx/ForGrid",
-                data: JSON.stringify({
-                    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date,
-                    toDate: filter_To_Date, PaidTypeId: filter_PaidType, searchText: filter,
-                    causerId: filter_CauserId, CostTypeId: filter_CostType, PaidFromId: filter_PaidFrom, PaidToId: filter_PaidTo
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    const totalRecords = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_Costs");
-                    $("#sumPriceCost").text(response.d.Message);
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
 
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}`;
+            query += `&fromDate=${filter_From_Date}&toDate=${filter_To_Date}`;
+            query += `&creatorId=${filter_CauserId}&payFromId=${filter_PaidFrom}&payToId=${filter_PaidTo}`;
+            query += `&expenseTypeId=${filter_CostType}&payTypeId=${filter_PaidType}`;
+
+            const tbody = $("#dt_Costs");
+            tbody.empty();
+
+            ajaxGet('/Cost/GetCosts' + query, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
+                $("#sumPriceCost").text('response.d.Message');
+
+
+
+                data.forEach(row => {
+
+                    let actions =
+                        `
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#model_AddEditCost' onclick='EditCost("${row.id}")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-delete' onclick='DeleteCost("${row.id}")' title='حذف'>🗑</button>
+                </div>
+                        `;
+
+                    tbody.append(`
                         <tr>
-                            <td>${row.PaidFromFullName}</td>
-                            <td>${row.PaidDate}</td>
-                            <td>${row.CostType}</td>
-                            <td>${row.PaidPrice}</td>
-                            <td>${row.PaidType}</td>
-                            <td>${row.RefNumber}</td>
-                            <td>${row.PaidToFullName}</td>
-                            <td>${row.CauserName}</td>
-                            <td>${row.Date_A_Time}</td>
-                            <td>${row.Actions}</td>
+                            <td>${row.payFrom}</td>
+                            <td>${row.date}</td>
+                            <td>${row.expenseType}</td>
+                            <td>${row.price}</td>
+                            <td>${row.payType}</td>
+                            <td>${row.trackingCode}</td>
+                            <td>${row.payTo}</td>
+                            <td>${row.createdBy}</td>
+                            <td>${row.creationTime}</td>
+                            <td>${actions}</td>
                         </tr>
                     `);
-                    });
+                });
 
-                    // بروزرسانی صفحه فعلی
-                    $("#pageIndex").text(pageIndex);
-                    $("#countAllTable").text(totalRecords);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
-                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
-                },
-                error: function () {
+                // بروزرسانی صفحه فعلی
+                $("#pageIndex").text(pageIndex);
+                $("#countAllTable").text(totalRecords);
+                // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
+                $("#prevPageBtn").prop("disabled", pageIndex === 0);
+                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+            },
+                function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");
-                }
-            });
+                });
         }
     </script>
 </asp:Content>

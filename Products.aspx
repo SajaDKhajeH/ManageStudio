@@ -277,7 +277,7 @@
                     ShowError(res.message);
                 }
             }, function () {
-                alert("error");
+                toastr.error("خطا در دریافت اطلاعات", "خطا");
             });
         };
 
@@ -450,7 +450,7 @@
                     ShowError(res.message);
                 }
             }, function () {
-                alert("error");
+                toastr.error("خطا در ذخیره اطلاعات", "خطا");
             });
         };
 
@@ -482,9 +482,9 @@
                     }
                 },
                     function () {
-                        alert("error");
+                        toastr.error("خطا در حذف اطلاعات", "خطا");
                     });
             }
-        };
+        }
     </script>
 </asp:Content>

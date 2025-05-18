@@ -345,9 +345,9 @@
                         ShowError(res.message);
                     }
                 },
-                function () {
-                    alert("error");
-                });
+                    function () {
+                        alert("error");
+                    });
             }
         };
         function EditBasicData(id) {
@@ -427,9 +427,7 @@
         });
         function fillInfo() {
             fillCmbCategories(function () {
-                fillCmbFilters(function () {
-                    loadTableDataBasicData();
-                });
+                loadTableDataBasicData();
             });
 
         }
@@ -440,19 +438,11 @@
                 ).join('');
                 options += `<option value='${1001}'>وضعیت فاکتور</option>`;
                 $("#d_Typeid").html(options);
-                callback();
-            });
-        }
-        function fillCmbFilters(callback) {
-            ajaxGet('/BasicData/GetCategories', function (items) {
-                let options = items.map(item =>
-                    `<option value='${item.id}'>${item.title}</option>`
-                ).join('');
-                options += `<option value='${1001}'>وضعیت فاکتور</option>`;
                 $("#filter_typeId").html(options);
                 callback();
             });
         }
+
         // صفحه بعد
         $("#nextPageBtn").click(function () {
             pageIndex++;
