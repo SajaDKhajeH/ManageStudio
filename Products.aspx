@@ -336,15 +336,13 @@
                 groupId = 0;
             }
             pageSize = parseInt($("#s_pageSize").val());
+            const tbody = $("#dt_Products");
+            tbody.empty();
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}&groupId=${groupId}`;
             ajaxGet('/Product/GetProducts' + query, function (res) {
                 const data = res.items;
                 const totalRecords = res.totalCount;
-                const tbody = $("#dt_Products");
 
-                tbody.empty(); // پاک کردن داده‌های قدیمی
-
-                // اضافه کردن داده‌های جدید
                 data.forEach(row => {
                     let actions =
                         `
@@ -363,8 +361,8 @@
                 <tr>
                     <td>${row.groupTitle}</td>
                     <td>${row.title}</td>
-                    <td>${row.buyPrice}</td>
-                    <td>${row.salePrice}</td>
+                    <td>${CurrencyFormatted(row.buyPrice)}</td>
+                    <td>${CurrencyFormatted(row.salePrice)}</td>
                     <td>${(row.checkInventory ? "بله" : "خیر")}</td>
                     <td>${row.inventory}</td>
                     <td>${status}</td>
@@ -373,10 +371,8 @@
             `);
                 });
 
-                // بروزرسانی صفحه فعلی
-                $("#pageIndex").text(pageIndex);
+                $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
-                // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);
                 $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
             },
@@ -412,11 +408,15 @@
                 pariority = "0";
             }
             if (parseInt(Inventory) == undefined) {
-                alert("لطفا موجودی را بدرستی وارد کنید");
+                toastr.warning("لطفا موجودی را بدرستی وارد کنید","موجودی");
                 return;
             }
             if (parseInt(pariority) == undefined) {
-                alert("لطفا ترتیب نمایش را بدرستی وارد کنید");
+                toastr.warning("لطفا ترتیب نمایش را بدرستی وارد کنید","ترتیب نمایش");
+                return;
+            }
+            if (!Title) {
+                toastr.warning("لطفا عنوان کالا را وارد کنید", "عنوان کالا");
                 return;
             }
             var desc = document.getElementById("p_desc").value;

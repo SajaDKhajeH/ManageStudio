@@ -1,5 +1,5 @@
 ﻿function getHospitalsForCMBAsync(required, callBack) {
-    const defaultOption = '<option value="0">انتخاب بیمارستان</option>';
+    const defaultOption = '<option value="">انتخاب بیمارستان</option>';
     ajaxGet('/BasicData/Hospitals', function (hospitals) {
         let hospitalOptions = hospitals.map(hospital =>
             `<option value='${hospital.id}'>${hospital.title}</option>`
@@ -16,7 +16,7 @@ function fillHospitalsCMBAsync(cmbId, required) {
     });
 }
 function getPhotoTopicsForCMBAsync(required, callBack) {
-    const defaultOption = '<option value="0">انتخاب موضوع</option>';
+    const defaultOption = '<option value="">انتخاب موضوع</option>';
     ajaxGet('/BasicData/PhotoTopics', function (items) {
         let options = items.map(item =>
             `<option value='${item.id}'>${item.title}</option>`

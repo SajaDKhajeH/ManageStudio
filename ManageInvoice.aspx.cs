@@ -1,17 +1,12 @@
-﻿using Bank;
-using Microsoft.Ajax.Utilities;
+﻿using ApiModels;
+using Bank;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Services;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using static Family;
-using System.IO;
-using static Stimulsoft.Report.StiRecentConnections;
 
 namespace AdakStudio
 {
@@ -23,11 +18,14 @@ namespace AdakStudio
 
         protected static void CloseConnectios(Bank.AdakBankDataContext db)
         {
-            try { db.Transaction?.Rollback(); } catch { };
-            try { db.Connection.Close(); } catch { };
+            try { db.Transaction?.Rollback(); } catch { }
+            ;
+            try { db.Connection.Close(); } catch { }
+            ;
             try
             { db.Dispose(); }
-            catch { };
+            catch { }
+            ;
         }
         [WebMethod]
         public static OperationResult<ForGrid.DataTableModel> ForGrid(
@@ -446,27 +444,38 @@ namespace AdakStudio
             };
         }
         [WebMethod]
-        public static dynamic PrintFactor(long id)
+        public static dynamic PrintFactor(Guid id)
         {
             try
             {
-                var data = AdakDB.Db.usp_Factor_Select_Product(id).ToList();
-                var factorDetail = AdakDB.Db.usp_Factor_Detail(id).Single();
-
+                string route = "/Invoice/GetForPrint?id=" + id;
+                var res = Task.Run(() =>
+                {
+                    return MyHttpClient.Instance.GetAsync<GetInvoiceForPrint>(route);
+                }).Result;
+                if (!res.Success)
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = res.Message
+                    };
+                }
+                var factorDetail = res.Data;
                 var variables = new Dictionary<string, string>
                 {
-                    { "ModPrice", (factorDetail.ModPrice ?? 0).ToString() },
-                    { "PaidPrice", (factorDetail.PaidPrice ?? 0).ToString() },
-                    { "DiscountPrice", (factorDetail.DiscountPrice ?? 0).ToString() },
+                    { "ModPrice", factorDetail.ModPrice.ToString() },
+                    { "PaidPrice", factorDetail.PaidPrice.ToString() },
+                    { "DiscountPrice", factorDetail.DiscountPrice.ToString() },
                     { "FamilyTitle", factorDetail.FamilyTitle },
-                    { "FactorDate", factorDetail.FactorDate },
-                    { "FactorDesc", factorDetail.FactorDesc },
-                    { "FactorTitle", factorDetail.FactorTitle },
+                    { "FactorDate", factorDetail.Date },
+                    { "FactorDesc", factorDetail.Desc },
+                    { "FactorTitle", factorDetail.Title },
                 };
                 //string url = $"files/temp/{Guid.NewGuid().ToString("N")}.jpg";
-                string url = $"Files/Factors/{factorDetail.UniqueKey}.jpg";
+                string url = $"Files/Factors/{id}.jpg";
                 bool ok = AdakStiReportBuilder.WithName("invoice.mrt")
-                     .WithData(data)
+                     .WithData(factorDetail.Product)
                      .WithVaiables(variables)
                      .SaveImage(url);
 
@@ -514,7 +523,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا صندوق و بانک رو مشخص کنید" +Environment.NewLine +"برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
+                    Message = "لطفا صندوق و بانک رو مشخص کنید" + Environment.NewLine + "برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
                 };
             }
             if (PaidPrice <= 0)

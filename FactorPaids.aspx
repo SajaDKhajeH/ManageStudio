@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="FactorPaids.aspx.cs" Inherits="FactorPaids" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="Head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
         <div id="kt_content_container" class="container-xxl">
             <div class="card">
@@ -21,12 +21,12 @@
                                 </div>
                                 <div class="col-md-2">
                                     <select id="filter_Family" data-dropdown-parent="#kt_post" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" data-placeholder="انتخاب مشتری">
-                                        <%Response.Write(PublicMethod.GetCustomer()); %>
+                                        <option value="">انتخاب خانواده</option>
                                     </select>
                                 </div>
-                                 <div class="col-md-2">
+                                <div class="col-md-2">
                                     <select id="filter_PaidType">
-                                        <%Response.Write(PublicMethod.GetPaidType(true)); %>
+                                        <option value="">انتخاب نوع پرداخت</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -38,7 +38,7 @@
                                     <tr>
                                         <th class="min-w-50px">ردیف</th>
                                         <th class="min-w-130px">عنوان خانواده</th>
-                                        <th class="min-w-100px">مبلغ پرداختی</th>
+                                        <th id="lblPrice" class="min-w-100px">مبلغ پرداختی</th>
                                         <th class="min-w-100px">طریقه پرداخت</th>
                                         <th class="min-w-100px">شماره پیگیری</th>
                                         <th class="min-w-100px">صندوق/بانک</th>
@@ -73,9 +73,9 @@
     </div>
 
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="End" Runat="Server">
+<asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
-        let pageIndex = 1;
+        let pageIndex = 0;
         let pageSize = 5;
         function PaidDelete(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
@@ -104,6 +104,7 @@
                 });
             }
         };
+
         function loadTableDataPaids() {
             var filter_From_Date = $("#filter_From_Date").val();
             var filter_To_Date = $("#filter_To_Date").val();
@@ -111,69 +112,103 @@
             var filter_PaidType = $("#filter_PaidType").val();
             var searchText = $("#filterInput").val();
             pageSize = parseInt($("#s_pageSize").val());
-            $.ajax({
-                type: "POST",
-                url: "FactorPaids.aspx/ForGrid",
-                data: JSON.stringify({ page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText, PaidType: filter_PaidType }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    var totalRecords = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_Paid");
-                    $("#sumPricePaids").text(response.d.Message);
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
+            if (!filter_Family)
+                filter_Family = '';
 
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
-                        <tr>
-                            <td>${row.Row}</td>
-                            <td>${row.FamilyTitle}</td>
-                            <td>${row.PaidPrice}</td>
-                            <td>${row.PaidType}</td>
-                            <td>${row.RefNumber}</td>
-                            <td>${row.CashBankTitle}</td>
-                            <td>${row.SubjectText}</td>
-                            <td>${row.Causer}</td>
-                            <td>${row.Date_A_TimePaid}</td>
-                            <td>${row.Actions}</td>
-                        </tr>
-                    `);
-                    });
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}`;
+            query += `&fromDate=${filter_From_Date}&toDate=${filter_To_Date}`;
+            query += `&familyId=${filter_Family}&payTypeId=${filter_PaidType}`;
 
-                    // بروزرسانی صفحه فعلی
-                    $("#pageIndex").text(pageIndex);
-                    $("#countAllTable").text(totalRecords);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
-                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
-                },
-                error: function () {
-                    alert("خطا در دریافت داده‌ها");
-                }
-            });
+            const tbody = $("#dt_Paid");
+            tbody.empty();
+
+            ajaxGet('/Pay/GetPayments' + query, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
+
+
+                let sumPrice = 0;
+
+                data.forEach(row => {
+
+                    sumPrice += row.price;
+
+                    let actions =
+                        `
+                <div class='action-buttons'>
+                        <button class='btnDataTable btnDataTable-delete' onclick='PaidDelete("${row.id}")' title='حذف'>🗑</button>
+                </div>
+                        `;
+
+                    tbody.append(`
+     <tr>
+         <td>${0}</td>
+         <td>${row.family}</td>
+         <td>${row.price}</td>
+         <td>${row.payType}</td>
+         <td>${row.trackingCode}</td>
+         <td>${row.fundAndBank}</td>
+         <td>${row.desc}</td>
+         <td>${row.createdBy}</td>
+         <td>${row.creationTime}</td>
+         <td>${actions}</td>
+     </tr>
+ `);
+
+                });
+                $("#sumPricePaids").text(CurrencyFormatted(sumPrice) + ' ' + currency);
+
+                $("#pageIndex").text(pageIndex);
+                $("#countAllTable").text(totalRecords);
+                $("#prevPageBtn").prop("disabled", pageIndex === 0);
+                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+            },
+                function () {
+                    toastr.error("خطا در دریافت اطلاعات", "خطا");
+                });
         }
-        // صفحه قبل
         $("#prevPageBtn").click(function () {
             pageIndex--;
             loadTableDataPaids();
         });
 
-        // اعمال فیلتر
         $("#filterBtn").click(function () {
-            pageIndex = 1;
+            pageIndex = 0;
             loadTableDataPaids();
         });
-        // صفحه بعد
         $("#nextPageBtn").click(function () {
             pageIndex++;
             loadTableDataPaids();
         });
+        function fillFamiliesAsync() {
+            const defaultOption = '<option value="">انتخاب خانواده</option>';
+            ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#filter_Family').html(defaultOption + options);
+            });
+        }
+        function fillPayTypes() {
+            const defaultOption = '<option value="">انتخاب نوع پرداخت</option>';
+            ajaxGet('/BasicData/PayTypes', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+
+                $('#filter_PaidType').html(defaultOption + options);
+            });
+        }
+        function fillInfo() {
+            fillFamiliesAsync();
+            fillPayTypes();
+            loadTableDataPaids();
+        }
         $(document).ready(function () {
+            $("#lblPrice").text(`مبلغ(${currency})`);
             $("#master_PageTitle").text("مدیریت پرداختی ها");
             $("#s_pageSize").val("5");
-            loadTableDataPaids();
+            fillInfo();
             $('#filter_From_Date').persianDatepicker({
                 format: 'YYYY/MM/DD',
                 initialValue: false,

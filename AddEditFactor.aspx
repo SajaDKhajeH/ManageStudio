@@ -456,9 +456,9 @@
         let Productitems = [];
 
         function addItem(Id, price, title, gtitle) {
-            const existingItem = Productitems.find(item => item.ProductId == Id);
+            const existingItem = Productitems.find(item => item.productId == Id);
             if (existingItem) {
-                existingItem.quantity++;
+                existingItem.count++;
             } else {
                 Productitems.push({
                     productTitle: title,
@@ -487,9 +487,9 @@
                 row.innerHTML = `
                 <td><input onclick="UpdateIsGift(${index},this.checked)" name="IsGift" class="form-check-input" type="checkbox" ${item.isGift ? "checked" : ""}/></td>
                 <td>${item.productGroupTitle}-${item.productTitle}</td>
-                <td><input type="number" value="${item.count}" min="1" max="100" onchange="updateQuantity(${index}, this.value)"></td>
+                <td><input type="number" value="${item.count}" min="1" max="100" onchange="updateCount(${index}, this.value)"></td>
                 <td><input type="text" value="${CurrencyFormatted(item.price)}" min="1" max="100000000" disabled></td>
-                <td><textarea onchange="updateNotes(${index}, this.value)">${item.desc}</textarea></td>
+                <td><textarea onchange="updateDesc(${index}, this.value)">${item.desc}</textarea></td>
                 <td><input type="number" maxlength="110" value="${item.shotCount}" onchange="updateShotCount(${index}, this.value)"></td>
                 <td><button class="btn btn-danger" onclick="removeItem(${index})">حذف</button></td>
             `;
@@ -512,8 +512,8 @@
             document.getElementById("payableAmount").textContent = CurrencyFormatted(payable);
         }
 
-        function updateQuantity(index, quantity) {
-            Productitems[index].quantity = parseInt(quantity, 10);
+        function updateCount(index, count) {
+            Productitems[index].count = parseInt(count, 10);
             updateTable();
         }
         function updateShotCount(index, shotCount) {
@@ -528,8 +528,8 @@
             updateTable();
         }
 
-        function updateNotes(index, notes) {
-            Productitems[index].notes = notes;
+        function updateDesc(index, desc) {
+            Productitems[index].desc = desc;
         }
         function removeItem(index) {
             Productitems.splice(index, 1);
@@ -556,6 +556,24 @@
             var PhotographerId = document.getElementById("factor_Photographer").value;
             var ForceDesign = $("#factor_ForceDesign").prop("checked");
             var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
+
+            if (!factor_Date) {
+                toastr.warning('لطفاً تاریخ فاکتور را مشخص کنید', 'تاریخ فاکتور');
+                return;
+            }
+            if (!TypePhotography) {
+                toastr.warning('لطفاً موضوع عکاسی را مشخص کنید', 'موضوع عکاسی');
+                return;
+            }
+            if (!factor_status) {
+                toastr.warning('لطفاً وضعیت فاکتور را مشخص کنید', 'وضعیت فاکتور');
+                return;
+            }
+            if (!Productitems || Productitems.length == 0) {
+                toastr.warning('لطفا اقلام فاکتور را مشخص کنید', 'اقلام فاکتور');
+                return;
+            }
+
             btnAddEdit_ChangeDisable(btn_SetFactor, true);
             //data: JSON.stringify({
             //    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,

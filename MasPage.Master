@@ -1388,31 +1388,36 @@
             var turn_Location = document.getElementById("turn_Location").value;
             var turn_Photographer = document.getElementById("turn_Photographer").value;
             btnAddEdit_ChangeDisable(btn_AddEditRequeest, true);
-            $.ajax({
-                type: "POST",
-                url: "Dashboard.aspx/SetRequestOnMaster",
-                data: JSON.stringify({
-                    requestId: requestIdForEditTurnDate_A_Time, turn_Date: turn_Date, turn_Time: turn_Time,
-                    selectedFamily: selectedFamily, turnType: turn_Type, desc: turn_desc,
-                    Duration: parseInt(turn_Duration), Location: turn_Location, Photographer: turn_Photographer
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
-                    if (msg.d.Result == false) {//خطا داریم
-                        ShowError(msg.d.Message);
-                    }
-                    else {
-                        closeModalRequest();
-                        loadAppointments(0);
-                        toastr.success(msg.d.Message, "موفق");
-                    }
-                },
-                error: function () {
-                    btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
-                    alert("error");
+            let createScheduleCommand =
+            {
+                id: requestIdForEditTurnDate_A_Time,
+                date: turn_Date,
+                time: turn_Time,
+                duration: parseInt(turn_Duration),
+                desc: turn_desc,
+                familyId: selectedFamily,
+                photographerId: turn_Photographer ? turn_Photographer : null,
+                locationId: turn_Location ? turn_Location : null,
+                PhotoTopicId: turn_Type ? turn_Type : null,
+            };
+            let method = 'POST';
+            let route = '/Schedule/Create';
+            if (requestIdForEditTurnDate_A_Time != '') {
+                method = 'PUT';
+                route = '/Schedule/Update';
+            }
+            ajaxAuthCall(method, route, createScheduleCommand, function (res) {
+                btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
+                if (res.success) {
+                    toastr.success('اطلاعات خانواده ذخیره شد', "موفق");
+                    closeModalRequest();
+                    loadAppointments(0);
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function () {
+                btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
             });
         }
     </script>
@@ -1682,11 +1687,11 @@
             var childBirthDateArray = [];
             for (var i = 0; i < childNames.length; i++) {
                 if (childNames[i].value.trim() == "") {
-                    alert("لطفا نام فرزند را مشخص کنید");
+                    toastr.warning('لطفا نام فرزند را مشخص کنید', 'نام فرزند');
                     return;
                 }
                 if (childBirthDates[i].value.trim() == "") {
-                    alert("لطفا تاریخ تولد فرزند را مشخص کنید");
+                    toastr.warning('لطفا تاریخ تولد فرزند را مشخص کنید', 'تاریخ تولد فرزند');
                     return;
                 }
                 childHospitalArray.push(childHospitals[i].value);
@@ -1746,7 +1751,7 @@
                     firstName: childNamesArray[index],
                     gender: childSexArray[index] ? 1 : 2,
                     birthDate: childBirthDateArray[index],
-                    hospitalId: childHospitalArray[index]
+                    hospitalId: childHospitalArray[index] ? childHospitalArray[index] : null
                 }))
             };
             let method = 'POST';
@@ -1766,11 +1771,9 @@
                 else {
                     ShowError(res.message);
                 }
-            },
-                function () {
-                    btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
-                }
-            );
+            }, function () {
+                btnAddEdit_ChangeDisable("btn_submitdataFamily", false);
+            });
         });
     </script>
     <script type="text/javascript">
@@ -1785,37 +1788,17 @@
             window.location.href = "Logout.aspx";
         };
         function GetCustomer_ForCombo() {
-            return;
-            $.ajax({
-                type: "POST",
-                url: "Family.aspx/GetCustomer_ForCombo",
-                data: JSON.stringify({
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var list = msg.d;
-                    //var factor_Family_Select = $('#factor_Family');
-                    var turn_family_Select = $('#turn_family');
-                    //factor_Family_Select.empty();
-                    turn_family_Select.empty();
-                    list.forEach(option => {
-                        const newOption = new Option(option.Title, option.Value, false, false);
-                        turn_family_Select.append(newOption);
-                    });
-
-                    //factor_Family_Select.select2();
-                    turn_family_Select.select2();
-                    if (list.length > 0) {
-                        //factor_Family_Select.val(list[0].Value).trigger('change');
-                        turn_family_Select.val(list[0].Value).trigger('change');
-                    }
-                },
-                error: function () {
-                    toastr.error("error-GetCustomer_ForCombo", "خطا");
+            ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#turn_family').html(options);
+                $('#turn_family').select2();
+                if (families.length > 0) {
+                    $('#turn_family').val(families[0].Value).trigger('change');
                 }
             });
-        };
+        }
         function formatNumber(value) {
             // حذف جداکننده‌ها
             value = value.replace(/,/g, "");
@@ -1965,7 +1948,7 @@
         function ajaxAuthCall(method, route, data, success, error) {
             let loginJson = getLocalStorage('login');
             let login = JSON.parse(loginJson);
-            let baseUrl = 'https://localhost:44393';
+            let baseUrl = '<%=Constants.BaseApiUrl%>';
             $.ajax({
                 type: method,
                 url: baseUrl + route,
@@ -1989,7 +1972,7 @@
                             }
                             error(err);
                         }
-                       
+
                     } else {
                         error(err);
                     }
@@ -2086,7 +2069,7 @@
                 });
             }
         });
-        
+
         function setViewByRole(role) {
             if (role == 'Admin' || role == "Secretary") {
                 $('#divAdminActions').removeAttr('hidden');
@@ -2123,23 +2106,23 @@
 
         }
     </script>
-      <div class="overlay" style="display:none" id="loader">
-    <div class="dot-progress">
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+    <div class="overlay" style="display: none" id="loader">
+        <div class="dot-progress">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
     </div>
-  </div>
     <script>
         function showProgress() {
             const loader = document.getElementById("loader");
-            loader.style.display = "flex"; 
-            document.body.classList.add("disable-scroll"); 
+            loader.style.display = "flex";
+            document.body.classList.add("disable-scroll");
         }
         function hideProgress() {
             const loader = document.getElementById("loader");
-            loader.style.display = "none"; 
-            document.body.classList.remove("disable-scroll"); 
+            loader.style.display = "none";
+            document.body.classList.remove("disable-scroll");
         }
     </script>
     <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>

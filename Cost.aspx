@@ -152,7 +152,7 @@
                                         <th class="min-w-130px">پرداخت کننده</th>
                                         <th class="min-w-100px">تاریخ پرداخت</th>
                                         <th class="min-w-120px">بابت</th>
-                                        <th class="min-w-130px">مبلغ</th>
+                                        <th id="lblPrice" class="min-w-130px">مبلغ</th>
                                         <th class="min-w-70px">نوع پرداخت</th>
                                         <th class="min-w-70px">پیگیری</th>
                                         <th class="min-w-100px">پرداخت به</th>
@@ -435,6 +435,7 @@
             fillPayTypes();
         }
         $(document).ready(function () {
+            $("#lblPrice").text(`مبلغ(${currency})`);
             fillInfo();
             $("#master_PageTitle").text("هزینه ها");
             $("#s_pageSize").val("5");
@@ -526,6 +527,8 @@
                 let sumPrice = 0;
                 data.forEach(row => {
 
+                    sumPrice += row.price;
+
                     let actions =
                         `
                 <div class='action-buttons'>
@@ -533,13 +536,12 @@
                         <button class='btnDataTable btnDataTable-delete' onclick='DeleteCost("${row.id}")' title='حذف'>🗑</button>
                 </div>
                         `;
-                    sumPrice += row.price;
                     tbody.append(`
                         <tr>
                             <td>${row.payFrom}</td>
                             <td>${row.date}</td>
                             <td>${row.expenseType}</td>
-                            <td>${row.price}</td>
+                            <td>${CurrencyFormatted(row.price)}</td>
                             <td>${row.payType}</td>
                             <td>${row.trackingCode}</td>
                             <td>${row.payTo}</td>
@@ -548,12 +550,11 @@
                             <td>${actions}</td>
                         </tr>
                     `);
-                    $("#sumPriceCost").text(sumPrice);
-
                 });
+                $("#sumPriceCost").text(CurrencyFormatted(sumPrice) + ' ' + currency);
 
                 // بروزرسانی صفحه فعلی
-                $("#pageIndex").text(pageIndex);
+                $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);

@@ -485,40 +485,27 @@
     <script>
         var load_monthlyTab = false;
         function LunarCalendar() {
-            $.ajax({
-                type: "POST",
-                url: "Dashboard.aspx/LunarCalendar",
-                data: JSON.stringify({
-
-                }),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    load_monthlyTab = true;
-                    const data = response.d.Data.data;
-                    const tbody = $("#dt_lunar");
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
+            ajaxGet('/Family/GetEvents', function (data) {
+                load_monthlyTab = true;
+                const tbody = $("#dt_lunar");
+                tbody.empty();
+                let rowIndex = 0;
+                data.forEach(row => {
+                    rowIndex += 1;
+                    tbody.append(`
                         <tr>
-                            <td>${row.Row}</td>
-                            <td>${row.FamilyTitle}</td>
-                            <td>${row.ChildName}</td>
-                            <td>${row.FatherFullName}</td>
-                            <td>${row.MotherFullName}</td>
-                            <td>${row.BirthDate}</td>
-                            <td>${row.MotherMobile}</td>
-                            <td>${row.FatherMobile}</td>
-                            <td>${row.Desc}</td>
+                            <td>${rowIndex}</td>
+                            <td>${row.familyTitle}</td>
+                            <td>${row.childName}</td>
+                            <td>${row.fatherName}</td>
+                            <td>${row.motherName}</td>
+                            <td>${row.birthDate}</td>
+                            <td>${row.motherMobile}</td>
+                            <td>${row.fatherMobile}</td>
+                            <td>${row.desc}</td>
                         </tr>
                     `);
-                    });
-                },
-                error: function () {
-                    toastr.error("خطا در دریافت اطلاعات", "خطا");
-                }
+                });
             });
         }
         document.querySelectorAll(".tab-button").forEach(button => {

@@ -8,6 +8,7 @@
         RouteConfig.RegisterRoutes(System.Web.Routing.RouteTable.Routes);
         string baseUrl = HttpContext.Current.Server.MapPath("~");
         AdakLogger.Init(baseUrl);
+        MyHttpClient.Init();
     }
     void Application_End(object sender, EventArgs e)
     {

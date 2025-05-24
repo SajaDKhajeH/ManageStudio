@@ -137,7 +137,7 @@
 </body>
 </html>
 <script type="text/javascript">
-    let baseUrl = 'https://localhost:44393';
+    let baseUrl = '<%=Constants.BaseApiUrl%>';
 
     //====دریافت مجدد کپچا====\\
     function RegenerateCaptchaImage() {
@@ -310,7 +310,6 @@
         
     }
     function ajaxGet(route, success, error) {
-        let baseUrl = 'https://localhost:44393';
         $.ajax({
             type: 'GET',
             url: baseUrl + route,
