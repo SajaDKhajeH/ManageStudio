@@ -317,27 +317,40 @@
                 daysRow.appendChild(dayDiv);
             });
         };
+        function ajaxGetSync(route, success, error) {
+            ajaxAuthCall('GET', route, null, success, error, false);
+        }
         // گرفتن نوبت‌ها برای روز خاص
         const getAppointmentsForDay = (dayIndex) => {
             var sampleAppointments = [
-                { hour: 0, time: '', title: '', RequestId: 0, Date: "", TurnId: "", TurnTitle: "", Desc: "", BaseFamilyTitle: "", PhotographerId: "", Duration: 0, LocationId: "", LocationTitle: "", ModPrice: 0, DurationText: "", PhotographerName: "", FamilyId: 0, FamilyTitle: "", BedPrice:0 }
-            ];
-            $.ajax({
-                type: "POST",
-                url: "Dashboard.aspx/GetTurns_By_Date",
-                data: JSON.stringify({
-                    date: selectedDate
-                }),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    sampleAppointments = msg.d;
-                },
-                error: function () {
-                    toastr.error("خطا در دریافت اطلاعات", "خطا");
-                    sampleAppointments = [];
+                {
+                    hour: 0,
+                    time: '',
+                    title: '',
+                    id: "",
+                    date: "",
+                    turnId: "",
+                    turnTitle: "",
+                    desc: "",
+                    baseFamilyTitle: "",
+                    photographerId: "",
+                    duration: 0,
+                    locationId: "",
+                    locationTitle: "",
+                    modPrice: 0,
+                    durationText: "",
+                    photographerName: "",
+                    familyId: "",
+                    familyTitle: "",
+                    bedPrice: 0
                 }
+            ];
+            let query = '?date=' + selectedDate;
+            ajaxGetSync('/Schedule/GetAllSchedules' + query, function (res) {
+                sampleAppointments = res;
+            }, function (err) {
+                toastr.error("خطا در دریافت اطلاعات", "خطا");
+                sampleAppointments = [];
             });
             return sampleAppointments;
         };
@@ -368,27 +381,27 @@
                         //دیو برای ویرایش نوبت
                         const appointmentDiv = document.createElement('div');
                         appointmentDiv.className = 'appointment';
-                        locationTitle = app.LocationTitle == null || app.LocationTitle == undefined ? "" : " " + app.LocationTitle;
-                        if (app.Duration > 0) {
-                            DurationText = " مدت زمان:" + app.DurationText;
+                        locationTitle = app.locationTitle == null || app.locationTitle == undefined ? "" : " " + app.locationTitle;
+                        if (app.duration > 0) {
+                            DurationText = " مدت زمان:" + app.durationText;
                         }
-                        appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.time} - ${app.TurnTitle} - ${app.Desc} ${locationTitle} ${DurationText}`;
-                        appointmentDiv.ondblclick = () => updateTurn(app.RequestId, app.time, app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.PhotographerId, app.Duration, app.LocationId);
+                        appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.time} - ${app.turnTitle} - ${app.desc} ${locationTitle} ${DurationText}`;
+                        appointmentDiv.ondblclick = () => updateTurn(app.id, app.time, app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId);
                         appointmentsCell.appendChild(appointmentDiv);
                         //افزودن یک باتن برای حذف نوبت
                         const appointmentBtnDel = document.createElement('button');
                         appointmentBtnDel.className = 'btnDataTable btnDataTable-delete';
                         appointmentBtnDel.textContent = `🗑`;
-                        appointmentBtnDel.onclick = () => RequestDelete(app.RequestId);
+                        appointmentBtnDel.onclick = () => RequestDelete(app.id);
                         appointmentsCell.appendChild(appointmentBtnDel);
                         //کلید دریافت بیعانه
                         const appointmentBtnPay = document.createElement('button');
                         appointmentBtnPay.className = 'btnDataTable btnDataTable-print';
                         appointmentBtnPay.textContent = `💰`;
-                        appointmentBtnPay.id = "btnPayTurn" + app.RequestId;
+                        appointmentBtnPay.id = "btnPayTurn" + app.id;
                         appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
                         appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
-                        appointmentBtnPay.onclick = () => PayDeposit(app.FamilyId, "دریافت بیعانه از " + app.BaseFamilyTitle, app.BedPrice);
+                        appointmentBtnPay.onclick = () => PayDeposit(app.familyId, "دریافت بیعانه از " + app.baseFamilyTitle, app.bedPrice);
                         appointmentsCell.appendChild(appointmentBtnPay);
 
                         //کلید ثبت فاکتور
@@ -396,8 +409,8 @@
                         appointmentBtnSetFactor.className = 'btnDataTable btnDataTable-print';
                         appointmentBtnSetFactor.textContent = `📜`;
                         appointmentBtnSetFactor.title = "ثبت فاکتور";
-                        appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.RequestId;
-                        appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.RequestId);
+                        appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.id;
+                        appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.id);
                         appointmentsCell.appendChild(appointmentBtnSetFactor);
                     });
                     beforTime = time;
@@ -422,18 +435,18 @@
                 //دیو برای ویرایش نوبت
                 const appointmentDiv = document.createElement('div');
                 appointmentDiv.className = 'appointment';
-                locationTitle = app.LocationTitle == null || app.LocationTitle == undefined ? "" : " " + app.LocationTitle;
-                if (app.Duration > 0) {
-                    DurationText = " مدت زمان:" + app.DurationText;
+                locationTitle = app.locationTitle == null || app.locationTitle == undefined ? "" : " " + app.locationTitle;
+                if (app.duration > 0) {
+                    DurationText = " مدت زمان:" + app.durationText;
                 }
-                appointmentDiv.innerHTML = `${app.title} - ${app.TurnTitle} - ${app.Desc} ${locationTitle} ${DurationText}`;
-                appointmentDiv.ondblclick = () => updateTurn(app.RequestId, "", app.Date, app.BaseFamilyTitle, app.TurnId, app.Desc, app.PhotographerId, app.Duration, app.LocationId);
+                appointmentDiv.innerHTML = `${app.title} - ${app.turnTitle} - ${app.desc} ${locationTitle} ${DurationText}`;
+                appointmentDiv.ondblclick = () => updateTurn(app.id, "", app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId);
                 appointmentsCellRezerv.appendChild(appointmentDiv);
                 //افزودن یک باتن برای حذف نوبت
                 const appointmentBtnDel = document.createElement('button');
                 appointmentBtnDel.className = 'btnDataTable btnDataTable-delete';
                 appointmentBtnDel.textContent = `🗑`;
-                appointmentBtnDel.onclick = () => RequestDelete(app.RequestId);
+                appointmentBtnDel.onclick = () => RequestDelete(app.id);
                 appointmentsCellRezerv.appendChild(appointmentBtnDel);
                 //کلید دریافت بیعانه
                 const appointmentBtnPay = document.createElement('button');
@@ -441,7 +454,7 @@
                 appointmentBtnPay.textContent = `💰`;
                 appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
                 appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
-                appointmentBtnPay.onclick = () => PayDeposit(app.FamilyId, "دریافت بیعانه از " + app.BaseFamilyTitle, app.BedPrice);
+                appointmentBtnPay.onclick = () => PayDeposit(app.familyId, "دریافت بیعانه از " + app.baseFamilyTitle, app.bedPrice);
                 appointmentsCellRezerv.appendChild(appointmentBtnPay);
 
                 //کلید ثبت فاکتور
@@ -449,8 +462,8 @@
                 appointmentBtnSetFactor.className = 'btnDataTable btnDataTable-print';
                 appointmentBtnSetFactor.textContent = `📜`;
                 appointmentBtnSetFactor.title = "ثبت فاکتور";
-                appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.RequestId;
-                appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.RequestId);
+                appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.id;
+                appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.id);
                 appointmentsCell.appendChild(appointmentBtnSetFactor);
             });
             schedule.appendChild(timeSlotRezerv);

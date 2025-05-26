@@ -919,7 +919,6 @@
                         <div class="col-md-6">
                             <label for="appointmentTime">موضوع</label>
                             <select id="turn_Type">
-                                <%Response.Write(PublicMethod.GetTypePhotographi()); %>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -963,13 +962,11 @@
                         <div class="col-md-6">
                             <label for="appointmentTime">لوکیشن</label>
                             <select id="turn_Location">
-                                <%Response.Write(PublicMethod.GetLocation()); %>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="appointmentTime">عکاس</label>
                             <select id="turn_Photographer">
-                                <%Response.Write(PublicMethod.GetPhotographer(true)); %>
                             </select>
                         </div>
                         <%--<div class="col-md-6">
@@ -1370,6 +1367,37 @@
                 });
             }
         };
+        function fillPhotoTopicsForSchedule() {
+            ajaxGet('/BasicData/PhotoTopics', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#turn_Type').html(options);
+            });
+        }
+        function fillLocationsForSchedule() {
+            const defaultOption = '<option value="">انتخاب لوکیشن</option>';
+            ajaxGet('/BasicData/Locations', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#turn_Location').html(defaultOption + options);
+            });
+        }
+        function fillPhotographersForSchedule() {
+            const defaultOption = '<option value="">انتخاب عکاس</option>';
+            ajaxGet('/User/GetAllPhotographers', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#turn_Photographer').html(defaultOption + options);
+            });
+        }
+        function fillScheduleCmbs(){
+            fillPhotoTopicsForSchedule();
+            fillLocationsForSchedule();
+            fillPhotographersForSchedule();
+        }
         // ذخیره نوبت
         function saveAppointment() {
             const turn_Date = document.getElementById("turn_Date").value;
@@ -1884,7 +1912,6 @@
         }
 
         $(document).ready(function () {
-            GetCustomer_ForCombo();
             document.getElementById("kt_aside_toggle").click();
             addFamily_FromHospital_Setting(false);
             $('.selectedShamsiDate').persianDatepicker({
@@ -1945,13 +1972,14 @@
         function ajaxDelete(route, success, error) {
             ajaxAuthCall('DELETE', route, null, success, error);
         }
-        function ajaxAuthCall(method, route, data, success, error) {
+        function ajaxAuthCall(method, route, data, success, error, isAsync = true) {
             let loginJson = getLocalStorage('login');
             let login = JSON.parse(loginJson);
             let baseUrl = '<%=Constants.BaseApiUrl%>';
             $.ajax({
                 type: method,
                 url: baseUrl + route,
+                async: isAsync,
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -2067,6 +2095,10 @@
                 getAllDiscoveryMethodsMaster(function () {
                     showMenusAsync();
                 });
+
+
+                GetCustomer_ForCombo();
+                fillScheduleCmbs();
             }
         });
 
