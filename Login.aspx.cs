@@ -14,11 +14,39 @@ namespace AdakStudio
 {
     public partial class Login : System.Web.UI.Page
     {
+        private Enamad enamadInfo;
+        protected Enamad EnamadInfo
+        {
+            get
+            {
+                if (enamadInfo != null)
+                    return enamadInfo;
+                enamadInfo = new Enamad()
+                {
+                     Title = "سامانه مدیریت آتلیه",
+                     MetaTag = ""
+                };
+                var domainName = HttpContext.Current?.Request.Url.Host;
+                if (!string.IsNullOrEmpty(domainName))
+                {
+                    if (domainName.ToLower().Contains("fereshtehstudio"))
+                    {
+                        enamadInfo.MetaTag = "<meta name=\"enamad\" content=\"15845718\" />";
+                        enamadInfo.Title = "15845718";
+                        return enamadInfo;
+                    }
+                }
+                return enamadInfo;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
-        
+        public class Enamad
+        {
+            public string MetaTag { get; set; }
+            public string Title { get; set; }
+        }
         [WebMethod]
         public static dynamic RegenerateCaptchaImage()
         {

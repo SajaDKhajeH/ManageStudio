@@ -5,14 +5,15 @@
 <html lang="en" direction="rtl" dir="rtl" style="direction: rtl">
 <head>
     <base href="../../../">
-    <title>سامانه مدیریت آتلیه</title>
+    <title><%Response.Write(EnamadInfo.Title);%></title>
     <meta name="description" content="" />
     <meta name="keywords" content="آتلیه" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="سامانه مدیریت آتلیه" />
+    <meta property="og:title" content="<%Response.Write(EnamadInfo.Title);%>" />
+    <%Response.Write(EnamadInfo.MetaTag);%>
     <meta property="og:url" content="https://keenthemes.com/metronic" />
     <meta property="og:site_name" content="Keenthemes | Metronic" />
     <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
