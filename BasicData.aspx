@@ -191,22 +191,46 @@
             }
             var error = function (err) {
             }
-            if (typeId == '1001') {
+            if (typeId == '1001' || typeId == '1002') {
                 var defulatsms = $("#d_defaultsms").val();
                 var SendForWomen = $("#d_SendForWomen").prop("checked");
                 var SendForMen = $("#d_SendForMen").prop("checked");
-                let createInvoiceStatusCommand =
-                {
-                    title: title,
-                    active: active,
-                    notificationTemplate: defulatsms,
-                    priority: priority,
-                    sendToFather: SendForMen,
-                    sendToMother: SendForWomen,
-                    isRemovable: true,
-                    isEditable: true
-                };
-                ajaxPost('/InvoiceStatus/Create', createInvoiceStatusCommand, success, error);
+
+                let route = '';
+                let method = 'POST';
+                if (typeId == '1001') {
+                    route = '/InvoiceStatus/Create';
+                    let createInvoiceStatusCommand =
+                    {
+                        id: d_id,
+                        title: title,
+                        active: active,
+                        notificationTemplate: defulatsms,
+                        priority: priority,
+                        sendToFather: SendForMen,
+                        sendToMother: SendForWomen,
+                        isRemovable: true,
+                        isEditable: true
+                    };
+                    ajaxAuthCall(method, route, createInvoiceStatusCommand, success, error);
+                } else if (typeId == '1002') {
+                    route = '/NotificationTemplate/Update';
+                    method = 'PUT';
+                    alert(d_id);
+                    let updateTemplateCommand =
+                    {
+                        id: parseInt(d_id),
+                        title: title,
+                        active: active,
+                        notificationTemplate: defulatsms,
+                        priority: priority,
+                        sendToFather: SendForMen,
+                        sendToMother: SendForWomen,
+                        isRemovable: true,
+                        isEditable: true
+                    };
+                    ajaxAuthCall(method, route, updateTemplateCommand, success, error);
+                }
             } else {
                 let createItemCommand =
                 {
@@ -350,70 +374,80 @@
                     });
             }
         };
-        function EditBasicData(id) {
-            $.ajax({
-                type: "POST",
-                url: "BasicData.aspx/EditData",
-                data: "{id:'" + id + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (res) {
-                    var result = res.d;
-                    if (result.Result == false) {//خطا داریم
-                        ShowError(result.Message);
+        function EditBasicData(id, filterTypeId) {
+            let query = `?id=${id}`;
+            let route = '';
+            if (filterTypeId == '1001') {
+                route = '/InvoiceStatus/Get';
+            } else if (filterTypeId == '1002') {
+                route = '/NotificationTemplate/Get';
+            } else {
+                route = '/BasicData/Get';
+            }
+            ajaxGet(route + query, function (res) {
+
+                if (res.success) {
+                    var result = res.data;
+                    editData = true;
+                    d_id = id.toString();
+                    $("#d_title").val(result.title);
+                    $("#d_active").prop("checked", result.active);
+                    //$("#d_desc").val(result.desc);
+                    $("#d_defaultsms").val(result.templateText);
+                    if (result.templateText) {
+                        document.getElementById('d_defaultsms').style.visibility = 'visible';
                     }
                     else {
-                        editData = true;
-                        d_id = id;
-                        $("#d_title").val(result.title);
-                        $("#d_active").prop("checked", result.active);
-                        //$("#d_desc").val(result.desc);
-                        $("#d_defaultsms").val(result.defaultsms);
-                        //$("#d_stateid").val(result.state);
-                        currentTypeId = result.typeId;
-                        $("#d_Typeid").val(result.typeId);
-                        $("#d_pariority").val(result.pari);
-                        $("#d_DurationForSend").val(result.D_DurationForSend);
-                        $("#d_DescForUser").val(result.D_DescForUser);
-                        $("#d_lbl_DusrationForSend").text(result.D_Desc_For_DurationForSend);
-                        $("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
-                        $("#d_KeywordSMS").text("کلید واژه ها: " + result.D_SmsKeys);
-                        $("#d_SendForMen").prop("checked", result.D_SendForMen);
-                        $("#d_SendForWomen").prop("checked", result.D_SendForWomen);
-                        document.getElementById("div_typeData").style.display = 'none';
-                        if (result.systematic) {
-                            document.getElementById("div_priority").style.display = 'none';
-                        }
-                        ShowDurationForSend = result.D_ShowDurationForSend ?? false;
-                        //نمایش مدت زمان ارسال پیام
-                        if (result.D_ShowDurationForSend ?? false) {
-                            div_DurationForSend.style.visibility = 'visible';
-                        }
-                        else {
-                            div_DurationForSend.style.visibility = 'hidden';
-                        }
-                        //توضیحات برای کاربر
-                        if (result.ShowDescForUser ?? false) {
-                            div_DescForUser.style.visibility = 'visible';
-                        }
-                        else {
-                            div_DescForUser.style.visibility = 'hidden';
-                        }
-                        //ارسال پیام به آقا یا خانم
-                        if (result.D_Show_SendFor_Men_Or_Women ?? false) {
-                            div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
-                        }
-                        else {
-                            div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
-                        }
-                        $("#d_Typeid").change();
+                        document.getElementById('d_defaultsms').style.visibility = 'hidden';
                     }
-                },
-                error: function () {
-                    ShowError("خطا در دریافت اطلاعات");
+                    //$("#d_stateid").val(result.state);
+                    currentTypeId = filterTypeId;
+                    $("#d_Typeid").val(filterTypeId);
+                    $("#d_pariority").val(result.priority);
+                    $("#d_DurationForSend").val(result.sendDaysToEvent);
+                    $("#d_DescForUser").val(result.descForUser);
+                    $("#d_lbl_DusrationForSend").text('روز مانده به ' + result.title);
+                    $("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
+                    $("#d_KeywordSMS").text("کلید واژه ها: " + result.keywords);
+                    $("#d_SendForMen").prop("checked", result.sendToFather);
+                    $("#d_SendForWomen").prop("checked", result.sendToMother);
+                    document.getElementById("div_typeData").style.display = 'none';
+                    if (result.systematic) {
+                        document.getElementById("div_priority").style.display = 'none';
+                    }
+
+                    //نمایش مدت زمان ارسال پیام
+                    ShowDurationForSend = filterTypeId == '1002';
+                    if (ShowDurationForSend) {
+                        div_DurationForSend.style.visibility = 'visible';
+                    }
+                    else {
+                        div_DurationForSend.style.visibility = 'hidden';
+                    }
+
+                    ////توضیحات برای کاربر
+                    if (result.descForUser) {
+                        div_DescForUser.style.visibility = 'visible';
+                    }
+                    else {
+                        div_DescForUser.style.visibility = 'hidden';
+                    }
+
+                    //ارسال پیام به آقا یا خانم
+                    if (filterTypeId == '1001' || filterTypeId == '1002') {
+                        div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
+                    }
+                    else {
+                        div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
+                    }
+                    $("#d_Typeid").change();
+                } else {
+                    ShowError(res.message);
                 }
+            }, function (err) {
+                ShowError("خطا در دریافت اطلاعات");
             });
-        };
+        }
     </script>
     <%-- این قسمت مربوط به دیتاتیبل هست --%>
     <script type="text/javascript">
@@ -437,6 +471,7 @@
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
                 options += `<option value='${1001}'>وضعیت فاکتور</option>`;
+                options += `<option value='${1002}'>متن پیشفرض پیام ها</option>`;
                 $("#d_Typeid").html(options);
                 $("#filter_typeId").html(options);
                 callback();
@@ -464,16 +499,18 @@
             pageSize = parseInt($("#s_pageSize").val());
             var filter_typeId = $("#filter_typeId").val();
             let route = '';
-            //let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}&groupId=${groupId}`;
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
             if (filter_typeId == '1001' || filter_typeId == 1001) {
                 route = '/InvoiceStatus/GetStatuses';
+            } else if (filter_typeId == '1002' || filter_typeId == 1002) {
+                route = '/NotificationTemplate/GetTemplates';
             } else {
-                route = '/BasicData/GetItems?category=' + filter_typeId;
+                route = '/BasicData/GetItems';
             }
 
             const tbody = $("#dt_BasicData");
             tbody.empty();
-            ajaxGet(route, function (res) {
+            ajaxGet(route + query, function (res) {
                 const data = res.items;
                 const totalRecords = res.totalCount;
 
@@ -483,11 +520,13 @@
                         if (!row.isRemovable) {
                             deleteAction = '';
                         }
+                    } else if (filter_typeId == '1002' || filter_typeId == 1002) {
+                        deleteAction = '';
                     }
                     let actions =
                         `
                 <div class='action-buttons'>
-                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_customer' onclick='EditBasicData("${row.id}")' title='ویرایش'>✎</button>
+                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_customer' onclick='EditBasicData("${row.id}","${filter_typeId}")' title='ویرایش'>✎</button>
                         ${deleteAction}
                         </div>
                 `;
@@ -502,7 +541,7 @@
                     tbody.append(`
                         <tr>
                             <td>${row.title}</td>
-                            <td>${row.priority}</td>
+                            <td>${(row.priority ? row.priority : '-')}</td>
                             <td>${status}</td>
                             <td>${actions}</td>
                         </tr>
