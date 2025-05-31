@@ -216,14 +216,13 @@
                 } else if (typeId == '1002') {
                     route = '/NotificationTemplate/Update';
                     method = 'PUT';
-                    alert(d_id);
                     let updateTemplateCommand =
                     {
                         id: parseInt(d_id),
                         title: title,
                         active: active,
                         notificationTemplate: defulatsms,
-                        priority: priority,
+                        priority: parseInt(priority),
                         sendToFather: SendForMen,
                         sendToMother: SendForWomen,
                         isRemovable: true,
@@ -234,12 +233,21 @@
             } else {
                 let createItemCommand =
                 {
+                    id: d_id,
                     title: title,
                     categoryId: typeId,
                     active: active,
                     priority: priority
                 };
-                ajaxPost('/BasicData/Create', createItemCommand, success, error);
+                if (d_id == '') {
+                    method = 'POST';
+                    route = '/BasicData/Create';
+                } else {
+                    method = 'PUT';
+                    route = '/BasicData/Update';
+                }
+
+                ajaxAuthCall(method, route, createItemCommand, success, error);
             }
 
             //var desc = ""; //$("#d_desc").val();
@@ -470,9 +478,11 @@
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
+
                 options += `<option value='${1001}'>وضعیت فاکتور</option>`;
-                options += `<option value='${1002}'>متن پیشفرض پیام ها</option>`;
                 $("#d_Typeid").html(options);
+
+                options += `<option value='${1002}'>متن پیشفرض پیام ها</option>`;
                 $("#filter_typeId").html(options);
                 callback();
             });

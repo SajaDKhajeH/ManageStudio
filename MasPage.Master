@@ -1415,7 +1415,14 @@
             }
             var turn_Location = document.getElementById("turn_Location").value;
             var turn_Photographer = document.getElementById("turn_Photographer").value;
+
+            if (!selectedFamily) {
+                toastr.warning('لطفاً ابتدا خانواده را مشخص کنید');
+                return;
+            }
+
             btnAddEdit_ChangeDisable(btn_AddEditRequeest, true);
+
             let createScheduleCommand =
             {
                 id: requestIdForEditTurnDate_A_Time,
@@ -1745,6 +1752,13 @@
             var m_BirthDate = $("#m_BirthDate").val();
             var f_MarriageDate = $("#f_MarriageDate").val();
             var f_InviteType = $("#f_InviteType").val();
+
+            if (!title) {
+                toastr.warning('لطفاً عنوان خانواده را وارد کنید', 'عنوان خانواده');
+                return;
+            }
+
+
             btnAddEdit_ChangeDisable("btn_submitdataFamily", true);
             var isEdit = familyId != null && familyId.length > 1;
 
