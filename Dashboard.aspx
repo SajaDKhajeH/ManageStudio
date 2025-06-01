@@ -351,7 +351,9 @@
                     bedPrice: 0
                 }
             ];
-            let query = '?date=' + selectedDate;
+            const d = new Date(selectedDate.toString());
+            const isoDate = d.toISOString();
+            let query = '?date=' + isoDate;
             ajaxGetSync('/Schedule/GetAllSchedules' + query, function (res) {
                 sampleAppointments = res;
                 for (var i = 0; i < sampleAppointments.length; i++) {
