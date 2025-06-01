@@ -354,6 +354,11 @@
             let query = '?date=' + selectedDate;
             ajaxGetSync('/Schedule/GetAllSchedules' + query, function (res) {
                 sampleAppointments = res;
+                for (var i = 0; i < sampleAppointments.length; i++) {
+                    let item = sampleAppointments[i];
+                    let title = `<a style='color: blue;text-decoration: underline;cursor: pointer' onclick='HideBtnAdd_Family("${item.familyId}")' data-bs-toggle='modal' data-bs-target='#modal_addedit_family'>${item.familyTitle}</a>`;
+                    item.title = title;
+                }
             }, function (err) {
                 toastr.error("خطا در دریافت اطلاعات", "خطا");
                 sampleAppointments = [];
@@ -391,7 +396,7 @@
                         if (app.duration > 0) {
                             DurationText = " مدت زمان:" + app.durationText;
                         }
-                        appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.time} - ${app.turnTitle} - ${app.desc} ${locationTitle} ${DurationText}`;
+                        appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.shortTime} - ${app.turnTitle} - ${app.desc} ${locationTitle} ${DurationText}`;
                         appointmentDiv.ondblclick = () => updateTurn(app.id, app.time, app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId);
                         appointmentsCell.appendChild(appointmentDiv);
                         //افزودن یک باتن برای حذف نوبت

@@ -1259,6 +1259,16 @@
             var pay_PaidPrice = $("#pay_PaidPrice").val();
             pay_PaidPrice = convertPersianToEnglishNumbers(pay_PaidPrice);
             pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");
+
+            if (!pay_PaidType) {
+                toastr.warning('لطفا طریقه پرداخت را مشخص کنید', 'طریقه پرداخت');
+                return;
+            }
+            if (!pay_Cash_A_Bank) {
+                toastr.warning('لطفا صندوق/بانک را مشخص کنید', 'صندوق/بانک');
+                return;
+            }
+
             let createPaymentCommand =
             {
                 familyId: familyId_ForPay,
@@ -1270,7 +1280,7 @@
             };
             ajaxPost('/Pay/Create', createPaymentCommand, function (res) {
                 if (res.success) {
-                    toastr.success('اوکی', "موفق");
+                    toastr.success('سند پرداخت ذخیره شد', "موفق");
                     CloseModalPayFactor();
                     if (location.href.includes("ManageInvoice")) {
                         loadTableDataFacotrs();

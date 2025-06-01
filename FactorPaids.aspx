@@ -80,27 +80,16 @@
         function PaidDelete(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
-                $.ajax({
-                    type: "POST",
-                    url: "FactorPaids.aspx/PaidDelete",
-                    data: JSON.stringify({
-                        id: id
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        var res = msg.d;
-                        if (msg.d.Result == false) {//خطا داریم
-                            ShowError(msg.d.Message);
-                        }
-                        else {
-                            toastr.success(msg.d.Message, "موفق");
-                            loadTableDataPaids();
-                        }
-                    },
-                    error: function () {
-                        alert("error");
+                let query = '?id=' + id;
+                ajaxDelete('/Pay/Delete' + query, function (res) {
+                    if (res.success) {
+                        toastr.success('سند پرداخت حذف شد', "موفق");
+                        loadTableDataPaids();
+                    } else {
+                        ShowError(res.message);
                     }
+                }, function (err) {
+
                 });
             }
         };
@@ -128,9 +117,9 @@
 
 
                 let sumPrice = 0;
-
+                let rowNum = 0;
                 data.forEach(row => {
-
+                    rowNum += 1;
                     sumPrice += row.price;
 
                     let actions =
@@ -142,7 +131,7 @@
 
                     tbody.append(`
      <tr>
-         <td>${0}</td>
+         <td>${rowNum}</td>
          <td>${row.family}</td>
          <td>${row.price}</td>
          <td>${row.payType}</td>
