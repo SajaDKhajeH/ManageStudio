@@ -269,7 +269,13 @@
         // تبدیل تاریخ میلادی به شمسی
         const toJalaliDate = (date) => {
             const formatter = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'short' });
-            return formatter.format(date);
+            //return formatter.format(date);
+            const parts = formatter.formatToParts(date);
+            const year = parts.find(part => part.type === 'year').value;
+            const month = parts.find(part => part.type === 'month').value.padStart(2, '۰');
+            const day = parts.find(part => part.type === 'day').value.padStart(2, '۰');
+
+            return `${year}/${month}/${day}`;
         };
 
         // گرفتن تاریخ شمسی آغاز هفته (شنبه)

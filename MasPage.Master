@@ -692,11 +692,9 @@
 
                         <label class="fs-6 fw-bold mb-2">طریقه پرداخت</label>
                         <select id="pay_PaidType" data-control="select" data-placeholder="نوع پرداخت" class="form-select form-select-solid fw-bolder mb-3">
-                            <%Response.Write(PublicMethod.GetPaidType()); %>
                         </select>
                         <label class="fs-6 fw-bold mb-2">صندوق/بانک</label>
                         <select id="pay_Cash_A_Bank" data-control="select" data-placeholder="صندوق/بانک" class="form-select form-select-solid fw-bolder mb-3">
-                            <%Response.Write(PublicMethod.GetCash_A_Bank()); %>
                         </select>
 
                         <label class="fs-6 fw-bold mb-2">شماره پیگیری</label>
@@ -1225,37 +1223,32 @@
             $("#pay_PaidPriceOnline").val(paidPrice);
             $("#pay_PaidPriceOnline").change();
             $("#header_modalSetPay").text(desc);
-            $.ajax({
-                type: "POST",
-                url: "Dashboard.aspx/GetInfoForPayBy_FamilyId",
-                data: JSON.stringify({
-                    familyId
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    $("#pay_smsMessage").val(res.SMSText);
-                    if (res.FatherHasMobile == false || res.MotherHasMobile == false) {
-                        document.getElementById('pay_sendSMSToDiv').style.display = 'none';
-                        if (res.FatherHasMobile) {
-                            $("#pay_sendSMSToLabel").text("ارسال پیام به " + res.FatherName);
-                            $("#pay_sendToMan").prop("checked", true);
-                            $("#pay_sendToWoman").prop("checked", false);
-                        }
-                        else if (res.MotherHasMobile) {
-                            $("#pay_sendSMSToLabel").text("ارسال پیام به" + res.MotherName);
-                            $("#pay_sendToWoman").prop("checked", true);
-                            $("#pay_sendToMan").prop("checked", false);
-                        }
-                    }
-                    else {
-                        $("#pay_sendSMSToLabel").text("ارسال به:");
-                    }
-                },
-                error: function () {
-                    alert("error");
+            let query = '?id=' + familyId;
+            ajaxGet('/Family/GetFamilyNotification' + query, function (res) {
+                if (!res.success) {
+                    alert(res.message);
+                    return;
                 }
+                let data = res.data;
+                $("#pay_smsMessage").val(data.notificationText);
+                if (data.fatherHasMobile == false || data.motherHasMobile == false) {
+                    document.getElementById('pay_sendSMSToDiv').style.display = 'none';
+                    if (data.fatherHasMobile) {
+                        $("#pay_sendSMSToLabel").text("ارسال پیام به " + data.fatherName);
+                        $("#pay_sendToMan").prop("checked", true);
+                        $("#pay_sendToWoman").prop("checked", false);
+                    }
+                    else if (data.motherHasMobile) {
+                        $("#pay_sendSMSToLabel").text("ارسال پیام به" + data.motherName);
+                        $("#pay_sendToWoman").prop("checked", true);
+                        $("#pay_sendToMan").prop("checked", false);
+                    }
+                }
+                else {
+                    $("#pay_sendSMSToLabel").text("ارسال به:");
+                }
+            }, function (err) {
+
             });
         };
         function SetPay() {
@@ -1266,44 +1259,36 @@
             var pay_PaidPrice = $("#pay_PaidPrice").val();
             pay_PaidPrice = convertPersianToEnglishNumbers(pay_PaidPrice);
             pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");
-            $.ajax({
-                type: "POST",
-                url: "ManageInvoice.aspx/SetPay",
-                data: JSON.stringify({
-                    familyId: familyId_ForPay,
-                    PaidPrice: parseInt(pay_PaidPrice),
-                    PaidType: pay_PaidType,
-                    RefNumber: pay_RefNumber,
-                    desc: pay_desc,
-                    cash_A_Bank: pay_Cash_A_Bank
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    var res = msg.d;
-                    if (res.Result == false) {//خطا داریم
-                        ShowError(res.Message);
+            let createPaymentCommand =
+            {
+                familyId: familyId_ForPay,
+                cashBankId: pay_Cash_A_Bank,
+                price: parseInt(pay_PaidPrice),
+                payTypeId: pay_PaidType,
+                trackingCode: pay_RefNumber,
+                desc: pay_desc
+            };
+            ajaxPost('/Pay/Create', createPaymentCommand, function (res) {
+                if (res.success) {
+                    toastr.success('اوکی', "موفق");
+                    CloseModalPayFactor();
+                    if (location.href.includes("ManageInvoice")) {
+                        loadTableDataFacotrs();
                     }
-                    else {
-                        toastr.success(res.Message, "موفق");
-                        CloseModalPayFactor();
-                        if (location.href.includes("ManageInvoice")) {
-                            loadTableDataFacotrs();
-                        }
-                        else if (location.href.includes("Dashboard")) {
-                            loadAppointments(currentIndex);
-                        }
-                        else if (location.href.includes("RequestStatus")) {
-                            GetFactors();
-                        }
-
-
+                    else if (location.href.includes("Dashboard")) {
+                        loadAppointments(currentIndex);
                     }
-                },
-                error: function () {
-                    alert("error");
+                    else if (location.href.includes("RequestStatus")) {
+                        GetFactors();
+                    }
                 }
+                else {
+                    ShowError(res.message);
+                }
+            }, function (err) {
+
             });
+
         }
     </script>
     <%-- اسکریپت مربوط به مدال ثبت درخواست --%>
@@ -1337,33 +1322,31 @@
             if (userResponse) {
                 var SendSMSCancelTurn = false;
                 var ActiveSMSCancel = false;
-                <%if (IsActiveSMSText_CancelTurn())
-        {  %>
-                ActiveSMSCancel = true;
-                <%}%>
-                if (ActiveSMSCancel) {
-                    SendSMSCancelTurn = confirm("آیا پیامک لغو برای خانواده ارسال شود؟");
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "Dashboard.aspx/RequestDelete",
-                    data: JSON.stringify({
-                        requestId: id,
-                        SendSMSCancelTurn
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        if (msg.d.Result == false) {//خطا داریم
-                            alert(msg.d.Message);
-                        }
-                        else {
-                            loadAppointments(0);
-                        }
-                    },
-                    error: function () {
-                        alert("error");
+                let route = '/Schedule/Delete?id=' + id;
+                ajaxDelete(route, function (res) {
+                    if (!res.success) {
+                        alert(res.message);
+                        return;
                     }
+                    if (res.data.isConfirmationNeeded) {
+                        SendSMSCancelTurn = confirm("آیا پیامک لغو برای خانواده ارسال شود؟");
+                        route += '&IsConfirmedSendNotif=' + SendSMSCancelTurn;
+                        ajaxDelete(route, function (res) {
+                            if (!res.success) {
+                                alert(res.message);
+                                return;
+                            }
+                            loadAppointments(0);
+                            toastr.success('نوبت لغو و پیامک اطلاع رسانی ارسال شد');
+                        }, function (err) {
+
+                        });
+                    } else {
+                        loadAppointments(0);
+                        toastr.success('نوبت لغو شد');
+                    }
+                }, function (err) {
+
                 });
             }
         };
@@ -1420,7 +1403,11 @@
                 toastr.warning('لطفاً ابتدا خانواده را مشخص کنید');
                 return;
             }
-
+            if (!turn_Type) {
+                toastr.warning('لطفاً ابتدا موضوع را مشخص کنید');
+                return;
+            }
+            
             btnAddEdit_ChangeDisable(btn_AddEditRequeest, true);
 
             let createScheduleCommand =
@@ -2113,8 +2100,29 @@
 
                 GetCustomer_ForCombo();
                 fillScheduleCmbs();
+                fillPayCmbs();
             }
         });
+        function fillPayType() {
+            ajaxGet('/BasicData/PayTypes', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#pay_PaidType').html(options);
+            });
+        }
+        function fillCashBank() {
+            ajaxGet('/BasicData/FundAndBanks', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#pay_Cash_A_Bank').html(options);
+            });
+        }
+        function fillPayCmbs() {
+            fillPayType();
+            fillCashBank();
+        }
 
         function setViewByRole(role) {
             if (role == 'Admin' || role == "Secretary") {
