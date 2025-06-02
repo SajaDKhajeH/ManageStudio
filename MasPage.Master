@@ -1386,7 +1386,7 @@
                 $('#turn_Photographer').html(defaultOption + options);
             });
         }
-        function fillScheduleCmbs(){
+        function fillScheduleCmbs() {
             fillPhotoTopicsForSchedule();
             fillLocationsForSchedule();
             fillPhotographersForSchedule();
@@ -1417,7 +1417,7 @@
                 toastr.warning('لطفاً ابتدا موضوع را مشخص کنید');
                 return;
             }
-            
+
             btnAddEdit_ChangeDisable(btn_AddEditRequeest, true);
 
             let createScheduleCommand =
@@ -1621,17 +1621,35 @@
             ajaxGet('/Family/GetFamily' + query, function (res) {
                 if (res.success) {
                     var data = res.data;
-                    $("#m_name").attr('m_name_id', data.mother.id);
-                    $("#m_name").val(data.mother.firstName);
-                    $("#m_lastname").val(data.mother.lastName);
-                    $("#m_mobile").val(data.mother.mobile);
-                    $("#m_BirthDate").val(data.mother.birthDate);
 
-                    $("#f_name").attr('f_name_id', data.father.id);
-                    $("#f_name").val(data.father.firstName);
-                    $("#f_lastname").val(data.father.lastName);
-                    $("#f_mobile").val(data.father.mobile);
-                    $("#f_BirthDate").val(data.father.birthDate);
+                    if (data.mother == null) {
+                        $("#m_name").attr('m_name_id', '');
+                        $("#m_name").val('');
+                        $("#m_lastname").val('');
+                        $("#m_mobile").val('');
+                        $("#m_BirthDate").val('');
+                    } else {
+                        $("#m_name").attr('m_name_id', data.mother.id);
+                        $("#m_name").val(data.mother.firstName);
+                        $("#m_lastname").val(data.mother.lastName);
+                        $("#m_mobile").val(data.mother.mobile);
+                        $("#m_BirthDate").val(data.mother.birthDate);
+                    }
+
+                    if (data.father == null) {
+                        $("#f_name").attr('f_name_id', '');
+                        $("#f_name").val('');
+                        $("#f_lastname").val('');
+                        $("#f_mobile").val('');
+                        $("#f_BirthDate").val('');
+                    } else {
+                        $("#f_name").attr('f_name_id', data.father.id);
+                        $("#f_name").val(data.father.firstName);
+                        $("#f_lastname").val(data.father.lastName);
+                        $("#f_mobile").val(data.father.mobile);
+                        $("#f_BirthDate").val(data.father.birthDate);
+                    }
+
 
                     $("#f_phone").val(data.phone);
                     $("#f_title").val(data.title);
@@ -1770,7 +1788,7 @@
                 active: archive,
                 discoveryMethodId: f_InviteType ? f_InviteType : null,
                 father: {
-                    id: f_id,
+                    id: isEdit ? (f_id ? f_id : null) : null,
                     firstName: f_name,
                     lastName: f_lastname,
                     mobile: f_mobile,
@@ -1778,7 +1796,7 @@
                     gender: 2
                 },
                 mother: {
-                    id: isEdit ? m_id : null,
+                    id: isEdit ? (m_id ? m_id : null) : null,
                     firstName: m_name,
                     lastName: m_lastname,
                     mobile: m_mobile,
