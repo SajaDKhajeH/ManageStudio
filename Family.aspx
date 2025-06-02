@@ -125,7 +125,7 @@
                                 <select id="filter_Causer">
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-none">
                                 <select id="filter_Hospital">
                                 </select>
                             </div>
@@ -177,7 +177,7 @@
                 let query = `?id=${id}`;
                 ajaxDelete('/Family/Delete' + query, function (res) {
                     if (res.success) {
-                        toastr.success(msg.d.Message, "موفق");
+                        toastr.success('خانواده با موفقیت حذف شد', "موفق");
                         loadTableDataFamily();
                         //GetCustomer_ForCombo();//TODO::????
                     }
@@ -185,8 +185,7 @@
                         ShowError(res.message);
                     }
                 },
-                    function () {
-                        alert("error");
+                    function (err) {
                     });
             }
         };

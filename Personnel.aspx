@@ -164,7 +164,6 @@
                                 <span class="required">نقش کاربر</span>
                             </label>
                             <select id="p_role" data-dropdown-parent="#kt_modal_add_personnel" data-control="select2" class="form-select form-select-solid select2-hidden-accessible">
-                                
                             </select>
                         </div>
                         <div class="row g-9 mb-7">
@@ -269,6 +268,17 @@
             //var showpopup = $("#p_showpopup").prop("checked");
             var desc = $("#p_desc").val();
             var roleid = $("#p_role").val();
+
+            if (!firstname) {
+                toastr.warning('لطفا نام را وارد نمایید', 'نام');
+                return;
+            }
+
+            if (!lastname) {
+                toastr.warning('لطفا نام خانوادگی را وارد نمایید', 'نام خانوادگی');
+                return;
+            }
+
             let createUserCommand =
             {
                 id: personId,
@@ -301,8 +311,7 @@
                 else {
                     ShowError(res.message);
                 }
-            }, function () {
-                alert("error");
+            }, function (err) {
             });
         });
         $('#btn_close').click(function () {
