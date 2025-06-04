@@ -277,13 +277,14 @@
             let params = new URLSearchParams(document.location.search);
             FirstLoad();
             factorId = params.get("id");
-            if (factorId == undefined || factorId == '0' || factorId == 0)
+            if (factorId == undefined || factorId == '0' || factorId == 0 || factorId == 'undefined')
                 factorId = '';
 
             turnId = parseInt(params.get("turnid"));
             if (isNaN(turnId)) {
                 turnId = 0;
             }
+
             if (factorId) {
                 GetInfoForEditFactor(factorId);
             }
@@ -356,8 +357,10 @@
             document.getElementById('factor_Family').style.display = 'block';
         }
         function GetLogs() {
-            if (!factorId)
-                document.getElementById('logList').innerHTML = "";
+            if (!factorId) {
+                document.getElementById('logList').innerHTML = "<span class='log-text'>فاکتور ذخیره نشده!</span>";
+                return;
+            }
 
             if (!getLogs) {
                 let query = '?invoiceId=' + factorId;
@@ -411,14 +414,14 @@
                     document.getElementById("factor_status").value = data.statusId;
                     document.getElementById("factor_Photographer").value = data.photographerId;
                     $("#factor_ForceDesign").prop("checked", data.forceDesign);
-                    $("#factor_OnlyEditedDelivered").prop("checked", data.onlyEditedDelivered);
+                    $("#factor_OnlyEditedDelivered").prop("checked", data.needEditedPictures);
                     updateTable();
                 }
                 else {
                     ShowError(res.message);
                 }
-            }, function () {
-                alert("error");
+            }, function (err) {
+                alert("error1");
             });
 
         };
@@ -439,7 +442,7 @@
                         }
                     },
                     error: function () {
-                        alert("error");
+                        alert("error2");
                     }
                 });
             }
@@ -517,14 +520,14 @@
             updateTable();
         }
         function updateShotCount(index, shotCount) {
-            Productitems[index].ShotCount = parseInt(shotCount, 10);
+            Productitems[index].shotCount = parseInt(shotCount, 10);
         }
         function updateProductPrice(index, price) {
             Productitems[index].price = parseInt(price, 1000);
             updateTable();
         }
         function UpdateIsGift(index, checked) {
-            Productitems[index].Gift = checked;
+            Productitems[index].isGift = checked;
             updateTable();
         }
 
@@ -575,12 +578,7 @@
             }
 
             btnAddEdit_ChangeDisable(btn_SetFactor, true);
-            //data: JSON.stringify({
-            //    factorId: factorId, familyId: factor_Family, fDate: factor_Date, discountPrice: factor_discountPrice,
-            //    products: Productitems, factor_desc: factor_desc,
-            //    TypePhotography: TypePhotography, factor_status: factor_status, PhotographerId: PhotographerId,
-            //ForceDesign: ForceDesign, OnlyEditedDelivered: OnlyEditedDelivered
-            //}),
+
             let createInvoiceCommand =
             {
                 id: factorId,
@@ -592,12 +590,14 @@
                 photographerId: (PhotographerId && PhotographerId != 0) ? PhotographerId : null,
                 isForceDesign: ForceDesign,
                 desc: factor_desc,
+                NeedEditedPictures: OnlyEditedDelivered,
                 invoiceDetails: Productitems.map(item => ({
                     productId: item.productId,
                     price: item.price,
                     count: item.count,
                     shotCount: item.shotCount,
-                    desc: item.desc
+                    desc: item.desc,
+                    isGift: item.isGift
                 }))
             };
             let method = 'POST';

@@ -274,21 +274,26 @@
             var PaidDate = $("#co_PaidDate").val();
 
             if (!co_PaidFrom) {
-                toastr.warning('شخص پرداخت کننده را انتخاب کنید', 'هشدار');
+                toastr.warning('شخص پرداخت کننده را انتخاب کنید', 'پرداخت کننده');
                 return;
             }
             if (!co_CostType) {
-                toastr.warning('موضوع پرداخت را مشخص کنید', 'هشدار');
+                toastr.warning('موضوع پرداخت را مشخص کنید', 'موضوع پرداخت');
                 return;
             }
             if (!co_PaidType) {
-                toastr.warning('طریقه پرداخت را مشخص کنید', 'هشدار');
+                toastr.warning('طریقه پرداخت را مشخص کنید', 'طریقه پرداخت');
                 return;
             }
             if (!PaidDate) {
-                toastr.warning('تاریخ پرداخت را مشخص کنید', 'هشدار');
+                toastr.warning('تاریخ پرداخت را مشخص کنید', 'تاریخ پرداخت');
                 return;
             }
+            if (parseInt(co_PaidPrice) <= 0) {
+                toastr.warning('مبلغ معتبر وارد کنید', 'مبلغ');
+                return;
+            }
+
             let createCostCommand =
             {
                 id: c_Id,
@@ -317,7 +322,6 @@
                     ShowError(res.message);
                 }
             }, function () {
-                toastr.error("خطا در ذخیره اطلاعات", "خطا");
             });
         });
         $('#btn_close').click(function () {

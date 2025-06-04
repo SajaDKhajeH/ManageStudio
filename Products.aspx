@@ -283,21 +283,21 @@
 
         function GetLastPariority() {
             var gproduct = document.getElementById("p_productgroup").value;
-            $.ajax({
-                type: "POST",
-                url: "Products.aspx/GetLastPariority",
-                data: JSON.stringify({
-                    gproduct: gproduct
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    document.getElementById("p_pariority").value = msg.d.lastPari;
-                },
-                error: function () {
-                    toastr.error("خطا در دریافت اولویت ", "خطا");
-                }
-            });
+            //$.ajax({
+            //    type: "POST",
+            //    url: "Products.aspx/GetLastPariority",
+            //    data: JSON.stringify({
+            //        gproduct: gproduct
+            //    }),
+            //    contentType: "application/json; charset=utf-8",
+            //    dataType: "json",
+            //    success: function (msg) {
+            //        document.getElementById("p_pariority").value = msgُ.d.lastPari;
+            //    },
+            //    error: function () {
+            //        toastr.error("خطا در دریافت اولویت ", "خطا");
+            //    }
+            //});
         };
         $(document).ready(function () {
             $("#buyPriceLabel").text(`قیمت خرید(${currency})`);
@@ -373,8 +373,8 @@
 
                 $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
-                $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#prevPageBtn").prop("disabled", !res.hasPreviousPage);
+                $("#nextPageBtn").prop("disabled", !res.hasNextPage);
             },
                 function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");
