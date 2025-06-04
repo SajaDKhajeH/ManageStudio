@@ -283,21 +283,16 @@
 
         function GetLastPariority() {
             var gproduct = document.getElementById("p_productgroup").value;
-            //$.ajax({
-            //    type: "POST",
-            //    url: "Products.aspx/GetLastPariority",
-            //    data: JSON.stringify({
-            //        gproduct: gproduct
-            //    }),
-            //    contentType: "application/json; charset=utf-8",
-            //    dataType: "json",
-            //    success: function (msg) {
-            //        document.getElementById("p_pariority").value = msgُ.d.lastPari;
-            //    },
-            //    error: function () {
-            //        toastr.error("خطا در دریافت اولویت ", "خطا");
-            //    }
-            //});
+            let query = '?groupId=' + gproduct;
+            ajaxGet('/Product/GetLastPriority' + query, function (res) {
+                if (res.success) {
+                    document.getElementById("p_pariority").value = (res.data + 1);
+                } else {
+                    toastr.error(res.message, "خطا");
+                }
+            }, function (err) {
+            })
+           
         };
         $(document).ready(function () {
             $("#buyPriceLabel").text(`قیمت خرید(${currency})`);

@@ -561,8 +561,8 @@
                 $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#prevPageBtn").prop("disabled", !res.hasPreviousPage);
+                $("#nextPageBtn").prop("disabled", !res.hasNextPage);
             },
                 function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");

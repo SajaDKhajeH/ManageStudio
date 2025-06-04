@@ -231,6 +231,10 @@
                     ajaxAuthCall(method, route, updateTemplateCommand, success, error);
                 }
             } else {
+                if (!title) {
+                    toastr.warning('لطفا عنوان را مشخص کنید','عنوان');
+                    return;
+                }
                 let createItemCommand =
                 {
                     id: d_id,
@@ -551,7 +555,7 @@
                     tbody.append(`
                         <tr>
                             <td>${row.title}</td>
-                            <td>${(row.priority ? row.priority : '-')}</td>
+                            <td>${(row.priority ? row.priority : (row.priority == 0 ? '0' : '-'))}</td>
                             <td>${status}</td>
                             <td>${actions}</td>
                         </tr>
@@ -562,8 +566,8 @@
                 $("#pageIndex").text(pageIndex);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#prevPageBtn").prop("disabled", !res.hasPreviousPage);
+                $("#nextPageBtn").prop("disabled", !res.hasNextPage);
             }, function (err) {
 
             });
