@@ -102,13 +102,19 @@
                             <label class="required fs-6 fw-bold mb-2">اولویت نمایش</label>
                             <input type="text" id="d_pariority" class="form-control form-control-solid" placeholder="اولویت" />
                         </div>
+                        <select id="cmbProjectStatusSteps" class="d-none">
+                            <option value="0">-</option>
+                            <option value="1">آماده برای طراحی یا تدوین</option>
+                            <option value="2">اتمام پروژه و موفق</option>
+                            <option value="3">اتمام پروژه و ناموفق</option>
+                        </select>
                         <%-- <div class="fv-row mb-15">
                             <label class="fs-6 fw-bold mb-2">توضیحات</label>
                             <textarea id="d_desc" class="form-control form-control-solid" placeholder="" name="description"></textarea>
                         </div>--%>
 
                         <div class="fv-row mb-15" id="div_defaultsms">
-                            <label class="fs-6 fw-bold mb-2">متن پیش فرض</label>
+                            <label id="descTitle" class="fs-6 fw-bold mb-2">متن پیش فرض</label>
                             <textarea type="text" id="d_defaultsms" class="form-control form-control-solid" placeholder="" name="description"></textarea>
                             <label class="fs-6 fw-bold mb-2" id="d_KeywordSMS"></label>
                         </div>
@@ -162,6 +168,7 @@
         var defaultsms = document.getElementById('div_defaultsms');
         //var state = document.getElementById('div_state');
         var div_priority = document.getElementById('div_priority');
+        var cmbProjectStatusSteps = document.getElementById('cmbProjectStatusSteps');
         var div_DurationForSend = document.getElementById('div_DurationForSend');
         var div_DescForUser = document.getElementById('div_DescForUser');
         var div_Show_SendFor_Men_Or_Women = document.getElementById('div_Show_SendFor_Men_Or_Women');
@@ -191,7 +198,7 @@
             }
             var error = function (err) {
             }
-            if (typeId == '1001' || typeId == '1002') {
+            if (typeId == '1001' || typeId == '1002' || typeId == '1003') {
                 var defulatsms = $("#d_defaultsms").val();
                 var SendForWomen = $("#d_SendForWomen").prop("checked");
                 var SendForMen = $("#d_SendForMen").prop("checked");
@@ -229,10 +236,43 @@
                         isEditable: true
                     };
                     ajaxAuthCall(method, route, updateTemplateCommand, success, error);
+                } else if (typeId == '1003') {
+
+                    if (!title) {
+                        toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
+                        return;
+                    }
+                    if (!priority || priority == '0') {
+                        toastr.warning('لطفا اولویت را مشخص کنید', 'اولویت');
+                        return;
+                    }
+                    if (!defulatsms) {
+                        toastr.warning('لطفا توضیحات را وارد کنید', 'توضیحات');
+                        return;
+                    }
+                    
+
+                    if (d_id == '') {
+                        method = 'POST';
+                        route = '/ProjectStatus/Create';
+                    } else {
+                        method = 'PUT';
+                        route = '/ProjectStatus/Update';
+                    }
+                    let createProjectStatusCommand =
+                    {
+                        id: d_id,
+                        title: title,
+                        active: active,
+                        description: defulatsms,
+                        priority: parseInt(priority),
+                        step: cmbProjectStatusSteps.value
+                    };
+                    ajaxAuthCall(method, route, createProjectStatusCommand, success, error);
                 }
             } else {
                 if (!title) {
-                    toastr.warning('لطفا عنوان را مشخص کنید','عنوان');
+                    toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
                     return;
                 }
                 let createItemCommand =
@@ -282,16 +322,25 @@
                 typeId = currentTypeId
             }
 
+            cmbProjectStatusSteps.classList.add('d-none');
+            div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
+            defaultsms.style.visibility = 'hidden';
+
             if (typeId == '1001') {
                 //invoiceStatus
+                $("#descTitle").html('متن پیش فرض');
                 $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
                 $("#d_defaultsms").val(`خانواده {{عنوان خانواده}} عزیز سفارش شما در مرحله { {عنوان وضعیت } } قرار گرفته است`);
                 div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
                 defaultsms.style.visibility = 'visible';
-            } else {
-                div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
-                defaultsms.style.visibility = 'hidden';
+            } else if (typeId == '1003') {
+                cmbProjectStatusSteps.classList.remove('d-none');
+                defaultsms.style.visibility = 'visible';
+                $("#descTitle").html('توضیحات');
+                $("#d_KeywordSMS").text("-");
+                $("#d_defaultsms").val(``);
             }
+
             if (typeId == '13') {
                 //نوع هزینه
                 div_priority.style.visibility = 'hidden';
@@ -308,7 +357,7 @@
                 dataType: "json",
                 success: function (res) {
                     var result = res.d;
-                    if (result.Result == false) {//خطا داریم
+                    if (result.Result == false) {
                         ShowError(result.Message);
                     }
                     else {
@@ -387,15 +436,22 @@
             }
         };
         function EditBasicData(id, filterTypeId) {
+
+            document.getElementById('d_defaultsms').style.visibility = 'hidden';
+            cmbProjectStatusSteps.style.visibility = 'hidden';
+
             let query = `?id=${id}`;
             let route = '';
             if (filterTypeId == '1001') {
                 route = '/InvoiceStatus/Get';
             } else if (filterTypeId == '1002') {
                 route = '/NotificationTemplate/Get';
+            } else if (filterTypeId == '1003') {
+                route = '/ProjectStatus/Get';
             } else {
                 route = '/BasicData/Get';
             }
+
             ajaxGet(route + query, function (res) {
 
                 if (res.success) {
@@ -404,15 +460,23 @@
                     d_id = id.toString();
                     $("#d_title").val(result.title);
                     $("#d_active").prop("checked", result.active);
-                    //$("#d_desc").val(result.desc);
-                    $("#d_defaultsms").val(result.templateText);
-                    if (result.templateText) {
+
+                    if (filterTypeId == '1002') {
+
+                        $("#d_defaultsms").val(result.templateText);
+                        $("#d_KeywordSMS").text("کلید واژه ها: " + result.keywords);
+                        $("#d_SendForMen").prop("checked", result.sendToFather);
+                        $("#d_SendForWomen").prop("checked", result.sendToMother);
+
+                        document.getElementById('d_defaultsms').style.visibility = 'visible';
+
+                    } else if (filterTypeId == '1003') {
+
+                        $("#d_defaultsms").val(result.desc);
+                        cmbProjectStatusSteps.style.visibility = 'visible';
                         document.getElementById('d_defaultsms').style.visibility = 'visible';
                     }
-                    else {
-                        document.getElementById('d_defaultsms').style.visibility = 'hidden';
-                    }
-                    //$("#d_stateid").val(result.state);
+
                     currentTypeId = filterTypeId;
                     $("#d_Typeid").val(filterTypeId);
                     $("#d_pariority").val(result.priority);
@@ -420,9 +484,7 @@
                     $("#d_DescForUser").val(result.descForUser);
                     $("#d_lbl_DusrationForSend").text('روز مانده به ' + result.title);
                     $("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
-                    $("#d_KeywordSMS").text("کلید واژه ها: " + result.keywords);
-                    $("#d_SendForMen").prop("checked", result.sendToFather);
-                    $("#d_SendForWomen").prop("checked", result.sendToMother);
+
                     document.getElementById("div_typeData").style.display = 'none';
                     if (result.systematic) {
                         document.getElementById("div_priority").style.display = 'none';
@@ -484,10 +546,13 @@
                 ).join('');
 
                 options += `<option value='${1001}'>وضعیت فاکتور</option>`;
+                options += `<option value='${1003}'>وضعیت پروژه</option>`;
                 $("#d_Typeid").html(options);
 
                 options += `<option value='${1002}'>متن پیشفرض پیام ها</option>`;
                 $("#filter_typeId").html(options);
+
+
                 callback();
             });
         }
@@ -518,6 +583,8 @@
                 route = '/InvoiceStatus/GetStatuses';
             } else if (filter_typeId == '1002' || filter_typeId == 1002) {
                 route = '/NotificationTemplate/GetTemplates';
+            } else if (filter_typeId == '1003' || filter_typeId == 1003) {
+                route = '/ProjectStatus/GetProjectStatuses';
             } else {
                 route = '/BasicData/GetItems';
             }
