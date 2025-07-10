@@ -1,6 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="BasicData.aspx.cs" Inherits="AdakStudio.BasicData" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Head" runat="Server">
+    <style>
+        .checklist-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
@@ -161,9 +169,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Structure -->
+    <div class="modal fade" id="kt_modal_check_list" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-content">
+                <div class="modal-header" id="kt_modal_check_list_header">
+                    <h2 class="fw-bolder" id="model_CheckListDataHeader"></h2>
+                    <div id="btn_close_modal_check_list" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+
+                    <h3>افزودن موارد چک‌لیست</h3>
+                    <div id="checklistItemsContainer">
+                        <div class="row">
+                            <input type="text" class="checklist-input" placeholder="عنوان" />
+                            <input type="text" class="checklist-input" placeholder="اولویت" />
+                        </div>
+                    </div>
+                    <button class="btn btn-add" onclick="addChecklistRow()">➕ افزودن</button>
+
+                </div>
+                <div class="modal-footer flex-center">
+                    <button onclick="saveChecklist();" class="btn btn-primary">
+                        <span class="indicator-label">ثبت اطلاعات</span>
+                    </button>
+                    <button type="reset" id="btncancel_check_list" class="btn btn-light me-3">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="End" runat="Server">
     <script type="text/javascript">
+
+
+        const ExpenseType = '50';
+        const ProjectType = '80';
+        const InvoiceStatus = '1001';
+        const NotificationTemplate = '1002';
+        const ProjectStatus = '1003';
+
         var d_id = "";
         var defaultsms = document.getElementById('div_defaultsms');
         //var state = document.getElementById('div_state');
@@ -198,14 +254,14 @@
             }
             var error = function (err) {
             }
-            if (typeId == '1001' || typeId == '1002' || typeId == '1003') {
+            if (typeId == InvoiceStatus || typeId == NotificationTemplate || typeId == ProjectStatus) {
                 var defulatsms = $("#d_defaultsms").val();
                 var SendForWomen = $("#d_SendForWomen").prop("checked");
                 var SendForMen = $("#d_SendForMen").prop("checked");
 
                 let route = '';
                 let method = 'POST';
-                if (typeId == '1001') {
+                if (typeId == InvoiceStatus) {
                     route = '/InvoiceStatus/Create';
                     let createInvoiceStatusCommand =
                     {
@@ -220,7 +276,7 @@
                         isEditable: true
                     };
                     ajaxAuthCall(method, route, createInvoiceStatusCommand, success, error);
-                } else if (typeId == '1002') {
+                } else if (typeId == NotificationTemplate) {
                     route = '/NotificationTemplate/Update';
                     method = 'PUT';
                     let updateTemplateCommand =
@@ -236,7 +292,7 @@
                         isEditable: true
                     };
                     ajaxAuthCall(method, route, updateTemplateCommand, success, error);
-                } else if (typeId == '1003') {
+                } else if (typeId == ProjectStatus) {
 
                     if (!title) {
                         toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
@@ -250,7 +306,7 @@
                         toastr.warning('لطفا توضیحات را وارد کنید', 'توضیحات');
                         return;
                     }
-                    
+
 
                     if (d_id == '') {
                         method = 'POST';
@@ -325,72 +381,30 @@
             cmbProjectStatusSteps.classList.add('d-none');
             div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
             defaultsms.style.visibility = 'hidden';
-
-            if (typeId == '1001') {
+            document.getElementById('d_defaultsms').style.visibility = 'hidden';
+            if (typeId == InvoiceStatus) {
                 //invoiceStatus
                 $("#descTitle").html('متن پیش فرض');
                 $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
                 $("#d_defaultsms").val(`خانواده {{عنوان خانواده}} عزیز سفارش شما در مرحله { {عنوان وضعیت } } قرار گرفته است`);
                 div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
                 defaultsms.style.visibility = 'visible';
-            } else if (typeId == '1003') {
+                document.getElementById('d_defaultsms').style.visibility = 'visible';
+            } else if (typeId == ProjectStatus) {
                 cmbProjectStatusSteps.classList.remove('d-none');
                 defaultsms.style.visibility = 'visible';
+                document.getElementById('d_defaultsms').style.visibility = 'visible';
                 $("#descTitle").html('توضیحات');
                 $("#d_KeywordSMS").text("-");
                 $("#d_defaultsms").val(``);
             }
 
-            if (typeId == '13') {
+            if (typeId == ExpenseType) {
                 //نوع هزینه
                 div_priority.style.visibility = 'hidden';
             } else {
                 div_priority.style.visibility = 'visible';
             }
-
-            return;
-            $.ajax({
-                type: "POST",
-                url: "BasicData.aspx/ChangeType",
-                data: "{typeId:'" + typeId + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (res) {
-                    var result = res.d;
-                    if (result.Result == false) {
-                        ShowError(result.Message);
-                    }
-                    else {
-                        if (result.ShowDefaultSMS == true) {
-                            defaultsms.style.visibility = 'visible';
-                        }
-                        else {
-                            defaultsms.style.visibility = 'hidden';
-                        }
-                        //ارسال پیام به آقا یا خانم
-                        if (result.Show_SendFor_Men_Or_Women ?? false) {
-                            div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
-                            if (d_id == "") {
-                                $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
-                                $("#d_defaultsms").val(result.DefaultSMS);
-                            }
-                        }
-                        else {
-                            div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
-                        }
-                        if (result.ShowPriority == true) {
-                            div_priority.style.visibility = 'visible';
-                        }
-                        else {
-                            div_priority.style.visibility = 'hidden';
-                        }
-
-                    }
-                },
-                error: function () {
-                    ShowError("خطا در دریافت اطلاعات");
-                }
-            });
         });
         function ResetFeilds() {
             defaultsms.style.visibility = 'hidden';
@@ -416,7 +430,7 @@
             if (userResponse) {
                 let query = `?id=${id}`;
                 let route = '';
-                if (filterTypeId == '1001') {
+                if (filterTypeId == InvoiceStatus) {
                     route = '/InvoiceStatus/Delete';
                 } else {
                     route = '/BasicData/Delete';
@@ -434,7 +448,8 @@
                         alert("error");
                     });
             }
-        };
+        }
+
         function EditBasicData(id, filterTypeId) {
 
             document.getElementById('d_defaultsms').style.visibility = 'hidden';
@@ -442,11 +457,11 @@
 
             let query = `?id=${id}`;
             let route = '';
-            if (filterTypeId == '1001') {
+            if (filterTypeId == InvoiceStatus) {
                 route = '/InvoiceStatus/Get';
-            } else if (filterTypeId == '1002') {
+            } else if (filterTypeId == NotificationTemplate) {
                 route = '/NotificationTemplate/Get';
-            } else if (filterTypeId == '1003') {
+            } else if (filterTypeId == ProjectStatus) {
                 route = '/ProjectStatus/Get';
             } else {
                 route = '/BasicData/Get';
@@ -461,7 +476,7 @@
                     $("#d_title").val(result.title);
                     $("#d_active").prop("checked", result.active);
 
-                    if (filterTypeId == '1002') {
+                    if (filterTypeId == NotificationTemplate) {
 
                         $("#d_defaultsms").val(result.templateText);
                         $("#d_KeywordSMS").text("کلید واژه ها: " + result.keywords);
@@ -470,7 +485,7 @@
 
                         document.getElementById('d_defaultsms').style.visibility = 'visible';
 
-                    } else if (filterTypeId == '1003') {
+                    } else if (filterTypeId == ProjectStatus) {
 
                         $("#d_defaultsms").val(result.desc);
                         cmbProjectStatusSteps.style.visibility = 'visible';
@@ -491,7 +506,7 @@
                     }
 
                     //نمایش مدت زمان ارسال پیام
-                    ShowDurationForSend = filterTypeId == '1002';
+                    ShowDurationForSend = filterTypeId == NotificationTemplate;
                     if (ShowDurationForSend) {
                         div_DurationForSend.style.visibility = 'visible';
                     }
@@ -508,7 +523,7 @@
                     }
 
                     //ارسال پیام به آقا یا خانم
-                    if (filterTypeId == '1001' || filterTypeId == '1002') {
+                    if (filterTypeId == InvoiceStatus || filterTypeId == NotificationTemplate) {
                         div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
                     }
                     else {
@@ -545,11 +560,11 @@
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
 
-                options += `<option value='${1001}'>وضعیت فاکتور</option>`;
-                options += `<option value='${1003}'>وضعیت پروژه</option>`;
+                options += `<option value='${InvoiceStatus}'>وضعیت فاکتور</option>`;
+                options += `<option value='${ProjectStatus}'>وضعیت پروژه</option>`;
                 $("#d_Typeid").html(options);
 
-                options += `<option value='${1002}'>متن پیشفرض پیام ها</option>`;
+                options += `<option value='${NotificationTemplate}'>متن پیشفرض پیام ها</option>`;
                 $("#filter_typeId").html(options);
 
 
@@ -573,17 +588,18 @@
             pageIndex = 0;
             loadTableDataBasicData();
         });
+        let dataTableRows = [];
         function loadTableDataBasicData() {
             var searchText = $("#filterInput").val();
             pageSize = parseInt($("#s_pageSize").val());
             var filter_typeId = $("#filter_typeId").val();
             let route = '';
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
-            if (filter_typeId == '1001' || filter_typeId == 1001) {
+            if (filter_typeId == InvoiceStatus) {
                 route = '/InvoiceStatus/GetStatuses';
-            } else if (filter_typeId == '1002' || filter_typeId == 1002) {
+            } else if (filter_typeId == NotificationTemplate) {
                 route = '/NotificationTemplate/GetTemplates';
-            } else if (filter_typeId == '1003' || filter_typeId == 1003) {
+            } else if (filter_typeId == ProjectStatus) {
                 route = '/ProjectStatus/GetProjectStatuses';
             } else {
                 route = '/BasicData/GetItems';
@@ -592,21 +608,29 @@
             const tbody = $("#dt_BasicData");
             tbody.empty();
             ajaxGet(route + query, function (res) {
-                const data = res.items;
+                dataTableRows = res.items;
                 const totalRecords = res.totalCount;
 
-                data.forEach(row => {
+                dataTableRows.forEach(row => {
                     let deleteAction = `<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData("${row.id}","${filter_typeId}")' title='حذف'>🗑</button>`;
-                    if (filter_typeId == '1001' || filter_typeId == 1001) {
+                    if (filter_typeId == InvoiceStatus) {
                         if (!row.isRemovable) {
                             deleteAction = '';
                         }
-                    } else if (filter_typeId == '1002' || filter_typeId == 1002) {
+                    } else if (filter_typeId == NotificationTemplate) {
                         deleteAction = '';
                     }
+
+                    let otherActions = '';
+                    if (filter_typeId == ProjectType) {
+                        otherActions += `<button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_check_list' onclick='showCheckList("${row.id}")' title='چک لیست'>📋</button>`;
+                    }
+
+
                     let actions =
                         `
                 <div class='action-buttons'>
+                        ${otherActions}
                         <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_customer' onclick='EditBasicData("${row.id}","${filter_typeId}")' title='ویرایش'>✎</button>
                         ${deleteAction}
                         </div>
@@ -639,5 +663,96 @@
 
             });
         }
+    </script>
+
+
+    <%--check-list--%>
+    <script>
+        // Add a new row dynamically
+        function addChecklistRow(id = '', title = '', priority = 0) {
+            const container = document.getElementById("checklistItemsContainer");
+
+            // Create new row div
+            const row = document.createElement("div");
+            row.classList.add("row");
+            row.id = id;
+
+            // Create the first text input
+            const input1 = document.createElement("input");
+            input1.type = "text";
+            input1.classList.add("checklist-input");
+            input1.placeholder = "عنوان";
+            input1.value = title;
+
+            // Create the second text input
+            const input2 = document.createElement("input");
+            input2.type = "text";
+            input2.classList.add("checklist-input");
+            input2.placeholder = "اولویت";
+            input2.value = priority;
+
+            // Append the inputs to the row
+            row.appendChild(input1);
+            row.appendChild(input2);
+
+            // Append the row to the container
+            container.appendChild(row);
+        }
+
+        // Save checklist function (example implementation)
+        function saveChecklist() {
+            const rows = document.querySelectorAll("#checklistItemsContainer .row");
+            const checklistItems = [];
+
+            rows.forEach(row => {
+                const inputs = row.querySelectorAll("input");
+                const item = {
+                    id: row.id ? row.id : null,
+                    title: inputs[0].value,
+                    priority: inputs[1].value ? parseInt(inputs[1].value) : 0,
+                    active: true
+                };
+                checklistItems.push(item);
+            });
+            if (checklistItems.find(r => !r.title)) {
+                toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
+                return;
+            }
+            let route = '/BasicData/CreateSubItems';
+            let projectCheckList =
+            {
+                id: currentProjectTypeId,
+                subItems: checklistItems
+            };
+            ajaxAuthCall('POST', route, projectCheckList, closeModalCheckList, function () {
+                //err
+            });
+        }
+        let currentProjectTypeId = '';
+        function showCheckList(id) {
+            let row = dataTableRows.find(r => r.id === id);
+            currentProjectTypeId = row.id;
+            const container = document.getElementById("checklistItemsContainer");
+            container.innerHTML = '';
+            const modalHeader = document.getElementById("model_CheckListDataHeader");
+            modalHeader.innerHTML = `چک لیست ${row.title}`;
+
+
+            let query = `?id=${currentProjectTypeId}`;
+            let route = '/BasicData/GetSubItems';
+
+            ajaxGet(route + query, function (items) {
+                items.forEach(item => {
+                    addChecklistRow(item.id, item.title, item.priority);
+                });
+            }, function (err) {
+                ShowError("خطا در دریافت اطلاعات");
+            });
+
+        }
+        function closeModalCheckList() {
+            $('#kt_modal_check_list').modal('hide');
+        };
+
     </script>
 </asp:Content>
