@@ -106,6 +106,10 @@
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-primary me-2  open-modal-btn" onclick="ResetFeilds()" data-bs-toggle="modal" data-bs-target="#kt_modal_add_personnel">افزودن پرسنل</button>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#personnelAccessModal">
+  تنظیمات دسترسی
+</button>
+
                                 </div>
 
                             </div>
@@ -235,6 +239,274 @@
                         <span class="indicator-label">ثبت اطلاعات</span>
                     </button>
                     <button type="reset" id="btncancel" class="btn btn-light me-3">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="personnelAccessModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تنظیمات دسترسی پرسنل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- تب‌ها -->
+                    <ul class="nav nav-tabs mb-3" id="accessTabs" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-menus">منوها</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status">وضعیت پروژه</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-photo-steps">مراحل آماده‌سازی عکس</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-video-steps">مراحل آماده‌سازی فیلم</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-types">نوع پروژه‌ها</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- تب منوها -->
+                        <div class="tab-pane fade show active" id="tab-menus">
+                            <p>اینجا تنظیمات منو قرار می‌گیرد.</p>
+                        </div>
+
+                        <!-- تب وضعیت پروژه -->
+                        <div class="tab-pane fade" id="tab-project-status">
+                            <h6 class="mb-3">مدیریت وضعیت‌های پروژه</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                             <th>مشاهده</th>
+                                            <th>وضعیت</th>
+                                            <th>فقط نمایش</th>
+                                            <th>تغییر به جلو</th>
+                                            <th>تغییر به عقب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                             <td>
+                                                <input type="checkbox" /></td>
+                                            <td>شروع نشده</td>
+                                           
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                             <td>
+                                                <input type="checkbox" /></td>
+                                            <td>در حال انجام</td>
+                                           
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>موفق</td>
+                                            
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                             <td>
+                                                <input type="checkbox" /></td>
+                                            <td>ناموفق</td>
+                                           
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- تب مراحل آماده‌سازی عکس -->
+                        <div class="tab-pane fade" id="tab-photo-steps">
+                            <h6 class="mb-3">مراحل آماده‌سازی عکس</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                             <th>مشاهده</th>
+                                            <th>مرحله</th>
+                                            <th>فقط نمایش</th>
+                                            <th>تغییر به جلو</th>
+                                            <th>تغییر به عقب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                             <td>
+                                                <input type="checkbox" /></td>
+                                            <td>آماده برای طراحی</td>
+                                           
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                             <td>
+                                                <input type="checkbox" /></td>
+                                            <td>در دست طراحی</td>
+                                           
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>در انتظار تایید مشتری</td>
+                                            
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                             <td>
+                                                <input type="checkbox" /></td>
+                                            <td>آماده برای ارسال به چاپخانه</td>
+                                           
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- تب مراحل آماده‌سازی فیلم -->
+                        <div class="tab-pane fade" id="tab-video-steps">
+                            <h6 class="mb-3">مراحل آماده‌سازی فیلم</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>مشاهده</th>
+                                            <th>مرحله</th>
+                                            <th>فقط نمایش</th>
+                                            <th>تغییر به جلو</th>
+                                            <th>تغییر به عقب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>آماده برای تدوین</td>
+
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>در دست تدوین</td>
+
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>در انتظار تایید مشتری</td>
+
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>    
+                                                <input type="checkbox" /></td>
+                                            <td>آماده تحویل</td>
+
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- تب نوع پروژه‌ها -->
+                        <div class="tab-pane fade" id="tab-project-types">
+                            <h6 class="mb-3">نوع پروژه ها</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>نوع</th>
+                                            <th>مشاهده</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>عروسی</td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>نوزادی</td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>تولد</td>
+                                            <td>
+                                                <input type="checkbox" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success">ذخیره تغییرات</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                 </div>
             </div>
         </div>
