@@ -87,6 +87,23 @@
     .project-list.collapsed {
       display: none;
     }
+  .empty-dropzone {
+    border: 2px dashed #ced4da;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    min-height: 100px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+.empty-dropzone:hover {
+    background-color: #e2e6ea;
+}
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -234,26 +251,26 @@
             not_started: [
                 { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
                 { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000},
+                { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
 
             ],
             in_progress: [
-                { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false},
+                { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
                 { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000},
+                { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
                 { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
             ],
             pending_payment: [
-                { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000}
+                { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
             ],
             ready_for_design: [
-                { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000}
+                { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
             ],
             successful: [
                 { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
             ],
             failed: [
-                { title: 'پروژه صنعتی', family: 'ملکی', date: '1403/03/15', urgent: false, debt: true, debtAmount: 7500000 }
+                
             ]
         };
 
@@ -307,27 +324,29 @@
         function createColumn(statusKey, label, items) {
             const col = document.createElement('div');
             col.className = 'kanban-column';
+            col.dataset.status = statusKey;
             const status = statuses.find(s => s.key === statusKey);
 
             col.innerHTML = `
         <div class="kanban-header" style="background-color: ${status.color};">
-          <h5>${label} (${items.length})</h5>
-          <button class="btn btn-sm btn-light w-100 mt-2" onclick="openSMSModal()">ارسال پیامک</button>
-          <select class="form-select form-select-sm mt-2 sort-select">
-            <option value="">مرتب‌سازی</option>
-            <option value="asc">قدیمی‌ترین</option>
-            <option value="desc">جدیدترین</option>
-          </select>
+            <h5>${label} (${items.length})</h5>
+            <button class="btn btn-sm btn-light w-100 mt-2" onclick="openSMSModal()">ارسال پیامک</button>
+            <select class="form-select form-select-sm mt-2 sort-select">
+                <option value="">مرتب‌سازی</option>
+                <option value="asc">قدیمی‌ترین</option>
+                <option value="desc">جدیدترین</option>
+            </select>
         </div>
-        <div id="${statusKey}" class="kanban-content p-2 overflow-auto"></div>
-      `;
+        <div class="kanban-content p-2 overflow-auto" style="background-color: #f0f0f0; min-height: 150px;"></div>
+    `;
 
-            const container = col.querySelector(`#${statusKey}`);
+            const container = col.querySelector('.kanban-content');
             const select = col.querySelector('.sort-select');
 
             function renderSortedProjects(order = '') {
                 container.innerHTML = '';
                 let sortedItems = [...items];
+
                 if (order === 'asc') {
                     sortedItems.sort((a, b) => a.date.localeCompare(b.date));
                 } else if (order === 'desc') {
@@ -335,6 +354,36 @@
                 }
 
                 const monthGroups = groupByMonth(sortedItems);
+
+                if (sortedItems.length === 0) {
+                    // ساختن دراپ‌زون خالی
+                    const emptyList = document.createElement('div');
+                    emptyList.className = 'project-list empty-dropzone';
+                    emptyList.dataset.status = statusKey;
+
+                    container.appendChild(emptyList);
+
+                    new Sortable(emptyList, {
+                        group: 'shared',
+                        animation: 150,
+                        onAdd: function (evt) {
+                            const card = evt.item;
+                            const source = evt.from.closest('.kanban-column');
+                            const target = evt.to.closest('.kanban-column');
+
+                            updateEmptyDropzoneState(source);
+                            updateEmptyDropzoneState(target);
+                            onCardDrop(card, source, target);
+                        },
+                        onRemove: function (evt) {
+                            const column = evt.from.closest('.kanban-column');
+                            updateEmptyDropzoneState(column);
+                        }
+                    });
+
+                    return;
+                }
+
                 for (const [key, monthItems] of Object.entries(monthGroups)) {
                     const [year, month] = key.split('/');
                     const monthDiv = document.createElement('div');
@@ -347,41 +396,31 @@
 
                     const projectList = document.createElement('div');
                     projectList.className = 'project-list';
+                    projectList.dataset.status = statusKey;
 
                     monthItems.forEach(item => projectList.appendChild(createCard(item)));
+
                     monthDiv.appendChild(monthHeader);
                     monthDiv.appendChild(projectList);
                     container.appendChild(monthDiv);
 
-                    setTimeout(() => {
-                        new Sortable(projectList, {
-                            group: 'shared',
-                            animation: 150,
-                            onEnd: evt => console.log(`Moved from ${evt.from.id} to ${evt.to.id}`),
-                            onAdd: function (evt) {
-                                const toColumnKey = evt.to.closest('[data-status]').dataset.status;
-                                const fromColumnKey = evt.from.closest('[data-status]').dataset.status;
-                                const draggedEl = evt.item;
+                    new Sortable(projectList, {
+                        group: 'shared',
+                        animation: 150,
+                        onAdd: function (evt) {
+                            const card = evt.item;
+                            const source = evt.from.closest('.kanban-column');
+                            const target = evt.to.closest('.kanban-column');
 
-                                if (toColumnKey === 'failed') {
-                                    const projectId = draggedEl.dataset.id || Math.random(); // باید در کارت پروژه data-id تعریف شده باشه
-
-                                    document.getElementById('failureProjectInfo').value = JSON.stringify({
-                                        elementHTML: draggedEl.outerHTML,
-                                        from: fromColumnKey,
-                                        to: toColumnKey,
-                                        originalIndex: evt.oldIndex
-                                    });
-
-                                    // حذف موقت کارت از ستون مقصد
-                                    draggedEl.remove();
-
-                                    // باز کردن مودال علت
-                                    new bootstrap.Modal(document.getElementById('failureReasonModal')).show();
-                                }
-                            }
-                        });
-                    }, 0);
+                            updateEmptyDropzoneState(source);
+                            updateEmptyDropzoneState(target);
+                            onCardDrop(card, source, target);
+                        },
+                        onRemove: function (evt) {
+                            const column = evt.from.closest('.kanban-column');
+                            updateEmptyDropzoneState(column);
+                        }
+                    });
                 }
             }
 
@@ -390,7 +429,29 @@
             });
 
             renderSortedProjects();
+
             return col;
+        }
+
+        function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
+            // انتقال کارت به ستون جدید
+            const targetList = targetColumnElement.querySelector(".project-list");
+            targetList.appendChild(cardElement);
+
+            // آپدیت وضعیت ستون مبدا و مقصد
+            updateEmptyDropzoneState(sourceColumnElement);
+            updateEmptyDropzoneState(targetColumnElement);
+        }
+        function updateEmptyDropzoneState(columnElement) {
+            const allProjectLists = columnElement.querySelectorAll('.project-list');
+
+            allProjectLists.forEach(projectList => {
+                if (projectList.children.length > 0) {
+                    projectList.classList.remove('empty-dropzone');
+                } else {
+                    projectList.classList.add('empty-dropzone');
+                }
+            });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -401,7 +462,7 @@
                 container.appendChild(createColumn(statusKey, label, items));
             }
         });
-  </script>
+    </script>
     <script>
         document.getElementById('confirmFailureReason').addEventListener('click', function () {
             const reason = document.getElementById('failureReasonInput').value.trim();
