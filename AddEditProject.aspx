@@ -246,16 +246,18 @@
                                     <tr>
                                         <th>عنوان</th>
                                         <th>وضعیت</th>
-                                        <th>تاریخ</th>
-                                        <th>عملیات</th>
+                                        <th>ثبت کننده</th>
+                                        <th>تاریخ و ساعت انجام</th>
+<%--                                        <th>عملیات</th>--%>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-status="done">
                                         <td>دوربین بررسی شد</td>
                                         <td class="status-text">✅ انجام شد</td>
+                                        <td>احمد</td>
                                         <td>1403/01/10</td>
-                                        <td>
+                                       <%-- <td>
                                             <button class="btn btn-success btn-sm do-btn">انجام شد</button>
                                             <button class="btn btn-danger btn-sm undo-btn">عدم انجام</button>
                                             <div class="mt-2 d-none reason-box">
@@ -263,7 +265,7 @@
                                                 <small class="text-danger d-none reason-error">توضیحات باید حداقل ۵ کلمه باشد</small>
                                                 <button class="btn btn-primary btn-sm mt-1 submit-reason-btn">ثبت توضیح</button>
                                             </div>
-                                        </td>
+                                        </td>--%>
                                     </tr>
                                 </tbody>
                             </table>

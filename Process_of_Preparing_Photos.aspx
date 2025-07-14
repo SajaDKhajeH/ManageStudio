@@ -534,7 +534,6 @@
 
         function updateKanbanAfterDrop(cardElement, sourceColumnElement, targetColumnElement) {
             const projectId = cardElement.getAttribute('data-id');
-            alert(projectId);
             const sourceStatus = sourceColumnElement.dataset.status;
             const targetStatus = targetColumnElement.dataset.status;
 
