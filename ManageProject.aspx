@@ -370,7 +370,6 @@
                             const card = evt.item;
                             const source = evt.from.closest('.kanban-column');
                             const target = evt.to.closest('.kanban-column');
-
                             updateEmptyDropzoneState(source);
                             updateEmptyDropzoneState(target);
                             onCardDrop(card, source, target);
@@ -409,9 +408,9 @@
                         animation: 150,
                         onAdd: function (evt) {
                             const card = evt.item;
+                            
                             const source = evt.from.closest('.kanban-column');
                             const target = evt.to.closest('.kanban-column');
-
                             updateEmptyDropzoneState(source);
                             updateEmptyDropzoneState(target);
                             onCardDrop(card, source, target);

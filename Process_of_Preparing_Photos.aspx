@@ -98,15 +98,15 @@
             display: none;
         }
 
-      .empty-dropzone {
-    min-height: 100px;
-    border: 2px dashed #bbb;
-    background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-}
+        .empty-dropzone {
+            min-height: 100px;
+            border: 2px dashed #bbb;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+        }
 
             .empty-dropzone:hover {
                 background-color: #e2e6ea;
@@ -261,22 +261,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body">
-                   <form id="checklistForm">
-  <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-    <input type="checkbox" id="item1" class="form-check-input me-2" style="width: 16px; height: 16px;">
-    <label for="item1" class="form-check-label">بررسی صحت اطلاعات</label>
-  </div>
+                    <form id="checklistForm">
+                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
+                            <input type="checkbox" id="item1" class="form-check-input me-2" style="width: 16px; height: 16px;">
+                            <label for="item1" class="form-check-label">بررسی صحت اطلاعات</label>
+                        </div>
 
-  <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-    <input type="checkbox" id="item2" class="form-check-input me-2" style="width: 16px; height: 16px;">
-    <label for="item2" class="form-check-label">تایید نهایی توسط سرپرست</label>
-  </div>
+                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
+                            <input type="checkbox" id="item2" class="form-check-input me-2" style="width: 16px; height: 16px;">
+                            <label for="item2" class="form-check-label">تایید نهایی توسط سرپرست</label>
+                        </div>
 
-  <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-    <input type="checkbox" id="item3" class="form-check-input me-2" style="width: 16px; height: 16px;">
-    <label for="item3" class="form-check-label">بارگذاری مدارک مرتبط</label>
-  </div>
-</form>
+                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
+                            <input type="checkbox" id="item3" class="form-check-input me-2" style="width: 16px; height: 16px;">
+                            <label for="item3" class="form-check-label">بارگذاری مدارک مرتبط</label>
+                        </div>
+                    </form>
 
 
                 </div>
@@ -287,6 +287,22 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reasonModalLabel">علت بازگشت پروژه</h5>
+      </div>
+      <div class="modal-body">
+        <textarea id="reasonInput" class="form-control" rows="4" placeholder="لطفا علت بازگشت پروژه را وارد کنید..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+        <button type="button" class="btn btn-primary" id="submitReasonBtn">ثبت</button>
+      </div>
+    </div>
+  </div>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </asp:Content>
@@ -323,8 +339,6 @@
             ]
         };
 
-
-
         function openSMSModal() {
             const modal = new bootstrap.Modal(document.getElementById('smsModal'));
             modal.show();
@@ -338,10 +352,11 @@
         function createCard(item) {
             const card = document.createElement('div');
             card.className = 'project-card';
+
             if (item.debt) card.classList.add('debtor');
             card.draggable = true;
-            card.setAttribute('data-id', item.id || Math.random());
-
+            //card.setAttribute('data-id', item.id || Math.random());
+            card.setAttribute('data-id', item.id || item.title);
             card.innerHTML = `
         <div class="project-days">+15</div>
         <h6>${item.title}</h6>
@@ -381,6 +396,7 @@
             const col = document.createElement('div');
             col.className = 'kanban-column';
             col.dataset.status = statusKey;
+
             const status = statuses.find(s => s.key === statusKey);
 
             col.innerHTML = `
@@ -401,8 +417,8 @@
 
             function renderSortedProjects(order = '') {
                 container.innerHTML = '';
-                let sortedItems = [...items];
 
+                let sortedItems = [...items];
                 if (order === 'asc') {
                     sortedItems.sort((a, b) => a.date.localeCompare(b.date));
                 } else if (order === 'desc') {
@@ -411,35 +427,18 @@
 
                 const monthGroups = groupByMonth(sortedItems);
 
+                // اگر پروژه‌ای نداریم:
                 if (sortedItems.length === 0) {
-                    // ساختن دراپ‌زون خالی
                     const emptyList = document.createElement('div');
                     emptyList.className = 'project-list empty-dropzone';
                     emptyList.dataset.status = statusKey;
-
                     container.appendChild(emptyList);
 
-                    new Sortable(emptyList, {
-                        group: 'shared',
-                        animation: 150,
-                        onAdd: function (evt) {
-                            const card = evt.item;
-                            const source = evt.from.closest('.kanban-column');
-                            const target = evt.to.closest('.kanban-column');
-
-                            updateEmptyDropzoneState(source);
-                            updateEmptyDropzoneState(target);
-                            onCardDrop(card, source, target);
-                        },
-                        onRemove: function (evt) {
-                            const column = evt.from.closest('.kanban-column');
-                            updateEmptyDropzoneState(column);
-                        }
-                    });
-
+                    attachSortable(emptyList);
                     return;
                 }
 
+                // در غیر اینصورت برای هر ماه:
                 for (const [key, monthItems] of Object.entries(monthGroups)) {
                     const [year, month] = key.split('/');
                     const monthDiv = document.createElement('div');
@@ -454,30 +453,40 @@
                     projectList.className = 'project-list';
                     projectList.dataset.status = statusKey;
 
-                    monthItems.forEach(item => projectList.appendChild(createCard(item)));
+                    monthItems.forEach(item => {
+                        const card = createCard(item); // فرض بر اینه که این تابع موجوده
+                        projectList.appendChild(card);
+                    });
 
                     monthDiv.appendChild(monthHeader);
                     monthDiv.appendChild(projectList);
                     container.appendChild(monthDiv);
 
-                    new Sortable(projectList, {
-                        group: 'shared',
-                        animation: 150,
-                        onAdd: function (evt) {
-                            const card = evt.item;
-                            const source = evt.from.closest('.kanban-column');
-                            const target = evt.to.closest('.kanban-column');
-
-                            updateEmptyDropzoneState(source);
-                            updateEmptyDropzoneState(target);
-                            onCardDrop(card, source, target);
-                        },
-                        onRemove: function (evt) {
-                            const column = evt.from.closest('.kanban-column');
-                            updateEmptyDropzoneState(column);
-                        }
-                    });
+                    attachSortable(projectList);
                 }
+            }
+
+            // تابع مشترک برای اتصال Sortable
+            function attachSortable(listElement) {
+                new Sortable(listElement, {
+                    group: 'shared',
+                    animation: 150,
+                    onAdd: function (evt) {
+                        const card = evt.item;
+                        const source = evt.from.closest('.kanban-column');
+                        const target = evt.to.closest('.kanban-column');
+
+                        updateEmptyDropzoneState(source);
+                        updateEmptyDropzoneState(target);
+
+                        alert("✅ کارت منتقل شد به ستون جدید");
+                        onCardDrop(card, source, target);
+                    },
+                    onRemove: function (evt) {
+                        const column = evt.from.closest('.kanban-column');
+                        updateEmptyDropzoneState(column);
+                    }
+                });
             }
 
             select.addEventListener('change', e => {
@@ -489,15 +498,28 @@
             return col;
         }
 
-        function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
-            // انتقال کارت به ستون جدید
-            const targetList = targetColumnElement.querySelector(".project-list");
-            targetList.appendChild(cardElement);
 
-            // آپدیت وضعیت ستون مبدا و مقصد
-            updateEmptyDropzoneState(sourceColumnElement);
-            updateEmptyDropzoneState(targetColumnElement);
+        function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
+            const sourceStatus = sourceColumnElement.dataset.status;
+            const targetStatus = targetColumnElement.dataset.status;
+            const cardId = cardElement.dataset.id;
+            // پیدا کردن کارت و حذف از ستون مبدا
+            let movedItem = null;
+            kanbanData[sourceStatus] = kanbanData[sourceStatus].filter(item => {
+                if ((item.id || item.title) == cardId) {
+                    movedItem = item;
+                    return false;
+                }
+                return true;
+            });
+            // افزودن به ستون مقصد
+            if (movedItem) {
+                kanbanData[targetStatus].push(movedItem);
+            }
+            updateKanbanAfterDrop(cardElement, sourceColumnElement, targetColumnElement);
         }
+
+
         function updateEmptyDropzoneState(columnElement) {
             const allProjectLists = columnElement.querySelectorAll('.project-list');
 
@@ -510,14 +532,68 @@
             });
         }
 
+        function updateKanbanAfterDrop(cardElement, sourceColumnElement, targetColumnElement) {
+            const projectId = cardElement.getAttribute('data-id');
+            alert(projectId);
+            const sourceStatus = sourceColumnElement.dataset.status;
+            const targetStatus = targetColumnElement.dataset.status;
+
+            // پیدا کردن پروژه
+            const project = kanbanData[sourceStatus].find(item =>
+                (item.id || item.title) === projectId
+            );
+
+            if (!project) return;
+
+            // حذف از لیست قبلی
+            kanbanData[sourceStatus] = kanbanData[sourceStatus].filter(item =>
+                (item.id || item.title) !== projectId
+            );
+
+            // اضافه به لیست جدید
+            kanbanData[targetStatus].push(project);
+
+            // بازسازی هر دو ستون
+            const container = document.getElementById('kanban-container');
+
+            // حذف ستون قدیمی
+            const oldSourceColumn = container.querySelector(`[data-status="${sourceStatus}"]`);
+            const oldTargetColumn = container.querySelector(`[data-status="${targetStatus}"]`);
+
+            if (oldSourceColumn) container.removeChild(oldSourceColumn);
+            if (oldTargetColumn && targetStatus !== sourceStatus) container.removeChild(oldTargetColumn);
+
+            // اضافه کردن دوباره ستون‌ها
+            container.appendChild(createColumn(sourceStatus, statuses.find(s => s.key === sourceStatus).label, kanbanData[sourceStatus]));
+
+            // جلوگیری از اضافه شدن تکراری ستون مقصد اگر همان با مبدا نیست
+            if (sourceStatus !== targetStatus) {
+                container.appendChild(createColumn(targetStatus, statuses.find(s => s.key === targetStatus).label, kanbanData[targetStatus]));
+            }
+        }
+
+        function rerenderColumn(statusKey) {
+            const container = document.getElementById('kanban-container');
+            const oldCol = container.querySelector(`.kanban-column[data-status="${statusKey}"]`);
+            if (oldCol) {
+                container.removeChild(oldCol);
+            }
+
+            const statusObj = statuses.find(s => s.key === statusKey);
+            const label = statusObj?.label || statusKey;
+
+            const newCol = createColumn(statusKey, label, kanbanData[statusKey]);
+            container.appendChild(newCol);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('kanban-container');
-            
+
             for (const [statusKey, items] of Object.entries(kanbanData)) {
                 const statusObj = statuses.find(s => s.key === statusKey);
                 const label = statusObj?.label || statusKey;
                 container.appendChild(createColumn(statusKey, label, items));
-                
+
             }
         });
   </script>
@@ -683,12 +759,14 @@
                 if (draggedCard && toColumn) {
                     toColumn.appendChild(draggedCard); // کارت اصلی رو اضافه کن
                 }
+                onCardDrop(draggedCard, fromColumn, toColumn);
                 cleanupChecklistState();
             });
             checklistCancel.addEventListener('click', () => {
                 if (clonedCard && fromColumn) {
                     fromColumn.appendChild(clonedCard); // کپی کارت رو برگردون
                 }
+                onCardDrop(draggedCard, fromColumn, toColumn);
                 cleanupChecklistState();
             });
 
@@ -719,6 +797,7 @@
                     group: 'shared',
                     animation: 150,
                     onStart: evt => {
+                       
                         draggedCard = evt.item;
                         fromColumn = evt.from;
                     },
