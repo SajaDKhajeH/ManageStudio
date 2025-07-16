@@ -266,8 +266,7 @@
                             <input type="checkbox" id="item1" class="form-check-input me-2" style="width: 16px; height: 16px;">
                             <label for="item1" class="form-check-label">بررسی صحت اطلاعات</label>
                         </div>
-
-                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
+                       <%-- <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
                             <input type="checkbox" id="item2" class="form-check-input me-2" style="width: 16px; height: 16px;">
                             <label for="item2" class="form-check-label">تایید نهایی توسط سرپرست</label>
                         </div>
@@ -275,7 +274,7 @@
                         <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
                             <input type="checkbox" id="item3" class="form-check-input me-2" style="width: 16px; height: 16px;">
                             <label for="item3" class="form-check-label">بارگذاری مدارک مرتبط</label>
-                        </div>
+                        </div>--%>
                     </form>
 
 
@@ -288,21 +287,21 @@
         </div>
     </div>
     <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reasonModalLabel">علت بازگشت پروژه</h5>
-      </div>
-      <div class="modal-body">
-        <textarea id="reasonInput" class="form-control" rows="4" placeholder="لطفا علت بازگشت پروژه را وارد کنید..."></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-        <button type="button" class="btn btn-primary" id="submitReasonBtn">ثبت</button>
-      </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reasonModalLabel">علت بازگشت پروژه</h5>
+                </div>
+                <div class="modal-body">
+                    <textarea id="reasonInput" class="form-control" rows="4" placeholder="لطفا علت بازگشت پروژه را وارد کنید..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                    <button type="button" class="btn btn-primary" id="submitReasonBtn">ثبت</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </asp:Content>
@@ -314,25 +313,25 @@
         });
         const kanbanData = {
             readyForDesign: [
-                { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true },
-                { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true },
+                {id:1, title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true },
+                { id:2, title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
+                { id:3,title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true },
 
             ],
             in_Design: [
-                { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
-                { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true },
-                { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
+                {id:4, title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
+                {id:5, title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
+                {id:6, title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true },
+                { id:7, title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
             ],
             AcceptCustomer: [
-                { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true }
+                { id:8,title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true }
             ],
             ready_for_Print: [
-                { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true }
+                { id:9, title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true }
             ],
             ready_for_Delivery: [
-                { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true }
+                { id:10, title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true }
             ],
             Deliverd: [
 
@@ -356,7 +355,7 @@
             if (item.debt) card.classList.add('debtor');
             card.draggable = true;
             //card.setAttribute('data-id', item.id || Math.random());
-            card.setAttribute('data-id', item.id || item.title);
+            card.setAttribute('data-id', item.id);
             card.innerHTML = `
         <div class="project-days">+15</div>
         <h6>${item.title}</h6>
@@ -392,6 +391,7 @@
             return names[parseInt(number) - 1] || number;
         }
 
+
         function createColumn(statusKey, label, items) {
             const col = document.createElement('div');
             col.className = 'kanban-column';
@@ -416,6 +416,7 @@
             const select = col.querySelector('.sort-select');
 
             function renderSortedProjects(order = '') {
+
                 container.innerHTML = '';
 
                 let sortedItems = [...items];
@@ -464,6 +465,7 @@
 
                     attachSortable(projectList);
                 }
+
             }
 
             // تابع مشترک برای اتصال Sortable
@@ -497,16 +499,15 @@
 
             return col;
         }
-
-
         function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
             const sourceStatus = sourceColumnElement.dataset.status;
             const targetStatus = targetColumnElement.dataset.status;
+            
             const cardId = cardElement.dataset.id;
             // پیدا کردن کارت و حذف از ستون مبدا
             let movedItem = null;
             kanbanData[sourceStatus] = kanbanData[sourceStatus].filter(item => {
-                if ((item.id || item.title) == cardId) {
+                if ((item.id) == cardId) {
                     movedItem = item;
                     return false;
                 }
@@ -516,10 +517,7 @@
             if (movedItem) {
                 kanbanData[targetStatus].push(movedItem);
             }
-            updateKanbanAfterDrop(cardElement, sourceColumnElement, targetColumnElement);
         }
-
-
         function updateEmptyDropzoneState(columnElement) {
             const allProjectLists = columnElement.querySelectorAll('.project-list');
 
@@ -531,46 +529,6 @@
                 }
             });
         }
-
-        function updateKanbanAfterDrop(cardElement, sourceColumnElement, targetColumnElement) {
-            const projectId = cardElement.getAttribute('data-id');
-            const sourceStatus = sourceColumnElement.dataset.status;
-            const targetStatus = targetColumnElement.dataset.status;
-
-            // پیدا کردن پروژه
-            const project = kanbanData[sourceStatus].find(item =>
-                (item.id || item.title) === projectId
-            );
-
-            if (!project) return;
-
-            // حذف از لیست قبلی
-            kanbanData[sourceStatus] = kanbanData[sourceStatus].filter(item =>
-                (item.id || item.title) !== projectId
-            );
-
-            // اضافه به لیست جدید
-            kanbanData[targetStatus].push(project);
-
-            // بازسازی هر دو ستون
-            const container = document.getElementById('kanban-container');
-
-            // حذف ستون قدیمی
-            const oldSourceColumn = container.querySelector(`[data-status="${sourceStatus}"]`);
-            const oldTargetColumn = container.querySelector(`[data-status="${targetStatus}"]`);
-
-            if (oldSourceColumn) container.removeChild(oldSourceColumn);
-            if (oldTargetColumn && targetStatus !== sourceStatus) container.removeChild(oldTargetColumn);
-
-            // اضافه کردن دوباره ستون‌ها
-            container.appendChild(createColumn(sourceStatus, statuses.find(s => s.key === sourceStatus).label, kanbanData[sourceStatus]));
-
-            // جلوگیری از اضافه شدن تکراری ستون مقصد اگر همان با مبدا نیست
-            if (sourceStatus !== targetStatus) {
-                container.appendChild(createColumn(targetStatus, statuses.find(s => s.key === targetStatus).label, kanbanData[targetStatus]));
-            }
-        }
-
         function rerenderColumn(statusKey) {
             const container = document.getElementById('kanban-container');
             const oldCol = container.querySelector(`.kanban-column[data-status="${statusKey}"]`);
@@ -796,7 +754,7 @@
                     group: 'shared',
                     animation: 150,
                     onStart: evt => {
-                       
+
                         draggedCard = evt.item;
                         fromColumn = evt.from;
                     },

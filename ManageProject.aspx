@@ -1,109 +1,122 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="ManageProject.aspx.cs" Inherits="ManageProject" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
-    
+
     <style>
         .kanban-board {
-      display: flex;
-      overflow-x: auto;
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .kanban-column {
-      background: #fff;
-      border-radius: 12px;
-      min-width: 320px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .kanban-header {
-      padding: 1rem;
-      border-bottom: 1px solid #dee2e6;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-      font-weight: bold;
-      color: white;
-    }
-    .project-card {
-      background: #ffffff;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      padding: 1rem;
-      margin: 0.5rem;
-      position: relative;
-      cursor: grab;
-    }
-    .project-card.debtor::before {
-      content: 'بدهکار';
-      position: absolute;
-      top: 0;
-      right: 0;
-      background-color: #dc3545;
-      color: white;
-      padding: 0.2rem 0.5rem;
-      border-bottom-left-radius: 8px;
-      font-size: 0.75rem;
-    }
-    .urgent-label {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background-color: #f8a521;
-      color: white;
-      padding: 0.2rem 0.5rem;
-      border-radius: 5px;
-      font-size: 0.75rem;
-    }
-    .project-days {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #0d6efd;
-      margin-bottom: 0.5rem;
-    }
-    .project-footer {
-      font-size: 0.8rem;
-      color: #6c757d;
-      margin-top: 1rem;
-      border-top: 1px solid #dee2e6;
-      padding-top: 0.5rem;
-    }
-    .project-footer .badge {
-      margin-top: 0.3rem;
-      display: inline-block;
-      cursor: pointer;
-    }
-    .month-group {
-      margin-top: 1rem;
-    }
-    .month-header {
-      background-color: #e9ecef;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      font-weight: bold;
-      border-radius: 8px;
-    }
-    .project-list.collapsed {
-      display: none;
-    }
-  .empty-dropzone {
-    border: 2px dashed #ced4da;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    min-height: 100px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6c757d;
-    font-size: 0.9rem;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-.empty-dropzone:hover {
-    background-color: #e2e6ea;
-}
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .kanban-column {
+            background: #fff;
+            border-radius: 12px;
+            min-width: 320px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .kanban-header {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 0.5rem;
+            position: relative;
+            cursor: grab;
+        }
+
+            .project-card.debtor::before {
+                content: 'بدهکار';
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: #dc3545;
+                color: white;
+                padding: 0.2rem 0.5rem;
+                border-bottom-left-radius: 8px;
+                font-size: 0.75rem;
+            }
+
+        .urgent-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background-color: #f8a521;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.75rem;
+        }
+
+        .project-days {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-footer {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 1rem;
+            border-top: 1px solid #dee2e6;
+            padding-top: 0.5rem;
+        }
+
+            .project-footer .badge {
+                margin-top: 0.3rem;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+        .month-group {
+            margin-top: 1rem;
+        }
+
+        .month-header {
+            background-color: #e9ecef;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .project-list.collapsed {
+            display: none;
+        }
+
+        .empty-dropzone {
+            border: 2px dashed #ced4da;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            min-height: 100px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+            .empty-dropzone:hover {
+                background-color: #e2e6ea;
+            }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -185,20 +198,20 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                       <div class="kanban-board">
-    <script>
-        const statuses = [
-            { key: 'not_started', label: 'شروع نشده', color: '#6c757d' },
-            { key: 'in_progress', label: 'در حال انجام', color: '#0d6efd' },
-            { key: 'pending_payment', label: 'در انتظار تسویه', color: '#ffc107' },
-            { key: 'ready_for_design', label: 'آماده طراحی و تدوین', color: '#20c997' },
-            { key: 'successful', label: 'موفق', color: '#198754' },
-            { key: 'failed', label: 'ناموفق', color: '#dc3545' }
-        ];
+                        <div class="kanban-board">
+                            <script>
+                                const statuses = [
+                                    { key: 'not_started', label: 'شروع نشده', color: '#6c757d' },
+                                    { key: 'in_progress', label: 'در حال انجام', color: '#0d6efd' },
+                                    { key: 'pending_payment', label: 'در انتظار تسویه', color: '#ffc107' },
+                                    { key: 'ready_for_design', label: 'آماده طراحی و تدوین', color: '#20c997' },
+                                    { key: 'successful', label: 'موفق', color: '#198754' },
+                                    { key: 'failed', label: 'ناموفق', color: '#dc3545' }
+                                ];
     </script>
 
-    <div id="kanban-container" class="d-flex gap-3 w-100"></div>
-  </div>
+                            <div id="kanban-container" class="d-flex gap-3 w-100"></div>
+                        </div>
 
                     </div>
                 </div>
@@ -223,23 +236,23 @@
         </div>
     </div>
     <div class="modal fade" id="failureReasonModal" tabindex="-1" aria-labelledby="failureReasonLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="failureReasonLabel">علت عدم موفقیت پروژه</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
-      </div>
-      <div class="modal-body">
-        <textarea id="failureReasonInput" class="form-control" rows="4" placeholder="لطفاً علت عدم موفقیت پروژه را وارد کنید..."></textarea>
-        <input type="hidden" id="failureProjectInfo">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-        <button type="button" class="btn btn-danger" id="confirmFailureReason">ثبت علت و انتقال</button>
-      </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="failureReasonLabel">علت عدم موفقیت پروژه</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="failureReasonInput" class="form-control" rows="4" placeholder="لطفاً علت عدم موفقیت پروژه را وارد کنید..."></textarea>
+                    <input type="hidden" id="failureProjectInfo">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                    <button type="button" class="btn btn-danger" id="confirmFailureReason">ثبت علت و انتقال</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
     <div class="modal fade" id="checklistModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -274,9 +287,43 @@
             </div>
         </div>
     </div>
+    <!-- Modal برای دلیل عدم موفقیت -->
+    <div class="modal fade" id="failedReasonModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">علت عدم موفقیت پروژه</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="failedReasonForm">
+                        <div class="mb-3">
+                            <label for="reasonSelect" class="form-label">علت:</label>
+                            <select class="form-select" id="reasonSelect" required>
+                                <option value="">انتخاب کنید</option>
+                                <option value="لغو توسط مشتری">لغو توسط مشتری</option>
+                                <option value="عدم پرداخت هزینه">عدم پرداخت هزینه</option>
+                                <option value="مشکل فنی">مشکل فنی</option>
+                                <option value="سایر">سایر</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reasonText" class="form-label">توضیحات تکمیلی:</label>
+                            <textarea class="form-control" id="reasonText" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancelFailedMove" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                    <button type="button" id="confirmFailedMove" class="btn btn-danger">تایید</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-   
+
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
@@ -308,7 +355,7 @@
                 { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
             ],
             failed: [
-                
+
             ]
         };
 
@@ -451,7 +498,7 @@
                         animation: 150,
                         onAdd: function (evt) {
                             const card = evt.item;
-                            
+
                             const source = evt.from.closest('.kanban-column');
                             const target = evt.to.closest('.kanban-column');
                             updateEmptyDropzoneState(source);
@@ -475,14 +522,37 @@
             return col;
         }
 
-        function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
-            // انتقال کارت به ستون جدید
-            const targetList = targetColumnElement.querySelector(".project-list");
-            targetList.appendChild(cardElement);
+        //function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
+        //    // انتقال کارت به ستون جدید
+        //    const targetList = targetColumnElement.querySelector(".project-list");
+        //    targetList.appendChild(cardElement);
 
-            // آپدیت وضعیت ستون مبدا و مقصد
-            updateEmptyDropzoneState(sourceColumnElement);
-            updateEmptyDropzoneState(targetColumnElement);
+        //    // آپدیت وضعیت ستون مبدا و مقصد
+        //    updateEmptyDropzoneState(sourceColumnElement);
+        //    updateEmptyDropzoneState(targetColumnElement);
+        //}
+        function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
+            const targetStatus = targetColumnElement.dataset.status;
+
+            if (targetStatus === 'failed') {
+                // نمایش مودال و ذخیره اطلاعات موقت
+                const failedModal = new bootstrap.Modal(document.getElementById('failedReasonModal'));
+                failedModal.show();
+
+                // ذخیره مبدأ و کارت برای استفاده بعد
+                window._dragContext = {
+                    cardElement,
+                    sourceColumnElement,
+                    targetColumnElement,
+                    failedModal
+                };
+            } else {
+                // انتقال معمولی
+                const targetList = targetColumnElement.querySelector(".project-list");
+                targetList.appendChild(cardElement);
+                updateEmptyDropzoneState(sourceColumnElement);
+                updateEmptyDropzoneState(targetColumnElement);
+            }
         }
         function updateEmptyDropzoneState(columnElement) {
             const allProjectLists = columnElement.querySelectorAll('.project-list');
@@ -529,6 +599,43 @@
             document.getElementById('failureReasonInput').value = '';
             bootstrap.Modal.getInstance(document.getElementById('failureReasonModal')).hide();
         });
+    </script>
+    <script>
+        document.getElementById('confirmFailedMove').addEventListener('click', () => {
+            const reason = document.getElementById('reasonSelect').value;
+            const details = document.getElementById('reasonText').value;
+
+            if (!reason) {
+                alert("لطفاً علت را انتخاب کنید.");
+                return;
+            }
+
+            const { cardElement, sourceColumnElement, targetColumnElement, failedModal } = window._dragContext;
+
+            // TODO: این اطلاعات می‌تونن ذخیره بشن یا داخل دیتای پروژه اضافه بشن
+
+            // انتقال کارت
+            const targetList = targetColumnElement.querySelector(".project-list");
+            targetList.appendChild(cardElement);
+            updateEmptyDropzoneState(sourceColumnElement);
+            updateEmptyDropzoneState(targetColumnElement);
+
+            failedModal.hide();
+            window._dragContext = null;
+        });
+
+        document.getElementById('cancelFailedMove').addEventListener('click', () => {
+            const { cardElement, sourceColumnElement, targetColumnElement } = window._dragContext;
+
+            // بازگرداندن کارت به ستون مبدأ
+            const sourceList = sourceColumnElement.querySelector(".project-list");
+            sourceList.appendChild(cardElement);
+            updateEmptyDropzoneState(sourceColumnElement);
+            updateEmptyDropzoneState(targetColumnElement);
+
+            window._dragContext = null;
+        });
+
     </script>
 </asp:Content>
 
