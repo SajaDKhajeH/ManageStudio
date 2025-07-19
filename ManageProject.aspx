@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="ManageProject.aspx.cs" Inherits="ManageProject" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
-
     <style>
         .kanban-board {
             display: flex;
@@ -212,7 +211,7 @@
 
                             <div id="kanban-container" class="d-flex gap-3 w-100"></div>
                         </div>
-
+                        <button class="btn btn-sm btn-light w-100 mt-2" onclick="openSMSModal()" style="display: none">ارسال پیامک</button>
                     </div>
                 </div>
             </div>
@@ -321,10 +320,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
-
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
@@ -388,10 +384,10 @@
           ثبت توسط: مدیر سیستم - ۱۴۰۳/۰۳/۱۰ ساعت ۱۰:۳۰
          ${item.debt ? `<span class="badge bg-danger" data-amount="${item.debtAmount}">${`بدهی: ${Number(item.debtAmount).toLocaleString()} تومان`}</span>` : ''}
             <div class="d-flex align-items-center gap-2 flex-nowrap">
-                <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#checklistModal">
+                <button class="btn btn-sm btn-light-info" data-bs-toggle="modal" data-bs-target="#checklistModal">
                     <i class="bi bi-check2"></i> چک لیست
                 </button>
-                <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#checklistModal">
+                <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#m_SetPaidPrice">
                     <i class="bi bi-currency-dollar"></i> بیعانه
                 </button>
                 <button class="btn btn-sm btn-light-primary" onclick="GoToAddEditFactor();">
@@ -428,6 +424,7 @@
         <div class="kanban-header" style="background-color: ${status.color};">
             <h5>${label} (${items.length})</h5>
             <button class="btn btn-sm btn-light w-100 mt-2" onclick="openSMSModal()">ارسال پیامک</button>
+            <button class="refreshColumn"  style="display: none">رفرش ستون</button>
             <select class="form-select form-select-sm mt-2 sort-select">
                 <option value="">مرتب‌سازی</option>
                 <option value="asc">قدیمی‌ترین</option>
@@ -439,6 +436,7 @@
 
             const container = col.querySelector('.kanban-content');
             const select = col.querySelector('.sort-select');
+            const refreshcolumn = col.querySelector('.refreshColumn');
 
             function renderSortedProjects(order = '') {
                 container.innerHTML = '';
@@ -523,6 +521,10 @@
             select.addEventListener('change', e => {
                 renderSortedProjects(e.target.value);
             });
+            refreshcolumn.addEventListener('click', e => {
+                renderSortedProjects('');
+            });
+
 
             renderSortedProjects();
 
@@ -541,6 +543,8 @@
         function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
             const targetStatus = targetColumnElement.dataset.status;
 
+            //Tips
+            //این کدها واسه ستون ناموفق هست که پاپ اپ علت رو نمایش میده
             if (targetStatus === 'failed') {
                 // نمایش مودال و ذخیره اطلاعات موقت
                 const failedModal = new bootstrap.Modal(document.getElementById('failedReasonModal'));
@@ -553,12 +557,21 @@
                     targetColumnElement,
                     failedModal
                 };
-            } else {
+            }
+            else {
                 // انتقال معمولی
                 const targetList = targetColumnElement.querySelector(".project-list");
                 targetList.appendChild(cardElement);
                 updateEmptyDropzoneState(sourceColumnElement);
                 updateEmptyDropzoneState(targetColumnElement);
+                //قبل از اینکه اینجا بخواد ستون هارو رفرش کنه باید در لیست kanbanData جابجایی بین ستون ها انجام بشه
+                //چون داره از ستون های میخونه و در ستون ها نمایش میده
+                //Tips
+                const refreshColumn_source = sourceColumnElement.querySelector('.refreshColumn');
+                const refreshColumn_target = targetColumnElement.querySelector('.refreshColumn');
+                refreshColumn_source.click();
+                refreshColumn_target.click();
+
             }
         }
         function updateEmptyDropzoneState(columnElement) {
@@ -571,6 +584,7 @@
                     projectList.classList.add('empty-dropzone');
                 }
             });
+           
         }
 
         window.addEventListener('DOMContentLoaded', () => {
