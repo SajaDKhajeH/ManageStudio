@@ -386,11 +386,18 @@
         ${item.urgent ? '<span class="urgent-label">فوری</span>' : ''}
         <div class="project-footer">
           ثبت توسط: مدیر سیستم - ۱۴۰۳/۰۳/۱۰ ساعت ۱۰:۳۰
+         ${item.debt ? `<span class="badge bg-danger" data-amount="${item.debtAmount}">${`بدهی: ${Number(item.debtAmount).toLocaleString()} تومان`}</span>` : ''}
             <div class="d-flex align-items-center gap-2 flex-nowrap">
                 <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#checklistModal">
-                    <i class="bi bi-images"></i> چک لیست
+                    <i class="bi bi-check2"></i> چک لیست
                 </button>
-                ${item.debt ? `<span class="badge bg-danger" data-amount="${item.debtAmount}">${`بدهی: ${Number(item.debtAmount).toLocaleString()} تومان`}</span>` : ''}
+                <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#checklistModal">
+                    <i class="bi bi-currency-dollar"></i> بیعانه
+                </button>
+                <button class="btn btn-sm btn-light-primary" onclick="GoToAddEditFactor();">
+                    <i class="bi bi-list"></i> ثبت فاکتور
+                </button>
+                
             </div>
         </div>`;
             return card;
