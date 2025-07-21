@@ -20,7 +20,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label required">نوع پروژه</label>
-                                <select id="projectTypeSelect" class="form-select" required>
+                                <select id="projectTypeSelect" onchange="projectTypeSelectChanged();" class="form-select" required>
                                     <!-- آپشن‌ها: بارداری، نوزاد، رشد، عروسی etc. -->
                                 </select>
                             </div>
@@ -50,12 +50,12 @@
                             <textarea id="failureReason" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-primary">ثبت پروژه</button>
+                            <button type="submit" onclick="btnSubmitClicked();" class="btn btn-primary">ثبت پروژه</button>
                         </div>
                     </form>
                     <ul class="nav nav-tabs mt-4" id="projectTabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#tab-checklist">📋 چک‌لیست <span class="badge bg-secondary ms-1" id="count-checklist">0</span>
+                            <a class="nav-link active" onclick="showCheckList();" data-bs-toggle="tab" href="#tab-checklist">📋 چک‌لیست <span class="badge bg-secondary ms-1" id="count-checklist">0</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -101,7 +101,7 @@
                         <div class="tab-pane fade" id="tab-photos">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">لیست عکس‌ها</h5>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddPhoto">➕ افزودن عکس</button>
+                                <button class="btn btn-primary" onclick="btnOpenModalPhotoClicked()" data-bs-toggle="modal" data-bs-target="#modalAddPhoto">➕ افزودن عکس</button>
                             </div>
 
                             <!-- 🔽 فیلترها و آدرس عکس‌ها -->
@@ -138,31 +138,7 @@
                                         <th>عملیات</th>
                                     </tr>
                                 </thead>
-                                <tbody id="photoTableBody">
-                                    <tr>
-                                        <td>AX-001</td>
-                                        <td>
-                                            <button
-                                                class="btn btn-link p-0"
-                                                type="button"
-                                                data-bs-toggle="popover"
-                                                data-bs-placement="top"
-                                                data-bs-trigger="focus"
-                                                title="توضیحات عکس"
-                                                data-bs-content="این عکس مربوط به نمای جنوبی پروژه است. گرفته شده در نور روز با دوربین اصلی.">
-                                                مشاهده
-                                            </button>
-                                        </td>
-                                        <td>جواد پهلوان</td>
-                                        <td>علی رضایی</td>
-                                        <td>مدیر</td>
-                                        <td>1403/03/21 - 15:32</td>
-                                        <td><span class="badge bg-success">طراحی انجام شده</span> <span class="badge bg-danger">در انتظار طراحی</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                            <button class="btn btn-sm btn-outline-danger">حذف</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-photos">
                                 </tbody>
                             </table>
                         </div>
@@ -171,7 +147,7 @@
                         <div class="tab-pane fade" id="tab-videos">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">لیست فیلم ‌ها</h5>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddVideo">➕ افزودن فیلم</button>
+                                <button class="btn btn-primary" onclick="btnOpenModalVideoClicked()" data-bs-toggle="modal" data-bs-target="#modalAddVideo">➕ افزودن فیلم</button>
                             </div>
 
                             <div class="row mb-3">
@@ -207,31 +183,7 @@
                                         <th>عملیات</th>
                                     </tr>
                                 </thead>
-                                <tbody id="videoTableBody">
-                                    <tr>
-                                        <td>AX-001</td>
-                                        <td>
-                                            <button
-                                                class="btn btn-link p-0"
-                                                type="button"
-                                                data-bs-toggle="popover"
-                                                data-bs-placement="top"
-                                                data-bs-trigger="focus"
-                                                title="توضیحات فیلم"
-                                                data-bs-content="این فیلم مربوط به نمای جنوبی پروژه است. گرفته شده در نور روز با دوربین اصلی.">
-                                                مشاهده
-                                            </button>
-                                        </td>
-                                        <td>جواد پهلوان</td>
-                                        <td>علی رضایی</td>
-                                        <td>مدیر</td>
-                                        <td>1403/03/21 - 15:32</td>
-                                        <td><span class="badge bg-success">تدوین انجام شده</span> <span class="badge bg-danger">در انتظار تدوین</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                            <button class="btn btn-sm btn-outline-danger">حذف</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-videos">
                                 </tbody>
                             </table>
                         </div>
@@ -248,24 +200,15 @@
                                         <th>وضعیت</th>
                                         <th>ثبت کننده</th>
                                         <th>تاریخ و ساعت انجام</th>
-<%--                                        <th>عملیات</th>--%>
+                                        <%--                                        <th>عملیات</th>--%>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="checklist-items">
                                     <tr data-status="done">
                                         <td>دوربین بررسی شد</td>
                                         <td class="status-text">✅ انجام شد</td>
                                         <td>احمد</td>
                                         <td>1403/01/10</td>
-                                       <%-- <td>
-                                            <button class="btn btn-success btn-sm do-btn">انجام شد</button>
-                                            <button class="btn btn-danger btn-sm undo-btn">عدم انجام</button>
-                                            <div class="mt-2 d-none reason-box">
-                                                <input type="text" class="form-control form-control-sm reason-input" placeholder="توضیحات...">
-                                                <small class="text-danger d-none reason-error">توضیحات باید حداقل ۵ کلمه باشد</small>
-                                                <button class="btn btn-primary btn-sm mt-1 submit-reason-btn">ثبت توضیح</button>
-                                            </div>
-                                        </td>--%>
                                     </tr>
                                 </tbody>
                             </table>
@@ -275,7 +218,7 @@
                         <div class="tab-pane fade" id="tab-locations">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">لوکیشن‌ها</h5>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddLocation">➕ افزودن لوکیشن</button>
+                                <button class="btn btn-primary" data-bs-toggle="modal" onclick="btnOpenModalLocationClicked()" data-bs-target="#modalAddLocation">➕ افزودن لوکیشن</button>
                             </div>
                             <table class="table table-striped">
                                 <thead>
@@ -288,18 +231,7 @@
                                         <th>عملیات</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>عمارت تاریخی</td>
-                                        <td>1,000,000 تومان</td>
-                                        <td>لوکیشن اصلی</td>
-                                        <td>کاربر</td>
-                                        <td>1403/03/21 - 15:32</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                            <button class="btn btn-sm btn-outline-danger">حذف</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-locations">
                                 </tbody>
                             </table>
                         </div>
@@ -557,22 +489,19 @@
                     <form>
                         <div class="mb-3">
                             <label class="form-label">کد عکس *</label>
-                            <input type="text" class="form-control" required>
+                            <input id="txt-photo-code" type="text" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">توضیحات</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea id="txt-photo-desc" class="form-control"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">عکاس *</label>
-                            <select id="photographerFilter" class="form-select">
-                                <option value="علی رضایی">علی رضایی</option>
-                                <option value="سارا احمدی">سارا احمدی</option>
-                                <option value="محمد کرمی">محمد کرمی</option>
+                            <select id="cmb-photographer" class="form-select">
                             </select>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success">ذخیره</button>
+                            <button type="button" onclick="btnSubmitModalPhotoClicked()" class="btn btn-success">ذخیره</button>
                         </div>
                     </form>
                 </div>
@@ -592,22 +521,19 @@
                     <form>
                         <div class="mb-3">
                             <label class="form-label">کد فیلم *</label>
-                            <input type="text" class="form-control" required>
+                            <input id="txt-video-code" type="text" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">توضیحات</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea id="txt-video-desc" class="form-control"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">فیلم بردار *</label>
-                            <select id="videographerFilter" class="form-select">
-                                <option value="علی رضایی">علی رضایی</option>
-                                <option value="سارا احمدی">سارا احمدی</option>
-                                <option value="محمد کرمی">محمد کرمی</option>
+                            <select id="cmb-videographer" class="form-select">
                             </select>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success">ذخیره</button>
+                            <button type="button" onclick="btnSubmitModalVideoClicked()" class="btn btn-success">ذخیره</button>
                         </div>
                     </form>
                 </div>
@@ -627,22 +553,19 @@
                     <form>
                         <div class="mb-3">
                             <label class="form-label">لوکیشن *</label>
-                            <select name="status" class="form-select">
-                                <option value="فعال">باغ اکبر</option>
-                                <option value="غیرفعال">تالار اصغر</option>
-                                <option value="در تعمیر">باغ تالار سجاد</option>
+                            <select name="status" id="cmb-location" class="form-select">
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">هزینه</label>
-                            <input type="number" class="form-control" required>
+                            <input id="txt-location-expense" type="number" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">توضیحات تکمیلی</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea id="txt-location-desc" class="form-control"></textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success">ذخیره</button>
+                            <button type="button" onclick="btnSubmitModalLocationClicked()" class="btn btn-success">ذخیره</button>
                         </div>
                     </form>
                 </div>
@@ -735,6 +658,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
+
         $(function () {
             $('#familySelect, #projectTypeSelect').on('change', function () {
                 const fam = $('#familySelect option:selected').text();
@@ -809,55 +733,6 @@
         }
     </script>
 
-    <%--اسکریپت چک لیست--%>
-    <script>
-        document.querySelectorAll(".do-btn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const row = this.closest("tr");
-                row.dataset.status = "done";
-                row.querySelector(".status-text").textContent = "✅ انجام شد";
-                row.querySelector(".reason-box").classList.add("d-none");
-            });
-        });
-
-        document.querySelectorAll(".undo-btn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const row = this.closest("tr");
-                const prevStatus = row.dataset.status;
-                const reasonBox = row.querySelector(".reason-box");
-
-                if (prevStatus === "done") {
-                    reasonBox.classList.remove("d-none");
-                } else {
-                    row.dataset.status = "undone";
-                    row.querySelector(".status-text").textContent = "❌ انجام نشد";
-                    reasonBox.classList.add("d-none");
-                }
-            });
-        });
-
-        document.querySelectorAll(".submit-reason-btn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const row = this.closest("tr");
-                const input = row.querySelector(".reason-input");
-                const error = row.querySelector(".reason-error");
-                const words = input.value.trim().split(/\s+/);
-
-                if (words.length < 5) {
-                    error.classList.remove("d-none");
-                } else {
-                    error.classList.add("d-none");
-                    row.dataset.status = "undone";
-                    row.querySelector(".status-text").textContent = "❌ انجام نشد";
-                    row.querySelector(".reason-box").classList.add("d-none");
-                    input.value = "";
-                    // می‌تونی اینجا توضیح رو بفرستی به سرور با AJAX
-                    console.log("توضیح ثبت‌شده:", words.join(" "));
-                }
-            });
-        });
-    </script>
-
     <%--اسکریپت لاگ ها--%>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -891,6 +766,491 @@
             // TODO: ارسال به سرور یا اضافه‌کردن به جدول
             alert('لاگ با موفقیت ثبت شد!');
             document.getElementById('addLogPopover').style.display = 'none';
+        }
+
+
+   
+
+        function fillProjectTypes() {
+            ajaxGet('/BasicData/ProjectTypes', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#projectTypeSelect').html(options);
+                projectTypeSelectChanged();
+            });
+        }
+
+        function projectTypeSelectChanged() {
+            let projectType = $('#projectTypeSelect').val();
+            if (projectType) {
+                showCheckList();
+            }
+        }
+
+        function showCheckList() {
+            let projectType = $('#projectTypeSelect').val();
+            $('#checklist-items').html('');
+            $('#count-checklist').html('0');
+            let query = `?ProjectTypeId=${projectType}`;
+            if (projectId != '') {
+                query += `&ProjectId=${projectId}`;
+            }
+            let route = '/Project/GetCheckList';
+
+            ajaxGet(route + query, function (items) {
+                $('#count-checklist').html(items.length);
+                let html = items.map(item =>
+                    `                                    
+                       <tr data-status="done">
+                           <td>${item.title}</td>
+                           <td class="status-text">${item.done == null ? '-' : item.done == true ? '✅ انجام شد' : '× انجام نشد'}</td>
+                           <td>${item.creator ? item.creator : '-'}</td>
+                           <td>${item.dateTime ? item.dateTime : '-'}</td>
+                       </tr>
+                    `
+                ).join('');
+
+                $('#checklist-items').html(html);
+
+            }, function (err) {
+                ShowError("خطا در دریافت اطلاعات");
+            });
+        }
+    </script>
+
+
+    <%--load--%>
+    <script>
+        let projectId = '';
+
+        $(document).ready(function () {
+            fillProjectTypes();
+            showLocations();
+            showPhotos();
+            showVideos();
+        });
+    </script>
+
+    <%--global--%>
+    <script>
+        function getCacheKey(key) {
+            return `p-${key}-p-${projectId}`;
+        }
+        function generateGUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        let isFormDirty = false;
+
+        window.addEventListener('beforeunload', function (e) {
+            if (isFormDirty) {
+                const message = 'You have unsaved changes. Do you really want to leave this page?';
+                e.preventDefault();
+                e.returnValue = message;
+                return message;
+            }
+        });
+    </script>
+
+    <%--videos--%>
+    <script>
+        let videoEdittingId = '';
+        var videos = [];
+        function btnOpenModalVideoClicked(id) {
+            let selectedvideographer = '';
+            if (id) {
+                videoEdittingId = id;
+                $('#modalAddVideo').modal('show');
+                const index = videos.findIndex(x => x.id === id);
+                const selectedItem = videos[index];
+                $('#txt-video-code').val(selectedItem.code);
+                $('#txt-video-desc').val(selectedItem.desc);
+                selectedvideographer = selectedItem.videographer.id;
+            } else {
+                videoEdittingId = '';
+                $('#txt-video-code').val('');
+                $('#txt-video-desc').val('');
+            }
+
+            ajaxGet('/User/GetAllVideographers', function (items) {
+                let options = items.map(item =>
+                    `<option ${(selectedvideographer && selectedvideographer === item.id) ? 'selected' : ''} value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-videographer').html(options);
+            });
+        }
+        function btnSubmitModalVideoClicked() {
+            let id = generateGUID();
+            let videographerId = $('#cmb-videographer').val();
+            let videographerTitle = $('#cmb-videographer option:selected').text();
+            let code = $('#txt-video-code').val();
+            let desc = $('#txt-video-desc').val();
+            let json = getLocalStorage(getCacheKey('video'));
+            if (json) {
+                let items = JSON.parse(json);
+                if (videoEdittingId) {
+                    const index = items.findIndex(x => x.id === videoEdittingId);
+                    items[index].id = id;
+                    items[index].videographer = { id: videographerId, title: videographerTitle };
+                    items[index].code = code;
+                    items[index].desc = desc;
+
+                } else {
+                    items.push({
+                        id: id,
+                        videographer: { id: videographerId, title: videographerTitle },
+                        code: code,
+                        desc: desc
+                    });
+                }
+
+                json = JSON.stringify(items);
+            } else {
+                let items = [];
+                items.push({
+                    id: id,
+                    videographer: { id: videographerId, title: videographerTitle },
+                    code: code,
+                    desc: desc
+                });
+                json = JSON.stringify(items);
+            }
+
+            let expire = 90000;
+            saveLocalStorage(getCacheKey('video'), json, expire);
+            isFormDirty = true;
+            $('#modalAddVideo').modal('hide');
+            showVideos();
+        }
+        function showVideos() {
+            videos = [];
+
+            let html = '';
+            $('#table-videos').html(html);
+
+            let json = getLocalStorage(getCacheKey('video'));
+            let countAll = 0;
+            if (json) {
+                let cachedItems = JSON.parse(json);
+                for (var i = 0; i < cachedItems.length; i++) {
+                    videos.push(cachedItems[i]);
+                }
+
+                countAll += cachedItems.length;
+                html = cachedItems.map(item =>
+                    `
+                            <tr>
+                                <td>${item.code}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-link p-0"
+                                        type="button"
+                                        data-bs-toggle="popover"
+                                        data-bs-placement="top"
+                                        data-bs-trigger="focus"
+                                        title="توضیحات فیلم"
+                                        data-bs-content="${item.desc}">
+                                        مشاهده
+                                    </button>
+                                </td>
+                                <td>${item.videographer.title}</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><span class="badge bg-success">تدوین انجام شده</span> <span class="badge bg-danger">در انتظار تدوین</span></td>
+                                <td>
+                                    <button onclick='btnOpenModalVideoClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                    <button onclick='btnDeleteVideoClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                </td>
+                            </tr>
+                    `
+                ).join('');
+
+            }
+
+            //videos.push(dbItems);
+            $('#table-videos').html(html);
+            $('#count-videos').html(countAll);
+        }
+        function btnDeleteVideoClicked(id) {
+            if (confirm('از حذف فیلم اطمینان دارید ؟')) {
+                const index = videos.findIndex(x => x.id === id);
+                if (index !== -1) {
+                    videos.splice(index, 1);
+                }
+
+                let expire = 90000;
+                saveLocalStorage(getCacheKey('video'), JSON.stringify(videos), expire);
+                isFormDirty = true;
+                showVideos();
+            }
+        }
+    </script>
+
+     <%--photos--%>
+    <script>
+        let photoEdittingId = '';
+        var photos = [];
+        function btnOpenModalPhotoClicked(id) {
+            let selectedPhotographer = '';
+            if (id) {
+                photoEdittingId = id;
+                $('#modalAddPhoto').modal('show');
+                const index = photos.findIndex(x => x.id === id);
+                const selectedItem = photos[index];
+                $('#txt-photo-code').val(selectedItem.code);
+                $('#txt-photo-desc').val(selectedItem.desc);
+                selectedPhotographer = selectedItem.photographer.id;
+            } else {
+                photoEdittingId = '';
+                $('#txt-photo-code').val('');
+                $('#txt-photo-desc').val('');
+            }
+
+            ajaxGet('/User/GetAllPhotographers', function (items) {
+                let options = items.map(item =>
+                    `<option ${(selectedPhotographer && selectedPhotographer === item.id) ? 'selected' : ''} value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-photographer').html(options);
+            });
+        }
+        function btnSubmitModalPhotoClicked() {
+            let id = generateGUID();
+            let photographerId = $('#cmb-photographer').val();
+            let photographerTitle = $('#cmb-photographer option:selected').text();
+            let code = $('#txt-photo-code').val();
+            let desc = $('#txt-photo-desc').val();
+            let json = getLocalStorage(getCacheKey('photo'));
+            if (json) {
+                let items = JSON.parse(json);
+                if (photoEdittingId) {
+                    const index = items.findIndex(x => x.id === photoEdittingId);
+                    items[index].id = id;
+                    items[index].photographer = { id: photographerId, title: photographerTitle };
+                    items[index].code = code;
+                    items[index].desc = desc;
+
+                } else {
+                    items.push({
+                        id: id,
+                        photographer: { id: photographerId, title: photographerTitle },
+                        code: code,
+                        desc: desc
+                    });
+                }
+
+                json = JSON.stringify(items);
+            } else {
+                let items = [];
+                items.push({
+                    id: id,
+                    photographer: { id: photographerId, title: photographerTitle },
+                    code: code,
+                    desc: desc
+                });
+                json = JSON.stringify(items);
+            }
+
+            let expire = 90000;
+            saveLocalStorage(getCacheKey('photo'), json, expire);
+            isFormDirty = true;
+            $('#modalAddPhoto').modal('hide');
+            showPhotos();
+        }
+        function showPhotos() {
+            photos = [];
+
+            let html = '';
+            $('#table-photos').html(html);
+
+            let json = getLocalStorage(getCacheKey('photo'));
+            let countAll = 0;
+            if (json) {
+                let cachedItems = JSON.parse(json);
+                for (var i = 0; i < cachedItems.length; i++) {
+                    photos.push(cachedItems[i]);
+                }
+
+                countAll += cachedItems.length;
+                html = cachedItems.map(item =>
+                    `
+                            <tr>
+                                <td>${item.code}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-link p-0"
+                                        type="button"
+                                        data-bs-toggle="popover"
+                                        data-bs-placement="top"
+                                        data-bs-trigger="focus"
+                                        title="توضیحات عکس"
+                                        data-bs-content="${item.desc}">
+                                        مشاهده
+                                    </button>
+                                </td>
+                                <td>${item.photographer.title}</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><span class="badge bg-success">طراحی انجام شده</span> <span class="badge bg-danger">در انتظار طراحی</span></td>
+                                <td>
+                                    <button onclick='btnOpenModalPhotoClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                    <button onclick='btnDeletePhotoClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                </td>
+                            </tr>
+                    `
+                ).join('');
+
+            }
+
+            //photos.push(dbItems);
+            $('#table-photos').html(html);
+            $('#count-photos').html(countAll);
+        }
+        function btnDeletePhotoClicked(id) {
+            if (confirm('از حذف عکس اطمینان دارید ؟')) {
+                const index = photos.findIndex(x => x.id === id);
+                if (index !== -1) {
+                    photos.splice(index, 1);
+                }
+
+                let expire = 90000;
+                saveLocalStorage(getCacheKey('photo'), JSON.stringify(photos), expire);
+                isFormDirty = true;
+                showPhotos();
+            }
+        }
+    </script>
+
+    <%--locations--%>
+    <script>
+        let locationEdittingId = '';
+        var locations = [];
+        function btnOpenModalLocationClicked(id) {
+            let selectedLocation = '';
+            if (id) {
+                locationEdittingId = id;
+                $('#modalAddLocation').modal('show');
+                const index = locations.findIndex(x => x.id === id);
+                const selectedItem = locations[index];
+                $('#txt-location-expense').val(selectedItem.expense);
+                $('#txt-location-desc').val(selectedItem.desc);
+                selectedLocation = selectedItem.location.id;
+            } else {
+                locationEdittingId = '';
+                $('#txt-location-expense').val('');
+                $('#txt-location-desc').val('');
+            }
+
+            ajaxGet('/BasicData/Locations', function (items) {
+                let options = items.map(item =>
+                    `<option ${(selectedLocation && selectedLocation === item.id) ? 'selected' : ''} value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-location').html(options);
+            });
+        }
+        function btnSubmitModalLocationClicked() {
+            let id = generateGUID();
+            let locationId = $('#cmb-location').val();
+            let locationTitle = $('#cmb-location option:selected').text();
+            let expense = $('#txt-location-expense').val();
+            let desc = $('#txt-location-desc').val();
+            let json = getLocalStorage(getCacheKey('location'));
+            if (json) {
+                let items = JSON.parse(json);
+                if (locationEdittingId) {
+                    const index = items.findIndex(x => x.id === locationEdittingId);
+                    items[index].id = id;
+                    items[index].location = { id: locationId, title: locationTitle };
+                    items[index].expense = expense;
+                    items[index].desc = desc;
+
+                } else {
+                    items.push({
+                        id: id,
+                        location: { id: locationId, title: locationTitle },
+                        expense: expense,
+                        desc: desc
+                    });
+                }
+
+                json = JSON.stringify(items);
+            } else {
+                let items = [];
+                items.push({
+                    id: id,
+                    location: { id: locationId, title: locationTitle },
+                    expense: expense,
+                    desc: desc
+                });
+                json = JSON.stringify(items);
+            }
+
+            let expire = 90000;
+            saveLocalStorage(getCacheKey('location'), json, expire);
+            isFormDirty = true;
+            $('#modalAddLocation').modal('hide');
+            showLocations();
+        }
+        function showLocations() {
+            locations = [];
+
+            let html = '';
+            $('#table-locations').html(html);
+
+            let json = getLocalStorage(getCacheKey('location'));
+            let countAll = 0;
+            if (json) {
+                let cachedItems = JSON.parse(json);
+                for (var i = 0; i < cachedItems.length; i++) {
+                    locations.push(cachedItems[i]);
+                }
+                
+                countAll += cachedItems.length;
+                html = cachedItems.map(item =>
+                    `
+                                     <tr>
+                                        <td>${item.location.title}</td>
+                                        <td>${item.expense}</td>
+                                        <td>${item.desc}</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                            <button onclick='btnOpenModalLocationClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                            <button onclick='btnDeleteLocationClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                        </td>
+                                    </tr>
+                    `
+                ).join('');
+
+            }
+
+            //locations.push(dbItems);
+            $('#table-locations').html(html);
+            $('#count-locations').html(countAll);
+        }
+        function btnDeleteLocationClicked(id) {
+            if (confirm('از حذف لوکیشن اطمینان دارید ؟')) {
+                const index = locations.findIndex(x => x.id === id);
+                if (index !== -1) {
+                    locations.splice(index, 1);
+                }
+                
+                let expire = 90000;
+                saveLocalStorage(getCacheKey('location'), JSON.stringify(locations), expire);
+                isFormDirty = true;
+                showLocations();
+            }
+        }
+    </script>
+
+    <script>
+        function btnSubmitClicked() {
+            alert(JSON.stringify(locations));
         }
     </script>
 </asp:Content>
