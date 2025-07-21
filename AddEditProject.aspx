@@ -75,7 +75,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#tab-equipment">🔌 تجهیزات <span class="badge bg-secondary ms-1" id="count-equipment">0</span>
+                            <a class="nav-link" data-bs-toggle="tab" href="#tab-materials">🔌 تجهیزات <span class="badge bg-secondary ms-1" id="count-materials">0</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -281,10 +281,10 @@
                         </div>
 
                         <!-- تب تجهیزات -->
-                        <div class="tab-pane fade" id="tab-equipment">
+                        <div class="tab-pane fade" id="tab-materials">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">تجهیزات</h5>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddEquipment">➕ افزودن تجهیزات</button>
+                                <button class="btn btn-primary" data-bs-toggle="modal" onclick="btnOpenModalMaterialClicked()" data-bs-target="#modalAddMaterial">➕ افزودن تجهیزات</button>
                             </div>
                             <table class="table table-striped">
                                 <thead>
@@ -297,18 +297,7 @@
                                         <th>عملیات</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>دوربین</td>
-                                        <td>1,000,000 تومان</td>
-                                        <td>لنز فلان مارک</td>
-                                        <td>کاربر</td>
-                                        <td>1403/03/21 - 15:32</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                            <button class="btn btn-sm btn-outline-danger">حذف</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-materials">
                                 </tbody>
                             </table>
                         </div>
@@ -573,7 +562,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalAddEquipment" tabindex="-1">
+    <div class="modal fade" id="modalAddMaterial" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -581,25 +570,22 @@
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="equipmentForm">
+                    <form id="materialForm">
                         <div class="mb-3">
                             <label class="form-label">تجهیزات *</label>
-                            <select name="status" class="form-select">
-                                <option value="فعال">دوربین سه لنزه</option>
-                                <option value="غیرفعال">پایه عکاسی</option>
-                                <option value="در تعمیر">نور هفت بعدی</option>
+                            <select id="cmb-material" name="status" class="form-select">
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">هزینه</label>
-                            <input type="number" class="form-control" required>
+                            <input id="txt-material-expense" type="number" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">توضیحات تکمیلی</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea id="txt-material-desc" class="form-control"></textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success">ذخیره</button>
+                            <button type="button" onclick="btnSubmitModalMaterialClicked()" class="btn btn-success">ذخیره</button>
                         </div>
                     </form>
                 </div>
@@ -829,6 +815,7 @@
             showLocations();
             showPhotos();
             showVideos();
+            showMaterials();
         });
     </script>
 
@@ -1244,6 +1231,128 @@
                 saveLocalStorage(getCacheKey('location'), JSON.stringify(locations), expire);
                 isFormDirty = true;
                 showLocations();
+            }
+        }
+    </script>
+
+    <%--materials--%>
+    <script>
+        let materialEdittingId = '';
+        var materials = [];
+        function btnOpenModalMaterialClicked(id) {
+            let selectedMaterial = '';
+            if (id) {
+                materialEdittingId = id;
+                $('#modalAddMaterial').modal('show');
+                const index = materials.findIndex(x => x.id === id);
+                const selectedItem = materials[index];
+                $('#txt-material-expense').val(selectedItem.expense);
+                $('#txt-material-desc').val(selectedItem.desc);
+                selectedMaterial = selectedItem.material.id;
+            } else {
+                materialEdittingId = '';
+                $('#txt-material-expense').val('');
+                $('#txt-material-desc').val('');
+            }
+
+            ajaxGet('/BasicData/ProjectMaterials', function (items) {
+                let options = items.map(item =>
+                    `<option ${(selectedMaterial && selectedMaterial === item.id) ? 'selected' : ''} value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-material').html(options);
+            });
+        }
+        function btnSubmitModalMaterialClicked() {
+            let id = generateGUID();
+            let materialId = $('#cmb-material').val();
+            let materialTitle = $('#cmb-material option:selected').text();
+            let expense = $('#txt-material-expense').val();
+            let desc = $('#txt-material-desc').val();
+            let json = getLocalStorage(getCacheKey('material'));
+            if (json) {
+                let items = JSON.parse(json);
+                if (materialEdittingId) {
+                    const index = items.findIndex(x => x.id === materialEdittingId);
+                    items[index].id = id;
+                    items[index].material = { id: materialId, title: materialTitle };
+                    items[index].expense = expense;
+                    items[index].desc = desc;
+
+                } else {
+                    items.push({
+                        id: id,
+                        material: { id: materialId, title: materialTitle },
+                        expense: expense,
+                        desc: desc
+                    });
+                }
+
+                json = JSON.stringify(items);
+            } else {
+                let items = [];
+                items.push({
+                    id: id,
+                    material: { id: materialId, title: materialTitle },
+                    expense: expense,
+                    desc: desc
+                });
+                json = JSON.stringify(items);
+            }
+
+            let expire = 90000;
+            saveLocalStorage(getCacheKey('material'), json, expire);
+            isFormDirty = true;
+            $('#modalAddMaterial').modal('hide');
+            showMaterials();
+        }
+        function showMaterials() {
+            materials = [];
+
+            let html = '';
+            $('#table-materials').html(html);
+
+            let json = getLocalStorage(getCacheKey('material'));
+            let countAll = 0;
+            if (json) {
+                let cachedItems = JSON.parse(json);
+                for (var i = 0; i < cachedItems.length; i++) {
+                    materials.push(cachedItems[i]);
+                }
+
+                countAll += cachedItems.length;
+                html = cachedItems.map(item =>
+                    `
+                          <tr>
+                              <td>${item.material.title}</td>
+                              <td>${item.expense}</td>
+                              <td>${item.desc}</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>
+                                  <button onclick='btnOpenModalMaterialClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                  <button onclick='btnDeleteMaterialClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                              </td>
+                          </tr>
+                    `
+                ).join('');
+
+            }
+
+            //materials.push(dbItems);
+            $('#table-materials').html(html);
+            $('#count-materials').html(countAll);
+        }
+        function btnDeleteMaterialClicked(id) {
+            if (confirm('از حذف تجهیزات اطمینان دارید ؟')) {
+                const index = materials.findIndex(x => x.id === id);
+                if (index !== -1) {
+                    materials.splice(index, 1);
+                }
+
+                let expire = 90000;
+                saveLocalStorage(getCacheKey('material'), JSON.stringify(materials), expire);
+                isFormDirty = true;
+                showMaterials();
             }
         }
     </script>
