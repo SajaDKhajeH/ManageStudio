@@ -34,15 +34,17 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label class="form-label required">عنوان پروژه</label>
-                                <input id="projectTitle" type="text" class="form-control" required readonly />
+                                <input id="projectTitle" type="text" class="form-control" required />
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label required">تاریخ شروع</label>
-                                <input id="startDate" type="date" class="form-control" required />
+                                <%--<input id="startDate" type="date" class="form-control" required />--%>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="startDate" placeholder="تاریخ شروع" required>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label required">تاریخ پایان</label>
-                                <input id="endDate" type="date" class="form-control" required />
+                                <%--<input id="endDate" type="date" class="form-control" required />--%>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="endDate" placeholder="تاریخ پایان" required>
                             </div>
                         </div>
                         <div id="failureReasonSection" class="mb-4" style="display: none">
@@ -50,7 +52,7 @@
                             <textarea id="failureReason" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" onclick="btnSubmitClicked();" class="btn btn-primary">ثبت پروژه</button>
+                            <button type="submit" id="btn-submit-project" onclick="btnSubmitClicked();" class="btn btn-primary">ثبت پروژه</button>
                         </div>
                     </form>
                     <ul class="nav nav-tabs mt-4" id="projectTabs" role="tablist">
@@ -108,8 +110,8 @@
                             <div class="row mb-3">
                                 <!-- انتخاب طراح -->
                                 <div class="col-md-4">
-                                    <label for="designerFilter" class="form-label">انتخاب طراح:</label>
-                                    <select id="designerFilter" class="form-select">
+                                    <label for="cmb-designer" class="form-label">انتخاب طراح:</label>
+                                    <select id="cmb-designer" class="form-select">
                                         <option value="">انتخاب طراح</option>
                                         <option value="علی رضایی">علی رضایی</option>
                                         <option value="سارا احمدی">سارا احمدی</option>
@@ -119,8 +121,8 @@
 
                                 <!-- ورودی آدرس عکس -->
                                 <div class="col-md-8">
-                                    <label for="photoBasePath" class="form-label">آدرس اصلی عکس‌ها:</label>
-                                    <input type="text" id="photoBasePath" class="form-control" placeholder="مثلاً: /uploads/photos/">
+                                    <label for="photoBaseDir" class="form-label">آدرس اصلی عکس‌ها:</label>
+                                    <input type="text" id="photoBaseDir" class="form-control" placeholder="مثلاً: /uploads/photos/">
                                 </div>
                             </div>
 
@@ -153,19 +155,15 @@
                             <div class="row mb-3">
                                 <!-- انتخاب تدوینگر -->
                                 <div class="col-md-4">
-                                    <label for="EditorFilter" class="form-label">انتخاب تدوینگر:</label>
-                                    <select id="EditorFilter" class="form-select">
-                                        <option value="">انتخاب تدوینگر</option>
-                                        <option value="علی رضایی">علی رضایی</option>
-                                        <option value="سارا احمدی">سارا احمدی</option>
-                                        <option value="محمد کرمی">محمد کرمی</option>
+                                    <label for="cmb-editor" class="form-label">انتخاب تدوینگر:</label>
+                                    <select id="cmb-editor" class="form-select">
                                     </select>
                                 </div>
 
                                 <!-- ورودی آدرس عکس -->
                                 <div class="col-md-8">
-                                    <label for="photoBasePath" class="form-label">آدرس اصلی فیلم‌ها:</label>
-                                    <input type="text" id="videoBasePath" class="form-control" placeholder="مثلاً: /uploads/videos/">
+                                    <label for="videoBaseDir" class="form-label">آدرس اصلی فیلم‌ها:</label>
+                                    <input type="text" id="videoBaseDir" class="form-control" placeholder="مثلاً: /uploads/videos/">
                                 </div>
                             </div>
 
@@ -816,6 +814,9 @@
             showPhotos();
             showVideos();
             showMaterials();
+            fillFamiliesAsync();
+            fillDesigners();
+            fillEditors();
         });
     </script>
 
@@ -843,10 +844,22 @@
         });
     </script>
 
+    <%--top page--%>
+    <script>
+        function fillFamiliesAsync() {
+            ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#familySelect').html(options);
+            });
+        }
+    </script>
+
     <%--videos--%>
     <script>
         let videoEdittingId = '';
-        var videos = [];
+        var videos = [];//id,desc,code,videographer
         function btnOpenModalVideoClicked(id) {
             let selectedvideographer = '';
             if (id) {
@@ -976,12 +989,20 @@
                 showVideos();
             }
         }
+        function fillEditors() {
+            ajaxGet('/User/GetAllEditors', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-editor').html(options);
+            });
+        }
     </script>
 
      <%--photos--%>
     <script>
         let photoEdittingId = '';
-        var photos = [];
+        var photos = [];//id,desc,code,photographer
         function btnOpenModalPhotoClicked(id) {
             let selectedPhotographer = '';
             if (id) {
@@ -1111,12 +1132,20 @@
                 showPhotos();
             }
         }
+        function fillDesigners() {
+            ajaxGet('/User/GetAllDesigners', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-designer').html(options);
+            });
+        }
     </script>
 
     <%--locations--%>
     <script>
         let locationEdittingId = '';
-        var locations = [];
+        var locations = [];//id,desc,expense,location
         function btnOpenModalLocationClicked(id) {
             let selectedLocation = '';
             if (id) {
@@ -1144,7 +1173,7 @@
             let id = generateGUID();
             let locationId = $('#cmb-location').val();
             let locationTitle = $('#cmb-location option:selected').text();
-            let expense = $('#txt-location-expense').val();
+            let expense = parseFloat($('#txt-location-expense').val() || '0');
             let desc = $('#txt-location-desc').val();
             let json = getLocalStorage(getCacheKey('location'));
             if (json) {
@@ -1238,7 +1267,7 @@
     <%--materials--%>
     <script>
         let materialEdittingId = '';
-        var materials = [];
+        var materials = [];//id,desc,expense,material
         function btnOpenModalMaterialClicked(id) {
             let selectedMaterial = '';
             if (id) {
@@ -1266,7 +1295,7 @@
             let id = generateGUID();
             let materialId = $('#cmb-material').val();
             let materialTitle = $('#cmb-material option:selected').text();
-            let expense = $('#txt-material-expense').val();
+            let expense = parseFloat($('#txt-material-expense').val() || '0');
             let desc = $('#txt-material-desc').val();
             let json = getLocalStorage(getCacheKey('material'));
             if (json) {
@@ -1359,7 +1388,82 @@
 
     <script>
         function btnSubmitClicked() {
-            alert(JSON.stringify(locations));
+            let familyId = $('#familySelect').val();
+            if (!familyId) {
+                toastr.warning('لطفاً خانواده را انتخاب کنید', 'خانواده');
+                return;
+            }
+            let projectType = $('#projectTypeSelect').val();
+            if (!projectType) {
+                toastr.warning('لطفاً نوع پروژه را انتخاب کنید', 'نوع پروژه');
+                return;
+            }
+            let projectTitle = $('#projectTitle').val();
+            if (!projectTitle) {
+                toastr.warning('لطفاً عنوان پروژه را وارد کنید', 'عنوان پروژه');
+                return;
+            }
+            let startDate = $('#startDate').val();
+            if (!startDate) {
+                toastr.warning('لطفاً تاریخ شروع را وارد کنید', 'تاریخ شروع');
+                return;
+            }
+            let endDate = $('#endDate').val();
+            if (!endDate) {
+                toastr.warning('لطفاً تاریخ پایان را وارد کنید', 'تاریخ پایان');
+                return;
+            }
+            let isForce = $('#urgentCheckbox').attr('checked');
+
+            let designerId = $('#cmb-designer').val() || null;
+            let photoBaseDir = $('#photoBaseDir').val();
+
+            let editorId = $('#cmb-editor').val() || null;
+            let videoBaseDir = $('#videoBaseDir').val();
+
+
+
+            //materials = [];//id,desc,expense,material
+            //locations = [];//id,desc,expense,location
+            //photos = [];//id,desc,code,photographer
+            //videos = [];//id,desc,code,videographer
+
+
+
+            let createProjectCommand = {
+                familyId,
+                projectType,
+                projectTitle,
+                isForce,
+                startDate,
+                endDate,
+                designerId,
+                photoBaseDir,
+                editorId,
+                videoBaseDir,
+                photos,
+                videos,
+                materials,
+                locations
+            };
+            let method = 'POST';
+            let route = '/Project/Create';
+            if (projectId != '') {
+                method = 'PUT';
+                route = '/Project/Update';
+            }
+            ajaxAuthCall(method, route, createProjectCommand, function (res) {
+                btnAddEdit_ChangeDisable('btn-submit-project', false);
+                if (res.success) {
+                    toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
+                    location.href = document.referrer;
+                }
+                else {
+                    ShowError(res.message);
+                }
+            }, function (err) {
+                btnAddEdit_ChangeDisable('btn-submit-project', false);
+            });
         }
     </script>
 </asp:Content>
