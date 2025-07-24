@@ -771,36 +771,6 @@
                 showCheckList();
             }
         }
-
-        function showCheckList() {
-            let projectType = $('#projectTypeSelect').val();
-            $('#checklist-items').html('');
-            $('#count-checklist').html('0');
-            let query = `?ProjectTypeId=${projectType}`;
-            if (projectId != '') {
-                query += `&ProjectId=${projectId}`;
-            }
-            let route = '/Project/GetCheckList';
-
-            ajaxGet(route + query, function (items) {
-                $('#count-checklist').html(items.length);
-                let html = items.map(item =>
-                    `                                    
-                       <tr data-status="done">
-                           <td>${item.title}</td>
-                           <td class="status-text">${item.done == null ? '-' : item.done == true ? '✅ انجام شد' : '× انجام نشد'}</td>
-                           <td>${item.creator ? item.creator : '-'}</td>
-                           <td>${item.dateTime ? item.dateTime : '-'}</td>
-                       </tr>
-                    `
-                ).join('');
-
-                $('#checklist-items').html(html);
-
-            }, function (err) {
-                ShowError("خطا در دریافت اطلاعات");
-            });
-        }
     </script>
 
 
@@ -852,6 +822,47 @@
                     `<option value="${family.id}">${family.title}</option>`
                 ).join('');
                 $('#familySelect').html(options);
+            });
+        }
+    </script>
+
+    <%--check-list--%>
+    <script>
+        var checkList = [];
+        function showCheckList() {
+            let projectType = $('#projectTypeSelect').val();
+            $('#checklist-items').html('');
+            checkList = [];
+            $('#count-checklist').html('0');
+            let query = `?ProjectTypeId=${projectType}`;
+            if (projectId != '') {
+                query += `&ProjectId=${projectId}`;
+            }
+            let route = '/Project/GetCheckList';
+
+            ajaxGet(route + query, function (items) {
+
+                for (var i = 0; i < items.length; i++) {
+                    checkList.push(items[i]);
+                }
+
+                $('#count-checklist').html(items.length);
+                let html = items.map(item =>
+                    `                                    
+                       <tr data-status="done">
+                           <td>${item.title}</td>
+                           <td class="status-text">${item.done == null ? '-' : item.done == true ? '✅ انجام شد' : '× انجام نشد'}</td>
+                           <td>${item.creator ? item.creator : '-'}</td>
+                           <td>${item.dateTime ? item.dateTime : '-'}</td>
+                       </tr>
+                    `
+                ).join('');
+
+                $('#checklist-items').html(html);
+
+
+            }, function (err) {
+                ShowError("خطا در دریافت اطلاعات");
             });
         }
     </script>
@@ -1444,7 +1455,8 @@
                 photos,
                 videos,
                 materials,
-                locations
+                locations,
+                checkList
             };
             let method = 'POST';
             let route = '/Project/Create';

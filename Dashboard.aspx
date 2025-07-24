@@ -421,9 +421,17 @@
                         const appointmentBtnSetFactor = document.createElement('button');
                         appointmentBtnSetFactor.className = 'btnDataTable btnDataTable-print';
                         appointmentBtnSetFactor.textContent = `📜`;
-                        appointmentBtnSetFactor.title = "ثبت فاکتور";
-                        appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.id;
-                        appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.id);
+                        if (app.projectId) {
+                            appointmentBtnSetFactor.title = "مشاهده پروژه";
+                        } else {
+                            appointmentBtnSetFactor.title = "ثبت پروژه";
+                        }
+                        appointmentBtnSetFactor.id = "btnSetFactorTurn-" + app.projectId;
+                        appointmentBtnSetFactor.onclick = () => {
+                            setTimeout(function () {
+                                window.open("AddEditProject.aspx?id=" + app.projectId, '_blank');
+                            }, 256);
+                        };
                         appointmentsCell.appendChild(appointmentBtnSetFactor);
                     });
                     beforTime = time;
@@ -474,9 +482,17 @@
                 const appointmentBtnSetFactor = document.createElement('button');
                 appointmentBtnSetFactor.className = 'btnDataTable btnDataTable-print';
                 appointmentBtnSetFactor.textContent = `📜`;
-                appointmentBtnSetFactor.title = "ثبت فاکتور";
-                appointmentBtnSetFactor.id = "btnSetFactorTurn" + app.id;
-                appointmentBtnSetFactor.onclick = () => GoToAddEditFactor_From_Turn(app.id);
+                if (app.projectId) {
+                    appointmentBtnSetFactor.title = "مشاهده پروژه";
+                } else {
+                    appointmentBtnSetFactor.title = "ثبت پروژه";
+                }
+                appointmentBtnSetFactor.id = "btnSetFactorTurn-" + app.id;
+                appointmentBtnSetFactor.onclick = () => {
+                    setTimeout(function () {
+                        window.open("AddEditProject.aspx?id=" + turnId, '_blank');
+                    }, 256);
+                };
                 appointmentsCell.appendChild(appointmentBtnSetFactor);
             });
             schedule.appendChild(timeSlotRezerv);

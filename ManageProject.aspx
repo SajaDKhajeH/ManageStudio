@@ -261,23 +261,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="checklistForm">
-                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-                            <input type="checkbox" id="item1" class="form-check-input me-2" style="width: 16px; height: 16px;">
-                            <label for="item1" class="form-check-label">بررسی صحت اطلاعات</label>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-                            <input type="checkbox" id="item2" class="form-check-input me-2" style="width: 16px; height: 16px;">
-                            <label for="item2" class="form-check-label">تایید نهایی توسط سرپرست</label>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-                            <input type="checkbox" id="item3" class="form-check-input me-2" style="width: 16px; height: 16px;">
-                            <label for="item3" class="form-check-label">بارگذاری مدارک مرتبط</label>
-                        </div>
                     </form>
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="checklistCancel" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
@@ -319,8 +303,9 @@
             </div>
         </div>
     </div>
+    <%--<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>--%>
+    <script src="assets/js/cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
@@ -328,32 +313,6 @@
         $(document).ready(function () {
             $("#master_PageTitle").text("مدیریت پروژه");
         });
-        const kanbanData = {
-            not_started: [
-                { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
-                { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
-
-            ],
-            in_progress: [
-                { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
-                { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
-                { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
-            ],
-            pending_payment: [
-                { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
-            ],
-            ready_for_design: [
-                { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
-            ],
-            successful: [
-                { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
-            ],
-            failed: [
-
-            ]
-        };
 
         function openSMSModal() {
             const modal = new bootstrap.Modal(document.getElementById('smsModal'));
@@ -384,7 +343,7 @@
           ثبت توسط: مدیر سیستم - ۱۴۰۳/۰۳/۱۰ ساعت ۱۰:۳۰
          ${item.debt ? `<span class="badge bg-danger" data-amount="${item.debtAmount}">${`بدهی: ${Number(item.debtAmount).toLocaleString()} تومان`}</span>` : ''}
             <div class="d-flex align-items-center gap-2 flex-nowrap">
-                <button class="btn btn-sm btn-light-info" data-bs-toggle="modal" data-bs-target="#checklistModal">
+                <button onclick="btnChecklistClicked('${item.id}');" class="btn btn-sm btn-light-info" data-bs-toggle="modal" data-bs-target="#checklistModal">
                     <i class="bi bi-check2"></i> چک لیست
                 </button>
                 <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#m_SetPaidPrice">
@@ -397,6 +356,27 @@
             </div>
         </div>`;
             return card;
+        }
+
+        function btnChecklistClicked(projectId) {
+            let query = `?ProjectId=${projectId}`;
+            let route = '/Project/GetCheckList';
+
+            ajaxGet(route + query, function (items) {
+               
+                let html = items.map(item =>
+                    `
+                        <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
+                            <input type="checkbox" id="item-${item.itemId}" ${(item.done ? "checked":"")} class="form-check-input me-2" style="width: 16px; height: 16px;">
+                            <label for="item-${item.itemId}" class="form-check-label">${item.title}</label>
+                        </div>
+                    `
+                ).join('');
+
+                $('#checklistForm').html(html);
+            }, function (err) {
+                ShowError("خطا در دریافت اطلاعات");
+            });
         }
 
         function groupByMonth(items) {
@@ -588,12 +568,64 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('kanban-container');
-            for (const [statusKey, items] of Object.entries(kanbanData)) {
-                const statusObj = statuses.find(s => s.key === statusKey);
-                const label = statusObj?.label || statusKey;
-                container.appendChild(createColumn(statusKey, label, items));
-            }
+
+            let query = ``;// `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
+
+            let route = '/Project/GetAllProjectsWithDetail';
+            ajaxGet(route + query, function (res) {
+
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                const data = res.data;
+
+                const kanbanData = {
+                    not_started: data,
+                    in_progress: [],
+                    pending_payment: [],
+                    ready_for_design: [],
+                    successful: [],
+                    failed: [],
+                };
+
+                //const kanbanData = {
+                //    not_started: [
+                //        { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
+                //        { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
+                //        { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
+
+                //    ],
+                //    in_progress: [
+                //        { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
+                //        { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
+                //        { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
+                //        { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
+                //    ],
+                //    pending_payment: [
+                //        { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
+                //    ],
+                //    ready_for_design: [
+                //        { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
+                //    ],
+                //    successful: [
+                //        { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
+                //    ],
+                //    failed: [
+
+                //    ]
+                //};
+
+
+                const container = document.getElementById('kanban-container');
+                for (const [statusKey, items] of Object.entries(kanbanData)) {
+                    const statusObj = statuses.find(s => s.key === statusKey);
+                    const label = statusObj?.label || statusKey;
+                    container.appendChild(createColumn(statusKey, label, items));
+                }
+            });
+
+           
         });
     </script>
     <script>

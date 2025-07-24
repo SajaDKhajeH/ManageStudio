@@ -951,21 +951,24 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="appointmentTime">لوکیشن</label>
+                            <label for="turn_Location">لوکیشن</label>
                             <select id="turn_Location">
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="appointmentTime">عکاس</label>
+                            <label for="turn_Photographer">عکاس</label>
                             <select id="turn_Photographer">
                             </select>
                         </div>
-                        <%--<div class="col-md-6">
-                            <label for="appointmentTime">هزینه رزرو نوبت</label>
-                            <input type="text" class="form-control" style="margin: 3px" id="turn_Cost" onkeyup="TextFormatPrice(this)" placeholder="هزینه رزرو نوبت">
-                        </div>--%>
                     </div>
-                    <label for="appointmentTime">توضیحات</label>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="turn_project">پروژه</label>
+                            <select id="turn_project">
+                            </select>
+                        </div>
+                    </div>
+                    <label for="turn_desc">توضیحات</label>
                     <textarea style="margin: 3px" placeholder="توضیحات" class="form-control" id="turn_desc"></textarea>
                 </div>
                 <!-- دکمه‌های پایین مدال -->
@@ -1311,7 +1314,9 @@
             document.getElementById("turn_Location").value = locationId;
             document.getElementById("turn_Photographer").value = PhotographerId;
             document.getElementById("div_Family_For_Request").style.display = "block";
+            fillScheduleCmbs();
         };
+
         // بستن مدال
         function closeModalRequest() {
             $('#appointmentModal').modal('hide');
@@ -1379,16 +1384,28 @@
                 $('#turn_Photographer').html(defaultOption + options);
             });
         }
+        function fillTurnProjects() {
+            $('#turn_project').html('');
+            const defaultOption = '<option value="">انتخاب پروژه</option>';
+            ajaxGet('/Project/GetAllProjects', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#turn_project').html(defaultOption + options);
+            });
+        }
         function fillScheduleCmbs() {
             fillPhotoTopicsForSchedule();
             fillLocationsForSchedule();
             fillPhotographersForSchedule();
+            fillTurnProjects();
         }
         // ذخیره نوبت
         function saveAppointment() {
             const turn_Date = document.getElementById("turn_Date").value;
             const turn_Time = document.getElementById("turn_Time").value;
             const turn_desc = document.getElementById("turn_desc").value;
+            const turn_project = document.getElementById("turn_project").value;
             const selectedFamily = document.getElementById("turn_family").value;
 
             const selectElement = document.getElementById("turn_family");
@@ -1423,7 +1440,8 @@
                 familyId: selectedFamily,
                 photographerId: turn_Photographer ? turn_Photographer : null,
                 locationId: turn_Location ? turn_Location : null,
-                PhotoTopicId: turn_Type ? turn_Type : null,
+                photoTopicId: turn_Type ? turn_Type : null,
+                projectId: turn_project || null
             };
             let method = 'POST';
             let route = '/Schedule/Create';
@@ -1825,9 +1843,6 @@
         function GoToAddEditFactor() {
             window.open("AddEditFactor.aspx?id=0", '_blank');
         }
-        function GoToAddEditFactor_From_Turn(turnId) {
-            window.open("AddEditFactor.aspx?turnid=" + turnId, '_blank');
-        }
         // تابع خروج از سیستم
         function logout() {
             window.location.href = "Logout.aspx";
@@ -2115,7 +2130,6 @@
 
 
                 GetCustomer_ForCombo();
-                fillScheduleCmbs();
                 fillPayCmbs();
             }
         });
