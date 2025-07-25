@@ -384,7 +384,7 @@
                     timeSlot.textContent = time;
                     timeSlot.onclick = () => {
                         document.getElementById("btnEditRequestModal").click();
-                        openModalRequest(0, time, toJalaliDate(selectedDate), "", "", "", 0, "");
+                        openModalRequest(0, time, toJalaliDate(selectedDate), "", "", "", 0, "", "");
                     };
 
                     var appointmentsCell = document.createElement('div');
@@ -399,7 +399,7 @@
                             DurationText = " مدت زمان:" + app.durationText;
                         }
                         appointmentDiv.innerHTML = `${app.title} - ساعت: ${app.shortTime} - ${app.turnTitle} - ${app.desc} ${locationTitle} ${DurationText}`;
-                        appointmentDiv.ondblclick = () => updateTurn(app.id, app.time, app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId);
+                        appointmentDiv.ondblclick = () => updateTurn(app.id, app.time, app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId, app.projectId, app.familyId);
                         appointmentsCell.appendChild(appointmentDiv);
                         //افزودن یک باتن برای حذف نوبت
                         const appointmentBtnDel = document.createElement('button');
@@ -429,7 +429,10 @@
                         appointmentBtnSetFactor.id = "btnSetFactorTurn-" + app.projectId;
                         appointmentBtnSetFactor.onclick = () => {
                             setTimeout(function () {
-                                window.open("AddEditProject.aspx?id=" + app.projectId, '_blank');
+                                let url = `AddEditProject.aspx?scheduleId=${app.id}`;
+                                if (app.projectId)
+                                    url += `&id=${app.projectId}`;
+                                window.open(url, '_blank');
                             }, 256);
                         };
                         appointmentsCell.appendChild(appointmentBtnSetFactor);
@@ -446,7 +449,7 @@
             timeSlotRezerv.textContent = "رزروی ها";
             timeSlotRezerv.onclick = () => {
                 document.getElementById("btnEditRequestModal").click();
-                openModalRequest(0, "", toJalaliDate(selectedDate), "", "", "", 0, "");
+                openModalRequest(0, "", toJalaliDate(selectedDate), "", "", "", 0, "", "");
             };
 
             var appointmentsCellRezerv = document.createElement('div');
@@ -461,7 +464,7 @@
                     DurationText = " مدت زمان:" + app.durationText;
                 }
                 appointmentDiv.innerHTML = `${app.title} - ${app.turnTitle} - ${app.desc} ${locationTitle} ${DurationText}`;
-                appointmentDiv.ondblclick = () => updateTurn(app.id, "", app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId);
+                appointmentDiv.ondblclick = () => updateTurn(app.id, "", app.date, app.baseFamilyTitle, app.turnId, app.desc, app.photographerId, app.duration, app.locationId, app.projectId, app.familyId);
                 appointmentsCellRezerv.appendChild(appointmentDiv);
                 //افزودن یک باتن برای حذف نوبت
                 const appointmentBtnDel = document.createElement('button');
@@ -487,10 +490,13 @@
                 } else {
                     appointmentBtnSetFactor.title = "ثبت پروژه";
                 }
-                appointmentBtnSetFactor.id = "btnSetFactorTurn-" + app.id;
+                appointmentBtnSetFactor.id = "btnSetFactorTurn-" + app.projectId;
                 appointmentBtnSetFactor.onclick = () => {
                     setTimeout(function () {
-                        window.open("AddEditProject.aspx?id=" + turnId, '_blank');
+                        let url = `AddEditProject.aspx?scheduleId=${app.id}`;
+                        if (app.projectId)
+                            url += `&id=${app.projectId}`;
+                        window.open(url, '_blank');
                     }, 256);
                 };
                 appointmentsCell.appendChild(appointmentBtnSetFactor);
@@ -515,9 +521,9 @@
         document.getElementById('prevWeek').onclick = () => updateWeek(-1);
         document.getElementById('nextWeek').onclick = () => updateWeek(1);
 
-        function updateTurn(requestId, time, date, title, turnid, desc, photographerId, duration, locationId) {
+        function updateTurn(requestId, time, date, title, turnid, desc, photographerId, duration, locationId, projectId, familyId) {
             document.getElementById("btnEditRequestModal").click();
-            openModalRequest(requestId, time, date, turnid, desc, photographerId, duration, locationId);
+            openModalRequest(requestId, time, date, turnid, desc, photographerId, duration, locationId, projectId, familyId);
             document.getElementById("div_Family_For_Request").style.display = "none";
             document.getElementById("header_modalSetRequest").textContent = "اصلاح نوبت خانواده " + title;
         };

@@ -1302,19 +1302,26 @@
         var requestIdForEditTurnDate_A_Time = 0;
         var btn_AddEditRequeest = "btn_AddEditRequeest";
         // باز کردن مدال
-        function openModalRequest(id = 0, time = "", date = "", turnType = "", desc = "", PhotographerId = "", duration = 0, locationId = "") {
+        async function openModalRequest(id = 0, time = "", date = "", turnType = "", desc = "", photographerId = "", duration = 0, locationId = "", projectId = "", familyId = "") {
+            await fillScheduleCmbs();
             requestIdForEditTurnDate_A_Time = id;
             btnAddEdit_ChangeDisable(btn_AddEditRequeest, false);
             document.getElementById("appointmentModal").style.display = "flex";
+
+            document.getElementById("turn_family").value = familyId;
+            const event = new Event("change");
+            document.getElementById("turn_family").dispatchEvent(event);
+
             document.getElementById("turn_Date").value = date;
             document.getElementById("turn_Time").value = time;
             document.getElementById("turn_desc").value = desc;
             document.getElementById("turn_Type").value = turnType;
             document.getElementById("turn_Duration").value = duration;
             document.getElementById("turn_Location").value = locationId;
-            document.getElementById("turn_Photographer").value = PhotographerId;
+            document.getElementById("turn_Photographer").value = photographerId;
+            document.getElementById("turn_project").value = projectId;
             document.getElementById("div_Family_For_Request").style.display = "block";
-            fillScheduleCmbs();
+
         };
 
         // بستن مدال
@@ -1358,47 +1365,54 @@
                 });
             }
         };
-        function fillPhotoTopicsForSchedule() {
-            ajaxGet('/BasicData/PhotoTopics', function (items) {
+        async function fillPhotoTopicsForSchedule() {
+            await ajaxGet('/BasicData/PhotoTopics', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
                 $('#turn_Type').html(options);
             });
         }
-        function fillLocationsForSchedule() {
+        async function fillLocationsForSchedule() {
             const defaultOption = '<option value="">انتخاب لوکیشن</option>';
-            ajaxGet('/BasicData/Locations', function (items) {
+            await ajaxGet('/BasicData/Locations', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
                 $('#turn_Location').html(defaultOption + options);
             });
         }
-        function fillPhotographersForSchedule() {
+        async function fillPhotographersForSchedule() {
             const defaultOption = '<option value="">انتخاب عکاس</option>';
-            ajaxGet('/User/GetAllPhotographers', function (items) {
+            await ajaxGet('/User/GetAllPhotographers', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
                 $('#turn_Photographer').html(defaultOption + options);
             });
         }
-        function fillTurnProjects() {
+        async function fillTurnProjects() {
             $('#turn_project').html('');
             const defaultOption = '<option value="">انتخاب پروژه</option>';
-            ajaxGet('/Project/GetAllProjects', function (items) {
+            await ajaxGet('/Project/GetAllProjects', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
                 $('#turn_project').html(defaultOption + options);
             });
         }
-        function fillScheduleCmbs() {
-            fillPhotoTopicsForSchedule();
-            fillLocationsForSchedule();
-            fillPhotographersForSchedule();
-            fillTurnProjects();
+        async function fillScheduleCmbs() {
+            try {
+                await Promise.all([
+                    fillPhotoTopicsForSchedule(),
+                    fillLocationsForSchedule(),
+                    fillPhotographersForSchedule(),
+                    fillTurnProjects()
+                ]);
+                console.log('All tasks finished successfully!');
+            } catch (error) {
+                console.error('Error while filling schedule:', error);
+            }
         }
         // ذخیره نوبت
         function saveAppointment() {
@@ -1995,8 +2009,8 @@
     </script>
     <script>
 
-        function ajaxGet(route, success, error) {
-            ajaxAuthCall('GET', route, null, success, error);
+        async function ajaxGet(route, success, error) {
+            await ajaxAuthCall('GET', route, null, success, error);
         }
         function ajaxPost(route, data, success, error) {
             ajaxAuthCall('POST', route, data, success, error);
@@ -2004,39 +2018,53 @@
         function ajaxDelete(route, success, error) {
             ajaxAuthCall('DELETE', route, null, success, error);
         }
-        function ajaxAuthCall(method, route, data, success, error, isAsync = true) {
+        let baseUrl = '<%=Constants.BaseApiUrl%>';
+        function ajaxAuthCall(method, route, data, successCallback, errorCallback, isAsync = true) {
             let loginJson = getLocalStorage('login');
             let login = JSON.parse(loginJson);
-            let baseUrl = '<%=Constants.BaseApiUrl%>';
-            $.ajax({
-                type: method,
-                url: baseUrl + route,
-                async: isAsync,
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                beforeSend: function (request) {
-                    request.setRequestHeader("Authorization", "Bearer " + login.token);
-                },
-                success: success,
-                error: function (err) {
-                    if (err.status) {
-                        if (err.status == 401) {
-                            logout();
-                        } else {
-                            if (err.status == 400) {
+
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: method,
+                    url: baseUrl + route,
+                    async: isAsync,
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    beforeSend: function (request) {
+                        request.setRequestHeader("Authorization", "Bearer " + login.token);
+                    },
+                    success: function (data) {
+                        // Resolve the Promise
+                        resolve(data);
+
+                        // Optionally call the provided success callback
+                        if (successCallback) {
+                            successCallback(data);
+                        }
+                    },
+                    error: function (err) {
+                        // Handle and propagate authorization or validation errors
+                        if (err.status) {
+                            if (err.status === 401) {
+                                logout();
+                            } else if (err.status === 400) {
                                 let errors = err.responseJSON.errors;
                                 for (const field in errors) {
                                     toastr.warning(errors[field], field);
                                 }
                             }
-                            error(err);
                         }
 
-                    } else {
-                        error(err);
+                        // Reject the Promise
+                        reject(err);
+
+                        // Optionally call the provided error callback
+                        if (errorCallback) {
+                            errorCallback(err);
+                        }
                     }
-                }
+                });
             });
         }
 

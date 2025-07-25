@@ -753,10 +753,10 @@
         }
 
 
-   
 
-        function fillProjectTypes() {
-            ajaxGet('/BasicData/ProjectTypes', function (items) {
+
+        async function fillProjectTypesAsync() {
+            await ajaxGet('/BasicData/ProjectTypes', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
@@ -778,16 +778,60 @@
     <script>
         let projectId = '';
 
-        $(document).ready(function () {
-            fillProjectTypes();
+        $(document).ready(async function () {
+            let params = new URLSearchParams(document.location.search);
+            projectId = params.get("id");
+            if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
+                projectId = '';
+
             showLocations();
             showPhotos();
             showVideos();
             showMaterials();
-            fillFamiliesAsync();
-            fillDesigners();
-            fillEditors();
+
+            await Promise.all([
+                fillProjectTypesAsync(),
+                fillFamiliesAsync(),
+                fillDesignersAsync(),
+                fillEditorsAsync()
+            ]);
+
+            if (projectId) {
+                await fillInfoAsync();
+            }
         });
+
+        function fillInfoAsync() {
+            let query = `?id=${projectId}`;
+            ajaxGet('/Project/Get' + query, function (res) {
+                if (res.success) {
+                    let data = res.data;
+                    $('#familySelect').val(data.familyId);
+                    $('#projectTypeSelect').val(data.projectTypeId);
+                    $('#projectTitle').val(data.projectTitle);
+                    $('#startDate').val(data.startDate);
+                    $('#endDate').val(data.endDate);
+                    if (data.isForce) {
+                        $('#urgentCheckbox').attr('checked', 'checked');
+                    } else {
+                        $('#urgentCheckbox').removeAttr('checked');
+                    }
+                    if (data.designerId)
+                        $('#cmb-designer').val(data.designerId);
+                    $('#photoBaseDir').val(data.photoBaseDir);
+
+                    if (data.editorId)
+                        $('#cmb-editor').val(data.editorId);
+                    $('#videoBaseDir').val(data.videoBaseDir);
+                    
+                }
+                else {
+                    ShowError(res.message);
+                }
+            }, function (err) {
+                alert("error1");
+            });
+        }
     </script>
 
     <%--global--%>
@@ -816,8 +860,8 @@
 
     <%--top page--%>
     <script>
-        function fillFamiliesAsync() {
-            ajaxGet('/Family/GetAllFamilies', function (families) {
+        async function fillFamiliesAsync() {
+            await ajaxGet('/Family/GetAllFamilies', function (families) {
                 const options = families.map(family =>
                     `<option value="${family.id}">${family.title}</option>`
                 ).join('');
@@ -830,11 +874,11 @@
     <script>
         var checkList = [];
         function showCheckList() {
-            let projectType = $('#projectTypeSelect').val();
+            let projectTypeId = $('#projectTypeSelect').val();
             $('#checklist-items').html('');
             checkList = [];
             $('#count-checklist').html('0');
-            let query = `?ProjectTypeId=${projectType}`;
+            let query = `?ProjectTypeId=${projectTypeId}`;
             if (projectId != '') {
                 query += `&ProjectId=${projectId}`;
             }
@@ -1000,8 +1044,8 @@
                 showVideos();
             }
         }
-        function fillEditors() {
-            ajaxGet('/User/GetAllEditors', function (items) {
+        async function fillEditorsAsync() {
+            await ajaxGet('/User/GetAllEditors', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
@@ -1010,7 +1054,7 @@
         }
     </script>
 
-     <%--photos--%>
+    <%--photos--%>
     <script>
         let photoEdittingId = '';
         var photos = [];//id,desc,code,photographer
@@ -1143,8 +1187,8 @@
                 showPhotos();
             }
         }
-        function fillDesigners() {
-            ajaxGet('/User/GetAllDesigners', function (items) {
+        async function fillDesignersAsync() {
+            await ajaxGet('/User/GetAllDesigners', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
@@ -1236,7 +1280,7 @@
                 for (var i = 0; i < cachedItems.length; i++) {
                     locations.push(cachedItems[i]);
                 }
-                
+
                 countAll += cachedItems.length;
                 html = cachedItems.map(item =>
                     `
@@ -1266,7 +1310,7 @@
                 if (index !== -1) {
                     locations.splice(index, 1);
                 }
-                
+
                 let expire = 90000;
                 saveLocalStorage(getCacheKey('location'), JSON.stringify(locations), expire);
                 isFormDirty = true;
@@ -1404,8 +1448,8 @@
                 toastr.warning('لطفاً خانواده را انتخاب کنید', 'خانواده');
                 return;
             }
-            let projectType = $('#projectTypeSelect').val();
-            if (!projectType) {
+            let projectTypeId = $('#projectTypeSelect').val();
+            if (!projectTypeId) {
                 toastr.warning('لطفاً نوع پروژه را انتخاب کنید', 'نوع پروژه');
                 return;
             }
@@ -1443,7 +1487,7 @@
 
             let createProjectCommand = {
                 familyId,
-                projectType,
+                projectTypeId,
                 projectTitle,
                 isForce,
                 startDate,

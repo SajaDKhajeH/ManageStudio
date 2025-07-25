@@ -423,7 +423,6 @@
             }, function (err) {
                 alert("error1");
             });
-
         };
         function GetPhotographerByFamily() {
             if ((factorId == null || factorId == undefined || factorId == 0) && (turnId == 0 || turnId == undefined || turnId == null)) {
