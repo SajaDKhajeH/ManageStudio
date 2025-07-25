@@ -250,30 +250,7 @@
                                         <th>عملیات</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- نوبت فعال -->
-                                    <tr>
-                                        <td>1403/04/10</td>
-                                        <td>جلسه ساعت 3</td>
-                                        <td>ادمین</td>
-                                        <td>1403/04/09 - 14:30</td>
-                                        <td><span class="badge bg-success">فعال</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- نوبت کنسل‌شده -->
-                                    <tr class="table-warning">
-                                        <td>1403/04/08</td>
-                                        <td>جلسه ساعت 11</td>
-                                        <td>کاربر</td>
-                                        <td>1403/04/07 - 13:00</td>
-                                        <td><span class="badge bg-secondary">کنسل شده</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-success">بازگرداندن</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-schedule">
                                 </tbody>
                             </table>
                         </div>
@@ -777,12 +754,17 @@
     <%--load--%>
     <script>
         let projectId = '';
+        let scheduleId = '';
 
         $(document).ready(async function () {
             let params = new URLSearchParams(document.location.search);
             projectId = params.get("id");
             if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
                 projectId = '';
+
+            scheduleId = params.get("scheduleId");
+            if (scheduleId == undefined || scheduleId == '0' || scheduleId == 0 || scheduleId == 'undefined')
+                scheduleId = '';
 
             showLocations();
             showPhotos();
@@ -793,7 +775,8 @@
                 fillProjectTypesAsync(),
                 fillFamiliesAsync(),
                 fillDesignersAsync(),
-                fillEditorsAsync()
+                fillEditorsAsync(),
+                showSchedulesAsync()
             ]);
 
             if (projectId) {
@@ -823,7 +806,7 @@
                     if (data.editorId)
                         $('#cmb-editor').val(data.editorId);
                     $('#videoBaseDir').val(data.videoBaseDir);
-                    
+
                 }
                 else {
                     ShowError(res.message);
@@ -1441,6 +1424,47 @@
         }
     </script>
 
+    <%--schedules--%>
+    <script>
+        async function showSchedulesAsync() {
+            const route = '/Schedule/SchedulesOfProject';
+            let query = `?a=0`;
+            if (projectId) {
+                query += `&projectId=${projectId}`;
+            }
+            if (scheduleId) {
+                query += `&scheduleId=${scheduleId}`;
+            }
+            await ajaxGet(route + query, function (items) {
+                let html = items.map(generateScheduleRow).join('');
+                $('#table-schedule').html(html);
+            });
+        }
+        function generateScheduleRow(item) {
+            const isCancelled = item.isCancel;
+
+            const badge = `<span class="badge ${isCancelled ? 'bg-secondary' : 'bg-success'}">
+                  ${isCancelled ? 'کنسل شده' : 'فعال'}
+                </span>`;
+
+            const actionButton = isCancelled
+                ? `<button class="btn btn-sm btn-outline-success">بازگرداندن</button>`
+                : `<button onclick=${'alert(1)'} class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>`;
+
+            return `
+                  <tr ${isCancelled ? 'class="table-warning"' : ''}>
+                    <td>${item.date}</td>
+                    <td>جلسه ساعت 3</td>
+                    <td>${item.creator}</td>
+                    <td>${item.creationDateTime}</td>
+                    <td>${badge}</td>
+                    <td>${actionButton}</td>
+                  </tr>
+                `;
+        }
+
+    </script>
+
     <script>
         function btnSubmitClicked() {
             let familyId = $('#familySelect').val();
@@ -1489,6 +1513,7 @@
                 familyId,
                 projectTypeId,
                 projectTitle,
+                scheduleId: scheduleId || null,
                 isForce,
                 startDate,
                 endDate,
