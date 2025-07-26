@@ -273,12 +273,17 @@
                 }
             });
         });
+        let projectId = '';
         function documentReady() {
             let params = new URLSearchParams(document.location.search);
             FirstLoad();
             factorId = params.get("id");
             if (factorId == undefined || factorId == '0' || factorId == 0 || factorId == 'undefined')
                 factorId = '';
+
+            projectId = params.get("projectId");
+            if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
+                projectId = '';
 
             turnId = parseInt(params.get("turnid"));
             if (isNaN(turnId)) {
@@ -581,6 +586,7 @@
             let createInvoiceCommand =
             {
                 id: factorId,
+                projectId: projectId || null,
                 familyId: factor_Family,
                 date: factor_Date,
                 sumDiscount: factor_discountPrice,

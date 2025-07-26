@@ -281,7 +281,7 @@
                         <div class="tab-pane fade" id="tab-invoices">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">فاکتورها</h5>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddInvoice">➕ افزودن فاکتور</button>
+                                <button class="btn btn-primary" onclick="btnAddInvoiceClicked();">➕ افزودن فاکتور</button>
                             </div>
                             <table class="table table-bordered">
                                 <thead>
@@ -297,20 +297,7 @@
 
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1403/02/01</td>
-                                        <td>F-001</td>
-                                        <td>2,500,000</td>
-                                        <td>250,000</td>
-                                        <td>500,000</td>
-                                        <td>سجاد قلی</td>
-                                        <td>1403/01/01 - 14:30</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                            <button class="btn btn-sm btn-outline-danger">حذف</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-invoice">
                                 </tbody>
                             </table>
                         </div>
@@ -773,7 +760,8 @@
                 fillFamiliesAsync(),
                 fillDesignersAsync(),
                 fillEditorsAsync(),
-                showSchedulesAsync()
+                showSchedulesAsync(),
+                showInvoicesAsync()
             ]);
 
             if (projectId) {
@@ -1421,12 +1409,73 @@
         }
     </script>
 
+    <%--invoices--%>
+    <script>
+
+        async function showInvoicesAsync() {
+            $('#table-invoice').html('');
+            $('#count-invoices').html('0');
+
+            if (!projectId) {
+                return;
+            }
+
+            const route = `/Invoice/InvoicesOfProject`;
+            let query = `?projectId=${projectId}`;
+
+            await ajaxGet(route + query, function (items) {
+                $('#count-invoices').html(items.length);
+                let html = items.map(generateInvoiceRow).join('');
+                $('#table-invoice').html(html);
+            });
+        }
+        function generateInvoiceRow(item) {
+
+            const actionButtons =
+                `
+                     <button onclick="btnEditInvoiceClicked('${item.id}');" class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                     <button onclick="btnDeleteInvoiceClicked('${item.id}');" class="btn btn-sm btn-outline-danger">حذف</button>
+                `;
+
+            return `
+                    <tr>
+                        <td>${item.date}</td>
+                        <td>${item.code}</td>
+                        <td>${item.price}</td>
+                        <td>${item.tax}</td>
+                        <td>${item.discount}</td>
+                        <td>${item.creator}</td>
+                        <td>${item.creationDateTime}</td>
+                        <td>
+                            ${actionButtons}
+                        </td>
+                    </tr>
+                `;
+        }
+
+        function btnAddInvoiceClicked() {
+            if (!projectId) {
+                toastr.warning('لطفاً ابتدا پروژه را ثبت کنید', 'پروژه');
+                return;
+            }
+            window.open("AddEditFactor.aspx?projectId=" + projectId, '_blank');
+        }
+        function btnEditInvoiceClicked(id) {
+            window.open(`AddEditFactor.aspx?id=${id}&projectId=${projectId}`, '_blank');
+        }
+        function btnDeleteInvoiceClicked(id) {
+            alert('delete:' + id);
+        }
+
+    </script>
+
     <%--schedules--%>
     <script>
         let scheduleCancelingId = '';
 
         async function showSchedulesAsync() {
             $('#table-schedule').html('');
+            $('#count-notes').html('0');
             const route = '/Schedule/SchedulesOfProject';
             let query = `?a=0`;
             if (projectId) {
@@ -1436,6 +1485,7 @@
                 query += `&scheduleId=${scheduleId}`;
             }
             await ajaxGet(route + query, function (items) {
+                $('#count-notes').html(items.length);
                 let html = items.map(generateScheduleRow).join('');
                 $('#table-schedule').html(html);
             });
