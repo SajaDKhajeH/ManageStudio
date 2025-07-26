@@ -198,16 +198,15 @@
                                         <th>وضعیت</th>
                                         <th>ثبت کننده</th>
                                         <th>تاریخ و ساعت انجام</th>
-                                        <%--                                        <th>عملیات</th>--%>
                                     </tr>
                                 </thead>
                                 <tbody id="checklist-items">
-                                    <tr data-status="done">
+                                    <%--<tr data-status="done">
                                         <td>دوربین بررسی شد</td>
                                         <td class="status-text">✅ انجام شد</td>
                                         <td>احمد</td>
                                         <td>1403/01/10</td>
-                                    </tr>
+                                    </tr>--%>
                                 </tbody>
                             </table>
                         </div>
@@ -741,6 +740,8 @@
         let scheduleId = '';
 
         $(document).ready(async function () {
+            showProgress();
+
             let params = new URLSearchParams(document.location.search);
             projectId = params.get("id");
             if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
@@ -767,6 +768,7 @@
             if (projectId) {
                 await fillInfoAsync();
             }
+            hideProgress();
         });
 
         function fillInfoAsync() {
@@ -1464,9 +1466,24 @@
             window.open(`AddEditFactor.aspx?id=${id}&projectId=${projectId}`, '_blank');
         }
         function btnDeleteInvoiceClicked(id) {
-            alert('delete:' + id);
+            const userResponse = confirm("آیا از حذف فاکتور مطمئن هستید؟");
+            if (userResponse) {
+                let query = `?id=${id}`;
+                ajaxDelete('/Invoice/Delete' + query, function (res) {
+                    if (res.success) {
+                        toastr.success("فاکتور حذف شد", "موفق");
+                        showInvoicesAsync();
+                    }
+                    else {
+                        ShowError(res.message);
+                    }
+                }, function (err) {
+                    console.log(err);
+                    alert("error");
+                });
+            }
         }
-
+   
     </script>
 
     <%--schedules--%>
@@ -1498,7 +1515,7 @@
                 </span>`;
 
             const actionButton = isCancelled
-                ? `<button class="btn btn-sm btn-outline-success">بازگرداندن</button>`
+                ? `<button onclick=btnUndoCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-outline-success">بازگرداندن</button>`
                 : `<button onclick=btnModalCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>`;
 
             return `
@@ -1522,6 +1539,30 @@
                 $('#cmb-cancel-reason').html(options);
             });
         }
+        async function btnUndoCancelScheduleClicked(id) {
+            const userResponse = confirm("آیا نوبت از حالت لغو خارج شود ؟");
+            if (!userResponse) {
+                return;
+            }
+            let cancelScheduleCommand =
+            {
+                id: id,
+                isCanceled: false
+            };
+            let route = '/Schedule/Cancel';
+            await ajaxAuthCall('PATCH', route, cancelScheduleCommand, function (res) {
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                toastr.success('نوبت از حالت لغو خارج شد', "موفق");
+            }, function (err) {
+                console.log(err);
+            });
+
+            $('#modalCancel').modal('hide');
+            await showSchedulesAsync();
+        }
 
         async function btnCancelSecheduleClicked() {
             let cancelReasonId = $('#cmb-cancel-reason').val() || null;
@@ -1539,7 +1580,7 @@
                     ShowError(res.message);
                     return;
                 }
-                toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
+                toastr.success('نوبت مورد نظر لغو شد', "موفق");
             }, function (err) {
                 console.log(err);
             });
@@ -1622,7 +1663,7 @@
                 btnAddEdit_ChangeDisable('btn-submit-project', false);
                 if (res.success) {
                     toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
-                    location.href = document.referrer;
+                    location.href = 'ManageProject.aspx';
                 }
                 else {
                     ShowError(res.message);

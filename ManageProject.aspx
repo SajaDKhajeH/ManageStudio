@@ -331,7 +331,7 @@
             card.draggable = true;
             card.setAttribute('data-id', item.id || Math.random());
             card.innerHTML = `
-        <div class="project-days">+15</div>
+        <div class="project-days">${(item.remindDays > 0 ? '+' : item.remindDays < 0 ? '-' : '')}${item.remindDays}</div>
         <h6>${item.title}</h6>
         <p>خانواده ${item.family} - شروع: ${item.date}</p>
         <p>آماده‌سازی عکس: مرحله 1</p>
@@ -340,7 +340,7 @@
         <p>تدوینگر: ---</p>
         ${item.urgent ? '<span class="urgent-label">فوری</span>' : ''}
         <div class="project-footer">
-          ثبت توسط: مدیر سیستم - ۱۴۰۳/۰۳/۱۰ ساعت ۱۰:۳۰
+          ثبت توسط: ${item.creator} - ${item.creationDate} ساعت ${item.creationTime}
          ${item.debt ? `<span class="badge bg-danger" data-amount="${item.debtAmount}">${`بدهی: ${Number(item.debtAmount).toLocaleString()} تومان`}</span>` : ''}
             <div class="d-flex align-items-center gap-2 flex-nowrap">
                 <button onclick="btnChecklistClicked('${item.id}');" class="btn btn-sm btn-light-info" data-bs-toggle="modal" data-bs-target="#checklistModal">
@@ -349,7 +349,7 @@
                 <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#m_SetPaidPrice">
                     <i class="bi bi-currency-dollar"></i> بیعانه
                 </button>
-                <button class="btn btn-sm btn-light-primary" onclick="GoToAddEditFactor();">
+                <button class="btn btn-sm btn-light-primary" onclick="window.open('AddEditFactor.aspx?projectId=${item.id}', '_blank');">
                     <i class="bi bi-list"></i> ثبت فاکتور
                 </button>
                 
@@ -567,12 +567,13 @@
            
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
+
+            showProgress();
 
             let query = ``;// `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
-
             let route = '/Project/GetAllProjectsWithDetail';
-            ajaxGet(route + query, function (res) {
+            await ajaxGet(route + query, function (res) {
 
                 if (!res.success) {
                     ShowError(res.message);
@@ -625,7 +626,7 @@
                 }
             });
 
-           
+            hideProgress();
         });
     </script>
     <script>

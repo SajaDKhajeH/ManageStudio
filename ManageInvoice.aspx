@@ -270,7 +270,7 @@
             });
         }
         function FactorDelete(id) {
-            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
+            const userResponse = confirm("آیا از حذف فاکتور مطمئن هستید؟");
             if (userResponse) {
                 let query = `?id=${id}`;
                 ajaxDelete('/Invoice/Delete' + query, function (res) {
@@ -281,12 +281,12 @@
                     else {
                         ShowError(res.message);
                     }
-                },
-                    function () {
-                        alert("error");
-                    });
+                }, function (err) {
+                    console.log(err);
+                    alert("error");
+                });
             }
-        };
+        }
 
         function PrintFactor(id) {
             $.ajax({
