@@ -579,21 +579,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="cancelReason" class="form-label">علت کنسلی</label>
-                            <select id="cancelReason" class="form-select">
-                                <option value="علی رضایی">توسط مشتری</option>
-                                <option value="سارا احمدی">آلودگی هوا</option>
-                                <option value="محمد کرمی">جنگ</option>
+                            <label for="cmb-cancel-reason" class="form-label">علت کنسلی</label>
+                            <select id="cmb-cancel-reason" class="form-select">
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="cancelReason" class="form-label">توضیحات (حداقل ۵ کلمه)</label>
+                            <label for="cancelReasonDesc" class="form-label">توضیحات (حداقل ۵ کلمه)</label>
                             <textarea class="form-control" id="cancelReasonDesc" rows="3" required></textarea>
                             <div class="text-danger mt-2 d-none" id="cancelError">لطفاً حداقل ۵ کلمه وارد کنید.</div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">تأیید کنسلی</button>
+                        <button type="button" onclick="btnCancelSecheduleClicked();" class="btn btn-danger">تأیید کنسلی</button>
                     </div>
                 </form>
             </div>
@@ -1426,7 +1423,10 @@
 
     <%--schedules--%>
     <script>
+        let scheduleCancelingId = '';
+
         async function showSchedulesAsync() {
+            $('#table-schedule').html('');
             const route = '/Schedule/SchedulesOfProject';
             let query = `?a=0`;
             if (projectId) {
@@ -1449,18 +1449,53 @@
 
             const actionButton = isCancelled
                 ? `<button class="btn btn-sm btn-outline-success">بازگرداندن</button>`
-                : `<button onclick=${'alert(1)'} class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>`;
+                : `<button onclick=btnModalCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>`;
 
             return `
                   <tr ${isCancelled ? 'class="table-warning"' : ''}>
                     <td>${item.date}</td>
-                    <td>جلسه ساعت 3</td>
+                    <td>${item.shortTime}</td>
                     <td>${item.creator}</td>
                     <td>${item.creationDateTime}</td>
                     <td>${badge}</td>
                     <td>${actionButton}</td>
                   </tr>
                 `;
+        }
+
+        async function btnModalCancelScheduleClicked(id) {
+            scheduleCancelingId = id;
+            await ajaxGet('/BasicData/GetCancelScheduleReasons', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-cancel-reason').html(options);
+            });
+        }
+
+        async function btnCancelSecheduleClicked() {
+            let cancelReasonId = $('#cmb-cancel-reason').val() || null;
+            let desc = $('#cancelReasonDesc').val();
+            let cancelScheduleCommand =
+            {
+                id: scheduleCancelingId,
+                isCanceled: true,
+                desc: desc,
+                cancelReasonId
+            };
+            let route = '/Schedule/Cancel';
+            await ajaxAuthCall('PATCH', route, cancelScheduleCommand, function (res) {
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
+            }, function (err) {
+                console.log(err);
+            });
+
+            $('#modalCancel').modal('hide');
+            await showSchedulesAsync();
         }
 
     </script>
