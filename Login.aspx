@@ -38,6 +38,31 @@
         }
     </style>
     <!--end::Global Stylesheets Bundle-->
+    <style>
+        .spinner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            animation: spin 1s linear infinite;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body id="kt_body" class="bg-body">
     <div class="d-flex flex-column flex-root">
@@ -87,7 +112,10 @@
                             <input class="form-control form-control-lg form-control-solid" type="password" id="password" autocomplete="off" />
                         </div>
                         <div class="text-center">
-                            <button id="btn_Login" onclick="LoginToPortal()" class="btn btn-lg btn-primary w-100 mb-5">ورود</button>
+                            <button id="btn_Login" onclick="LoginToPortal()" class="btn btn-lg btn-primary w-100 mb-5">
+                                <span class="button-text">ورود</span>
+                                <span class="spinner" id="spinner"></span>
+                            </button>
                         </div>
                     </div>
 
@@ -225,43 +253,69 @@
         alert(phoneNumber);
         //CustomerOrders.aspx
     }
-    function loginStaffAsync(username, password) {
+    async function loginStaffAsync(username, password) {
+        const loginButton = document.getElementById('btn_Login');
+        const buttonText = document.querySelector('.button-text');
+        const spinner = document.getElementById('spinner');
+        // Disable button to prevent re-click
+        loginButton.disabled = true;
+
+        // Start loading animation
+        buttonText.style.opacity = '0'; // Hide text
+        spinner.style.visibility = 'visible';
+        spinner.style.opacity = '1';
+
         let data =
         {
             username: username,
             password: password
         };
-        $.ajax({
-            type: "POST",
-            url: baseUrl + "/Authentication/Login",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (res) {
-                if (res.success) {
-                    let role = res.data.roles[0];
-                    saveLocalStorage('login', JSON.stringify({
-                        token: res.data.token,
-                        role: role
-                    }), 90000);
-                    let redirectPage = '';
-                    if (role == 'Admin') {
-                        redirectPage = 'Dashboard.aspx';
-                    } else if (role == 'Secretary') {
-                        //GoToPage = AdakDB.Db.usp_Page_Select(LoginId).ToList().Where(x => (x.P_ShowOnMenu ?? false) && x.HasPermission == 1).ToList().OrderBy(b => b.P_Sort).FirstOrDefault().P_Url;
-                    } else if (role == 'Photographer') {
-                        redirectPage = 'AddFamilyFromHospital.aspx';
-                    } else if (role == 'DesignSupervisor' || role == 'Designer') {
-                        redirectPage = 'RequestStatus.aspx';
+        await callLoginStaffAsync(data);
+        setTimeout(function () {
+            // Revert button state after some delay (fake response time)
+            loginButton.disabled = false;
+            buttonText.style.opacity = '1'; // Show text again
+            spinner.style.visibility = 'hidden';
+            spinner.style.opacity = '0';
+        }, 2002);
+
+    }
+    function callLoginStaffAsync(data) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "POST",
+                url: baseUrl + "/Authentication/Login",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    if (res.success) {
+                        let role = res.data.roles[0];
+                        saveLocalStorage('login', JSON.stringify({
+                            token: res.data.token,
+                            role: role
+                        }), 90000);
+                        let redirectPage = '';
+                        if (role == 'Admin') {
+                            redirectPage = 'Dashboard.aspx';
+                        } else if (role == 'Secretary') {
+                            //GoToPage = AdakDB.Db.usp_Page_Select(LoginId).ToList().Where(x => (x.P_ShowOnMenu ?? false) && x.HasPermission == 1).ToList().OrderBy(b => b.P_Sort).FirstOrDefault().P_Url;
+                        } else if (role == 'Photographer') {
+                            redirectPage = 'AddFamilyFromHospital.aspx';
+                        } else if (role == 'DesignSupervisor' || role == 'Designer') {
+                            redirectPage = 'RequestStatus.aspx';
+                        }
+                        location.href = redirectPage;
+                    } else {
+                        toastr.error(res.message);
                     }
-                    location.href = redirectPage;
-                } else {
-                    alert(res.message);
+                    resolve(res);
+                },
+                error: function (err) {
+                    alert("error");
+                    reject(err);
                 }
-            },
-            error: function () {
-                alert("error");
-            }
+            });
         });
     }
     let cachePreKey = '';
@@ -269,18 +323,18 @@
     <%--    if (cachePreKey == '') {
             cachePreKey = '<%Response.Write(DefaultId.Causer);%>';
          }--%>
-         const expireDate = new Date();
-         if (!expireAfterSec)
-             expireAfterSec = 90
-         expireDate.setSeconds(expireDate.getSeconds() + expireAfterSec);
-         var lsData = {
-             data: data,
-             expire: expireDate.toUTCString()
+        const expireDate = new Date();
+        if (!expireAfterSec)
+            expireAfterSec = 90
+        expireDate.setSeconds(expireDate.getSeconds() + expireAfterSec);
+        var lsData = {
+            data: data,
+            expire: expireDate.toUTCString()
         };
         if (cachePreKey != '') {
             key = cachePreKey + '_' + key;
         }
-         localStorage.setItem(key, JSON.stringify(lsData));
+        localStorage.setItem(key, JSON.stringify(lsData));
     }
     function getLocalStorage(key) {
         let cache = localStorage.getItem(key);
@@ -308,7 +362,7 @@
             return;
         }
         $('#studioName').html(name);
-        
+
     }
     function ajaxGet(route, success, error) {
         $.ajax({
