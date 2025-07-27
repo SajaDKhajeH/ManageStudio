@@ -60,15 +60,16 @@
             border-radius: 5px;
             font-size: 0.75rem;
         }
+
         .labels-wrapper {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px; /* فاصله بین لیبل‌ها */
-    z-index: 10;
-}
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px; /* فاصله بین لیبل‌ها */
+            z-index: 10;
+        }
 
         .project-days {
             font-size: 2rem;
@@ -127,20 +128,21 @@
             }
 
         .project-card .card-actions button {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-      .card-actions {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    display: flex;
-    gap: 4px;
-    z-index: 20;
-}
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 4px;
+            z-index: 20;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -154,10 +156,10 @@
                                 <input type="text" id="filterInput" class="form-control" placeholder="جستجو...">
                             </div>
                             <div class="col-md-2">
-                                <input class="form-control datepicker" placeholder="از تاریخ" id="filter_From_Date">
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="filter_From_Date" placeholder="از تاریخ" required />
                             </div>
                             <div class="col-md-2">
-                                <input class="form-control datepicker" placeholder="تا تاریخ" id="filter_To_Date">
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="filter_To_Date" placeholder="تا تاریخ" required />
                             </div>
                             <div class="col-md-2">
                                 <select id="filter_Family" data-dropdown-parent="#kt_post" data-control="select2" class="form-select form-select-solid select2-hidden-accessible" data-placeholder="انتخاب مشتری">
@@ -168,7 +170,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
+                                <button onclick="refreshPage();" id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -223,17 +225,6 @@
                     </div>
                     <div class="row mt-3">
                         <div class="kanban-board">
-                            <script>
-                                const statuses = [
-                                    { key: 'not_started', label: 'شروع نشده', color: '#6c757d' },
-                                    { key: 'in_progress', label: 'در حال انجام', color: '#0d6efd' },
-                                    { key: 'pending_payment', label: 'در انتظار تسویه', color: '#ffc107' },
-                                    { key: 'ready_for_design', label: 'آماده طراحی و تدوین', color: '#20c997' },
-                                    { key: 'successful', label: 'موفق', color: '#198754' },
-                                    { key: 'failed', label: 'ناموفق', color: '#dc3545' }
-                                ];
-    </script>
-
                             <div id="kanban-container" class="d-flex gap-3 w-100"></div>
                         </div>
                         <button class="btn btn-sm btn-light w-100 mt-2" onclick="openSMSModal()" style="display: none">ارسال پیامک</button>
@@ -330,11 +321,22 @@
     </div>
     <%--<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>--%>
     <script src="assets/js/cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <%--<script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>--%>
+    <script src="assets/js/cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
-
+        let statuses = [];
+        //const statuses =
+        //[
+        //    { key: 'not_started', label: 'شروع نشده', color: '#6c757d' },
+        //    { key: 'in_progress', label: 'در حال انجام', color: '#0d6efd' },
+        //    { key: 'pending_payment', label: 'در انتظار تسویه', color: '#ffc107' },
+        //    { key: 'ready_for_design', label: 'آماده طراحی و تدوین', color: '#20c997' },
+        //    { key: 'successful', label: 'موفق', color: '#198754' },
+        //    { key: 'failed', label: 'ناموفق', color: '#dc3545' }
+        //];
         $(document).ready(function () {
             $("#master_PageTitle").text("مدیریت پروژه");
         });
@@ -354,16 +356,16 @@
             card.className = 'project-card';
             if (item.debt) card.classList.add('debtor');
             card.draggable = true;
-            card.setAttribute('data-id', item.id || Math.random());
+            card.setAttribute('data-id', item.id);
             card.innerHTML = `
 
         ${item.urgent ? '<div class="labels-wrapper"><span class="badge-label urgent">فوری</span></div>' : ''}
             
           <div class="card-actions">
-                <button class="btn-icon edit-btn" title="ویرایش">
+                <button onclick="btnEditProjectClicked('${item.id}');" class="btn-icon edit-btn" title="ویرایش">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn-icon delete-btn" title="حذف">
+                <button onclick="btnDeleteProjectClicked('${item.id}');" class="btn-icon delete-btn" title="حذف">
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
@@ -399,11 +401,11 @@
             let route = '/Project/GetCheckList';
 
             ajaxGet(route + query, function (items) {
-               
+
                 let html = items.map(item =>
                     `
                         <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-                            <input type="checkbox" id="item-${item.itemId}" ${(item.done ? "checked":"")} class="form-check-input me-2" style="width: 16px; height: 16px;">
+                            <input type="checkbox" id="item-${item.itemId}" ${(item.done ? "checked" : "")} class="form-check-input me-2" style="width: 16px; height: 16px;">
                             <label for="item-${item.itemId}" class="form-check-label">${item.title}</label>
                         </div>
                     `
@@ -430,12 +432,12 @@
             return names[parseInt(number) - 1] || number;
         }
 
-        function createColumn(statusKey, label, items) {
+        function createColumn(statusKey, label, items, failed) {
             const col = document.createElement('div');
             col.className = 'kanban-column';
             col.dataset.status = statusKey;
+            col.dataset.failed = failed;
             const status = statuses.find(s => s.key === statusKey);
-
             col.innerHTML = `
         <div class="kanban-header" style="background-color: ${status.color};">
             <h5>${label} (${items.length})</h5>
@@ -471,6 +473,7 @@
                     const emptyList = document.createElement('div');
                     emptyList.className = 'project-list empty-dropzone';
                     emptyList.dataset.status = statusKey;
+                    emptyList.dataset.failed = failed;
 
                     container.appendChild(emptyList);
 
@@ -507,6 +510,7 @@
                     const projectList = document.createElement('div');
                     projectList.className = 'project-list';
                     projectList.dataset.status = statusKey;
+                    projectList.dataset.failed = failed;
 
                     monthItems.forEach(item => projectList.appendChild(createCard(item)));
 
@@ -558,10 +562,12 @@
         //}
         function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
             const targetStatus = targetColumnElement.dataset.status;
+            const targetStatusFailed = targetColumnElement.dataset.failed;
+            let projectId = $(cardElement).attr('data-id');
 
             //Tips
             //این کدها واسه ستون ناموفق هست که پاپ اپ علت رو نمایش میده
-            if (targetStatus === 'failed') {
+            if (targetStatusFailed === true || targetStatusFailed === "true") {
                 // نمایش مودال و ذخیره اطلاعات موقت
                 const failedModal = new bootstrap.Modal(document.getElementById('failedReasonModal'));
                 failedModal.show();
@@ -575,20 +581,53 @@
                 };
             }
             else {
-                // انتقال معمولی
-                const targetList = targetColumnElement.querySelector(".project-list");
-                targetList.appendChild(cardElement);
-                updateEmptyDropzoneState(sourceColumnElement);
-                updateEmptyDropzoneState(targetColumnElement);
-                //قبل از اینکه اینجا بخواد ستون هارو رفرش کنه باید در لیست kanbanData جابجایی بین ستون ها انجام بشه
-                //چون داره از ستون های میخونه و در ستون ها نمایش میده
-                //Tips
-                const refreshColumn_source = sourceColumnElement.querySelector('.refreshColumn');
-                const refreshColumn_target = targetColumnElement.querySelector('.refreshColumn');
-                //refreshColumn_source.click();
-                //refreshColumn_target.click();
-                alert("Transfer");
 
+                let failedAction = function () {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1001);
+                };
+
+                let changeProjectStatusCommand =
+                {
+                    id: projectId,
+                    statusId: targetStatus
+                };
+
+                let route = '/Project/ChangeStatus';
+                ajaxAuthCall('PATCH', route, changeProjectStatusCommand, function (res) {
+                    if (!res.success) {
+                        ShowError(res.message);
+                        failedAction();
+                        return;
+                    }
+
+                    // انتقال معمولی
+                    const targetList = targetColumnElement.querySelector(".project-list");
+                    targetList.appendChild(cardElement);
+                    updateEmptyDropzoneState(sourceColumnElement);
+                    updateEmptyDropzoneState(targetColumnElement);
+                    //قبل از اینکه اینجا بخواد ستون هارو رفرش کنه باید در لیست kanbanData جابجایی بین ستون ها انجام بشه
+                    //چون داره از ستون های میخونه و در ستون ها نمایش میده
+                    //Tips
+                    const refreshColumn_source = sourceColumnElement.querySelector('.refreshColumn');
+                    const refreshColumn_target = targetColumnElement.querySelector('.refreshColumn');
+                    //refreshColumn_source.click();
+                    //refreshColumn_target.click();
+
+                }, function (err) {
+                    console.log(err);
+                    failedAction();
+                });
+
+
+
+                window._dragContext = {
+                    cardElement,
+                    sourceColumnElement,
+                    targetColumnElement,
+                    failedModal: true
+                };
             }
         }
         function updateEmptyDropzoneState(columnElement) {
@@ -601,65 +640,97 @@
                     projectList.classList.add('empty-dropzone');
                 }
             });
-           
+
+        }
+
+        async function getStatusesAsync() {
+            let route = '/ProjectStatus/GetAllProjectStatuses';
+            await ajaxGet(route, function (items) {
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    statuses.push({
+                        key: item.id,
+                        label: item.title,
+                        color: item.color,
+                        failed: item.failed
+                    });
+                }
+
+            });
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
 
             showProgress();
 
+            await fillAllFiltersAsync();
+            await getStatusesAsync();
+
+            const kanbanData = {};
+            statuses.forEach((status) => {
+                if (!kanbanData[status.key]) {
+                    kanbanData[status.key] = [];
+                }
+            });
+
             let query = ``;// `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
             let route = '/Project/GetAllProjectsWithDetail';
             await ajaxGet(route + query, function (res) {
 
-              // if (!res.success) {
-              //     ShowError(res.message);
-              //     return;
-              // }
-              // const data = res.data;
-              //
-              // const kanbanData = {
-              //     not_started: data,
-              //     in_progress: [],
-              //     pending_payment: [],
-              //     ready_for_design: [],
-              //     successful: [],
-              //     failed: [],
-              // };
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                const data = res.data;
 
-                const kanbanData = {
-                    not_started: [
-                        { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
-                        { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                        { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
 
-                    ],
-                    in_progress: [
-                        { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
-                        { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                        { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
-                        { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
-                    ],
-                    pending_payment: [
-                        { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
-                    ],
-                    ready_for_design: [
-                        { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
-                    ],
-                    successful: [
-                        { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
-                    ],
-                    failed: [
+                data.forEach((item) => {
+                    kanbanData[item.statusId].push(item);
+                });
 
-                    ]
-                };
+
+                //const kanbanData = {
+                //    not_started: data,
+                //    in_progress: [],
+                //    pending_payment: [],
+                //    ready_for_design: [],
+                //    successful: [],
+                //    failed: [],
+                //};
+
+                //const kanbanData = {
+                //    not_started: [
+                //        { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
+                //        { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
+                //        { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
+
+                //    ],
+                //    in_progress: [
+                //        { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
+                //        { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
+                //        { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
+                //        { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
+                //    ],
+                //    pending_payment: [
+                //        { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
+                //    ],
+                //    ready_for_design: [
+                //        { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
+                //    ],
+                //    successful: [
+                //        { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
+                //    ],
+                //    failed: [
+
+                //    ]
+                //};
 
 
                 const container = document.getElementById('kanban-container');
                 for (const [statusKey, items] of Object.entries(kanbanData)) {
                     const statusObj = statuses.find(s => s.key === statusKey);
                     const label = statusObj?.label || statusKey;
-                    container.appendChild(createColumn(statusKey, label, items));
+                    container.appendChild(createColumn(statusKey, label, items, statusObj.failed));
                 }
             });
 
@@ -728,5 +799,125 @@
         });
 
     </script>
+
+    <script>
+        function btnEditProjectClicked(projectId) {
+            window.open("AddEditProject.aspx?id=" + projectId, '_blank');
+        }
+
+        function btnDeleteProjectClicked(projectId) {
+            const userResponse = confirm("آیا از حذف پروژه مطمئن هستید؟");
+            if (userResponse) {
+                let query = `?id=${projectId}`;
+                ajaxDelete('/Project/Delete' + query, function (res) {
+                    if (res.success) {
+                        refreshPage();
+                    }
+                    else {
+                        ShowError(res.message);
+                    }
+                },
+                    function () {
+                        toastr.error("خطا در حذف اطلاعات", "خطا");
+                    });
+            }
+        }
+    </script>
+    <script>
+        function refreshPage() {
+
+        }
+    </script>
+
+    <script>
+        async function fillAllFiltersAsync() {
+            let today = getToday();
+            $('#filter_From_Date').val(convertEnglishToPersianNumbers(today));
+            $('#filter_To_Date').val(convertEnglishToPersianNumbers(today));
+
+            await Promise.all([
+                fillProjectTypesAsync(),
+                fillFamiliesAsync(),
+                fillDesignersAsync(),
+                fillEditorsAsync(),
+                fillPhotographersAsync(),
+                fillVideographersAsync()
+            ]);
+        }
+        async function fillVideographersAsync() {
+            const defaultOption = '<option value="">انتخاب Videographer</option>';
+            await ajaxGet('/User/GetAllVideographers', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#filter_VideoGrapher').html(defaultOption + options);
+            });
+        }
+        async function fillPhotographersAsync() {
+            const defaultOption = '<option value="">انتخاب Photographer</option>';
+            await ajaxGet('/User/GetAllPhotographers', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#filter_Photographer').html(defaultOption + options);
+            });
+        }
+        async function fillProjectTypesAsync() {
+            const defaultOption = '<option value="">انتخاب نوع پروژه</option>';
+            await ajaxGet('/BasicData/ProjectTypes', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#filter_ProjectType').html(defaultOption + options);
+            });
+        }
+        async function fillDesignersAsync() {
+            const defaultOption = '<option value="">انتخاب طراح</option>';
+            await ajaxGet('/User/GetAllDesigners', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#filter_Designer').html(defaultOption + options);
+            });
+        }
+        async function fillEditorsAsync() {
+            const defaultOption = '<option value="">انتخاب ادیتور</option>';
+            await ajaxGet('/User/GetAllEditors', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#filter_Editor').html(defaultOption + options);
+            });
+        }
+        async function fillFamiliesAsync() {
+            const defaultOption = '<option value="">انتخاب خانواده</option>';
+            await ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#select2-filter_Family-container').html(defaultOption + options);
+            });
+        }
+    </script>
+
+
+    <script>
+
+
+        function getToday() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            const shamsiDate = jalaali.toJalaali(year, month, day);
+
+            const formattedYear = shamsiDate.jy;
+            const formattedMonth = String(shamsiDate.jm).padStart(2, '0');
+            const formattedDay = String(shamsiDate.jd).padStart(2, '0');
+
+            return `${formattedYear}/${formattedMonth}/${formattedDay}`;
+        }
+</script>
 </asp:Content>
 

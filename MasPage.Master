@@ -1907,6 +1907,10 @@
 
             return englishNumber;
         };
+        function convertEnglishToPersianNumbers(englishNumber) {
+            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return englishNumber.replace(/\d/g, (digit) => persianDigits[digit]);
+        };
         function getPersianMonthAndDay(date, spliter) {
             date = convertPersianToEnglishNumbers(date);
             const parts = date.split(spliter);

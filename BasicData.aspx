@@ -9,6 +9,21 @@
             border-radius: 4px;
         }
     </style>
+    <style>
+            .circle {
+      display: inline-flex; /* Center content */
+      justify-content: center;
+      align-items: center;
+      width: 25px;          /* Set the width and height to make it look circular */
+      height: 25px;
+      border-radius: 50%;   /* Makes a perfect circle */
+      background-color: #007BFF; /* Background color */
+      color: white;         /* Text color */
+      font-size: 10px;      /* Number font size */
+      font-weight: bold;    /* Make the number bold */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow for effect */
+    }
+    </style>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
@@ -116,10 +131,11 @@
                             <option value="2">اتمام پروژه و موفق</option>
                             <option value="3">اتمام پروژه و ناموفق</option>
                         </select>
-                        <%-- <div class="fv-row mb-15">
-                            <label class="fs-6 fw-bold mb-2">توضیحات</label>
-                            <textarea id="d_desc" class="form-control form-control-solid" placeholder="" name="description"></textarea>
-                        </div>--%>
+                   
+                        <div id="divColorPicker" class="color-picker-container" hidden="hidden">
+                          <label for="colorPicker" class="label">انتخاب رنگ</label>
+                          <input type="color" id="colorPicker">
+                        </div>
 
                         <div class="fv-row mb-15" id="div_defaultsms">
                             <label id="descTitle" class="fs-6 fw-bold mb-2">متن پیش فرض</label>
@@ -225,6 +241,7 @@
         //var state = document.getElementById('div_state');
         var div_priority = document.getElementById('div_priority');
         var cmbProjectStatusSteps = document.getElementById('cmbProjectStatusSteps');
+        var divColorPicker = document.getElementById('divColorPicker');
         var div_DurationForSend = document.getElementById('div_DurationForSend');
         var div_DescForUser = document.getElementById('div_DescForUser');
         var div_Show_SendFor_Men_Or_Women = document.getElementById('div_Show_SendFor_Men_Or_Women');
@@ -302,11 +319,12 @@
                         toastr.warning('لطفا اولویت را مشخص کنید', 'اولویت');
                         return;
                     }
-                    if (!defulatsms) {
-                        toastr.warning('لطفا توضیحات را وارد کنید', 'توضیحات');
-                        return;
-                    }
+                    //if (!defulatsms) {
+                    //    toastr.warning('لطفا توضیحات را وارد کنید', 'توضیحات');
+                    //    return;
+                    //}
 
+                    let color = $('#colorPicker').val();
 
                     if (d_id == '') {
                         method = 'POST';
@@ -322,7 +340,8 @@
                         active: active,
                         description: defulatsms,
                         priority: parseInt(priority),
-                        step: cmbProjectStatusSteps.value
+                        step: cmbProjectStatusSteps.value,
+                        color: color
                     };
                     ajaxAuthCall(method, route, createProjectStatusCommand, success, error);
                 }
@@ -379,6 +398,8 @@
             }
 
             cmbProjectStatusSteps.classList.add('d-none');
+            $(divColorPicker).attr('hidden', 'hidden');
+            
             div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
             defaultsms.style.visibility = 'hidden';
             document.getElementById('d_defaultsms').style.visibility = 'hidden';
@@ -392,6 +413,7 @@
                 document.getElementById('d_defaultsms').style.visibility = 'visible';
             } else if (typeId == ProjectStatus) {
                 cmbProjectStatusSteps.classList.remove('d-none');
+                $(divColorPicker).removeAttr('hidden');
                 defaultsms.style.visibility = 'visible';
                 document.getElementById('d_defaultsms').style.visibility = 'visible';
                 $("#descTitle").html('توضیحات');
@@ -454,6 +476,8 @@
 
             document.getElementById('d_defaultsms').style.visibility = 'hidden';
             cmbProjectStatusSteps.style.visibility = 'hidden';
+            $(divColorPicker).attr('hidden', 'hidden');
+            
 
             let query = `?id=${id}`;
             let route = '';
@@ -489,7 +513,11 @@
 
                         $("#d_defaultsms").val(result.desc);
                         cmbProjectStatusSteps.style.visibility = 'visible';
+                        $(divColorPicker).removeAttr('hidden');
                         document.getElementById('d_defaultsms').style.visibility = 'visible';
+
+                        cmbProjectStatusSteps.value = result.step;
+                        $('#colorPicker').val(result.color);
                     }
 
                     currentTypeId = filterTypeId;
@@ -643,10 +671,17 @@
                         status = `<div class='badge badge-light-danger'>غیرفعال</div>`;
                     }
 
+                    let priority = '';
+                    if (filter_typeId == ProjectStatus) {
+                        priority = `<div class="circle" style="background-color:${row.color}">${row.priority}</div>`;
+                    } else {
+                        priority = row.priority ? row.priority : (row.priority == 0 ? '0' : '-');
+                    }
+
                     tbody.append(`
                         <tr>
                             <td>${row.title}</td>
-                            <td>${(row.priority ? row.priority : (row.priority == 0 ? '0' : '-'))}</td>
+                            <td>${priority}</td>
                             <td>${status}</td>
                             <td>${actions}</td>
                         </tr>

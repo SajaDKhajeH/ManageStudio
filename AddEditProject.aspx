@@ -39,12 +39,12 @@
                             <div class="col-md-3">
                                 <label class="form-label required">تاریخ شروع</label>
                                 <%--<input id="startDate" type="date" class="form-control" required />--%>
-                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="startDate" placeholder="تاریخ شروع" required>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="startDate" placeholder="تاریخ شروع" required/>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label required">تاریخ پایان</label>
                                 <%--<input id="endDate" type="date" class="form-control" required />--%>
-                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="endDate" placeholder="تاریخ پایان" required>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="endDate" placeholder="تاریخ پایان" required/>
                             </div>
                         </div>
                         <div id="failureReasonSection" class="mb-4" style="display: none">
