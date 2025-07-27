@@ -585,8 +585,9 @@
                 //Tips
                 const refreshColumn_source = sourceColumnElement.querySelector('.refreshColumn');
                 const refreshColumn_target = targetColumnElement.querySelector('.refreshColumn');
-                refreshColumn_source.click();
-                refreshColumn_target.click();
+                //refreshColumn_source.click();
+                //refreshColumn_target.click();
+                alert("Transfer");
 
             }
         }
