@@ -60,6 +60,15 @@
             border-radius: 5px;
             font-size: 0.75rem;
         }
+        .labels-wrapper {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px; /* فاصله بین لیبل‌ها */
+    z-index: 10;
+}
 
         .project-days {
             font-size: 2rem;
@@ -116,6 +125,22 @@
             .empty-dropzone:hover {
                 background-color: #e2e6ea;
             }
+
+        .project-card .card-actions button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+      .card-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    z-index: 20;
+}
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -331,6 +356,17 @@
             card.draggable = true;
             card.setAttribute('data-id', item.id || Math.random());
             card.innerHTML = `
+
+        ${item.urgent ? '<div class="labels-wrapper"><span class="badge-label urgent">فوری</span></div>' : ''}
+            
+          <div class="card-actions">
+                <button class="btn-icon edit-btn" title="ویرایش">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn-icon delete-btn" title="حذف">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
         <div class="project-days">${(item.remindDays > 0 ? '+' : item.remindDays < 0 ? '-' : '')}${item.remindDays}</div>
         <h6>${item.title}</h6>
         <p>خانواده ${item.family} - شروع: ${item.date}</p>
@@ -338,7 +374,7 @@
         <p>آماده‌سازی فیلم: ندارد</p>
         <p>طراح: ---</p>
         <p>تدوینگر: ---</p>
-        ${item.urgent ? '<span class="urgent-label">فوری</span>' : ''}
+       
         <div class="project-footer">
           ثبت توسط: ${item.creator} - ${item.creationDate} ساعت ${item.creationTime}
          ${item.debt ? `<span class="badge bg-danger" data-amount="${item.debtAmount}">${`بدهی: ${Number(item.debtAmount).toLocaleString()} تومان`}</span>` : ''}
@@ -575,47 +611,47 @@
             let route = '/Project/GetAllProjectsWithDetail';
             await ajaxGet(route + query, function (res) {
 
-                if (!res.success) {
-                    ShowError(res.message);
-                    return;
-                }
-                const data = res.data;
+              // if (!res.success) {
+              //     ShowError(res.message);
+              //     return;
+              // }
+              // const data = res.data;
+              //
+              // const kanbanData = {
+              //     not_started: data,
+              //     in_progress: [],
+              //     pending_payment: [],
+              //     ready_for_design: [],
+              //     successful: [],
+              //     failed: [],
+              // };
 
                 const kanbanData = {
-                    not_started: data,
-                    in_progress: [],
-                    pending_payment: [],
-                    ready_for_design: [],
-                    successful: [],
-                    failed: [],
+                    not_started: [
+                        { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
+                        { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
+                        { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
+
+                    ],
+                    in_progress: [
+                        { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
+                        { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
+                        { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
+                        { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
+                    ],
+                    pending_payment: [
+                        { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
+                    ],
+                    ready_for_design: [
+                        { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
+                    ],
+                    successful: [
+                        { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
+                    ],
+                    failed: [
+
+                    ]
                 };
-
-                //const kanbanData = {
-                //    not_started: [
-                //        { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
-                //        { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                //        { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
-
-                //    ],
-                //    in_progress: [
-                //        { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
-                //        { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                //        { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
-                //        { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
-                //    ],
-                //    pending_payment: [
-                //        { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
-                //    ],
-                //    ready_for_design: [
-                //        { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
-                //    ],
-                //    successful: [
-                //        { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
-                //    ],
-                //    failed: [
-
-                //    ]
-                //};
 
 
                 const container = document.getElementById('kanban-container');
