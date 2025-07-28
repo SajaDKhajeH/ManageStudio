@@ -170,7 +170,7 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button onclick="refreshPage();" id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
+                                <button onclick="reloadPage();" id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -673,7 +673,9 @@
                 }
             });
 
-            let query = ``;// `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
+            setPageQuery();
+
+            let query = getPageQuery();
             let route = '/Project/GetAllProjectsWithDetail';
             await ajaxGet(route + query, function (res) {
 
@@ -687,43 +689,6 @@
                 data.forEach((item) => {
                     kanbanData[item.statusId].push(item);
                 });
-
-
-                //const kanbanData = {
-                //    not_started: data,
-                //    in_progress: [],
-                //    pending_payment: [],
-                //    ready_for_design: [],
-                //    successful: [],
-                //    failed: [],
-                //};
-
-                //const kanbanData = {
-                //    not_started: [
-                //        { title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true, debtAmount: 6500000 },
-                //        { title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                //        { title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true, debtAmount: 2300000 },
-
-                //    ],
-                //    in_progress: [
-                //        { title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
-                //        { title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                //        { title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true, debtAmount: 3500000 },
-                //        { title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
-                //    ],
-                //    pending_payment: [
-                //        { title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true, debtAmount: 2560000 }
-                //    ],
-                //    ready_for_design: [
-                //        { title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true, debtAmount: 7500000 }
-                //    ],
-                //    successful: [
-                //        { title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true, debtAmount: 2800000 }
-                //    ],
-                //    failed: [
-
-                //    ]
-                //};
 
 
                 const container = document.getElementById('kanban-container');
@@ -811,7 +776,7 @@
                 let query = `?id=${projectId}`;
                 ajaxDelete('/Project/Delete' + query, function (res) {
                     if (res.success) {
-                        refreshPage();
+                        reloadPage();
                     }
                     else {
                         ShowError(res.message);
@@ -824,8 +789,65 @@
         }
     </script>
     <script>
-        function refreshPage() {
+        function reloadPage() {
+            window.location = window.location.pathname + getPageQuery();
+        }
+        function getPageQuery() {
+            let query = '?a=1';
+            let projectTypeId = $('#filter_ProjectType').val();
+            if (projectTypeId) {
+                query += `&projectTypeId=${projectTypeId}`;
+            }
 
+            let designerId = $('#filter_Designer').val();
+            if (designerId) {
+                query += `&designerId=${designerId}`;
+            }
+
+            let photographerId = $('#filter_Photographer').val();
+            if (photographerId) {
+                query += `&photographerId=${photographerId}`;
+            }
+
+            let videographerId = $('#filter_VideoGrapher').val();
+            if (videographerId) {
+                query += `&videographerId=${videographerId}`;
+            }
+
+            let editorId = $('#filter_Editor').val();
+            if (editorId) {
+                query += `&editorId=${editorId}`;
+            }
+
+            return query;
+        }
+        function setPageQuery() {
+            let params = new URLSearchParams(document.location.search);
+
+            let projectTypeId = params.get("projectTypeId");
+            if (projectTypeId) {
+                $('#filter_ProjectType').val(projectTypeId);
+            }
+
+            let designerId = params.get("designerId");
+            if (designerId) {
+                $('#filter_Designer').val(designerId);
+            }
+
+            let photographerId = params.get("photographerId");
+            if (photographerId) {
+                $('#filter_Photographer').val(photographerId);
+            }
+
+            let videographerId = params.get("videographerId");
+            if (videographerId) {
+                $('#filter_VideoGrapher').val(videographerId);
+            }
+
+            let editorId = params.get("editorId");
+            if (editorId) {
+                $('#filter_Editor').val(editorId);
+            }
         }
     </script>
 
