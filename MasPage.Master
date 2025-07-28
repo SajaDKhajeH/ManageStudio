@@ -2132,7 +2132,7 @@
             }
             studioName = name;
         }
-        function getAllDiscoveryMethodsMaster(callBack) {
+        function fillFamilyDiscoveryMethodsMaster() {
             const defaultOption = '<option value="">انتخاب نحوه آشنایی</option>';
             ajaxGet('/BasicData/DiscoveryMethods', function (items) {
                 let options = items.map(item =>
@@ -2140,7 +2140,6 @@
                 ).join('');
                 options = defaultOption + options;
                 $('#f_InviteType').html(options);
-                callBack();
             });
         }
 
@@ -2156,16 +2155,23 @@
                 getSetting();
                 //getStudioName();
                 setViewByRole(login.role);
-                getAllDiscoveryMethodsMaster(function () {
-                    showMenusAsync();
+                showMenusAsync();
+
+
+                const modalFamily = document.getElementById('modal_addedit_family');
+                modalFamily.addEventListener('shown.bs.modal', () => {
+                    fillFamilyDiscoveryMethodsMaster();
                 });
 
-
-                GetCustomer_ForCombo();
-                fillPayCmbs();
+                const modalPay = document.getElementById('m_SetPaidPrice');
+                modalPay.addEventListener('shown.bs.modal', () => {
+                    GetCustomer_ForCombo();
+                    fillPayCmbsMaster();
+                });
             }
         });
-        function fillPayType() {
+
+        function fillPayTypeMaster() {
             ajaxGet('/BasicData/PayTypes', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
@@ -2173,7 +2179,7 @@
                 $('#pay_PaidType').html(options);
             });
         }
-        function fillCashBank() {
+        function fillCashBankMaster() {
             ajaxGet('/BasicData/FundAndBanks', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
@@ -2181,9 +2187,9 @@
                 $('#pay_Cash_A_Bank').html(options);
             });
         }
-        function fillPayCmbs() {
-            fillPayType();
-            fillCashBank();
+        function fillPayCmbsMaster() {
+            fillPayTypeMaster();
+            fillCashBankMaster();
         }
 
         function setViewByRole(role) {
