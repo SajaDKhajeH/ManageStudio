@@ -187,6 +187,11 @@
                                                     <div class="col-lg-4">قابل پرداخت: <span id="payableAmount">0</span>  </div>
                                                 </div>
                                             </div>
+                                            <div class="summary row">
+                                                <div id="divTax" class="col-lg-4 divTax" hidden="hidden">مالیات: <span id="taxPercent">0</span>  </div>
+                                                 <div class="col-lg-4 divTax" hidden="hidden">مجموع فاکتور با احتساب مالیات: <span id="totalAmountWithTax">0</span> </div>
+                                                <div class="col-lg-4 divTax" hidden="hidden">قابل پرداخت با احتساب مالیات: <span id="payableAmountWithTax">0</span>  </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -215,22 +220,40 @@
     <script src="assets/js/users/forcmb.js"></script>
     <script>
 
-        function fillFamiliesAsync() {
-            ajaxGet('/Family/GetAllFamilies', function (families) {
+        async function fillFamiliesAsync() {
+            await ajaxGet('/Family/GetAllFamilies', function (families) {
                 const options = families.map(family =>
                     `<option value="${family.id}">${family.title}</option>`
                 ).join('');
                 $('#factor_Family').html(options);
             });
         }
-        function fillInvoiceStatusesAsync() {
-            ajaxGet('/InvoiceStatus/GetAll', function (items) {
+        async function fillInvoiceStatusesAsync() {
+            await ajaxGet('/InvoiceStatus/GetAll', function (items) {
                 const options = items.map(item =>
                     `<option value="${item.id}">${item.title}</option>`
                 ).join('');
                 $('#factor_status').html(options);
             });
         }
+        let taxPercent = 0;
+        async function showTaxPercentAsync() {
+            await ajaxGet('/Setting/TaxPercent', function (percent) {
+                if (percent > 0) {
+                    taxPercent = percent;
+                    $('.divTax').removeAttr('hidden');
+                    $('#taxPercent').html(percent + '%');
+                    
+                } else {
+                    taxPercent = 0;
+                    $('.divTax').attr('hidden', 'hidden');
+                    $('#taxPercent').html('0');
+                    $('#totalAmountWithTax').html('0');
+                    $('#payableAmountWithTax').html('0');
+                }
+            });
+        }
+
 
     </script>
     <script>
@@ -239,10 +262,13 @@
             $('#discountAmount').parent().append(getCurrency());
             $('#payableAmount').parent().append(getCurrency());
         }
-        $(document).ready(function () {
+        $(document).ready(async () => {
             fillControls();
-            fillFamiliesAsync();
-            fillInvoiceStatusesAsync();
+            Promise.all([
+                fillFamiliesAsync(),
+                fillInvoiceStatusesAsync(),
+                showTaxPercentAsync()
+            ]);
         });
     </script>
     <script type="text/javascript">
@@ -517,6 +543,17 @@
             document.getElementById("discountAmount").textContent = CurrencyFormatted(discount);
             //document.getElementById("paidAmount").textContent = CurrencyFormatted(paidPrice);
             document.getElementById("payableAmount").textContent = CurrencyFormatted(payable);
+
+            if (taxPercent === 0) {
+                $('#totalAmountWithTax').html('0');
+                $('#payableAmountWithTax').html('0');
+            } else {
+                let totalAmountWithTax = total + ((total * taxPercent) / 100)
+                $('#totalAmountWithTax').html(CurrencyFormatted(totalAmountWithTax));
+                let payableAmountWithTax = payable + ((payable * taxPercent) / 100);
+                $('#payableAmountWithTax').html(CurrencyFormatted(payableAmountWithTax));
+            }
+ 
         }
 
         function updateCount(index, count) {
