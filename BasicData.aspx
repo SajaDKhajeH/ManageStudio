@@ -8,21 +8,28 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
+        .checklist-button {
+            flex: 0.2;
+            margin: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
     <style>
-            .circle {
-      display: inline-flex; /* Center content */
-      justify-content: center;
-      align-items: center;
-      width: 25px;          /* Set the width and height to make it look circular */
-      height: 25px;
-      border-radius: 50%;   /* Makes a perfect circle */
-      background-color: #007BFF; /* Background color */
-      color: white;         /* Text color */
-      font-size: 10px;      /* Number font size */
-      font-weight: bold;    /* Make the number bold */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow for effect */
-    }
+        .circle {
+            display: inline-flex; /* Center content */
+            justify-content: center;
+            align-items: center;
+            width: 25px; /* Set the width and height to make it look circular */
+            height: 25px;
+            border-radius: 50%; /* Makes a perfect circle */
+            background-color: #007BFF; /* Background color */
+            color: white; /* Text color */
+            font-size: 10px; /* Number font size */
+            font-weight: bold; /* Make the number bold */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow for effect */
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -131,10 +138,10 @@
                             <option value="2">اتمام پروژه و موفق</option>
                             <option value="3">اتمام پروژه و ناموفق</option>
                         </select>
-                   
+
                         <div id="divColorPicker" class="color-picker-container" hidden="hidden">
-                          <label for="colorPicker" class="label">انتخاب رنگ</label>
-                          <input type="color" id="colorPicker">
+                            <label for="colorPicker" class="label">انتخاب رنگ</label>
+                            <input type="color" id="colorPicker">
                         </div>
 
                         <div class="fv-row mb-15" id="div_defaultsms">
@@ -192,7 +199,7 @@
             <div class="modal-content">
                 <div class="modal-header" id="kt_modal_check_list_header">
                     <h2 class="fw-bolder" id="model_CheckListDataHeader"></h2>
-                    <div id="btn_close_modal_check_list" class="btn btn-icon btn-sm btn-active-icon-primary">
+                    <div onclick="closeModalCheckList();" class="btn btn-icon btn-sm btn-active-icon-primary">
                         <span class="svg-icon svg-icon-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
@@ -219,7 +226,7 @@
                     <button onclick="saveChecklist();" class="btn btn-primary">
                         <span class="indicator-label">ثبت اطلاعات</span>
                     </button>
-                    <button type="reset" id="btncancel_check_list" class="btn btn-light me-3">انصراف</button>
+                    <button type="button" onclick="closeModalCheckList();" class="btn btn-light me-3">انصراف</button>
                 </div>
             </div>
         </div>
@@ -399,7 +406,7 @@
 
             cmbProjectStatusSteps.classList.add('d-none');
             $(divColorPicker).attr('hidden', 'hidden');
-            
+
             div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
             defaultsms.style.visibility = 'hidden';
             document.getElementById('d_defaultsms').style.visibility = 'hidden';
@@ -444,6 +451,7 @@
             document.getElementById("div_typeData").style.display = "block";
             document.getElementById("div_priority").style.display = 'block';
             $("#d_pariority").val("0");
+            $('#d_Typeid').val($('#filter_typeId').val());
             $('#d_Typeid').trigger('change');
 
         };
@@ -454,6 +462,9 @@
                 let route = '';
                 if (filterTypeId == InvoiceStatus) {
                     route = '/InvoiceStatus/Delete';
+                }
+                else if (filterTypeId == ProjectStatus) {
+                    route = '/ProjectStatus/Delete';
                 } else {
                     route = '/BasicData/Delete';
                 }
@@ -477,7 +488,7 @@
             document.getElementById('d_defaultsms').style.visibility = 'hidden';
             cmbProjectStatusSteps.style.visibility = 'hidden';
             $(divColorPicker).attr('hidden', 'hidden');
-            
+
 
             let query = `?id=${id}`;
             let route = '';
@@ -704,7 +715,7 @@
     <%--check-list--%>
     <script>
         // Add a new row dynamically
-        function addChecklistRow(id = '', title = '', priority = 0) {
+        function addChecklistRow(id = '', title = '', priority = 0, active = true) {
             const container = document.getElementById("checklistItemsContainer");
 
             // Create new row div
@@ -726,9 +737,46 @@
             input2.placeholder = "اولویت";
             input2.value = priority;
 
+            // Create the second button delete
+            const btnArchive = document.createElement("button");
+            btnArchive.classList.add("checklist-button", "btnDataTable");
+
+            function setDeleted(deleted) {
+                if (deleted) {
+                    input1.disabled = true;
+                    input2.disabled = true;
+                    btnArchive.classList.remove("btnDataTable-delete");
+                    btnArchive.classList.add("btnDataTable-edit");
+                    btnArchive.textContent = '↩️';
+                    $(btnArchive).attr('status', 'undo');
+                    $(row).attr('deleted', true);
+
+                } else {
+                    input1.disabled = false;
+                    input2.disabled = false;
+                    btnArchive.classList.remove("btnDataTable-edit");
+                    btnArchive.classList.add("btnDataTable-delete");
+                    btnArchive.textContent = '🗑';
+                    $(btnArchive).attr('status', 'delete');
+                    $(row).attr('deleted', false);
+                }
+            }
+
+            setDeleted(!active);
+
+            btnArchive.addEventListener("click", function () {
+                if ($(btnArchive).attr('status') === 'delete') {
+                    setDeleted(true);
+                } else {
+                    setDeleted(false);
+                }
+
+            });
+
             // Append the inputs to the row
             row.appendChild(input1);
             row.appendChild(input2);
+            row.appendChild(btnArchive);
 
             // Append the row to the container
             container.appendChild(row);
@@ -745,7 +793,7 @@
                     id: row.id ? row.id : null,
                     title: inputs[0].value,
                     priority: inputs[1].value ? parseInt(inputs[1].value) : 0,
-                    active: true
+                    active: $(row).attr('deleted') === false || $(row).attr('deleted') === 'false'
                 };
                 checklistItems.push(item);
             });
@@ -778,7 +826,7 @@
 
             ajaxGet(route + query, function (items) {
                 items.forEach(item => {
-                    addChecklistRow(item.id, item.title, item.priority);
+                    addChecklistRow(item.id, item.title, item.priority, item.active);
                 });
             }, function (err) {
                 ShowError("خطا در دریافت اطلاعات");
