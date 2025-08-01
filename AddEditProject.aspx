@@ -1581,12 +1581,12 @@
                     return;
                 }
                 toastr.success('نوبت مورد نظر لغو شد', "موفق");
+                $('#modalCancel').modal('hide');
+                await showSchedulesAsync();
+
             }, function (err) {
                 console.log(err);
             });
-
-            $('#modalCancel').modal('hide');
-            await showSchedulesAsync();
         }
 
     </script>

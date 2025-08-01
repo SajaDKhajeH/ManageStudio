@@ -297,13 +297,8 @@
                 <div class="modal-body">
                     <form id="failedReasonForm">
                         <div class="mb-3">
-                            <label for="reasonSelect" class="form-label">علت:</label>
-                            <select class="form-select" id="reasonSelect" required>
-                                <option value="">انتخاب کنید</option>
-                                <option value="لغو توسط مشتری">لغو توسط مشتری</option>
-                                <option value="عدم پرداخت هزینه">عدم پرداخت هزینه</option>
-                                <option value="مشکل فنی">مشکل فنی</option>
-                                <option value="سایر">سایر</option>
+                            <label for="failedReasonSelect" class="form-label">علت:</label>
+                            <select class="form-select" id="failedReasonSelect" required>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -570,6 +565,7 @@
             if (targetStatusFailed === true || targetStatusFailed === "true") {
                 // نمایش مودال و ذخیره اطلاعات موقت
                 const failedModal = new bootstrap.Modal(document.getElementById('failedReasonModal'));
+                showFailedModalData(projectId);
                 failedModal.show();
 
                 // ذخیره مبدأ و کارت برای استفاده بعد
@@ -629,6 +625,17 @@
                     failedModal: true
                 };
             }
+        }
+
+        function showFailedModalData(projectId) {
+            projectFailedingId = projectId;
+            const defaultOption = '<option value="">انتخاب علت عدم موفقیت</option>';
+            ajaxGet('/BasicData/FailedProjectReasons', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#failedReasonSelect').html(defaultOption + options);
+            });
         }
         function updateEmptyDropzoneState(columnElement) {
             const allProjectLists = columnElement.querySelectorAll('.project-list');
@@ -728,27 +735,46 @@
         });
     </script>
     <script>
+        let projectFailedingId = '';
         document.getElementById('confirmFailedMove').addEventListener('click', () => {
-            const reason = document.getElementById('reasonSelect').value;
-            const details = document.getElementById('reasonText').value;
+            const failedReasonId = document.getElementById('failedReasonSelect').value;
+            const desc = document.getElementById('reasonText').value;
 
-            if (!reason) {
-                alert("لطفاً علت را انتخاب کنید.");
+            if (!failedReasonId) {
+                toastr.warning('لطفاً علت علت عدم موفقیت پروژه را انتخاب کنید', 'علت عدم موفقیت');
                 return;
             }
 
-            const { cardElement, sourceColumnElement, targetColumnElement, failedModal } = window._dragContext;
+            let failedProjectCommand =
+            {
+                id: projectFailedingId,
+                isFailed: true,
+                desc: desc,
+                failedReasonId
+            };
+            let route = '/Project/Failed';
+            ajaxAuthCall('PATCH', route, failedProjectCommand, function (res) {
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                //toastr.success('نوبت از حالت لغو خارج شد', "موفق");
 
-            // TODO: این اطلاعات می‌تونن ذخیره بشن یا داخل دیتای پروژه اضافه بشن
 
-            // انتقال کارت
-            const targetList = targetColumnElement.querySelector(".project-list");
-            targetList.appendChild(cardElement);
-            updateEmptyDropzoneState(sourceColumnElement);
-            updateEmptyDropzoneState(targetColumnElement);
+                const { cardElement, sourceColumnElement, targetColumnElement, failedModal } = window._dragContext;
+                // انتقال کارت
+                const targetList = targetColumnElement.querySelector(".project-list");
+                targetList.appendChild(cardElement);
+                updateEmptyDropzoneState(sourceColumnElement);
+                updateEmptyDropzoneState(targetColumnElement);
 
-            failedModal.hide();
-            window._dragContext = null;
+                failedModal.hide();
+                window._dragContext = null;
+
+
+            }, function (err) {
+                console.log(err);
+            });
         });
 
         document.getElementById('cancelFailedMove').addEventListener('click', () => {
