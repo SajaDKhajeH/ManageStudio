@@ -427,11 +427,11 @@
             return names[parseInt(number) - 1] || number;
         }
 
-        function createColumn(statusKey, label, items, failed) {
+        function createColumn(statusKey, label, items, isFailed) {
             const col = document.createElement('div');
             col.className = 'kanban-column';
             col.dataset.status = statusKey;
-            col.dataset.failed = failed;
+            col.dataset.failed = isFailed;
             const status = statuses.find(s => s.key === statusKey);
             col.innerHTML = `
         <div class="kanban-header" style="background-color: ${status.color};">
@@ -468,7 +468,7 @@
                     const emptyList = document.createElement('div');
                     emptyList.className = 'project-list empty-dropzone';
                     emptyList.dataset.status = statusKey;
-                    emptyList.dataset.failed = failed;
+                    emptyList.dataset.failed = isFailed;
 
                     container.appendChild(emptyList);
 
@@ -505,7 +505,7 @@
                     const projectList = document.createElement('div');
                     projectList.className = 'project-list';
                     projectList.dataset.status = statusKey;
-                    projectList.dataset.failed = failed;
+                    projectList.dataset.failed = isFailed;
 
                     monthItems.forEach(item => projectList.appendChild(createCard(item)));
 
@@ -659,7 +659,7 @@
                         key: item.id,
                         label: item.title,
                         color: item.color,
-                        failed: item.failed
+                        isFailed: item.failed
                     });
                 }
 
@@ -702,7 +702,7 @@
                 for (const [statusKey, items] of Object.entries(kanbanData)) {
                     const statusObj = statuses.find(s => s.key === statusKey);
                     const label = statusObj?.label || statusKey;
-                    container.appendChild(createColumn(statusKey, label, items, statusObj.failed));
+                    container.appendChild(createColumn(statusKey, label, items, statusObj.isFailed));
                 }
             });
 
