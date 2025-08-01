@@ -106,10 +106,6 @@
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-primary me-2  open-modal-btn" onclick="ResetFeilds()" data-bs-toggle="modal" data-bs-target="#kt_modal_add_personnel">افزودن پرسنل</button>
-                                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#personnelAccessModal">
-  تنظیمات دسترسی
-</button>
-
                                 </div>
 
                             </div>
@@ -730,10 +726,11 @@
                     let actions =
                         `
                <div class='action-buttons'>
+               <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#personnelAccessModal' onclick='personAccessSetting("${row.id}")' title='تنظیمات دسترسی'>⚙️</button>
                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_personnel' onclick='EditPerseonnel("${row.id}")' title='ویرایش'>✎</button>
                        <button class='btnDataTable btnDataTable-delete' onclick='DeletePersonnel("${row.id}")' title='حذف'>🗑</button>
                </div>
-                       `;
+                       `;//⚙️
                     let status = '';
                     if (row.active) {
                         status = `<div class='badge badge-light-success'>فعال</div>`;
@@ -761,6 +758,10 @@
             }, function (err) {
                 toastr.error("خطا در دریافت اطلاعات", "خطا");
             });
+        }
+
+        function personAccessSetting(personId) {
+
         }
     </script>
 </asp:Content>

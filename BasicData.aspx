@@ -283,6 +283,8 @@
         const ProjectType = '80';
         const ScheduleCancelationReason = '100';
         const FailedProjectReason = '110';
+        const DesignerSteps = '120';
+        const EditorSteps = '130';
         const InvoiceStatus = '1001';
         const NotificationTemplate = '1002';
         const ProjectStatus = '1003';
@@ -401,13 +403,16 @@
                     toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
                     return;
                 }
+                let color = $('#colorPicker').val();
+
                 let createItemCommand =
                 {
                     id: d_id,
                     title: title,
                     categoryId: typeId,
                     active: active,
-                    priority: priority
+                    priority: priority,
+                    color: color
                 };
                 if (d_id == '') {
                     method = 'POST';
@@ -465,8 +470,10 @@
                 div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
                 defaultsms.style.visibility = 'visible';
                 document.getElementById('d_defaultsms').style.visibility = 'visible';
-            } else if (typeId == ProjectStatus) {
-                cmbProjectStatusSteps.classList.remove('d-none');
+            } else if (typeId == ProjectStatus || typeId == DesignerSteps || typeId == EditorSteps) {
+                if (typeId == ProjectStatus) {
+                    cmbProjectStatusSteps.classList.remove('d-none');
+                }
                 $(divColorPicker).removeAttr('hidden');
                 defaultsms.style.visibility = 'visible';
                 document.getElementById('d_defaultsms').style.visibility = 'visible';
@@ -567,7 +574,7 @@
 
                         document.getElementById('d_defaultsms').style.visibility = 'visible';
 
-                    } else if (filterTypeId == ProjectStatus) {
+                    } else if (result.color) {
 
                         $("#d_defaultsms").val(result.desc);
                         cmbProjectStatusSteps.style.visibility = 'visible';
@@ -708,12 +715,16 @@
                     }
 
                     let otherActions = '';
-                    if (filter_typeId == ProjectType) {
+                    if (filter_typeId == ProjectType || filter_typeId == DesignerSteps || filter_typeId == EditorSteps) {
                         otherActions += `<button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_check_list' onclick='showCheckList("${row.id}")' title='چک لیست'>📋</button>`;
                     }
-
                     if (row.notificationTemplateId) {
-                        otherActions += `<button class='btnDataTable btnDataTable-message' data-bs-toggle='modal' data-bs-target='#kt_modal_message' onclick='showMessageModal("${row.notificationTemplateId}")' title='ارسال پیام'>✉️</button>`;
+                        if (row.preStepNotificationTemplateId) {
+                            otherActions += `<button class='btnDataTable btnDataTable-message' data-bs-toggle='modal' data-bs-target='#kt_modal_message' onclick='showMessageModal("${row.preStepNotificationTemplateId}")' title='ارسال پیام به مدیر'>✉️</button>`;
+                            otherActions += `<button class='btnDataTable btnDataTable-success' data-bs-toggle='modal' data-bs-target='#kt_modal_message' onclick='showMessageModal("${row.notificationTemplateId}")' title='ارسال پیام به خانواده'>✉️</button>`;
+                        } else {
+                            otherActions += `<button class='btnDataTable btnDataTable-message' data-bs-toggle='modal' data-bs-target='#kt_modal_message' onclick='showMessageModal("${row.notificationTemplateId}")' title='ارسال پیام'>✉️</button>`;
+                        }
                     }
 
                     let actions =
@@ -733,7 +744,7 @@
                     }
 
                     let priority = '';
-                    if (filter_typeId == ProjectStatus) {
+                    if (row.color) {
                         priority = `<div class="circle" style="background-color:${row.color}">${row.priority}</div>`;
                     } else {
                         priority = row.priority ? row.priority : (row.priority == 0 ? '0' : '-');

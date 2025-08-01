@@ -93,12 +93,12 @@
             }
 
         .btnDataTable-delete {
-            background-color: #f08383; /* قرمز ملایم */
-            color: #fbfbfb; /* قرمز */
+            background-color: #f08383;
+            color: #fbfbfb;
         }
 
             .btnDataTable-delete:hover {
-                background-color: #fecaca; /* قرمز روشن‌تر */
+                background-color: #fecaca;
             }
 
         .btnDataTable-print {
@@ -114,6 +114,16 @@
 
        .btnDataTable-message :hover {
            background-color: #fde047;
+       }
+
+       
+           .btnDataTable-success {
+       background-color: #83f083;
+       color: #fbfbfb;
+   }
+
+       .btnDataTable-success :hover {
+           background-color: #cafe83;
        }
 
         /*پایان استایل کلیدهای عملیات در گریدها*/
