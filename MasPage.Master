@@ -97,14 +97,25 @@
             color: #fbfbfb; /* قرمز */
         }
 
+            .btnDataTable-delete:hover {
+                background-color: #fecaca; /* قرمز روشن‌تر */
+            }
+
         .btnDataTable-print {
             background-color: #437c8e; /* قرمز ملایم */
             color: #f9f9f9; /* قرمز */
         }
 
-        .btnDataTable-delete:hover {
-            background-color: #fecaca; /* قرمز روشن‌تر */
-        }
+
+           .btnDataTable-message {
+       background-color: #fef08a;
+       color: #854d0e;
+   }
+
+       .btnDataTable-message :hover {
+           background-color: #fde047;
+       }
+
         /*پایان استایل کلیدهای عملیات در گریدها*/
 
         /* دکمه Logout در گوشه سمت راست */
@@ -1842,7 +1853,6 @@
                 if (res.success) {
                     toastr.success('اطلاعات خانواده ذخیره شد', "موفق");
                     closeModalFamily();
-                    GetCustomer_ForCombo();
                     loadTableDataFamily();
                 }
                 else {
@@ -2167,6 +2177,11 @@
                 modalPay.addEventListener('shown.bs.modal', () => {
                     GetCustomer_ForCombo();
                     fillPayCmbsMaster();
+                });
+
+                const appointmentPay = document.getElementById('appointmentModal');
+                appointmentPay.addEventListener('shown.bs.modal', () => {
+                    GetCustomer_ForCombo();
                 });
             }
         });

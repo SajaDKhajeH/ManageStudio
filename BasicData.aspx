@@ -232,6 +232,48 @@
         </div>
     </div>
 
+
+    <!-- Modal Message -->
+    <div class="modal fade" id="kt_modal_message" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-content">
+                <div class="modal-header" id="kt_modal_message_header">
+                    <h2 class="fw-bolder" id="modal_message_data_header"></h2>
+                    <div onclick="closeModalMessage();" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+                                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <div class="fv-row mb-15">
+                        <div class="d-flex flex-stack">
+                            <label class="form-check form-switch form-check-custom form-check-solid">
+                                <input id="message_active" class="form-check-input" type="checkbox" />
+                                <span class="form-check-label fw-bold text-muted">وضعیت</span>
+                            </label>
+                        </div>
+                        <label class="fs-6 fw-bold mb-2">متن پیش فرض</label>
+                        <textarea type="text" id="txt_message" class="form-control form-control-solid" placeholder="" name="description"></textarea>
+                        <label class="fs-6 fw-bold mb-2" id="lbl_message_keyword"></label>
+                        <select id="cmb_select_personel"></select>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button onclick="saveNotificationTemplate();" class="btn btn-primary">
+                        <span class="indicator-label">ثبت اطلاعات</span>
+                    </button>
+                    <button type="button" onclick="closeModalMessage();" class="btn btn-light me-3">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </asp:Content>
 <asp:Content ID="Content7" ContentPlaceHolderID="End" runat="Server">
     <script type="text/javascript">
@@ -239,6 +281,8 @@
 
         const ExpenseType = '50';
         const ProjectType = '80';
+        const ScheduleCancelationReason = '100';
+        const FailedProjectReason = '110';
         const InvoiceStatus = '1001';
         const NotificationTemplate = '1002';
         const ProjectStatus = '1003';
@@ -394,6 +438,9 @@
         function closeModal() {
             $('#kt_modal_add_customer').modal('hide');
         };
+        function closeModalMessage() {
+            $('#kt_modal_message').modal('hide');
+        }
         $("#btn_add").click(function (e) {
             ResetFeilds();
         });
@@ -665,6 +712,9 @@
                         otherActions += `<button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_check_list' onclick='showCheckList("${row.id}")' title='چک لیست'>📋</button>`;
                     }
 
+                    if (row.notificationTemplateId) {
+                        otherActions += `<button class='btnDataTable btnDataTable-message' data-bs-toggle='modal' data-bs-target='#kt_modal_message' onclick='showMessageModal("${row.notificationTemplateId}")' title='ارسال پیام'>✉️</button>`;
+                    }
 
                     let actions =
                         `
@@ -711,6 +761,127 @@
         }
     </script>
 
+
+    <%--sms--%>
+    <script>
+        let edittingNotificationTemplateId = '';
+        function showMessageModal(id) {
+
+            let route = '/NotificationTemplate/Get';
+            let query = `?id=${id}`;
+            ajaxGet(route + query, function (res) {
+
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                var result = res.data;
+                let userId = '';
+                if (result.users && result.users.length > 0) {
+                    userId = result.users[0];
+                }
+                fillAllUsers(userId);
+                edittingNotificationTemplateId = id;
+                //$("#d_title").val(result.title);
+                $("#message_active").prop("checked", result.active);
+                $("#txt_message").val(result.templateText);
+                $("#lbl_message_keyword").text("کلید واژه ها: " + result.keywords);
+                //$("#d_SendForMen").prop("checked", result.sendToFather);
+                //$("#d_SendForWomen").prop("checked", result.sendToMother);
+
+                //document.getElementById('d_defaultsms').style.visibility = 'visible';
+
+
+                //currentTypeId = filterTypeId;
+                //$("#d_Typeid").val(filterTypeId);
+                //$("#d_pariority").val(result.priority);
+                //$("#d_DurationForSend").val(result.sendDaysToEvent);
+                //$("#d_DescForUser").val(result.descForUser);
+                //$("#d_lbl_DusrationForSend").text('روز مانده به ' + result.title);
+                //$("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
+
+                //document.getElementById("div_typeData").style.display = 'none';
+                //if (result.systematic) {
+                //    document.getElementById("div_priority").style.display = 'none';
+                //}
+
+                ////نمایش مدت زمان ارسال پیام
+                //ShowDurationForSend = filterTypeId == NotificationTemplate;
+                //if (ShowDurationForSend) {
+                //    div_DurationForSend.style.visibility = 'visible';
+                //}
+                //else {
+                //    div_DurationForSend.style.visibility = 'hidden';
+                //}
+
+                //////توضیحات برای کاربر
+                //if (result.descForUser) {
+                //    div_DescForUser.style.visibility = 'visible';
+                //}
+                //else {
+                //    div_DescForUser.style.visibility = 'hidden';
+                //}
+
+                ////ارسال پیام به آقا یا خانم
+                //if (filterTypeId == InvoiceStatus || filterTypeId == NotificationTemplate) {
+                //    div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
+                //}
+                //else {
+                //    div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
+                //}
+                //$("#d_Typeid").change();
+
+            }, function (err) {
+                ShowError("خطا در دریافت اطلاعات");
+            });
+        }
+        function saveNotificationTemplate() {
+            const notificationTemplate = $('#txt_message').val();
+            const userId = $('#cmb_select_personel').val();
+            const active = $("#message_active").prop("checked");
+
+            const route = '/NotificationTemplate/Update';
+            if (!userId) {
+                toastr.warning('لطفاً شخص دریافت کننده پیام را انتخاب کنید', 'انتخاب پرسنل');
+                return;
+            }
+            let updateTemplateCommand =
+            {
+                id: edittingNotificationTemplateId,
+                active: active,
+                notificationTemplate: notificationTemplate,
+                priority: 0,
+                sendToFather: false,
+                sendToMother: false,
+                isRemovable: true,
+                isEditable: true,
+                users: [userId]
+            };
+            ajaxAuthCall('PUT', route, updateTemplateCommand, function (res) {
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+
+                toastr.success('اطلاعات ذخیره شد', "موفق");
+                closeModalMessage();
+                loadTableDataBasicData();
+
+            }, function (err) {
+
+            });
+        }
+        function fillAllUsers(userId) {
+            let defaultOption = '<option value="">انتخاب پرسنل</option>';
+            ajaxGet('/User/GetAllUsers', function (items) {
+                const options = items.map(item =>
+                    `<option ${(userId && userId === item.id) ? 'selected' : ''} value="${item.id}">${item.title}</option>`
+                ).join('');
+
+                $('#cmb_select_personel').html(defaultOption + options);
+            });
+        }
+    </script>
 
     <%--check-list--%>
     <script>
