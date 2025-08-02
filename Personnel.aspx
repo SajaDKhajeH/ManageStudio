@@ -87,6 +87,26 @@
                 color: #555;
             }
     </style>
+    <style>
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-checkbox .form-check-input {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .custom-checkbox .form-check-label {
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
@@ -113,7 +133,7 @@
                             <table class="table table-striped table-hover table-bordered">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th data-priority="1">سمت</th>
+                                        <%--<th data-priority="1">سمت</th>--%>
                                         <th class="min-w-150px">نام و نام خانوادگی</th>
                                         <th class="min-w-150px">شماره همراه</th>
                                         <th class="min-w-150px">نام کاربری</th>
@@ -159,13 +179,6 @@
                 </div>
                 <div class="modal-body py-10 px-lg-17">
                     <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
-                        <div class="d-flex flex-column mb-7 fv-row">
-                            <label class="fs-6 fw-bold mb-2">
-                                <span class="required">نقش کاربر</span>
-                            </label>
-                            <select id="p_role" data-dropdown-parent="#kt_modal_add_personnel" data-control="select2" class="form-select form-select-solid select2-hidden-accessible">
-                            </select>
-                        </div>
                         <div class="row g-9 mb-7">
                             <div class="col-md-6 fv-row">
                                 <input id="p_firstname" maxlength="20" class="form-control form-control-solid" placeholder="نام" name="firstname" value="" />
@@ -250,225 +263,77 @@
                 <div class="modal-body">
                     <!-- تب‌ها -->
                     <ul class="nav nav-tabs mb-3" id="accessTabs" role="tablist">
-                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-menus">منوها</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status">وضعیت پروژه</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-photo-steps">مراحل آماده‌سازی عکس</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-video-steps">مراحل آماده‌سازی فیلم</a></li>
-                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-types">نوع پروژه‌ها</a></li>
+                        <li class="nav-item" id="tab-menus"><a class="nav-link" data-bs-toggle="tab" href="#tab-menus-content">منوها</a></li>
+                        <li class="nav-item" id="tab-project-status"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status-content">وضعیت پروژه</a></li>
+                        <li class="nav-item" id="tab-photo-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-photo-steps-content">مراحل آماده‌سازی عکس</a></li>
+                        <li class="nav-item" id="tab-video-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-video-steps-content">مراحل آماده‌سازی فیلم</a></li>
+                        <li class="nav-item" id="tab-project-types"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-types-content">نوع پروژه‌ها</a></li>
                     </ul>
 
                     <div class="tab-content">
                         <!-- تب منوها -->
-                        <div class="tab-pane fade show active" id="tab-menus">
-                            <p>اینجا تنظیمات منو قرار می‌گیرد.</p>
+                        <div class="tab-pane fade show" id="tab-menus-content">
                         </div>
 
                         <!-- تب وضعیت پروژه -->
-                        <div class="tab-pane fade" id="tab-project-status">
+                        <div class="tab-pane fade" id="tab-project-status-content">
                             <h6 class="mb-3">مدیریت وضعیت‌های پروژه</h6>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle text-center">
                                     <thead class="table-light">
                                         <tr>
-                                             <th>مشاهده</th>
-                                            <th>وضعیت</th>
-                                            <th>فقط نمایش</th>
+                                            <th>مرحله</th>
+                                            <th>مشاهده</th>
                                             <th>تغییر به جلو</th>
                                             <th>تغییر به عقب</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                             <td>
-                                                <input type="checkbox" /></td>
-                                            <td>شروع نشده</td>
-                                           
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                             <td>
-                                                <input type="checkbox" /></td>
-                                            <td>در حال انجام</td>
-                                           
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>موفق</td>
-                                            
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                             <td>
-                                                <input type="checkbox" /></td>
-                                            <td>ناموفق</td>
-                                           
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
+                                    <tbody id="table-tab-project-status">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
                         <!-- تب مراحل آماده‌سازی عکس -->
-                        <div class="tab-pane fade" id="tab-photo-steps">
+                        <div class="tab-pane fade" id="tab-photo-steps-content">
                             <h6 class="mb-3">مراحل آماده‌سازی عکس</h6>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle text-center">
                                     <thead class="table-light">
                                         <tr>
-                                             <th>مشاهده</th>
                                             <th>مرحله</th>
-                                            <th>فقط نمایش</th>
+                                            <th>مشاهده</th>
                                             <th>تغییر به جلو</th>
                                             <th>تغییر به عقب</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                             <td>
-                                                <input type="checkbox" /></td>
-                                            <td>آماده برای طراحی</td>
-                                           
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                             <td>
-                                                <input type="checkbox" /></td>
-                                            <td>در دست طراحی</td>
-                                           
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>در انتظار تایید مشتری</td>
-                                            
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                             <td>
-                                                <input type="checkbox" /></td>
-                                            <td>آماده برای ارسال به چاپخانه</td>
-                                           
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
+                                    <tbody id="table-tab-photo-steps">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
                         <!-- تب مراحل آماده‌سازی فیلم -->
-                        <div class="tab-pane fade" id="tab-video-steps">
+                        <div class="tab-pane fade" id="tab-video-steps-content">
                             <h6 class="mb-3">مراحل آماده‌سازی فیلم</h6>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle text-center">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>مشاهده</th>
                                             <th>مرحله</th>
-                                            <th>فقط نمایش</th>
+                                            <th>مشاهده</th>
                                             <th>تغییر به جلو</th>
                                             <th>تغییر به عقب</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>آماده برای تدوین</td>
-
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>در دست تدوین</td>
-
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>در انتظار تایید مشتری</td>
-
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>    
-                                                <input type="checkbox" /></td>
-                                            <td>آماده تحویل</td>
-
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
+                                    <tbody id="table-tab-video-steps">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
                         <!-- تب نوع پروژه‌ها -->
-                        <div class="tab-pane fade" id="tab-project-types">
+                        <div class="tab-pane fade" id="tab-project-types-content">
                             <h6 class="mb-3">نوع پروژه ها</h6>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle text-center">
@@ -508,6 +373,55 @@
         </div>
     </div>
 
+    <div class="modal fade" id="personnelRolesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">نقش های کاربر</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="card shadow-lg border-0 rounded-lg">
+                        <div class="card-header bg-success text-white text-center py-3">
+                            <h5 class="mb-0">🛠️ نقش های کاربر</h5>
+                        </div>
+                        <div class="card-body" id="table-personel-roles">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="btnSaveUserRoles();" class="btn btn-success">ذخیره تغییرات</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="roleSelectorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">نقش های کاربر</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="card shadow-lg border-0 rounded-lg">
+                        <div class="card-header bg-success text-white text-center py-3">
+                            <h5 class="mb-0">نقش مورد نظر را انتخاب نمایید</h5>
+                        </div>
+                        <div class="card-body" id="table-roles">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
     <script type="text/javascript">
@@ -535,7 +449,6 @@
             var sex = $("#p_sex").prop("checked");
             //var showpopup = $("#p_showpopup").prop("checked");
             var desc = $("#p_desc").val();
-            var roleid = $("#p_role").val();
 
             if (!firstname) {
                 toastr.warning('لطفا نام را وارد نمایید', 'نام');
@@ -550,7 +463,6 @@
             let createUserCommand =
             {
                 id: personId,
-                roleId: roleid,
                 firstName: firstname,
                 lastName: lastname,
                 gender: sex ? 2 : 1,
@@ -610,17 +522,16 @@
             $("#p_sex").prop("checked", true);
             $("#p_desc").val("");
             p_Pass.style.visibility = 'visible';
-            $("#p_role").trigger('change');
         };
-        $("#p_role").change(function (e) {
-            var roleid = $("#p_role").val();
-            if (roleid == "4" || roleid == "5") {
-                d_showCall_A_discount.style.visibility = 'visible';
-            }
-            else {
-                d_showCall_A_discount.style.visibility = 'hidden';
-            }
-        });
+        //$("#p_role").change(function (e) {
+        //    var roleid = $("#p_role").val();
+        //    if (roleid == "4" || roleid == "5") {
+        //        d_showCall_A_discount.style.visibility = 'visible';
+        //    }
+        //    else {
+        //        d_showCall_A_discount.style.visibility = 'hidden';
+        //    }
+        //});
         function DeletePersonnel(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
             if (userResponse) {
@@ -647,8 +558,6 @@
                 if (res.success) {
                     let data = res.data;
                     $("#header_AddPersonnel").text("ویرایش " + data.firstName + " " + data.lastName);
-                    $("#p_role").val(data.roleId);
-                    $("#p_role").select2();
                     $("#p_firstname").val(data.firstName);
                     $("#p_lastname").val(data.lastName);
                     $("#p_mobile").val(data.mobile);
@@ -660,7 +569,6 @@
                     $("#p_active").prop("checked", data.active);
                     $("#p_sex").prop("checked", data.gender == 2 ? true : false);
                     $("#p_desc").val(data.desc);
-                    $("#p_role").trigger('change');
                     //p_Pass.style.visibility = data.ShowPass ? 'visible' : 'hidden';//TODO::
                 }
                 else {
@@ -670,17 +578,8 @@
                 alert("error");
             });
         };
-        function fillRolesAsync() {
-            ajaxGet('/Role/GetAllRoles', function (items) {
-                const options = items.map(item =>
-                    `<option value="${item.id}">${item.title}</option>`
-                ).join('');
-                $('#p_role').html(options);
-            });
-        }
         function fillInfo() {
             loadTableDataPersonnel();
-            fillRolesAsync();
         }
         $(document).ready(function () {
             fillInfo();
@@ -709,28 +608,51 @@
     <script>
         let pageIndex = 0;
         let pageSize = 5;
-
+        let personel = [];
+        const SecretaryRole = 5;
+        const AdminRole = 1;
         function loadTableDataPersonnel() {
             var filter = $("#filterInput").val();
             pageSize = parseInt($("#s_pageSize").val());
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}`;
             ajaxGet('/User/GetUsers' + query, function (res) {
-                const data = res.items;
+                personel = res.items;
                 const totalRecords = res.totalCount;
                 const tbody = $("#dt_Personnels");
 
                 tbody.empty(); // پاک کردن داده‌های قدیمی
 
-                data.forEach(row => {
+                personel.forEach(row => {
 
-                    let actions =
+                    let actionButtons = ``;
+                    let hasRole = true;
+                    let isMultiRole = false;
+                    let roleId = 0;
+
+                    if (row.roles.length === 0) {
+                        hasRole = false;
+                    }
+                    else if (row.roles.length === 1) {
+                        roleId = row.roles[0].id;
+                    }
+                    else if (row.roles.length > 1) {
+                        isMultiRole = true;
+                    }
+
+                    let actions = ` <div class='action-buttons'>`;
+
+                    if (roleId !== AdminRole) {
+                        actions += `<button class='btnDataTable btnDataTable-edit' onclick='personAccessSetting("${row.id}",${hasRole},${isMultiRole},${roleId})' title='تنظیمات دسترسی'>⚙️</button>`;
+                    }
+
+                    actions +=
                         `
-               <div class='action-buttons'>
-               <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#personnelAccessModal' onclick='personAccessSetting("${row.id}")' title='تنظیمات دسترسی'>⚙️</button>
+                       <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#personnelRolesModal' onclick='personRoles("${row.id}")' title='نقش های کاربر'>⚙️</button>
                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_personnel' onclick='EditPerseonnel("${row.id}")' title='ویرایش'>✎</button>
                        <button class='btnDataTable btnDataTable-delete' onclick='DeletePersonnel("${row.id}")' title='حذف'>🗑</button>
-               </div>
-                       `;//⚙️
+                       `;
+                    actions += '</div>';
+
                     let status = '';
                     if (row.active) {
                         status = `<div class='badge badge-light-success'>فعال</div>`;
@@ -739,7 +661,6 @@
                     }
                     tbody.append(`
                        <tr>
-                           <td>${row.roles}</td>
                            <td>${row.fullName}</td>
                            <td>${row.mobile}</td>
                            <td>${row.userName}</td>
@@ -759,9 +680,131 @@
                 toastr.error("خطا در دریافت اطلاعات", "خطا");
             });
         }
+        let personIdSelectedForSetupRoles = '';
+        function personRoles(id) {
+            personIdSelectedForSetupRoles = id;
+            let query = '?userId=' + id;
+            ajaxGet("/Role/GetAllRoles" + query, function (roles) {
+                const permissionsHtml = roles.map(role =>
+                    `
+                        <div class='form-check custom-checkbox'>
+                           <input class='form-check-input access-checkbox' name='PersonRoleChk' type='checkbox' id='${role.id}' ${(role.hasRole ? "checked" : "")}>
+                           <label class='form-check-label'>${role.title}</label>
+                        </div>
+                    `
+                ).join('');
+                $("#table-personel-roles").html(permissionsHtml);
+            });
+        }
 
-        function personAccessSetting(personId) {
+        function personAccessSetting(personId, hasRole, isMultiRole, roleId) {
+            if (!hasRole) {
+                toastr.warning('هنوز هیچ نقشی برای این کاربر تعریف نشده', 'نقش کاربر');
+                return;
+            }
+            if (isMultiRole) {
+                let html = '';
+                var person = personel.find(x => x.id == personId);
+                person.roles.forEach(x => {
+                    html += `<button onclick="$('#roleSelectorModal').modal('hide');personAccessSetting('${personId}',${true},${false},${x.id});" class="btn btn-secondary" style="margin:10px">${x.title}</button>`;
+                });
+                $('#table-roles').html(html);
+                $('#roleSelectorModal').modal('show');
+                return;
+            }
+            if (roleId === AdminRole) {
+                toastr.warning('امکان تعیین سطح دسترسی برای نقش مدیر وجود ندارد');
+                return;
+            }
 
+            $('#personnelAccessModal').modal('show');
+            if (roleId === SecretaryRole) {
+                $('#tab-menus').removeAttr('hidden');
+                $('.nav-item').removeClass('active');
+                $('.nav-link').removeClass('active');
+                $('.tab-pane').removeClass('active');
+                $('#tab-menus').addClass('active');
+                $('#tab-menus-content').addClass('active');
+                $('#tab-menus').trigger('click');
+            } else {
+                $('#tab-menus').attr('hidden', 'hidden');
+                $('.nav-item').removeClass('active');
+                $('.nav-link').removeClass('active');
+                $('.tab-pane').removeClass('active');
+                $('#tab-project-status').addClass('active');
+                $('#tab-project-status-content').addClass('active');
+                $('#tab-project-status').trigger('click');
+            }
+            GetPermissions(personId);
+        }
+        $('#accessTabs').on('click', '.nav-item', function () {
+            const tableId = '#table-' + $(this).attr('id');
+            let route = '/BasicData/GetDesignerSteps';
+            ajaxGet(route, function (items) {
+                let html = '';
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    html +=
+                        `
+                              <tr>
+                                 <td>${item.title}</td>
+                                 <td><input type="checkbox" /></td>
+                                 <td><input type="checkbox" /></td>
+                                 <td><input type="checkbox" /></td>
+                             </tr>
+                        `;
+                }
+             
+                $(tableId).html(html);
+            });
+        });
+        function GetPermissions(id) {
+            let query = '?userId=' + id;
+            ajaxGet("/Permission/GetPermissions" + query, function (permissions) {
+                const permissionsHtml = permissions.map(permission =>
+                    `
+                     <div class='form-check custom-checkbox'>
+                        <input class='form-check-input access-checkbox' name='PagesPermission' type='checkbox' id='${permission.id}' ${(permission.hasPermission ? "checked" : "")}>
+                        <label class='form-check-label' for='dashboard'>${permission.title}</label>
+                     </div>
+                    `
+                ).join('');
+                $("#pagess").html(permissionsHtml);
+            });
+        }
+
+        function accessTabChanged() {
+            alert(1);
+        }
+    </script>
+
+    <script>
+        function btnSaveUserRoles() {
+            var roles = document.getElementsByName("PersonRoleChk");
+
+            const roleIds = new Set(
+                Array.from(roles)
+                    .filter(role => role.checked)
+                    .map(role => role.id)
+            );
+            if (!roleIds) {
+                toastr.warning("حداقل یک نقش انتخاب کنید");
+                return;
+            }
+            let assignRoleCommand =
+            {
+                roleIds: Array.from(roleIds),
+                userId: personIdSelectedForSetupRoles
+            };
+            ajaxPost("/Role/Assign", assignRoleCommand, function (res) {
+                if (res.success) {
+                    $('#personnelRolesModal').modal('hide');
+                    $('#filterBtn').trigger('click');
+                    toastr.success("ثبت نقش ها با موفقیت انجام شد");
+                } else {
+                    ShowError(res.message);
+                }
+            });
         }
     </script>
 </asp:Content>
