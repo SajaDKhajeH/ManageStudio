@@ -366,7 +366,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success">ذخیره تغییرات</button>
+                    <button onclick="btnSaveUserPermissions();" class="btn btn-success">ذخیره تغییرات</button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                 </div>
             </div>
@@ -696,7 +696,7 @@
                 $("#table-personel-roles").html(permissionsHtml);
             });
         }
-
+        let selectedPersonIdForSettingAccess = '';
         function personAccessSetting(personId, hasRole, isMultiRole, roleId) {
             if (!hasRole) {
                 toastr.warning('هنوز هیچ نقشی برای این کاربر تعریف نشده', 'نقش کاربر');
@@ -717,6 +717,7 @@
                 return;
             }
 
+            selectedPersonIdForSettingAccess = personId;
             $('#personnelAccessModal').modal('show');
             if (roleId === SecretaryRole) {
                 $('#tab-menus').removeAttr('hidden');
@@ -726,6 +727,7 @@
                 $('#tab-menus').addClass('active');
                 $('#tab-menus-content').addClass('active');
                 $('#tab-menus').trigger('click');
+                
             } else {
                 $('#tab-menus').attr('hidden', 'hidden');
                 $('.nav-item').removeClass('active');
@@ -735,10 +737,13 @@
                 $('#tab-project-status-content').addClass('active');
                 $('#tab-project-status').trigger('click');
             }
-            GetPermissions(personId);
+
         }
         $('#accessTabs').on('click', '.nav-item', function () {
             const tableId = '#table-' + $(this).attr('id');
+            if (tableId === '#table-tab-menus') {
+                GetPermissions();
+            }
             let route = '/BasicData/GetDesignerSteps';
             ajaxGet(route, function (items) {
                 let html = '';
@@ -748,9 +753,9 @@
                         `
                               <tr>
                                  <td>${item.title}</td>
-                                 <td><input type="checkbox" /></td>
-                                 <td><input type="checkbox" /></td>
-                                 <td><input type="checkbox" /></td>
+                                 <td><input type="checkbox" class="can-view" /></td>
+                                 <td><input type="checkbox" class="go-next" /></td>
+                                 <td><input type="checkbox" class="go-pre" /></td>
                              </tr>
                         `;
                 }
@@ -758,8 +763,8 @@
                 $(tableId).html(html);
             });
         });
-        function GetPermissions(id) {
-            let query = '?userId=' + id;
+        function GetPermissions() {
+            let query = '?userId=' + selectedPersonIdForSettingAccess;
             ajaxGet("/Permission/GetPermissions" + query, function (permissions) {
                 const permissionsHtml = permissions.map(permission =>
                     `
@@ -805,6 +810,30 @@
                     ShowError(res.message);
                 }
             });
+        }
+    </script>
+
+    <script>
+        function btnSaveUserPermissions() {
+            let photoSteps = getTableData('table-tab-photo-steps');
+            let videoSteps = getTableData('table-tab-video-steps');
+        }
+        function getTableData(id) {
+            const rows = document.querySelectorAll(`tbody[id="${id}"] tr`); // Select all rows in the tbody
+            const data = [];
+
+            rows.forEach((row, index) => {
+                const checkbox = row.querySelector('input[type="checkbox"]'); // Select the checkbox in the row
+                const entry = {
+                    id: index + 1, // Use the row index for an incremental ID (you can change this if the "id" is unique from elsewhere, like `checkbox.id`)
+                    canView: row.querySelector('input[type="checkbox"].can-view').checked,
+                    goNext: row.querySelector('input[type="checkbox"].go-next').checked,
+                    goPre: row.querySelector('input[type="checkbox"].go-pre').checked,
+                };
+                data.push(entry);
+            });
+
+            return data;
         }
     </script>
 </asp:Content>
