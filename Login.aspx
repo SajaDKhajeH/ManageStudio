@@ -159,6 +159,30 @@
         </div>
     </div>
 
+     <div class="modal fade" id="roleSelectorModal" tabindex="-1" aria-hidden="true">
+     <div class="modal-dialog modal-sm modal-dialog-scrollable">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title">نقش های کاربر</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+             </div>
+             <div class="modal-body">
+
+                 <div class="card shadow-lg border-0 rounded-lg">
+                     <div class="card-header bg-success text-white text-center py-3">
+                         <h5 class="mb-0">نقش مورد نظر را انتخاب نمایید</h5>
+                     </div>
+                     <div class="card-body" id="table-roles">
+                     </div>
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+             </div>
+         </div>
+     </div>
+ </div>
+
     <script>var hostUrl = "assets/";</script>
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <script src="assets/js/scripts.bundle.js"></script>
@@ -280,6 +304,7 @@
         }, 2002);
 
     }
+    let jwtToken = '';
     function callLoginStaffAsync(data) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -290,22 +315,39 @@
                 dataType: "json",
                 success: function (res) {
                     if (res.success) {
-                        let role = res.data.roles[0];
-                        saveLocalStorage('login', JSON.stringify({
-                            token: res.data.token,
-                            role: role
-                        }), 90000);
-                        let redirectPage = '';
-                        if (role == 'Admin') {
-                            redirectPage = 'Dashboard.aspx';
-                        } else if (role == 'Secretary') {
-                            //GoToPage = AdakDB.Db.usp_Page_Select(LoginId).ToList().Where(x => (x.P_ShowOnMenu ?? false) && x.HasPermission == 1).ToList().OrderBy(b => b.P_Sort).FirstOrDefault().P_Url;
-                        } else if (role == 'Photographer') {
-                            redirectPage = 'AddFamilyFromHospital.aspx';
-                        } else if (role == 'DesignSupervisor' || role == 'Designer') {
-                            redirectPage = 'RequestStatus.aspx';
+                        jwtToken = res.data.token;
+
+                        let roles = res.data.roles;
+                        let role = '';
+                        let hasRole = true;
+                        let isMultiRole = false;
+
+                        if (roles.length === 0) {
+                            hasRole = false;
                         }
-                        location.href = redirectPage;
+                        else if (roles.length === 1) {
+                            role = roles[0].name;
+                        }
+                        else if (roles.length > 1) {
+                            isMultiRole = true;
+                        }
+
+                        if (!hasRole) {
+                            toastr.warning('هیچ نقشی برای شما در سیستم تعریف نشده', 'نقش کاربر');
+                            return;
+                        }
+                        if (isMultiRole) {
+                            let html = '';
+                            roles.forEach(x => {
+                                html += `<button onclick="$('#roleSelectorModal').modal('hide');redirectPageByRole('${x.name}');" class="btn btn-secondary" style="margin:10px">${x.title}</button>`;
+                            });
+                            $('#table-roles').html(html);
+                            $('#roleSelectorModal').modal('show');
+                            return;
+                        }
+                        
+                        redirectPageByRole(role.name);
+
                     } else {
                         toastr.error(res.message);
                     }
@@ -317,6 +359,26 @@
                 }
             });
         });
+    }
+  
+    function redirectPageByRole(role) {
+
+        saveLocalStorage('login', JSON.stringify({
+            token: jwtToken,
+            role: role
+        }), 90000);
+
+        let redirectPage = '';
+        if (role == 'Admin') {
+            redirectPage = 'Dashboard.aspx';
+        } else if (role == 'Secretary') {
+            //GoToPage = AdakDB.Db.usp_Page_Select(LoginId).ToList().Where(x => (x.P_ShowOnMenu ?? false) && x.HasPermission == 1).ToList().OrderBy(b => b.P_Sort).FirstOrDefault().P_Url;
+        } else if (role == 'Photographer') {
+            redirectPage = 'AddFamilyFromHospital.aspx';
+        } else if (role == 'DesignSupervisor' || role == 'Designer') {
+            redirectPage = 'DesignerProcessPhoto.aspx';
+        }
+        location.href = redirectPage;
     }
     let cachePreKey = '';
     function saveLocalStorage(key, data, expireAfterSec) {
