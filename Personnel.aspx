@@ -257,17 +257,17 @@
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">تنظیمات دسترسی پرسنل</h5>
+                    <h5 class="modal-title" id="personnelAccessModal-title">تنظیمات دسترسی پرسنل</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body">
                     <!-- تب‌ها -->
                     <ul class="nav nav-tabs mb-3" id="accessTabs" role="tablist">
-                        <li class="nav-item" id="tab-menus"><a class="nav-link" data-bs-toggle="tab" href="#tab-menus-content">منوها</a></li>
-                        <li class="nav-item" id="tab-project-status"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status-content">وضعیت پروژه</a></li>
-                        <li class="nav-item" id="tab-photo-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-photo-steps-content">مراحل آماده‌سازی عکس</a></li>
-                        <li class="nav-item" id="tab-video-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-video-steps-content">مراحل آماده‌سازی فیلم</a></li>
-                        <li class="nav-item" id="tab-project-types"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-types-content">نوع پروژه‌ها</a></li>
+                        <li class="nav-item" route="GetEditorSteps" id="tab-menus"><a class="nav-link" data-bs-toggle="tab" href="#tab-menus-content">منوها</a></li>
+                        <li class="nav-item" route="GetEditorSteps" id="tab-project-status"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status-content">وضعیت پروژه</a></li>
+                        <li class="nav-item" route="GetDesignerSteps" id="tab-photo-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-photo-steps-content">مراحل آماده‌سازی عکس</a></li>
+                        <li class="nav-item" route="GetEditorSteps" id="tab-video-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-video-steps-content">مراحل آماده‌سازی فیلم</a></li>
+                        <li class="nav-item" route="GetProjectTypes" id="tab-project-types"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-types-content">نوع پروژه‌ها</a></li>
                     </ul>
 
                     <div class="tab-content">
@@ -343,22 +343,7 @@
                                             <th>مشاهده</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>عروسی</td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>نوزادی</td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>تولد</td>
-                                            <td>
-                                                <input type="checkbox" /></td>
-                                        </tr>
+                                    <tbody id="table-tab-project-types">
                                     </tbody>
                                 </table>
                             </div>
@@ -377,7 +362,7 @@
         <div class="modal-dialog modal-sm modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">نقش های کاربر</h5>
+                    <h5 class="modal-title" id="personnelRolesModal-title">نقش های کاربر</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body">
@@ -402,7 +387,7 @@
         <div class="modal-dialog modal-sm modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">نقش های کاربر</h5>
+                    <h5 class="modal-title" id="roleSelectorModal-title">نقش های کاربر</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body">
@@ -609,18 +594,20 @@
         let pageIndex = 0;
         let pageSize = 5;
         let personel = [];
+        let gettingData = false;
         const SecretaryRole = 5;
         const AdminRole = 1;
         function loadTableDataPersonnel() {
             var filter = $("#filterInput").val();
             pageSize = parseInt($("#s_pageSize").val());
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${filter}`;
+            gettingData = true;
+            const tbody = $("#dt_Personnels");
+            tbody.empty();
             ajaxGet('/User/GetUsers' + query, function (res) {
+                gettingData = false;
                 personel = res.items;
                 const totalRecords = res.totalCount;
-                const tbody = $("#dt_Personnels");
-
-                tbody.empty(); // پاک کردن داده‌های قدیمی
 
                 personel.forEach(row => {
 
@@ -628,12 +615,14 @@
                     let hasRole = true;
                     let isMultiRole = false;
                     let roleId = 0;
+                    let userRoleId = '';
 
                     if (row.roles.length === 0) {
                         hasRole = false;
                     }
                     else if (row.roles.length === 1) {
-                        roleId = row.roles[0].id;
+                        roleId = row.roles[0].roleId;
+                        userRoleId = row.roles[0].id;
                     }
                     else if (row.roles.length > 1) {
                         isMultiRole = true;
@@ -642,7 +631,7 @@
                     let actions = ` <div class='action-buttons'>`;
 
                     if (roleId !== AdminRole) {
-                        actions += `<button class='btnDataTable btnDataTable-edit' onclick='personAccessSetting("${row.id}",${hasRole},${isMultiRole},${roleId})' title='تنظیمات دسترسی'>⚙️</button>`;
+                        actions += `<button class='btnDataTable btnDataTable-edit' onclick='personAccessSetting("${row.id}",${hasRole},${isMultiRole},${roleId},"${userRoleId}")' title='تنظیمات دسترسی'>⚙️</button>`;
                     }
 
                     actions +=
@@ -671,19 +660,24 @@
                 });
 
                 // بروزرسانی صفحه فعلی
-                $("#pageIndex").text(pageIndex);
+                $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#nextPageBtn").prop("disabled", (pageIndex + 1) * pageSize >= totalRecords);
             }, function (err) {
                 toastr.error("خطا در دریافت اطلاعات", "خطا");
             });
         }
         let personIdSelectedForSetupRoles = '';
         function personRoles(id) {
+
             personIdSelectedForSetupRoles = id;
             let query = '?userId=' + id;
+            $("#table-personel-roles").html('');
+
+            var person = personel.find(x => x.id == id);
+            $('#personnelRolesModal-title').html(`نقش های ${person.fullName}`);
             ajaxGet("/Role/GetAllRoles" + query, function (roles) {
                 const permissionsHtml = roles.map(role =>
                     `
@@ -696,19 +690,26 @@
                 $("#table-personel-roles").html(permissionsHtml);
             });
         }
+        let selectedUserRoleId = '';
         let selectedPersonIdForSettingAccess = '';
-        function personAccessSetting(personId, hasRole, isMultiRole, roleId) {
+        function personAccessSetting(personId, hasRole, isMultiRole, roleId, userRoleId) {
+            if (gettingData) {
+                toastr.warning('لطفاً شکیبا باشید');
+                return;
+            }
+
             if (!hasRole) {
                 toastr.warning('هنوز هیچ نقشی برای این کاربر تعریف نشده', 'نقش کاربر');
                 return;
             }
+            var person = personel.find(x => x.id == personId);
             if (isMultiRole) {
                 let html = '';
-                var person = personel.find(x => x.id == personId);
                 person.roles.forEach(x => {
-                    html += `<button onclick="$('#roleSelectorModal').modal('hide');personAccessSetting('${personId}',${true},${false},${x.id});" class="btn btn-secondary" style="margin:10px">${x.title}</button>`;
+                    html += `<button onclick="$('#roleSelectorModal').modal('hide');personAccessSetting('${personId}',${true},${false},${x.roleId},'${x.id}');" class="btn btn-secondary" style="margin:10px">${x.title}</button>`;
                 });
                 $('#table-roles').html(html);
+                $('#roleSelectorModal-title').html(`نقش های ${person.fullName}`);
                 $('#roleSelectorModal').modal('show');
                 return;
             }
@@ -716,8 +717,14 @@
                 toastr.warning('امکان تعیین سطح دسترسی برای نقش مدیر وجود ندارد');
                 return;
             }
-
+            selectedUserRoleId = userRoleId;
             selectedPersonIdForSettingAccess = personId;
+
+            $('#table-tab-project-types').empty();
+            $('#table-tab-photo-steps').empty();
+            $('#table-tab-video-steps').empty();
+
+            $('#personnelAccessModal-title').html(`تنظیمات دسترسی ${person.fullName}`);
             $('#personnelAccessModal').modal('show');
             if (roleId === SecretaryRole) {
                 $('#tab-menus').removeAttr('hidden');
@@ -727,7 +734,7 @@
                 $('#tab-menus').addClass('active');
                 $('#tab-menus-content').addClass('active');
                 $('#tab-menus').trigger('click');
-                
+
             } else {
                 $('#tab-menus').attr('hidden', 'hidden');
                 $('.nav-item').removeClass('active');
@@ -741,25 +748,47 @@
         }
         $('#accessTabs').on('click', '.nav-item', function () {
             const tableId = '#table-' + $(this).attr('id');
+            if ($(tableId + ' tr').length > 0) {
+                return;
+            }
             if (tableId === '#table-tab-menus') {
                 GetPermissions();
+                return;
             }
-            let route = '/BasicData/GetDesignerSteps';
-            ajaxGet(route, function (items) {
+            //
+            let route = '/User/' + $(this).attr('route');
+            route += `?userRoleId=${selectedUserRoleId}`;
+            ajaxGet(route, function (res) {
+                if (!res.success) {
+                    toastr.error(res.message);
+                    return;
+                }
+                const items = res.data;
                 let html = '';
                 for (var i = 0; i < items.length; i++) {
                     var item = items[i];
-                    html +=
-                        `
-                              <tr>
+                    if (tableId === '#table-tab-project-types') {
+                        html +=
+                            `
+                              <tr id='${(item.id ? item.id : '')}' row-id='${item.rowId}'>
                                  <td>${item.title}</td>
-                                 <td><input type="checkbox" class="can-view" /></td>
-                                 <td><input type="checkbox" class="go-next" /></td>
-                                 <td><input type="checkbox" class="go-pre" /></td>
+                                 <td><input type="checkbox" ${item.canView ? 'checked' : ''} class="can-view" /></td>
                              </tr>
                         `;
+                    } else {
+                        html +=
+                            `
+                              <tr id='${(item.id ? item.id : '')}' row-id='${item.rowId}'>
+                                 <td>${item.title}</td>
+                                 <td><input type="checkbox" ${item.canView ? 'checked' : ''} class="can-view" /></td>
+                                 <td><input type="checkbox" ${item.canGoNext ? 'checked' : ''} class="go-next" /></td>
+                                 <td><input type="checkbox" ${item.canGoPre ? 'checked' : ''} class="go-pre" /></td>
+                             </tr>
+                        `;
+                    }
+
                 }
-             
+
                 $(tableId).html(html);
             });
         });
@@ -814,21 +843,61 @@
     </script>
 
     <script>
-        function btnSaveUserPermissions() {
+        async function btnSaveUserPermissions() {
             let photoSteps = getTableData('table-tab-photo-steps');
             let videoSteps = getTableData('table-tab-video-steps');
+            let projectTypes = getTableData('table-tab-project-types');
+
+            let photoSuccess = true;
+            let videoSuccess = true;
+            let projectTypesSuccess = true;
+
+            if (photoSteps.length > 0)
+                photoSuccess = await saveUserPermissions('/AssignDesignerSteps', photoSteps);
+            if (videoSteps.length > 0)
+                videoSuccess = await saveUserPermissions('/AssignEditorSteps', videoSteps);
+            if (projectTypes.length > 0)
+                projectTypesSuccess = await saveUserPermissions('/AssignProjectTypes', videoSteps);
+
+            if (photoSuccess && videoSuccess) {
+                toastr.success("ثبت نقش ها با موفقیت انجام شد");
+                $('#personnelAccessModal').modal('hide');
+            }
+        }
+        async function saveUserPermissions(route, data) {
+
+            let assignDataPermissionCommand =
+            {
+                data: data,
+                userRoleId: selectedUserRoleId
+            };
+            return new Promise((resolve) => {
+                ajaxPost("/DataPermission" + route, assignDataPermissionCommand, function (res) {
+                    if (res.success) {
+                        resolve(true);
+                    } else {
+                        ShowError(res.message);
+                        resolve(false);
+                    }
+                }, function (err) {
+                    resolve(false);
+                });
+            });
         }
         function getTableData(id) {
             const rows = document.querySelectorAll(`tbody[id="${id}"] tr`); // Select all rows in the tbody
             const data = [];
 
             rows.forEach((row, index) => {
-                const checkbox = row.querySelector('input[type="checkbox"]'); // Select the checkbox in the row
+                let chkView = row.querySelector('input[type="checkbox"].can-view');
+                let chkNext = row.querySelector('input[type="checkbox"].go-next');
+                let chkPre = row.querySelector('input[type="checkbox"].go-pre');
                 const entry = {
-                    id: index + 1, // Use the row index for an incremental ID (you can change this if the "id" is unique from elsewhere, like `checkbox.id`)
-                    canView: row.querySelector('input[type="checkbox"].can-view').checked,
-                    goNext: row.querySelector('input[type="checkbox"].go-next').checked,
-                    goPre: row.querySelector('input[type="checkbox"].go-pre').checked,
+                    id: $(row).attr('id') || null,
+                    rowId: $(row).attr('row-id'),
+                    canView: chkView.checked,
+                    canGoNext: chkNext === undefined ? false : chkNext.checked,
+                    canGoPre: chkPre === undefined ? false : chkPre.checked,
                 };
                 data.push(entry);
             });
