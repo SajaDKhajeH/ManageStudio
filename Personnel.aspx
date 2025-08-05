@@ -263,8 +263,8 @@
                 <div class="modal-body">
                     <!-- تب‌ها -->
                     <ul class="nav nav-tabs mb-3" id="accessTabs" role="tablist">
-                        <li class="nav-item" route="GetEditorSteps" id="tab-menus"><a class="nav-link" data-bs-toggle="tab" href="#tab-menus-content">منوها</a></li>
-                        <li class="nav-item" route="GetEditorSteps" id="tab-project-status"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status-content">وضعیت پروژه</a></li>
+                        <li class="nav-item" route="" id="tab-menus"><a class="nav-link" data-bs-toggle="tab" href="#tab-menus-content">منوها</a></li>
+                        <li class="nav-item" route="GetProjectStatuses" id="tab-project-status"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-status-content">وضعیت پروژه</a></li>
                         <li class="nav-item" route="GetDesignerSteps" id="tab-photo-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-photo-steps-content">مراحل آماده‌سازی عکس</a></li>
                         <li class="nav-item" route="GetEditorSteps" id="tab-video-steps"><a class="nav-link" data-bs-toggle="tab" href="#tab-video-steps-content">مراحل آماده‌سازی فیلم</a></li>
                         <li class="nav-item" route="GetProjectTypes" id="tab-project-types"><a class="nav-link" data-bs-toggle="tab" href="#tab-project-types-content">نوع پروژه‌ها</a></li>
@@ -351,7 +351,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="btnSaveUserPermissions();" class="btn btn-success">ذخیره تغییرات</button>
+                    <button onclick="btnSaveUserPermissions(this);" class="btn btn-success">ذخیره تغییرات</button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
                 </div>
             </div>
@@ -723,6 +723,7 @@
             $('#table-tab-project-types').empty();
             $('#table-tab-photo-steps').empty();
             $('#table-tab-video-steps').empty();
+            $('#table-tab-project-status').empty();
 
             $('#personnelAccessModal-title').html(`تنظیمات دسترسی ${person.fullName}`);
             $('#personnelAccessModal').modal('show');
@@ -843,26 +844,47 @@
     </script>
 
     <script>
-        async function btnSaveUserPermissions() {
+        async function btnSaveUserPermissions(button) {
             let photoSteps = getTableData('table-tab-photo-steps');
             let videoSteps = getTableData('table-tab-video-steps');
             let projectTypes = getTableData('table-tab-project-types');
+            let projectStatuses = getTableData('table-tab-project-status');
 
             let photoSuccess = true;
             let videoSuccess = true;
             let projectTypesSuccess = true;
+            let projectStatusesSuccess = true;
 
-            if (photoSteps.length > 0)
-                photoSuccess = await saveUserPermissions('/AssignDesignerSteps', photoSteps);
-            if (videoSteps.length > 0)
-                videoSuccess = await saveUserPermissions('/AssignEditorSteps', videoSteps);
-            if (projectTypes.length > 0)
-                projectTypesSuccess = await saveUserPermissions('/AssignProjectTypes', videoSteps);
 
-            if (photoSuccess && videoSuccess) {
-                toastr.success("ثبت نقش ها با موفقیت انجام شد");
-                $('#personnelAccessModal').modal('hide');
+            let btn = $(button);
+            let defaultText = btn.html();
+            function setDisable() {
+                btn.attr('disabled', 'disabed');
+                btn.html('لطفاً منتظر بمانید ...');
             }
+            function setEnable() {
+                btn.removeAttr('disabled');
+                btn.html(defaultText);
+            }
+            setDisable();
+            try {
+                if (photoSteps.length > 0)
+                    photoSuccess = await saveUserPermissions('/AssignDesignerSteps', photoSteps);
+                if (videoSteps.length > 0)
+                    videoSuccess = await saveUserPermissions('/AssignEditorSteps', videoSteps);
+                if (projectTypes.length > 0)
+                    projectTypesSuccess = await saveUserPermissions('/AssignProjectTypes', projectTypes);
+                if (projectStatuses.length > 0)
+                    projectStatusesSuccess = await saveUserPermissions('/AssignProjectStatus', projectStatuses);
+
+                if (photoSuccess && videoSuccess && projectTypesSuccess && projectStatusesSuccess) {
+                    toastr.success("ثبت نقش ها با موفقیت انجام شد");
+                    $('#personnelAccessModal').modal('hide');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+            setEnable();
         }
         async function saveUserPermissions(route, data) {
 
@@ -896,8 +918,8 @@
                     id: $(row).attr('id') || null,
                     rowId: $(row).attr('row-id'),
                     canView: chkView.checked,
-                    canGoNext: chkNext === undefined ? false : chkNext.checked,
-                    canGoPre: chkPre === undefined ? false : chkPre.checked,
+                    canGoNext: chkNext === undefined || chkNext == null ? false : chkNext.checked,
+                    canGoPre: chkPre === undefined || chkPre == null ? false : chkPre.checked,
                 };
                 data.push(entry);
             });
