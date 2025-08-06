@@ -272,7 +272,20 @@
 
                     <div class="tab-content">
                         <!-- تب منوها -->
-                        <div class="tab-pane fade show" id="tab-menus-content">
+                        <div class="tab-pane fade" id="tab-menus-content">
+                            <h6 class="mb-3">نوع پروژه ها</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>نوع</th>
+                                            <th>مشاهده</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-tab-menus">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- تب وضعیت پروژه -->
@@ -798,19 +811,16 @@
             ajaxGet("/Permission/GetPermissions" + query, function (permissions) {
                 const permissionsHtml = permissions.map(permission =>
                     `
-                     <div class='form-check custom-checkbox'>
-                        <input class='form-check-input access-checkbox' name='PagesPermission' type='checkbox' id='${permission.id}' ${(permission.hasPermission ? "checked" : "")}>
-                        <label class='form-check-label' for='dashboard'>${permission.title}</label>
-                     </div>
+                       <tr id='${(permission.id ? permission.id : '')}'>
+                          <td>${permission.title}</td>
+                          <td><input type="checkbox" ${permission.hasPermission ? 'checked' : ''} class="can-view" /></td>
+                        </tr>
                     `
                 ).join('');
-                $("#pagess").html(permissionsHtml);
+                $("#table-tab-menus").html(permissionsHtml);
             });
         }
 
-        function accessTabChanged() {
-            alert(1);
-        }
     </script>
 
     <script>
@@ -886,6 +896,28 @@
             }
             setEnable();
         }
+        function SavePermission() {
+            var Pages = document.getElementsByName("PagesPermission");
+
+            const pageIds = new Set(
+                Array.from(Pages)
+                    .filter(page => page.checked)
+                    .map(page => page.id)
+            );
+            console.log(pageIds);
+            let createPermissionCommand =
+            {
+                pageIds: Array.from(pageIds),
+                personId: personnelId
+            };
+            ajaxPost("/Permission/CreatePermission", createPermissionCommand, function (res) {
+                if (res.success) {
+                    toastr.success("ثبت دسترسی ها با موفقیت انجام شد");
+                } else {
+                    ShowError(res.message);
+                }
+            });
+        }
         async function saveUserPermissions(route, data) {
 
             let assignDataPermissionCommand =
@@ -907,7 +939,7 @@
             });
         }
         function getTableData(id) {
-            const rows = document.querySelectorAll(`tbody[id="${id}"] tr`); // Select all rows in the tbody
+            const rows = document.querySelectorAll(`tbody[id="${id}"] tr`);
             const data = [];
 
             rows.forEach((row, index) => {
