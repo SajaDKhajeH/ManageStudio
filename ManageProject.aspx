@@ -367,10 +367,10 @@
         <div class="project-days">${(item.remindDays > 0 ? '+' : item.remindDays < 0 ? '-' : '')}${item.remindDays}</div>
         <h6>${item.title}</h6>
         <p>خانواده ${item.family} - شروع: ${item.date}</p>
-        <p>آماده‌سازی عکس: مرحله 1</p>
-        <p>آماده‌سازی فیلم: ندارد</p>
-        <p>طراح: ---</p>
-        <p>تدوینگر: ---</p>
+        <p>آماده‌سازی عکس: ${item.designerStep}</p>
+        <p>آماده‌سازی فیلم: ${item.editorStep}</p>
+        <p>طراح: ${item.designer}</p>
+        <p>تدوینگر: ${item.editor}</p>
        
         <div class="project-footer">
           ثبت توسط: ${item.creator} - ${item.creationDate} ساعت ${item.creationTime}
@@ -948,24 +948,5 @@
         }
     </script>
 
-
-    <script>
-
-
-        function getToday() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
-
-            const shamsiDate = jalaali.toJalaali(year, month, day);
-
-            const formattedYear = shamsiDate.jy;
-            const formattedMonth = String(shamsiDate.jm).padStart(2, '0');
-            const formattedDay = String(shamsiDate.jd).padStart(2, '0');
-
-            return `${formattedYear}/${formattedMonth}/${formattedDay}`;
-        }
-</script>
 </asp:Content>
 

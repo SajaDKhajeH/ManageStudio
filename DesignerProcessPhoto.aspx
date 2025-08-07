@@ -161,17 +161,6 @@
                     </div>
                     <div class="row mt-3">
                         <div class="kanban-board">
-                            <script>
-                                const statuses = [
-                                    { key: 'readyForDesign', label: 'آماده طراحی', color: '#6c757d' },
-                                    { key: 'in_Design', label: 'در دست طراحی', color: '#0d6efd' },
-                                    { key: 'AcceptCustomer', label: 'در انتظار تایید مشتری', color: '#ffc107' },
-                                    { key: 'ready_for_Print', label: 'آماده چاپ', color: '#20c997' },
-                                    { key: 'ready_for_Delivery', label: 'اماده تحویل', color: '#198754' },
-                                    { key: 'Deliverd', label: 'تحویل داده شد', color: '#dc3545' }
-                                ];
-                            </script>
-
                             <div id="kanban-container" class="d-flex gap-3 w-100"></div>
                         </div>
 
@@ -308,6 +297,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
         let kanbanData = {};
+        let statuses = [];
         $(document).ready(function () {
             $("#master_PageTitle").text("آماده سازی عکس ها");
 
@@ -365,7 +355,7 @@
         <p>تاریخ شروع: ${item.date}</p>
         ${item.urgent ? '<span class="urgent-label">فوری</span>' : ''}
         <div class="project-footer d-flex flex-column gap-2">
-            <div>ثبت توسط: مدیر سیستم - ۱۴۰۳/۰۳/۱۰ ساعت ۱۰:۳۰</div>
+            <div>ثبت توسط: ${item.creator} - ${item.creationDate} ساعت ${item.creationTime}</div>
             <div class="d-flex flex-wrap gap-2">
                 <button class="btn btn-sm btn-light-primary" onclick="showPhotos('${item.title}')">
                     <i class="bi bi-images"></i> مشاهده عکس‌ها
@@ -482,7 +472,6 @@
 
                         updateEmptyDropzoneState(source);
                         updateEmptyDropzoneState(target);
-
                         alert("✅ کارت منتقل شد به ستون جدید");
                         onCardDrop(card, source, target);
                     },
@@ -545,56 +534,7 @@
             container.appendChild(newCol);
         }
 
-        async function getDesignerStepsAsync() {
-            let route = '/BasicData/GetDesignerSteps';
-            await ajaxGet(route, function (items) {
-                for (var i = 0; i < items.length; i++) {
-                    var item = items[i];
-                    statuses.push({
-                        key: item.id,
-                        label: item.title,
-                        color: item.color
-                    });
-                }
 
-            });
-        }
-        window.addEventListener('DOMContentLoaded', async () => {
-            showProgress();
-
-            await getDesignerStepsAsync();
-
-            statuses.forEach((status) => {
-                if (!kanbanData[status.key]) {
-                    kanbanData[status.key] = [];
-                }
-            });
-
-            let query = '?a=1';
-            let route = '/Project/GetAllProjectsWithDetailForDesigner';
-            await ajaxGet(route + query, function (res) {
-
-                if (!res.success) {
-                    ShowError(res.message);
-                    return;
-                }
-                const data = res.data;
-
-                data.forEach((item) => {
-                    kanbanData[item.statusId].push(item);
-                });
-
-
-                const container = document.getElementById('kanban-container');
-                for (const [statusKey, items] of Object.entries(kanbanData)) {
-                    const statusObj = statuses.find(s => s.key === statusKey);
-                    const label = statusObj?.label || statusKey;
-                    container.appendChild(createColumn(statusKey, label, items));
-                }
-            });
-
-            hideProgress();
-        });
     </script>
     <script>
         function showPhotos(projectTitle) {
@@ -823,6 +763,104 @@
             });
         });
 
+    </script>
+
+    <script>
+
+
+       
+        async function fillDesignersAsync() {
+            const defaultOption = '<option value="">انتخاب طراح</option>';
+            await ajaxGet('/User/GetAllDesigners', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#filter_Designer').html(defaultOption + options);
+            });
+        }
+        async function fillFamiliesAsync() {
+            const defaultOption = '<option value="">انتخاب خانواده</option>';
+            await ajaxGet('/Family/GetAllFamilies', function (families) {
+                const options = families.map(family =>
+                    `<option value="${family.id}">${family.title}</option>`
+                ).join('');
+                $('#select2-filter_Family-container').html(defaultOption + options);
+            });
+        }
+        async function getWorkerStepsAsync() {
+            let route = '/User/GetWorkerStepsWithDetail';
+            await ajaxGet(route, function (res) {
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                let items = res.data;
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    statuses.push({
+                        key: item.id,
+                        label: item.title,
+                        color: item.color,
+                        canGoNext: item.canGoNext,
+                        canGoPre: item.canGoPre
+                    });
+                }
+
+            });
+        }
+        async function fillAllFiltersAsync() {
+            let today = getToday();
+            $('#filter_From_Date').val(convertEnglishToPersianNumbers(today));
+            $('#filter_To_Date').val(convertEnglishToPersianNumbers(today));
+
+            await Promise.all([
+                fillFamiliesAsync(),
+                fillDesignersAsync()
+            ]);
+        }
+        window.addEventListener('DOMContentLoaded', async () => {
+            showProgress();
+
+            fillFamiliesAsync(),
+            fillDesignersAsync()
+            await getWorkerStepsAsync();
+
+            statuses.forEach((status) => {
+                if (!kanbanData[status.key]) {
+                    kanbanData[status.key] = [];
+                }
+            });
+
+            let query = '?a=1';
+            let route = '/Project/GetAllProjectsWithDetailForDesigner';
+            await ajaxGet(route + query, function (res) {
+
+                if (!res.success) {
+                    ShowError(res.message);
+                    return;
+                }
+                const data = res.data;
+
+                data.forEach((item) => {
+                    try {
+                        kanbanData[item.statusId].push(item);
+                    } catch (err) {
+                        console.log(item.statusId);
+                        console.log(err);
+                    }
+                });
+
+
+                const container = document.getElementById('kanban-container');
+                for (const [statusKey, items] of Object.entries(kanbanData)) {
+                    const statusObj = statuses.find(s => s.key === statusKey);
+                    const label = statusObj?.label || statusKey;
+                    container.appendChild(createColumn(statusKey, label, items));
+                }
+            });
+
+            hideProgress();
+        });
     </script>
 </asp:Content>
 

@@ -2272,6 +2272,23 @@
             document.body.classList.remove("disable-scroll");
         }
     </script>
+
+    <script>
+        function getToday() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            const shamsiDate = jalaali.toJalaali(year, month, day);
+
+            const formattedYear = shamsiDate.jy;
+            const formattedMonth = String(shamsiDate.jm).padStart(2, '0');
+            const formattedDay = String(shamsiDate.jd).padStart(2, '0');
+
+            return `${formattedYear}/${formattedMonth}/${formattedDay}`;
+        }
+    </script>
     <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>

@@ -292,7 +292,8 @@
         let data =
         {
             username: username,
-            password: password
+            password: password,
+            selectedRole: selectedRole
         };
         await callLoginStaffAsync(data);
         setTimeout(function () {
@@ -305,7 +306,8 @@
 
     }
     let jwtToken = '';
-    function callLoginStaffAsync(data) {
+    async function callLoginStaffAsync(data) {
+        jwtToken = '';
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: "POST",
@@ -314,6 +316,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (res) {
+                    console.log(res);
                     if (res.success) {
                         jwtToken = res.data.token;
 
@@ -334,6 +337,7 @@
 
                         if (!hasRole) {
                             toastr.warning('هیچ نقشی برای شما در سیستم تعریف نشده', 'نقش کاربر');
+                            resolve(res);
                             return;
                         }
                         if (isMultiRole) {
@@ -343,10 +347,11 @@
                             });
                             $('#table-roles').html(html);
                             $('#roleSelectorModal').modal('show');
+                            resolve(res);
                             return;
                         }
                         
-                        redirectPageByRole(role.name);
+                        redirectPageByRole(role);
 
                     } else {
                         toastr.error(res.message);
@@ -360,9 +365,13 @@
             });
         });
     }
-  
+    let selectedRole = '';
     function redirectPageByRole(role) {
-
+        if (!jwtToken) {
+            selectedRole = role;
+            LoginToPortal();
+            return;
+        }
         saveLocalStorage('login', JSON.stringify({
             token: jwtToken,
             role: role

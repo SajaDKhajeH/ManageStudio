@@ -39,12 +39,12 @@
                             <div class="col-md-3">
                                 <label class="form-label required">تاریخ شروع</label>
                                 <%--<input id="startDate" type="date" class="form-control" required />--%>
-                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="startDate" placeholder="تاریخ شروع" required/>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="startDate" placeholder="تاریخ شروع" required />
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label required">تاریخ پایان</label>
                                 <%--<input id="endDate" type="date" class="form-control" required />--%>
-                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="endDate" placeholder="تاریخ پایان" required/>
+                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="endDate" placeholder="تاریخ پایان" required />
                             </div>
                         </div>
                         <div id="failureReasonSection" class="mb-4" style="display: none">
@@ -734,75 +734,7 @@
     </script>
 
 
-    <%--load--%>
-    <script>
-        let projectId = '';
-        let scheduleId = '';
 
-        $(document).ready(async function () {
-            showProgress();
-
-            let params = new URLSearchParams(document.location.search);
-            projectId = params.get("id");
-            if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
-                projectId = '';
-
-            scheduleId = params.get("scheduleId");
-            if (scheduleId == undefined || scheduleId == '0' || scheduleId == 0 || scheduleId == 'undefined')
-                scheduleId = '';
-
-            showLocations();
-            showPhotos();
-            showVideos();
-            showMaterials();
-
-            await Promise.all([
-                fillProjectTypesAsync(),
-                fillFamiliesAsync(),
-                fillDesignersAsync(),
-                fillEditorsAsync(),
-                showSchedulesAsync(),
-                showInvoicesAsync()
-            ]);
-
-            if (projectId) {
-                await fillInfoAsync();
-            }
-            hideProgress();
-        });
-
-        function fillInfoAsync() {
-            let query = `?id=${projectId}`;
-            ajaxGet('/Project/Get' + query, function (res) {
-                if (res.success) {
-                    let data = res.data;
-                    $('#familySelect').val(data.familyId);
-                    $('#projectTypeSelect').val(data.projectTypeId);
-                    $('#projectTitle').val(data.projectTitle);
-                    $('#startDate').val(data.startDate);
-                    $('#endDate').val(data.endDate);
-                    if (data.isForce) {
-                        $('#urgentCheckbox').attr('checked', 'checked');
-                    } else {
-                        $('#urgentCheckbox').removeAttr('checked');
-                    }
-                    if (data.designerId)
-                        $('#cmb-designer').val(data.designerId);
-                    $('#photoBaseDir').val(data.photoBaseDir);
-
-                    if (data.editorId)
-                        $('#cmb-editor').val(data.editorId);
-                    $('#videoBaseDir').val(data.videoBaseDir);
-
-                }
-                else {
-                    ShowError(res.message);
-                }
-            }, function (err) {
-                alert("error1");
-            });
-        }
-    </script>
 
     <%--global--%>
     <script>
@@ -914,60 +846,33 @@
             let videographerTitle = $('#cmb-videographer option:selected').text();
             let code = $('#txt-video-code').val();
             let desc = $('#txt-video-desc').val();
-            let json = getLocalStorage(getCacheKey('video'));
-            if (json) {
-                let items = JSON.parse(json);
-                if (videoEdittingId) {
-                    const index = items.findIndex(x => x.id === videoEdittingId);
-                    items[index].id = id;
-                    items[index].videographer = { id: videographerId, title: videographerTitle };
-                    items[index].code = code;
-                    items[index].desc = desc;
 
-                } else {
-                    items.push({
-                        id: id,
-                        videographer: { id: videographerId, title: videographerTitle },
-                        code: code,
-                        desc: desc
-                    });
-                }
+            if (videoEdittingId) {
+                const index = videos.findIndex(x => x.id === videoEdittingId);
+                videos[index].id = id;
+                videos[index].videographer = { id: videographerId, title: videographerTitle };
+                videos[index].code = code;
+                videos[index].desc = desc;
 
-                json = JSON.stringify(items);
             } else {
-                let items = [];
-                items.push({
+                videos.push({
                     id: id,
                     videographer: { id: videographerId, title: videographerTitle },
                     code: code,
                     desc: desc
                 });
-                json = JSON.stringify(items);
             }
 
-            let expire = 90000;
-            saveLocalStorage(getCacheKey('video'), json, expire);
+
             isFormDirty = true;
             $('#modalAddVideo').modal('hide');
             showVideos();
         }
         function showVideos() {
-            videos = [];
-
             let html = '';
             $('#table-videos').html(html);
-
-            let json = getLocalStorage(getCacheKey('video'));
-            let countAll = 0;
-            if (json) {
-                let cachedItems = JSON.parse(json);
-                for (var i = 0; i < cachedItems.length; i++) {
-                    videos.push(cachedItems[i]);
-                }
-
-                countAll += cachedItems.length;
-                html = cachedItems.map(item =>
-                    `
+            html = videos.map(item =>
+                `
                             <tr>
                                 <td>${item.code}</td>
                                 <td>
@@ -993,13 +898,10 @@
                                 </td>
                             </tr>
                     `
-                ).join('');
+            ).join('');
 
-            }
-
-            //videos.push(dbItems);
             $('#table-videos').html(html);
-            $('#count-videos').html(countAll);
+            $('#count-videos').html(videos.length);
         }
         function btnDeleteVideoClicked(id) {
             if (confirm('از حذف فیلم اطمینان دارید ؟')) {
@@ -1008,8 +910,6 @@
                     videos.splice(index, 1);
                 }
 
-                let expire = 90000;
-                saveLocalStorage(getCacheKey('video'), JSON.stringify(videos), expire);
                 isFormDirty = true;
                 showVideos();
             }
@@ -1057,60 +957,32 @@
             let photographerTitle = $('#cmb-photographer option:selected').text();
             let code = $('#txt-photo-code').val();
             let desc = $('#txt-photo-desc').val();
-            let json = getLocalStorage(getCacheKey('photo'));
-            if (json) {
-                let items = JSON.parse(json);
-                if (photoEdittingId) {
-                    const index = items.findIndex(x => x.id === photoEdittingId);
-                    items[index].id = id;
-                    items[index].photographer = { id: photographerId, title: photographerTitle };
-                    items[index].code = code;
-                    items[index].desc = desc;
+            if (photoEdittingId) {
+                const index = photos.findIndex(x => x.id === photoEdittingId);
+                photos[index].id = id;
+                photos[index].photographer = { id: photographerId, title: photographerTitle };
+                photos[index].code = code;
+                photos[index].desc = desc;
 
-                } else {
-                    items.push({
-                        id: id,
-                        photographer: { id: photographerId, title: photographerTitle },
-                        code: code,
-                        desc: desc
-                    });
-                }
-
-                json = JSON.stringify(items);
             } else {
-                let items = [];
-                items.push({
+                photos.push({
                     id: id,
                     photographer: { id: photographerId, title: photographerTitle },
                     code: code,
                     desc: desc
                 });
-                json = JSON.stringify(items);
             }
 
-            let expire = 90000;
-            saveLocalStorage(getCacheKey('photo'), json, expire);
             isFormDirty = true;
             $('#modalAddPhoto').modal('hide');
             showPhotos();
         }
         function showPhotos() {
-            photos = [];
-
             let html = '';
             $('#table-photos').html(html);
 
-            let json = getLocalStorage(getCacheKey('photo'));
-            let countAll = 0;
-            if (json) {
-                let cachedItems = JSON.parse(json);
-                for (var i = 0; i < cachedItems.length; i++) {
-                    photos.push(cachedItems[i]);
-                }
-
-                countAll += cachedItems.length;
-                html = cachedItems.map(item =>
-                    `
+            html = photos.map(item =>
+                `
                             <tr>
                                 <td>${item.code}</td>
                                 <td>
@@ -1136,13 +1008,10 @@
                                 </td>
                             </tr>
                     `
-                ).join('');
+            ).join('');
 
-            }
-
-            //photos.push(dbItems);
             $('#table-photos').html(html);
-            $('#count-photos').html(countAll);
+            $('#count-photos').html(photos.length);
         }
         function btnDeletePhotoClicked(id) {
             if (confirm('از حذف عکس اطمینان دارید ؟')) {
@@ -1151,8 +1020,6 @@
                     photos.splice(index, 1);
                 }
 
-                let expire = 90000;
-                saveLocalStorage(getCacheKey('photo'), JSON.stringify(photos), expire);
                 isFormDirty = true;
                 showPhotos();
             }
@@ -1171,12 +1038,12 @@
     <script>
         let locationEdittingId = '';
         var locations = [];//id,desc,expense,location
-        function btnOpenModalLocationClicked(id) {
+        function btnOpenModalLocationClicked(localId) {
             let selectedLocation = '';
-            if (id) {
-                locationEdittingId = id;
+            if (localId) {
+                locationEdittingId = localId;
                 $('#modalAddLocation').modal('show');
-                const index = locations.findIndex(x => x.id === id);
+                const index = locations.findIndex(x => x.localId === localId);
                 const selectedItem = locations[index];
                 $('#txt-location-expense').val(selectedItem.expense);
                 $('#txt-location-desc').val(selectedItem.desc);
@@ -1195,65 +1062,35 @@
             });
         }
         function btnSubmitModalLocationClicked() {
-            let id = generateGUID();
+            let localId = generateGUID();
             let locationId = $('#cmb-location').val();
             let locationTitle = $('#cmb-location option:selected').text();
             let expense = parseFloat($('#txt-location-expense').val() || '0');
             let desc = $('#txt-location-desc').val();
-            let json = getLocalStorage(getCacheKey('location'));
-            if (json) {
-                let items = JSON.parse(json);
-                if (locationEdittingId) {
-                    const index = items.findIndex(x => x.id === locationEdittingId);
-                    items[index].id = id;
-                    items[index].location = { id: locationId, title: locationTitle };
-                    items[index].expense = expense;
-                    items[index].desc = desc;
+            if (locationEdittingId) {
+                const index = locations.findIndex(x => x.localId === locationEdittingId);
+                locations[index].location = { id: locationId, title: locationTitle };
+                locations[index].expense = expense;
+                locations[index].desc = desc;
 
-                } else {
-                    items.push({
-                        id: id,
-                        location: { id: locationId, title: locationTitle },
-                        expense: expense,
-                        desc: desc
-                    });
-                }
-
-                json = JSON.stringify(items);
             } else {
-                let items = [];
-                items.push({
-                    id: id,
+                locations.push({
+                    id: null,
+                    localId: localId,
                     location: { id: locationId, title: locationTitle },
                     expense: expense,
                     desc: desc
                 });
-                json = JSON.stringify(items);
             }
-
-            let expire = 90000;
-            saveLocalStorage(getCacheKey('location'), json, expire);
             isFormDirty = true;
             $('#modalAddLocation').modal('hide');
             showLocations();
         }
         function showLocations() {
-            locations = [];
-
             let html = '';
             $('#table-locations').html(html);
-
-            let json = getLocalStorage(getCacheKey('location'));
-            let countAll = 0;
-            if (json) {
-                let cachedItems = JSON.parse(json);
-                for (var i = 0; i < cachedItems.length; i++) {
-                    locations.push(cachedItems[i]);
-                }
-
-                countAll += cachedItems.length;
-                html = cachedItems.map(item =>
-                    `
+            html = locations.map(item =>
+                `
                                      <tr>
                                         <td>${item.location.title}</td>
                                         <td>${item.expense}</td>
@@ -1261,28 +1098,23 @@
                                         <td>-</td>
                                         <td>-</td>
                                         <td>
-                                            <button onclick='btnOpenModalLocationClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                            <button onclick='btnDeleteLocationClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                            <button onclick='btnOpenModalLocationClicked("${item.localId}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                            <button onclick='btnDeleteLocationClicked("${item.localId}")' class="btn btn-sm btn-outline-danger">حذف</button>
                                         </td>
                                     </tr>
                     `
-                ).join('');
+            ).join('');
 
-            }
-
-            //locations.push(dbItems);
             $('#table-locations').html(html);
-            $('#count-locations').html(countAll);
+            $('#count-locations').html(locations.length);
         }
-        function btnDeleteLocationClicked(id) {
+        function btnDeleteLocationClicked(localId) {
             if (confirm('از حذف لوکیشن اطمینان دارید ؟')) {
-                const index = locations.findIndex(x => x.id === id);
+                const index = locations.findIndex(x => x.localId === localId);
                 if (index !== -1) {
                     locations.splice(index, 1);
                 }
 
-                let expire = 90000;
-                saveLocalStorage(getCacheKey('location'), JSON.stringify(locations), expire);
                 isFormDirty = true;
                 showLocations();
             }
@@ -1322,60 +1154,31 @@
             let materialTitle = $('#cmb-material option:selected').text();
             let expense = parseFloat($('#txt-material-expense').val() || '0');
             let desc = $('#txt-material-desc').val();
-            let json = getLocalStorage(getCacheKey('material'));
-            if (json) {
-                let items = JSON.parse(json);
-                if (materialEdittingId) {
-                    const index = items.findIndex(x => x.id === materialEdittingId);
-                    items[index].id = id;
-                    items[index].material = { id: materialId, title: materialTitle };
-                    items[index].expense = expense;
-                    items[index].desc = desc;
+            if (materialEdittingId) {
+                const index = materials.findIndex(x => x.id === materialEdittingId);
+                materials[index].id = id;
+                materials[index].material = { id: materialId, title: materialTitle };
+                materials[index].expense = expense;
+                materials[index].desc = desc;
 
-                } else {
-                    items.push({
-                        id: id,
-                        material: { id: materialId, title: materialTitle },
-                        expense: expense,
-                        desc: desc
-                    });
-                }
-
-                json = JSON.stringify(items);
             } else {
-                let items = [];
-                items.push({
+                materials.push({
                     id: id,
                     material: { id: materialId, title: materialTitle },
                     expense: expense,
                     desc: desc
                 });
-                json = JSON.stringify(items);
             }
 
-            let expire = 90000;
-            saveLocalStorage(getCacheKey('material'), json, expire);
             isFormDirty = true;
             $('#modalAddMaterial').modal('hide');
             showMaterials();
         }
         function showMaterials() {
-            materials = [];
-
             let html = '';
             $('#table-materials').html(html);
-
-            let json = getLocalStorage(getCacheKey('material'));
-            let countAll = 0;
-            if (json) {
-                let cachedItems = JSON.parse(json);
-                for (var i = 0; i < cachedItems.length; i++) {
-                    materials.push(cachedItems[i]);
-                }
-
-                countAll += cachedItems.length;
-                html = cachedItems.map(item =>
-                    `
+            html = materials.map(item =>
+                `
                           <tr>
                               <td>${item.material.title}</td>
                               <td>${item.expense}</td>
@@ -1388,13 +1191,11 @@
                               </td>
                           </tr>
                     `
-                ).join('');
+            ).join('');
 
-            }
 
-            //materials.push(dbItems);
             $('#table-materials').html(html);
-            $('#count-materials').html(countAll);
+            $('#count-materials').html(materials.length);
         }
         function btnDeleteMaterialClicked(id) {
             if (confirm('از حذف تجهیزات اطمینان دارید ؟')) {
@@ -1403,8 +1204,6 @@
                     materials.splice(index, 1);
                 }
 
-                let expire = 90000;
-                saveLocalStorage(getCacheKey('material'), JSON.stringify(materials), expire);
                 isFormDirty = true;
                 showMaterials();
             }
@@ -1483,30 +1282,13 @@
                 });
             }
         }
-   
+
     </script>
 
     <%--schedules--%>
     <script>
         let scheduleCancelingId = '';
 
-        async function showSchedulesAsync() {
-            $('#table-schedule').html('');
-            $('#count-notes').html('0');
-            const route = '/Schedule/SchedulesOfProject';
-            let query = `?a=0`;
-            if (projectId) {
-                query += `&projectId=${projectId}`;
-            }
-            if (scheduleId) {
-                query += `&scheduleId=${scheduleId}`;
-            }
-            await ajaxGet(route + query, function (items) {
-                $('#count-notes').html(items.length);
-                let html = items.map(generateScheduleRow).join('');
-                $('#table-schedule').html(html);
-            });
-        }
         function generateScheduleRow(item) {
             const isCancelled = item.isCancel;
 
@@ -1636,6 +1418,7 @@
 
 
             let createProjectCommand = {
+                id: projectId || null,
                 familyId,
                 projectTypeId,
                 projectTitle,
@@ -1662,6 +1445,7 @@
             ajaxAuthCall(method, route, createProjectCommand, function (res) {
                 btnAddEdit_ChangeDisable('btn-submit-project', false);
                 if (res.success) {
+                    isFormDirty = false;
                     toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
                     location.href = 'ManageProject.aspx';
                 }
@@ -1670,6 +1454,121 @@
                 }
             }, function (err) {
                 btnAddEdit_ChangeDisable('btn-submit-project', false);
+            });
+        }
+    </script>
+
+
+
+    <%--load--%>
+    <script>
+        let projectId = '';
+        let scheduleId = '';
+
+
+        async function showSchedulesAsync() {
+            $('#table-schedule').html('');
+            $('#count-notes').html('0');
+            const route = '/Schedule/SchedulesOfProject';
+            let query = `?a=0`;
+            if (projectId) {
+                query += `&projectId=${projectId}`;
+            }
+            if (scheduleId) {
+                query += `&scheduleId=${scheduleId}`;
+            }
+            await ajaxGet(route + query, function (items) {
+                $('#count-notes').html(items.length);
+                let html = items.map(generateScheduleRow).join('');
+                $('#table-schedule').html(html);
+            });
+        }
+
+        $(document).ready(async function () {
+            showProgress();
+
+            let params = new URLSearchParams(document.location.search);
+            projectId = params.get("id");
+            if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
+                projectId = '';
+
+            scheduleId = params.get("scheduleId");
+            if (scheduleId == undefined || scheduleId == '0' || scheduleId == 0 || scheduleId == 'undefined')
+                scheduleId = '';
+
+            await Promise.all([
+                fillProjectTypesAsync(),
+                fillFamiliesAsync(),
+                fillDesignersAsync(),
+                fillEditorsAsync(),
+                showSchedulesAsync(),
+                showInvoicesAsync()
+            ]);
+
+            if (projectId) {
+                await fillInfoAsync();
+            }
+            hideProgress();
+        });
+
+        function fillInfoAsync() {
+            let query = `?id=${projectId}`;
+            ajaxGet('/Project/Get' + query, function (res) {
+                if (res.success) {
+                    let data = res.data;
+                    $('#familySelect').val(data.familyId);
+                    $('#projectTypeSelect').val(data.projectTypeId);
+                    $('#projectTitle').val(data.projectTitle);
+                    $('#startDate').val(data.startDate);
+                    $('#endDate').val(data.endDate);
+                    if (data.isForce) {
+                        $('#urgentCheckbox').attr('checked', 'checked');
+                    } else {
+                        $('#urgentCheckbox').removeAttr('checked');
+                    }
+                    if (data.designerId)
+                        $('#cmb-designer').val(data.designerId);
+                    $('#photoBaseDir').val(data.photoBaseDir);
+
+                    if (data.editorId)
+                        $('#cmb-editor').val(data.editorId);
+                    $('#videoBaseDir').val(data.videoBaseDir);
+
+                    if (data.locations) {
+                        data.locations.forEach(x => {
+                            let localId = generateGUID();
+                            locations.push({
+                                id: x.id,
+                                localId: localId,
+                                location: x.location,
+                                expense: x.expense,
+                                desc: x.desc
+                            });
+                        });
+                        showLocations();
+                    }
+                    if (data.materials) {
+                        data.materials.forEach(x => {
+                            let localId = generateGUID();
+                            materials.push({
+                                id: x.id,
+                                localId: localId,
+                                material: x.location,
+                                expense: x.expense,
+                                desc: x.desc
+                            });
+                        });
+                        showMaterials();
+                    }
+
+                    //showPhotos();
+                    //showVideos();
+                }
+                else {
+                    ShowError(res.message);
+                }
+            }, function (err) {
+                alert("error1");
             });
         }
     </script>
