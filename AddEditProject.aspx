@@ -817,16 +817,16 @@
     <script>
         let videoEdittingId = '';
         var videos = [];//id,desc,code,videographer
-        function btnOpenModalVideoClicked(id) {
+        function btnOpenModalVideoClicked(localId) {
             let selectedvideographer = '';
-            if (id) {
-                videoEdittingId = id;
+            if (localId) {
+                videoEdittingId = localId;
                 $('#modalAddVideo').modal('show');
-                const index = videos.findIndex(x => x.id === id);
+                const index = videos.findIndex(x => x.localId === localId);
                 const selectedItem = videos[index];
                 $('#txt-video-code').val(selectedItem.code);
                 $('#txt-video-desc').val(selectedItem.desc);
-                selectedvideographer = selectedItem.videographer.id;
+                selectedvideographer = selectedItem.worker.id;
             } else {
                 videoEdittingId = '';
                 $('#txt-video-code').val('');
@@ -841,23 +841,31 @@
             });
         }
         function btnSubmitModalVideoClicked() {
-            let id = generateGUID();
+            let localId = generateGUID();
             let videographerId = $('#cmb-videographer').val();
-            let videographerTitle = $('#cmb-videographer option:selected').text();
+            if (!videographerId) {
+                toastr.warning('انتخاب فیلم بردار اجباری است!', 'فیلم بردار');
+                return;
+            }
             let code = $('#txt-video-code').val();
+            if (!code) {
+                toastr.warning('لطفا کد فیلم را وارد کنید!', 'کد فیلم');
+                return;
+            }
+            let videographerTitle = $('#cmb-videographer option:selected').text();
             let desc = $('#txt-video-desc').val();
 
             if (videoEdittingId) {
-                const index = videos.findIndex(x => x.id === videoEdittingId);
-                videos[index].id = id;
-                videos[index].videographer = { id: videographerId, title: videographerTitle };
+                const index = videos.findIndex(x => x.localId === videoEdittingId);
+                videos[index].worker = { id: videographerId, title: videographerTitle };
                 videos[index].code = code;
                 videos[index].desc = desc;
 
             } else {
                 videos.push({
-                    id: id,
-                    videographer: { id: videographerId, title: videographerTitle },
+                    id: null,
+                    localId: localId,
+                    worker: { id: videographerId, title: videographerTitle },
                     code: code,
                     desc: desc
                 });
@@ -887,14 +895,14 @@
                                         مشاهده
                                     </button>
                                 </td>
-                                <td>${item.videographer.title}</td>
+                                <td>${item.worker.title}</td>
                                 <td>-</td>
                                 <td>-</td>
                                 <td>-</td>
                                 <td><span class="badge bg-success">تدوین انجام شده</span> <span class="badge bg-danger">در انتظار تدوین</span></td>
                                 <td>
-                                    <button onclick='btnOpenModalVideoClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                    <button onclick='btnDeleteVideoClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                    <button onclick='btnOpenModalVideoClicked("${item.localId}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                    <button onclick='btnDeleteVideoClicked("${item.localId}")' class="btn btn-sm btn-outline-danger">حذف</button>
                                 </td>
                             </tr>
                     `
@@ -903,9 +911,9 @@
             $('#table-videos').html(html);
             $('#count-videos').html(videos.length);
         }
-        function btnDeleteVideoClicked(id) {
+        function btnDeleteVideoClicked(localId) {
             if (confirm('از حذف فیلم اطمینان دارید ؟')) {
-                const index = videos.findIndex(x => x.id === id);
+                const index = videos.findIndex(x => x.localId === localId);
                 if (index !== -1) {
                     videos.splice(index, 1);
                 }
@@ -928,16 +936,16 @@
     <script>
         let photoEdittingId = '';
         var photos = [];//id,desc,code,photographer
-        function btnOpenModalPhotoClicked(id) {
+        function btnOpenModalPhotoClicked(localId) {
             let selectedPhotographer = '';
-            if (id) {
-                photoEdittingId = id;
+            if (localId) {
+                photoEdittingId = localId;
                 $('#modalAddPhoto').modal('show');
-                const index = photos.findIndex(x => x.id === id);
+                const index = photos.findIndex(x => x.localId === localId);
                 const selectedItem = photos[index];
                 $('#txt-photo-code').val(selectedItem.code);
                 $('#txt-photo-desc').val(selectedItem.desc);
-                selectedPhotographer = selectedItem.photographer.id;
+                selectedPhotographer = selectedItem.worker.id;
             } else {
                 photoEdittingId = '';
                 $('#txt-photo-code').val('');
@@ -952,22 +960,30 @@
             });
         }
         function btnSubmitModalPhotoClicked() {
-            let id = generateGUID();
+            let localId = generateGUID();
             let photographerId = $('#cmb-photographer').val();
-            let photographerTitle = $('#cmb-photographer option:selected').text();
+            if (!photographerId) {
+                toastr.warning('انتخاب عکاس اجباری است!', 'عکاس');
+                return;
+            }
             let code = $('#txt-photo-code').val();
+            if (!code) {
+                toastr.warning('لطفا کد عکس را وارد کنید!', 'کد عکس');
+                return;
+            }
+            let photographerTitle = $('#cmb-photographer option:selected').text();
             let desc = $('#txt-photo-desc').val();
             if (photoEdittingId) {
-                const index = photos.findIndex(x => x.id === photoEdittingId);
-                photos[index].id = id;
-                photos[index].photographer = { id: photographerId, title: photographerTitle };
+                const index = photos.findIndex(x => x.localId === photoEdittingId);
+                photos[index].worker = { id: photographerId, title: photographerTitle };
                 photos[index].code = code;
                 photos[index].desc = desc;
 
             } else {
                 photos.push({
-                    id: id,
-                    photographer: { id: photographerId, title: photographerTitle },
+                    id: null,
+                    localId: localId,
+                    worker: { id: photographerId, title: photographerTitle },
                     code: code,
                     desc: desc
                 });
@@ -997,14 +1013,14 @@
                                         مشاهده
                                     </button>
                                 </td>
-                                <td>${item.photographer.title}</td>
+                                <td>${item.worker.title}</td>
                                 <td>-</td>
                                 <td>-</td>
                                 <td>-</td>
                                 <td><span class="badge bg-success">طراحی انجام شده</span> <span class="badge bg-danger">در انتظار طراحی</span></td>
                                 <td>
-                                    <button onclick='btnOpenModalPhotoClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                    <button onclick='btnDeletePhotoClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                    <button onclick='btnOpenModalPhotoClicked("${item.localId}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                    <button onclick='btnDeletePhotoClicked("${item.localId}")' class="btn btn-sm btn-outline-danger">حذف</button>
                                 </td>
                             </tr>
                     `
@@ -1013,9 +1029,9 @@
             $('#table-photos').html(html);
             $('#count-photos').html(photos.length);
         }
-        function btnDeletePhotoClicked(id) {
+        function btnDeletePhotoClicked(localId) {
             if (confirm('از حذف عکس اطمینان دارید ؟')) {
-                const index = photos.findIndex(x => x.id === id);
+                const index = photos.findIndex(x => x.localId === localId);
                 if (index !== -1) {
                     photos.splice(index, 1);
                 }
@@ -1125,12 +1141,12 @@
     <script>
         let materialEdittingId = '';
         var materials = [];//id,desc,expense,material
-        function btnOpenModalMaterialClicked(id) {
+        function btnOpenModalMaterialClicked(localId) {
             let selectedMaterial = '';
             if (id) {
-                materialEdittingId = id;
+                materialEdittingId = localId;
                 $('#modalAddMaterial').modal('show');
-                const index = materials.findIndex(x => x.id === id);
+                const index = materials.findIndex(x => x.localId === localId);
                 const selectedItem = materials[index];
                 $('#txt-material-expense').val(selectedItem.expense);
                 $('#txt-material-desc').val(selectedItem.desc);
@@ -1149,21 +1165,21 @@
             });
         }
         function btnSubmitModalMaterialClicked() {
-            let id = generateGUID();
+            let localId = generateGUID();
             let materialId = $('#cmb-material').val();
             let materialTitle = $('#cmb-material option:selected').text();
             let expense = parseFloat($('#txt-material-expense').val() || '0');
             let desc = $('#txt-material-desc').val();
             if (materialEdittingId) {
-                const index = materials.findIndex(x => x.id === materialEdittingId);
-                materials[index].id = id;
+                const index = materials.findIndex(x => x.localId === materialEdittingId);
                 materials[index].material = { id: materialId, title: materialTitle };
                 materials[index].expense = expense;
                 materials[index].desc = desc;
 
             } else {
                 materials.push({
-                    id: id,
+                    id: null,
+                    localId: localId,
                     material: { id: materialId, title: materialTitle },
                     expense: expense,
                     desc: desc
@@ -1186,8 +1202,8 @@
                               <td>-</td>
                               <td>-</td>
                               <td>
-                                  <button onclick='btnOpenModalMaterialClicked("${item.id}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
-                                  <button onclick='btnDeleteMaterialClicked("${item.id}")' class="btn btn-sm btn-outline-danger">حذف</button>
+                                  <button onclick='btnOpenModalMaterialClicked("${item.localId}")' class="btn btn-sm btn-outline-primary me-1">ویرایش</button>
+                                  <button onclick='btnDeleteMaterialClicked("${item.localId}")' class="btn btn-sm btn-outline-danger">حذف</button>
                               </td>
                           </tr>
                     `
@@ -1197,9 +1213,9 @@
             $('#table-materials').html(html);
             $('#count-materials').html(materials.length);
         }
-        function btnDeleteMaterialClicked(id) {
+        function btnDeleteMaterialClicked(localId) {
             if (confirm('از حذف تجهیزات اطمینان دارید ؟')) {
-                const index = materials.findIndex(x => x.id === id);
+                const index = materials.findIndex(x => x.localId === localId);
                 if (index !== -1) {
                     materials.splice(index, 1);
                 }
@@ -1400,8 +1416,8 @@
                 toastr.warning('لطفاً تاریخ پایان را وارد کنید', 'تاریخ پایان');
                 return;
             }
-            let isForce = $('#urgentCheckbox').attr('checked');
-
+            let isForce = $('#urgentCheckbox').is(':checked');
+            
             let designerId = $('#cmb-designer').val() || null;
             let photoBaseDir = $('#photoBaseDir').val();
 
@@ -1412,8 +1428,8 @@
 
             //materials = [];//id,desc,expense,material
             //locations = [];//id,desc,expense,location
-            //photos = [];//id,desc,code,photographer
-            //videos = [];//id,desc,code,videographer
+            //photos = [];//id,desc,code,grapher
+            //videos = [];//id,desc,code,grapher
 
 
 
@@ -1560,9 +1576,32 @@
                         });
                         showMaterials();
                     }
-
-                    //showPhotos();
-                    //showVideos();
+                    if (data.photos) {
+                        data.photos.forEach(x => {
+                            let localId = generateGUID();
+                            photos.push({
+                                id: x.id,
+                                localId: localId,
+                                worker: x.worker,
+                                code: x.code,
+                                desc: x.desc
+                            });
+                        });
+                        showPhotos();
+                    }
+                    if (data.videos) {
+                        data.videos.forEach(x => {
+                            let localId = generateGUID();
+                            videos.push({
+                                id: x.id,
+                                localId: localId,
+                                worker: x.worker,
+                                code: x.code,
+                                desc: x.desc
+                            });
+                        });
+                        showVideos();
+                    }
                 }
                 else {
                     ShowError(res.message);

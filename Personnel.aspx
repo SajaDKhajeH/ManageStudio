@@ -273,12 +273,12 @@
                     <div class="tab-content">
                         <!-- تب منوها -->
                         <div class="tab-pane fade" id="tab-menus-content">
-                            <h6 class="mb-3">نوع پروژه ها</h6>
+                            <h6 class="mb-3">دسترسی به منوها</h6>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle text-center">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>نوع</th>
+                                            <th>عنوان منو</th>
                                             <th>مشاهده</th>
                                         </tr>
                                     </thead>
@@ -737,6 +737,7 @@
             $('#table-tab-photo-steps').empty();
             $('#table-tab-video-steps').empty();
             $('#table-tab-project-status').empty();
+            $('#table-tab-menus').empty();
 
             $('#personnelAccessModal-title').html(`تنظیمات دسترسی ${person.fullName}`);
             $('#personnelAccessModal').modal('show');
@@ -807,7 +808,8 @@
             });
         });
         function GetPermissions() {
-            let query = '?userId=' + selectedPersonIdForSettingAccess;
+            $("#table-tab-menus").html('');
+            let query = `?userRoleId=${selectedUserRoleId}`;
             ajaxGet("/Permission/GetPermissions" + query, function (permissions) {
                 const permissionsHtml = permissions.map(permission =>
                     `
@@ -859,11 +861,13 @@
             let videoSteps = getTableData('table-tab-video-steps');
             let projectTypes = getTableData('table-tab-project-types');
             let projectStatuses = getTableData('table-tab-project-status');
+            let menus = getTableData('table-tab-menus');
 
             let photoSuccess = true;
             let videoSuccess = true;
             let projectTypesSuccess = true;
             let projectStatusesSuccess = true;
+            let menusSuccess = true;
 
 
             let btn = $(button);
@@ -886,9 +890,11 @@
                     projectTypesSuccess = await saveUserPermissions('/AssignProjectTypes', projectTypes);
                 if (projectStatuses.length > 0)
                     projectStatusesSuccess = await saveUserPermissions('/AssignProjectStatus', projectStatuses);
+                if (menus.length > 0)
+                    menusSuccess = await saveMenuPermissions(menus);
 
-                if (photoSuccess && videoSuccess && projectTypesSuccess && projectStatusesSuccess) {
-                    toastr.success("ثبت نقش ها با موفقیت انجام شد");
+                if (photoSuccess && videoSuccess && projectTypesSuccess && projectStatusesSuccess && menusSuccess) {
+                    toastr.success("ثبت دسترسی ها با موفقیت انجام شد");
                     $('#personnelAccessModal').modal('hide');
                 }
             } catch (err) {
@@ -896,26 +902,24 @@
             }
             setEnable();
         }
-        function SavePermission() {
-            var Pages = document.getElementsByName("PagesPermission");
-
-            const pageIds = new Set(
-                Array.from(Pages)
-                    .filter(page => page.checked)
-                    .map(page => page.id)
-            );
-            console.log(pageIds);
+        function saveMenuPermissions(menus) {
+            const pageIds = menus.filter(x => x.canView).map(x => x.id);
             let createPermissionCommand =
             {
-                pageIds: Array.from(pageIds),
-                personId: personnelId
+                pageIds: pageIds,
+                userRoleId: selectedUserRoleId
             };
-            ajaxPost("/Permission/CreatePermission", createPermissionCommand, function (res) {
-                if (res.success) {
-                    toastr.success("ثبت دسترسی ها با موفقیت انجام شد");
-                } else {
-                    ShowError(res.message);
-                }
+            return new Promise((resolve) => {
+                ajaxPost("/Permission/CreatePermission", createPermissionCommand, function (res) {
+                    if (res.success) {
+                        resolve(true);
+                    } else {
+                        ShowError(res.message);
+                        resolve(false);
+                    }
+                }, function (err) {
+                    resolve(false);
+                });
             });
         }
         async function saveUserPermissions(route, data) {

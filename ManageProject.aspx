@@ -845,6 +845,16 @@
                 query += `&editorId=${editorId}`;
             }
 
+            let designerStep = $('#filter_Step_Photographi').val();
+            if (designerStep) {
+                query += `&designerStep=${designerStep}`;
+            }
+
+            let editorStep = $('#filter_Step_Videographi').val();
+            if (editorStep) {
+                query += `&editorStep=${editorStep}`;
+            }
+            
             return query;
         }
         function setPageQuery() {
@@ -874,6 +884,16 @@
             if (editorId) {
                 $('#filter_Editor').val(editorId);
             }
+
+            let designerStep = params.get("designerStep");
+            if (designerStep) {
+                $('#filter_Step_Photographi').val(designerStep);
+            }
+
+            let editorStep = params.get("editorStep");
+            if (editorStep) {
+                $('#filter_Step_Videographi').val(editorStep);
+            }
         }
     </script>
 
@@ -889,7 +909,9 @@
                 fillDesignersAsync(),
                 fillEditorsAsync(),
                 fillPhotographersAsync(),
-                fillVideographersAsync()
+                fillVideographersAsync(),
+                fillDesignerStepsAsync(),
+                fillEditorStepsAsync()
             ]);
         }
         async function fillVideographersAsync() {
@@ -944,6 +966,24 @@
                     `<option value="${family.id}">${family.title}</option>`
                 ).join('');
                 $('#select2-filter_Family-container').html(defaultOption + options);
+            });
+        }
+        async function fillDesignerStepsAsync() {
+            const defaultOption = '<option value="">مرحله طراحی</option>';
+            await ajaxGet('/BasicData/GetDesignerSteps', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+                $('#filter_Step_Photographi').html(defaultOption + options);
+            });
+        }
+        async function fillEditorStepsAsync() {
+            const defaultOption = '<option value="">مرحله فیلم برداری</option>';
+            await ajaxGet('/BasicData/GetEditorSteps', function (items) {
+                const options = items.map(item =>
+                    `<option value="${item.id}">${item.title}</option>`
+                ).join('');
+                $('#filter_Step_Videographi').html(defaultOption + options);
             });
         }
     </script>
