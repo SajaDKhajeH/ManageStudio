@@ -173,12 +173,12 @@ namespace AdakStudio
                             {
                                 OldChilds.Remove(itemDel);
                             }
-                            db.usp_FamilyChild_Edit(childId, childNames[i], childSexs[i], childBirthDates[i].ToEnglishNumber(), CauserId, ref mes, ref hasError, Hospitals[i].ToDecodeNumber().ToLong());
+                            db.usp_FamilyChild_Edit(childId, childNames[i], childSexs[i], childBirthDates[i].ToEnglishNumber(), CauserId, ref mes, ref hasError, (Hospitals.Length > 0 ? Hospitals[i].ToDecodeNumber().ToLong() : 0));
                         }
                         else
                         {
                             long? childId_result = 0;
-                            db.usp_FamilyChild_Add(FamilyId, childNames[i], childSexs[i], childBirthDates[i].ToEnglishNumber(), CauserId, ref mes, ref hasError, ref childId_result, Hospitals[i].ToDecodeNumber().ToLong());
+                            db.usp_FamilyChild_Add(FamilyId, childNames[i], childSexs[i], childBirthDates[i].ToEnglishNumber(), CauserId, ref mes, ref hasError, ref childId_result, (Hospitals.Length > 0 ? Hospitals[i].ToDecodeNumber().ToLong() : 0));
                         }
                         if (hasError == 1)
                         {
@@ -258,11 +258,11 @@ namespace AdakStudio
                                 <td>
                                     <input id='fDate_" + child.FC_Id + @"' name='childBirthDate' type='text' class='form-control datepickerBirthDate' placeholder='تاریخ تولد'>
                                 </td>
-                                <td>
+                                " + (LoginedUser.ItsStudio ? @"<td>
                                     <select name='childHospital'>
                                         " + PublicMethod.GetHospitals(child.FC_HospitalId ?? 0) + @"
                                     </select>
-                                </td>
+                                </td>" : "") + @"
                                 <td>
                                     <button class='btn btn-danger btn-remove'>حذف</button>
                                 </td></tr>";

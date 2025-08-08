@@ -6,7 +6,7 @@ using static System.Net.WebRequestMethods;
 
 public class LoginedUser
 {
-   public static string Name
+    public static string Name
     {
         get
         {
@@ -31,13 +31,27 @@ public class LoginedUser
     {
         get
         {
-            
+
             var identity = HttpContext.Current.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
             var claim = claims.FirstOrDefault(p => p.Type == AdakClaimTypes.Id);
             if (claim == null)
                 return 0;
             return long.Parse(claim.Value);
+        }
+    }
+
+    public static bool ItsStudio
+    {
+        get
+        {
+
+            var identity = HttpContext.Current.User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var claim = claims.FirstOrDefault(p => p.Type == AdakClaimTypes.ItsStudio);
+            if (claim == null)
+                return true;
+            return claim.Value == "1";
         }
     }
 }

@@ -107,6 +107,7 @@ public class LoginController : ApiController
             permClaims.Add(new Claim(AdakClaimTypes.Id, LoginId.ToString()));
             permClaims.Add(new Claim(AdakClaimTypes.Role, RoleId.ToString()));
             permClaims.Add(new Claim(AdakClaimTypes.Name, LoginName));
+            permClaims.Add(new Claim(AdakClaimTypes.ItsStudio, HttpContext.Current?.Request.Url.Host != "arcloc.ir" ? "1" : "0"));
 
             string GoToPage = "";
             if (RoleId == DefaultDataIDs.Role_PhotographerInHospital)

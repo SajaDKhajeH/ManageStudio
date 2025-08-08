@@ -98,7 +98,7 @@
                             </div>
                             <br />
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" <%Response.Write(LoginedUser.ItsStudio ? "" : "style='display: none;'");%>>
                                     <label>عکاس</label>
                                     <select id="factor_Photographer">
                                         <%Response.Write(PublicMethod.GetPhotographer(true)); %>
@@ -111,6 +111,10 @@
                                     </select>
                                 </div>
                             </div>
+                            <%if (LoginedUser.ItsStudio)
+                                {
+
+                            %>
                             <br />
                             <div class="d-flex flex-stack" style="margin-top: 3px">
                                 <label class="form-check form-switch form-check-custom form-check-solid">
@@ -127,16 +131,15 @@
                             </div>
                             <br />
                             <label>توضیحات برای طراح</label>
-                            <textarea style="margin: 3px" placeholder="توضیحات برای طراح" class="form-control" id="factor_desc"></textarea>
+                            <textarea style="margin-top: 3px" placeholder="توضیحات برای طراح" class="form-control" id="factor_desc"></textarea>
                             <br />
-                            <label>آدرس فایل ها</label>
-                            <input style="margin: 3px;display:none" class="form-control" id="factor_PathFiles">
+                            <%} %>
                         </div>
                         <div class="col-lg-9">
                             <div class="tabs-container">
                                 <button class="tab-button active" data-tab="productsTab">اقلام</button>
-                                <button class="tab-button" onclick="GetLogs()" data-tab="logTab">تغییرات فاکتور</button>
-                                <button class="tab-button" data-tab="picTab">عکس ها</button>
+                                <button  class="tab-button" onclick="GetLogs()" data-tab="logTab">تغییرات فاکتور</button>
+                                <button style="display:none" class="tab-button" data-tab="picTab">عکس ها</button>
                             </div>
                             <div class="tabs-content">
                                 <div class="tab-content active" id="productsTab">
@@ -155,8 +158,8 @@
                                                             <th class="min-w-80px">عنوان کالا</th>
                                                             <th class="min-w-50px">تعداد</th>
                                                             <th class="min-w-50px">فی</th>
-                                                            <th class="min-w-120px">توضیحات</th>
-                                                            <th class="min-w-50px">تعداد عکس</th>
+                                                            <th class="min-w-120px" <%Response.Write(LoginedUser.ItsStudio ? "" : "style='display: none;'");%>>توضیحات</th>
+                                                            <th class="min-w-50px" <%Response.Write(LoginedUser.ItsStudio ? "" : "style='display: none;'");%>>تعداد عکس</th>
                                                             <th>حذف</th>
                                                         </tr>
                                                     </thead>
@@ -301,17 +304,25 @@
             //document.getElementById("paidAmount").textContent = 0;
             document.getElementById("factor_discountPercent").value = "0";
             //document.getElementById("factor_PaidPrice").value = "0";
-            document.getElementById("factor_desc").value = "";
+            
             document.getElementById("factor_TypePhotography").value = "";
             document.getElementById("factor_status").value = "";
-            document.getElementById("factor_Photographer").value = "";
+            
             document.getElementById("div_Pay_A_Discount").style.display = "block";
-            $("#factor_ForceDesign").prop("checked", false);
-            $("#factor_OnlyEditedDelivered").prop("checked", false);
+            
             //document.getElementById('factor_PaidPrice').style.display = 'block';
             //document.getElementById('factor_PaidType').style.display = 'block';
             //document.getElementById('factor_RefNumber').style.display = 'block';
             document.getElementById('factor_Family').style.display = 'block';
+            <%if (LoginedUser.ItsStudio)
+                        {
+
+                        %>
+            $("#factor_ForceDesign").prop("checked", false);
+            $("#factor_OnlyEditedDelivered").prop("checked", false);
+            document.getElementById("factor_desc").value = "";
+            document.getElementById("factor_Photographer").value = "";
+            <%}%>
         }
         function GetLogs() {
             if (!getLogs) {
@@ -379,7 +390,7 @@
                     else {
                         $("#factor_Family").val(res.FamilyCodeId);
                         $("#factor_Date").val(res.FactorInfo.F_Date);
-                        $("#factor_desc").val(res.FactorInfo.F_Desc);
+                        
                         $("#factor_discountPercent").val(res.FactorInfo.F_DiscountPercent);
                         //document.getElementById('factor_PaidPrice').style.display = 'none';
                         //document.getElementById('factor_PaidType').style.display = 'none';
@@ -389,9 +400,15 @@
                         Productitems = res.FactorDetails;
                         document.getElementById("factor_TypePhotography").value = res.TypePhotographiId;
                         document.getElementById("factor_status").value = res.FactorStatusId;
+                         <%if (LoginedUser.ItsStudio)
+                        {
+
+                        %>
+                        $("#factor_desc").val(res.FactorInfo.F_Desc);
                         document.getElementById("factor_Photographer").value = res.PhotographerId;
                         $("#factor_ForceDesign").prop("checked", res.FactorInfo.F_ForceDesign);
                         $("#factor_OnlyEditedDelivered").prop("checked", res.FactorInfo.F_OnlyEditedDelivered);
+                      <%}%>
                         updateTable();
                     }
                 },
@@ -457,8 +474,8 @@
                 <td>${item.GTitle}-${item.title}</td>
                 <td><input type="number" value="${item.quantity}" min="1" max="100" onchange="updateQuantity(${index}, this.value)"></td>
                 <td><input type="text" value="${CurrencyFormatted(item.price)}" min="1" max="100000000" disabled></td>
-                <td><textarea onchange="updateNotes(${index}, this.value)">${item.notes}</textarea></td>
-                <td><input type="number" maxlength="110" value="${item.ShotCount}" onchange="updateShotCount(${index}, this.value)"></td>
+                <td <%Response.Write(LoginedUser.ItsStudio ? "" : "style='display: none;'");%>><textarea onchange="updateNotes(${index}, this.value)">${item.notes}</textarea></td>
+                <td <%Response.Write(LoginedUser.ItsStudio ? "" : "style='display: none;'");%>><input type="number" maxlength="110" value="${item.ShotCount}" onchange="updateShotCount(${index}, this.value)"></td>
                 <td><button class="btn btn-danger" onclick="removeItem(${index})">حذف</button></td>
             `;
                 tbody.appendChild(row);
@@ -510,7 +527,7 @@
         function SetFactor() {
             var factor_Family = $("#factor_Family").val();
             var factor_Date = $("#factor_Date").val();
-            var factor_desc = $("#factor_desc").val();
+            var factor_desc = "";
             var factor_discountPrice = $("#factor_discountPercent").val();
             factor_discountPrice = convertPersianToEnglishNumbers(factor_discountPrice);
             //var factor_PaidPrice = $("#factor_PaidPrice").val();
@@ -521,9 +538,20 @@
             //var factor_RefNumber = $("#factor_RefNumber").val();
             var TypePhotography = document.getElementById("factor_TypePhotography").value;
             var factor_status = document.getElementById("factor_status").value;
-            var PhotographerId = document.getElementById("factor_Photographer").value;
+            var PhotographerId = ""; 
+            var ForceDesign = false;
+            var OnlyEditedDelivered = false;
+
+            <%if (LoginedUser.ItsStudio)
+        {
+
+        %>
+            OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
+            factor_desc = $("#factor_desc").val();
+            PhotographerId = document.getElementById("factor_Photographer").value;
             var ForceDesign = $("#factor_ForceDesign").prop("checked");
-            var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
+            <%}%>
+
             btnAddEdit_ChangeDisable(btn_SetFactor, true);
             $.ajax({
                 type: "POST",
