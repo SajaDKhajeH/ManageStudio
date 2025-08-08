@@ -292,12 +292,12 @@
             query += `&fromDate=${filter_From_Date}&todate=${filter_To_Date}`;
             query += `&active=${!Only_Archive}&creator=${Causer}&hospitalId=${Hospital}&discoveryMethod=${InviteType}`;
 
+            const tbody = $("#dt_Family");
+            tbody.empty(); // پاک کردن داده‌های قدیمی
             ajaxGet('/Family/GetFamilies' + query, function (res) {
                 const data = res.items;
                 const totalRecords = res.totalCount;
-                const tbody = $("#dt_Family");
 
-                tbody.empty(); // پاک کردن داده‌های قدیمی
 
                 // اضافه کردن داده‌های جدید
                 data.forEach(row => {
@@ -330,11 +330,11 @@
                 });
 
                 // بروزرسانی صفحه فعلی
-                $("#pageIndex").text(pageIndex);
+                $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#nextPageBtn").prop("disabled", (pageIndex + 1) * pageSize >= totalRecords);
             },
                 function () {
                     toastr.error("خطا در دریافت داده‌ها", "خطا");

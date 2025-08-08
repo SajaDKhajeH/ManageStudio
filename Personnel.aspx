@@ -741,25 +741,27 @@
 
             $('#personnelAccessModal-title').html(`تنظیمات دسترسی ${person.fullName}`);
             $('#personnelAccessModal').modal('show');
-            if (roleId === SecretaryRole) {
-                $('#tab-menus').removeAttr('hidden');
-                $('.nav-item').removeClass('active');
-                $('.nav-link').removeClass('active');
-                $('.tab-pane').removeClass('active');
-                $('#tab-menus').addClass('active');
-                $('#tab-menus-content').addClass('active');
-                $('#tab-menus').trigger('click');
 
-            } else {
-                $('#tab-menus').attr('hidden', 'hidden');
-                $('.nav-item').removeClass('active');
-                $('.nav-link').removeClass('active');
-                $('.tab-pane').removeClass('active');
-                $('#tab-project-status').addClass('active');
-                $('#tab-project-status-content').addClass('active');
-                $('#tab-project-status').trigger('click');
-            }
-
+            setTimeout(function () {
+                if (roleId === SecretaryRole) {
+                    $('#tab-menus').removeAttr('hidden');
+                    const tab = document.querySelector('#tab-menus a');
+                    if (tab) {
+                        const tabTrigger = new bootstrap.Tab(tab);
+                        tabTrigger.show();
+                        $('#tab-menus').trigger('click');
+                    }
+                    
+                } else {
+                    $('#tab-menus').attr('hidden', 'hidden');
+                    const tab = document.querySelector('#tab-project-status a');
+                    if (tab) {
+                        const tabTrigger = new bootstrap.Tab(tab);
+                        tabTrigger.show();
+                        $('#tab-project-status').trigger('click');
+                    }
+                }
+            }, 256);
         }
         $('#accessTabs').on('click', '.nav-item', function () {
             const tableId = '#table-' + $(this).attr('id');

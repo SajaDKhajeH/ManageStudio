@@ -379,7 +379,7 @@
                 <button onclick="btnChecklistClicked('${item.id}');" class="btn btn-sm btn-light-info" data-bs-toggle="modal" data-bs-target="#checklistModal">
                     <i class="bi bi-check2"></i> چک لیست
                 </button>
-                <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#m_SetPaidPrice">
+                <button class="btn btn-sm btn-light-primary" onclick="modalBeianeClicked('${item.id}');">
                     <i class="bi bi-currency-dollar"></i> بیعانه
                 </button>
                 <button class="btn btn-sm btn-light-primary" onclick="window.open('AddEditFactor.aspx?projectId=${item.id}', '_blank');">
@@ -410,6 +410,10 @@
             }, function (err) {
                 ShowError("خطا در دریافت اطلاعات");
             });
+        }
+
+        function modalBeianeClicked(projectId) {
+            showModalBeiane('', projectId);
         }
 
         function groupByMonth(items) {
@@ -854,6 +858,16 @@
             if (editorStep) {
                 query += `&editorStep=${editorStep}`;
             }
+
+            let fromDate = $('#filter_From_Date').val();
+            if (fromDate) {
+                query += `&fromDate=${encodeURIComponent(fromDate) }`;
+            }
+
+            let toDate = $('#filter_To_Date').val();
+            if (toDate) {
+                query += `&toDate=${encodeURIComponent(toDate)}`;
+            }
             
             return query;
         }
@@ -893,6 +907,16 @@
             let editorStep = params.get("editorStep");
             if (editorStep) {
                 $('#filter_Step_Videographi').val(editorStep);
+            }
+
+            let fromDate = params.get("fromDate");
+            if (fromDate) {
+                $('#filter_From_Date').val(fromDate);
+            }
+
+            let toDate = params.get("toDate");
+            if (toDate) {
+                $('#filter_To_Date').val(toDate);
             }
         }
     </script>

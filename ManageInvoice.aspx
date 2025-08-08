@@ -118,10 +118,6 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-2">
-                                <select id="filter_factorStatus">
-                                </select>
-                            </div>
-                            <div class="col-md-2">
                                 <select id="filter_TypePhotographi">
                                 </select>
                             </div>
@@ -149,12 +145,8 @@
                                 <tr>
                                     <th class="min-w-80px">شماره فاکتور</th>
                                     <th class="min-w-130px">عنوان خانواده</th>
-                                    <%--<th class="min-w-80px">موضوع</th>--%>
-                                    <th class="min-w-80px">وضعیت</th>
                                     <th class="min-w-100px">عکاس</th>
                                     <th class="min-w-100px">طراح</th>
-                                    <%--<th class="min-w-60px">طراحی فورس</th>
-                                        <th class="min-w-60px">هدیه</th>--%>
                                     <th class="min-w-80px">تاریخ ثبت</th>
                                     <th class="min-w-100px">مجموع فاکتور</th>
                                     <th class="min-w-100px">مجموع تخفیف</th>
@@ -215,7 +207,6 @@
             var filter_To_Date = $("#filter_To_Date").val();
             var filter_Family = $("#filter_Family").val();
             var filter_Causer = $("#filter_Causer").val();
-            var filter_factorStatus = $("#filter_factorStatus").val();
             var filter_TypePhotographi = $("#filter_TypePhotographi").val();
             var filter_Photographer = $("#filter_Photographer").val();
             var filter_Designer = $("#filter_Designer").val();
@@ -227,7 +218,7 @@
                 url: "ManageInvoice.aspx/ForGrid",
                 data: JSON.stringify({
                     page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
-                    causer: filter_Causer, status: filter_factorStatus, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
+                    causer: filter_Causer, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
                     designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
                 }),
                 contentType: "application/json; charset=utf-8",
@@ -349,7 +340,6 @@
             var filter_To_Date = $("#filter_To_Date").val();
             var filter_Family = $("#filter_Family").val();
             var filter_Causer = $("#filter_Causer").val();
-            var filter_factorStatus = $("#filter_factorStatus").val();
             var filter_TypePhotographi = $("#filter_TypePhotographi").val();
             var filter_Photographer = $("#filter_Photographer").val();
             var filter_Designer = $("#filter_Designer").val();
@@ -360,7 +350,7 @@
             query += `&fromDate=${filter_From_Date}&toDate=${filter_To_Date}`;
             //data: JSON.stringify({
             //    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
-            //    causer: filter_Causer, status: filter_factorStatus, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
+            //    causer: filter_Causer, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
             //    designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
             //}),
             ajaxGet('/Invoice/GetInvoices' + query, function (res) {
@@ -386,7 +376,6 @@
                 <tr>
                     <td>${row.invoiceNumber}</td>
                     <td>${familyTitle}</td>
-                    <td>${row.statusTitle}</td>
                     <td>${row.photographer}</td>
                     <td>${row.designer}</td>
                     <td>${row.date}</td>
@@ -399,11 +388,11 @@
                 });
 
                 // بروزرسانی صفحه فعلی
-                $("#pageIndex").text(pageIndex);
+                $("#pageIndex").text(pageIndex + 1);
                 $("#countAllTable").text(totalRecords);
                 // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#nextPageBtn").prop("disabled", (pageIndex + 1) * pageSize >= totalRecords);
             },
                 function () {
                     alert("خطا در دریافت داده‌ها");
@@ -413,20 +402,10 @@
     <script>
         function fillInfo() {
             fillFamiliesAsync();
-            fillInvoiceStatusesAsync();
             fillPhotoTopicsCMBAsync('filter_TypePhotographi', false);
             fillPhotographersCMBAsync('filter_Photographer', false);
             fillDesignersCMBAsync('filter_Designer', false);
             fillInvoiceCreatorsCMBAsync('filter_Causer', false);
-        }
-        function fillInvoiceStatusesAsync() {
-            const defaultOption = '<option value="0">وضعیت فاکتور</option>';
-            ajaxGet('/InvoiceStatus/GetAll', function (items) {
-                const options = items.map(item =>
-                    `<option value="${item.id}">${item.title}</option>`
-                ).join('');
-                $('#filter_factorStatus').html(defaultOption + options);
-            });
         }
         function fillFamiliesAsync() {
             const defaultOption = '<option value="0">انتخاب خانواده</option>';
@@ -437,8 +416,6 @@
                 $('#filter_Family').html(defaultOption + options);
             });
         }
-
-
 
     </script>
 </asp:Content>

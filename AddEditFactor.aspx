@@ -101,11 +101,6 @@
                                     <select id="factor_Photographer">
                                     </select>
                                 </div>
-                                <div class="col-lg-6" style="margin-top: 3px">
-                                    <label>وضعیت فاکتور</label>
-                                    <select id="factor_status">
-                                    </select>
-                                </div>
                             </div>
                             <br />
                             <div class="d-flex flex-stack" style="margin-top: 3px">
@@ -228,14 +223,6 @@
                 $('#factor_Family').html(options);
             });
         }
-        async function fillInvoiceStatusesAsync() {
-            await ajaxGet('/InvoiceStatus/GetAll', function (items) {
-                const options = items.map(item =>
-                    `<option value="${item.id}">${item.title}</option>`
-                ).join('');
-                $('#factor_status').html(options);
-            });
-        }
         let taxPercent = 0;
         async function showTaxPercentAsync() {
             await ajaxGet('/Setting/TaxPercent', function (percent) {
@@ -266,7 +253,6 @@
             fillControls();
             Promise.all([
                 fillFamiliesAsync(),
-                fillInvoiceStatusesAsync(),
                 showTaxPercentAsync()
             ]);
         });
@@ -377,7 +363,6 @@
             //document.getElementById("factor_PaidPrice").value = "0";
             document.getElementById("factor_desc").value = "";
             document.getElementById("factor_TypePhotography").value = "";
-            document.getElementById("factor_status").value = "";
             document.getElementById("factor_Photographer").value = "";
             document.getElementById("div_Pay_A_Discount").style.display = "block";
             $("#factor_ForceDesign").prop("checked", false);
@@ -442,7 +427,6 @@
                     $("#factor_Family").change();
                     Productitems = data.invoiceDetails;
                     document.getElementById("factor_TypePhotography").value = data.typePhotographiId;
-                    document.getElementById("factor_status").value = data.statusId;
                     document.getElementById("factor_Photographer").value = data.photographerId;
                     $("#factor_ForceDesign").prop("checked", data.forceDesign);
                     $("#factor_OnlyEditedDelivered").prop("checked", data.needEditedPictures);
@@ -596,7 +580,6 @@
             //var factor_PaidType = $("#factor_PaidType").val();
             //var factor_RefNumber = $("#factor_RefNumber").val();
             var TypePhotography = document.getElementById("factor_TypePhotography").value;
-            var factor_status = document.getElementById("factor_status").value;
             var PhotographerId = document.getElementById("factor_Photographer").value;
             var ForceDesign = $("#factor_ForceDesign").prop("checked");
             var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
@@ -609,10 +592,7 @@
                 toastr.warning('لطفاً موضوع عکاسی را مشخص کنید', 'موضوع عکاسی');
                 return;
             }
-            if (!factor_status) {
-                toastr.warning('لطفاً وضعیت فاکتور را مشخص کنید', 'وضعیت فاکتور');
-                return;
-            }
+          
             if (!Productitems || Productitems.length == 0) {
                 toastr.warning('لطفا اقلام فاکتور را مشخص کنید', 'اقلام فاکتور');
                 return;
@@ -628,7 +608,6 @@
                 date: factor_Date,
                 sumDiscount: factor_discountPrice,
                 typePhotographyId: (TypePhotography && TypePhotography != 0) ? TypePhotography : null,
-                status: factor_status,
                 photographerId: (PhotographerId && PhotographerId != 0) ? PhotographerId : null,
                 isForceDesign: ForceDesign,
                 desc: factor_desc,
@@ -694,11 +673,10 @@
             }
 
             let groupHtml = '';
-            let query = `?GroupId=${groupId}&PageIndex=0&PageSize=50`;
-            ajaxGet('/Product/GetProducts' + query, function (res) {
+            let query = `?groupId=${groupId}`;
+            ajaxGet('/Product/GetAllProducts' + query, function (items) {
 
                 hideProgress();
-                const items = res.items;
                 groupHtml = items.map(item =>
                     `<button class='child-button' onclick='addItem("${item.id}",${item.salePrice},"${item.title}","${item.groupTitle}")'>${item.title}</button>`
                 ).join('');

@@ -107,24 +107,24 @@
         }
 
 
-           .btnDataTable-message {
-       background-color: #fef08a;
-       color: #854d0e;
-   }
+        .btnDataTable-message {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
 
-       .btnDataTable-message :hover {
-           background-color: #fde047;
-       }
+            .btnDataTable-message :hover {
+                background-color: #fde047;
+            }
 
-       
-           .btnDataTable-success {
-       background-color: #83f083;
-       color: #fbfbfb;
-   }
 
-       .btnDataTable-success :hover {
-           background-color: #cafe83;
-       }
+        .btnDataTable-success {
+            background-color: #83f083;
+            color: #fbfbfb;
+        }
+
+            .btnDataTable-success :hover {
+                background-color: #cafe83;
+            }
 
         /*پایان استایل کلیدهای عملیات در گریدها*/
 
@@ -1277,6 +1277,9 @@
             pay_PaidPrice = convertPersianToEnglishNumbers(pay_PaidPrice);
             pay_PaidPrice = pay_PaidPrice.replaceAll(",", "");
 
+            let familyId = $('#m_SetPaidPrice').attr('familyId') || null;
+            let projectId = $('#m_SetPaidPrice').attr('projectId') || null;
+
             if (!pay_PaidType) {
                 toastr.warning('لطفا طریقه پرداخت را مشخص کنید', 'طریقه پرداخت');
                 return;
@@ -1288,7 +1291,8 @@
 
             let createPaymentCommand =
             {
-                familyId: familyId_ForPay,
+                familyId: familyId,
+                projectId: projectId,
                 cashBankId: pay_Cash_A_Bank,
                 price: parseInt(pay_PaidPrice),
                 payTypeId: pay_PaidType,
@@ -1353,39 +1357,7 @@
         function IsActiveSendSMS_CancelTurn() {
 
         };
-        function RequestDelete(id) {
-            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
-            if (userResponse) {
-                var SendSMSCancelTurn = false;
-                var ActiveSMSCancel = false;
-                let route = '/Schedule/Delete?id=' + id;
-                ajaxDelete(route, function (res) {
-                    if (!res.success) {
-                        alert(res.message);
-                        return;
-                    }
-                    if (res.data.isConfirmationNeeded) {
-                        SendSMSCancelTurn = confirm("آیا پیامک لغو برای خانواده ارسال شود؟");
-                        route += '&IsConfirmedSendNotif=' + SendSMSCancelTurn;
-                        ajaxDelete(route, function (res) {
-                            if (!res.success) {
-                                alert(res.message);
-                                return;
-                            }
-                            loadAppointments(0);
-                            toastr.success('نوبت لغو و پیامک اطلاع رسانی ارسال شد');
-                        }, function (err) {
 
-                        });
-                    } else {
-                        loadAppointments(0);
-                        toastr.success('نوبت لغو شد');
-                    }
-                }, function (err) {
-
-                });
-            }
-        };
         async function fillPhotoTopicsForSchedule() {
             await ajaxGet('/BasicData/PhotoTopics', function (items) {
                 let options = items.map(item =>
@@ -1508,7 +1480,7 @@
     <script src="assets/plugins/custom/datatables/responsive.min.js"></script>
     <script src="assets/plugins/custom/datatables/datatables_responsive.js"></script>
 
-    <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <%--    <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="assets/plugins/custom/datatables/api/events.js"></script>
     <script src="assets/plugins/custom/datatables/api/methods.js"></script>
     <script src="assets/plugins/custom/datatables/base/column-rendering.js"></script>
@@ -1529,7 +1501,7 @@
 
     <script src="assets/plugins/custom/datatables/scrolling/both.js"></script>
     <script src="assets/plugins/custom/datatables/scrolling/horizontal.js"></script>
-    <script src="assets/plugins/custom/datatables/scrolling/vertical.js"></script>
+    <script src="assets/plugins/custom/datatables/scrolling/vertical.js"></script>--%>
 
     <!--end::Global Javascript Bundle-->
     <!--begin::Page Vendors Javascript(used by this page)-->
@@ -1629,7 +1601,7 @@
             $("#f_address").val("");
             $("#f_archive").prop("checked", true);
             $("#f_desc").val("");
-            $("#f_InviteType").val("");
+            fillFamilyDiscoveryMethodsMaster();
             childrenTableBody.innerHTML = "";
             document.getElementById("div_btnAddFamily").style.display = "block";
         };
@@ -1656,9 +1628,10 @@
         $('#btn_closeFamily').click(function () {
             closeModalFamily();
         });
-        function GetInfoForEditFamily(id) {
+        async function GetInfoForEditFamily(id) {
             familyId = id;
             let query = '?id=' + id;
+            await fillFamilyDiscoveryMethodsMaster();
             ajaxGet('/Family/GetFamily' + query, function (res) {
                 if (res.success) {
                     var data = res.data;
@@ -2152,9 +2125,10 @@
             }
             studioName = name;
         }
-        function fillFamilyDiscoveryMethodsMaster() {
+        async function fillFamilyDiscoveryMethodsMaster() {
+            $('#f_InviteType').html('');
             const defaultOption = '<option value="">انتخاب نحوه آشنایی</option>';
-            ajaxGet('/BasicData/DiscoveryMethods', function (items) {
+            await ajaxGet('/BasicData/DiscoveryMethods', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
@@ -2178,10 +2152,10 @@
                 showMenusAsync();
 
 
-                const modalFamily = document.getElementById('modal_addedit_family');
-                modalFamily.addEventListener('shown.bs.modal', () => {
-                    fillFamilyDiscoveryMethodsMaster();
-                });
+                //const modalFamily = document.getElementById('modal_addedit_family');
+                //modalFamily.addEventListener('shown.bs.modal', () => {
+
+                //});
 
                 const modalPay = document.getElementById('m_SetPaidPrice');
                 modalPay.addEventListener('shown.bs.modal', () => {
@@ -2287,6 +2261,125 @@
             const formattedDay = String(shamsiDate.jd).padStart(2, '0');
 
             return `${formattedYear}/${formattedMonth}/${formattedDay}`;
+        }
+    </script>
+
+
+    <script>
+        let scheduleCancelingId = '';
+
+        async function btnModalCancelScheduleClicked(id) {
+            scheduleCancelingId = id;
+            await ajaxGet('/BasicData/GetCancelScheduleReasons', function (items) {
+                let options = items.map(item =>
+                    `<option value='${item.id}'>${item.title}</option>`
+                ).join('');
+                $('#cmb-cancel-reason').html(options);
+            });
+        }
+
+        function cancelSecheduleAsync() {
+            let cancelReasonId = $('#cmb-cancel-reason').val() || null;
+            if (cancelReasonId === null) {
+                toastr.warning('لطفا ابتدا علت کنسلی را مشخص نمایید', 'علت کنسلی')
+                return false;
+            }
+            let desc = $('#cancelReasonDesc').val();
+            if (!desc || desc.length < 10) {
+                toastr.warning('لطفا برای کنسلی توضیحات کامل وارد نمایید', 'علت کنسلی')
+                return false;
+            }
+            let cancelScheduleCommand =
+            {
+                id: scheduleCancelingId,
+                isCanceled: true,
+                desc: desc,
+                cancelReasonId
+            };
+            let route = '/Schedule/Cancel';
+            return new Promise((resolve) => {
+                ajaxAuthCall('PATCH', route, cancelScheduleCommand, function (res) {
+                    if (!res.success) {
+                        ShowError(res.message);
+                        resolve(false);
+                        return;
+                    }
+                    toastr.success('نوبت مورد نظر لغو شد', "موفق");
+                    $('#modalCancel').modal('hide');
+                    resolve(true);
+                }, function (err) {
+                    console.log(err);
+                    resolve(false);
+                });
+            });
+        }
+        function undoCancelScheduleAsync(id) {
+            const userResponse = confirm("آیا نوبت از حالت لغو خارج شود ؟");
+            if (!userResponse) {
+                return false;
+            }
+            let cancelScheduleCommand =
+            {
+                id: id,
+                isCanceled: false
+            };
+            let route = '/Schedule/Cancel';
+            return new Promise((resolve) => {
+                ajaxAuthCall('PATCH', route, cancelScheduleCommand, function (res) {
+                    if (!res.success) {
+                        ShowError(res.message);
+                        resolve(false);
+                        return;
+                    }
+                    toastr.success('نوبت از حالت لغو خارج شد', "موفق");
+                    resolve(true);
+                }, function (err) {
+                    console.log(err);
+                    resolve(false);
+                });
+            });
+            $('#modalCancel').modal('hide');
+
+        }
+        function RequestDelete(id) {
+            const userResponse = confirm("آیا از حذف مطمئن هستین؟");
+            if (userResponse) {
+                var SendSMSCancelTurn = false;
+                var ActiveSMSCancel = false;
+                let route = '/Schedule/Delete?id=' + id;
+                ajaxDelete(route, function (res) {
+                    if (!res.success) {
+                        alert(res.message);
+                        return;
+                    }
+                    if (res.data.isConfirmationNeeded) {
+                        SendSMSCancelTurn = confirm("آیا پیامک لغو برای خانواده ارسال شود؟");
+                        route += '&IsConfirmedSendNotif=' + SendSMSCancelTurn;
+                        ajaxDelete(route, function (res) {
+                            if (!res.success) {
+                                alert(res.message);
+                                return;
+                            }
+                            loadAppointments(0);
+                            toastr.success('نوبت لغو و پیامک اطلاع رسانی ارسال شد');
+                        }, function (err) {
+
+                        });
+                    } else {
+                        loadAppointments(0);
+                        toastr.success('نوبت لغو شد');
+                    }
+                }, function (err) {
+
+                });
+            }
+        };
+    </script>
+    <script>
+        function showModalBeiane(familyId = '', projectId = '') {
+            $('#m_SetPaidPrice').attr('familyId', familyId);
+            $('#m_SetPaidPrice').attr('projectId', projectId);
+            $('#m_SetPaidPrice').modal('show');
         }
     </script>
     <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>

@@ -66,7 +66,7 @@
 </head>
 <body id="kt_body" class="bg-body">
     <div class="d-flex flex-column flex-root">
-        <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(assets/media/illustrations/sketchy-1/14.png)">
+        <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
                 <a class="mb-15">
                     <img id="logo" alt="Logo" class="h-150px" />
@@ -267,7 +267,14 @@
         if (staffSelect) {
             var username = $("#username").val();
             var password = $("#password").val();
-            loginStaffAsync(username, password);
+            if (!username) {
+                toastr.warning('لطفا نام کاربری را وارد نمایید', 'نام کاربری');
+            }
+            else if (!password) {
+                toastr.warning('لطفا کلمه عبور را وارد نمایید', 'کلمه عبور');
+            } else {
+                loginStaffAsync(username, password);
+            }
         } else {
             var phoneNumber = $("#phone").val();
             loginFamilyAsync(phoneNumber);
@@ -278,6 +285,7 @@
         //CustomerOrders.aspx
     }
     async function loginStaffAsync(username, password) {
+
         const loginButton = document.getElementById('btn_Login');
         const buttonText = document.querySelector('.button-text');
         const spinner = document.getElementById('spinner');
@@ -303,7 +311,6 @@
             spinner.style.visibility = 'hidden';
             spinner.style.opacity = '0';
         }, 2002);
-
     }
     let jwtToken = '';
     async function callLoginStaffAsync(data) {
@@ -316,7 +323,6 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (res) {
-                    console.log(res);
                     if (res.success) {
                         jwtToken = res.data.token;
 
@@ -359,8 +365,8 @@
                     resolve(res);
                 },
                 error: function (err) {
-                    alert("error");
-                    reject(err);
+                    console.log(err);
+                    resolve(err);
                 }
             });
         });
@@ -427,7 +433,7 @@
         if (!name) {
             ajaxGet('/Setting/StudioName', function (res) {
                 name = res;
-                saveLocalStorage('studioName', name, 600);
+                saveLocalStorage('studioName', name, 5);
                 $('#studioName').html(name);
             });
             return;

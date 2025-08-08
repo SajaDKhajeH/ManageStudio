@@ -1303,89 +1303,22 @@
 
     <%--schedules--%>
     <script>
-        let scheduleCancelingId = '';
-
-        function generateScheduleRow(item) {
-            const isCancelled = item.isCancel;
-
-            const badge = `<span class="badge ${isCancelled ? 'bg-secondary' : 'bg-success'}">
-                  ${isCancelled ? 'کنسل شده' : 'فعال'}
-                </span>`;
-
-            const actionButton = isCancelled
-                ? `<button onclick=btnUndoCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-outline-success">بازگرداندن</button>`
-                : `<button onclick=btnModalCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>`;
-
-            return `
-                  <tr ${isCancelled ? 'class="table-warning"' : ''}>
-                    <td>${item.date}</td>
-                    <td>${item.shortTime}</td>
-                    <td>${item.creator}</td>
-                    <td>${item.creationDateTime}</td>
-                    <td>${badge}</td>
-                    <td>${actionButton}</td>
-                  </tr>
-                `;
-        }
-
-        async function btnModalCancelScheduleClicked(id) {
-            scheduleCancelingId = id;
-            await ajaxGet('/BasicData/GetCancelScheduleReasons', function (items) {
-                let options = items.map(item =>
-                    `<option value='${item.id}'>${item.title}</option>`
-                ).join('');
-                $('#cmb-cancel-reason').html(options);
-            });
-        }
-        async function btnUndoCancelScheduleClicked(id) {
-            const userResponse = confirm("آیا نوبت از حالت لغو خارج شود ؟");
-            if (!userResponse) {
-                return;
-            }
-            let cancelScheduleCommand =
-            {
-                id: id,
-                isCanceled: false
-            };
-            let route = '/Schedule/Cancel';
-            await ajaxAuthCall('PATCH', route, cancelScheduleCommand, function (res) {
-                if (!res.success) {
-                    ShowError(res.message);
-                    return;
-                }
-                toastr.success('نوبت از حالت لغو خارج شد', "موفق");
-            }, function (err) {
-                console.log(err);
-            });
-
-            $('#modalCancel').modal('hide');
-            await showSchedulesAsync();
-        }
 
         async function btnCancelSecheduleClicked() {
-            let cancelReasonId = $('#cmb-cancel-reason').val() || null;
-            let desc = $('#cancelReasonDesc').val();
-            let cancelScheduleCommand =
-            {
-                id: scheduleCancelingId,
-                isCanceled: true,
-                desc: desc,
-                cancelReasonId
-            };
-            let route = '/Schedule/Cancel';
-            await ajaxAuthCall('PATCH', route, cancelScheduleCommand, function (res) {
-                if (!res.success) {
-                    ShowError(res.message);
-                    return;
-                }
-                toastr.success('نوبت مورد نظر لغو شد', "موفق");
-                $('#modalCancel').modal('hide');
+            let ok = await cancelSecheduleAsync();
+            if (ok) {
                 await showSchedulesAsync();
-
-            }, function (err) {
-                console.log(err);
-            });
+            }
         }
+
+        async function btnUndoCancelScheduleClicked(id) {
+            let ok = await undoCancelScheduleAsync(id);
+            if (ok) {
+                await showSchedulesAsync();
+            }
+        }
+
+
 
     </script>
 
@@ -1417,7 +1350,7 @@
                 return;
             }
             let isForce = $('#urgentCheckbox').is(':checked');
-            
+
             let designerId = $('#cmb-designer').val() || null;
             let photoBaseDir = $('#photoBaseDir').val();
 
@@ -1481,6 +1414,28 @@
         let projectId = '';
         let scheduleId = '';
 
+        function generateScheduleRow(item) {
+            const isCancelled = item.isCancel;
+
+            const badge = `<span class="badge ${isCancelled ? 'bg-secondary' : 'bg-success'}">
+                  ${isCancelled ? 'کنسل شده' : 'فعال'}
+                </span>`;
+
+            const actionButton = isCancelled
+                ? `<button onclick=btnUndoCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-outline-success">بازگرداندن</button>`
+                : `<button onclick=btnModalCancelScheduleClicked('${item.id}'); class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCancel">کنسل کردن</button>`;
+
+            return `
+                  <tr ${isCancelled ? 'class="table-warning"' : ''}>
+                    <td>${item.date}</td>
+                    <td>${item.shortTime}</td>
+                    <td>${item.creator}</td>
+                    <td>${item.creationDateTime}</td>
+                    <td>${badge}</td>
+                    <td>${actionButton}</td>
+                  </tr>
+                `;
+        }
 
         async function showSchedulesAsync() {
             $('#table-schedule').html('');
