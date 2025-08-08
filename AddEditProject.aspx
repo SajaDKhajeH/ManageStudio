@@ -14,7 +14,7 @@
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <label class="form-label required">خانواده</label>
-                                <select id="familySelect" class="form-select" required>
+                                <select id="familySelect" onchange="fillProjectTitle();" class="form-select" required>
                                     <!-- آپشن‌های خانواده -->
                                 </select>
                             </div>
@@ -712,7 +712,19 @@
             document.getElementById('addLogPopover').style.display = 'none';
         }
 
+        async function fillProjectTitle() {
+            let projectType = $('#projectTypeSelect').val();
+            let familyId = $('#familySelect').val();
+            if (projectType && familyId) {
+                const selectElementFamily = document.getElementById("familySelect");
+                const selectedOptionFamily = selectElementFamily.options[selectElementFamily.selectedIndex];
 
+                const selectElementprojectType = document.getElementById("projectTypeSelect");
+                const selectedOptionprojectType = selectElementprojectType.options[selectElementprojectType.selectedIndex];
+
+                $('#projectTitle').val(selectedOptionFamily.getAttribute("title") + ' - ' + selectedOptionprojectType.getAttribute("title"));
+            }
+        }
 
 
         async function fillProjectTypesAsync() {
@@ -1486,6 +1498,7 @@
             if (projectId) {
                 await fillInfoAsync();
             }
+            
             hideProgress();
         });
 
