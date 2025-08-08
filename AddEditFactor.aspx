@@ -84,44 +84,11 @@
                             </select>
                             <br />
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <label>تاریخ فاکتور</label>
                                     <input style="margin: 3px" class="form-control datepicker selectedShamsiDate" id="factor_Date">
                                 </div>
-                                <div class="col-lg-6">
-                                    <label>موضوع عکاسی</label>
-                                    <select id="factor_TypePhotography">
-                                    </select>
-                                </div>
                             </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label>عکاس</label>
-                                    <select id="factor_Photographer">
-                                    </select>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="d-flex flex-stack" style="margin-top: 3px">
-                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                    <input id="factor_ForceDesign" class="form-check-input" type="checkbox" />
-                                    <span class="form-check-label fw-bold text-dark">این فاکتور نیاز به طراحی فوری دارد</span>
-                                </label>
-                            </div>
-                            <br />
-                            <div class="d-flex flex-stack" style="margin-top: 3px">
-                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                    <input id="factor_OnlyEditedDelivered" class="form-check-input" type="checkbox" />
-                                    <span class="form-check-label fw-bold text-dark">عکس هارو ادیت شده میخواهند</span>
-                                </label>
-                            </div>
-                            <br />
-                            <label>توضیحات برای طراح</label>
-                            <textarea style="margin: 3px" placeholder="توضیحات برای طراح" class="form-control" id="factor_desc"></textarea>
-                            <br />
-                            <label>آدرس فایل ها</label>
-                            <input style="margin: 3px; display: none" class="form-control" id="factor_PathFiles">
                         </div>
                         <div class="col-lg-9">
                             <div class="tabs-container">
