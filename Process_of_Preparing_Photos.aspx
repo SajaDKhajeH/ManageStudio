@@ -293,7 +293,7 @@
                     <h5 class="modal-title" id="reasonModalLabel">علت بازگشت پروژه</h5>
                 </div>
                 <div class="modal-body">
-                    <textarea id="reasonInput" class="form-control" rows="4" placeholder="لطفا علت بازگشت پروژه را وارد کنید..."></textarea>
+                    <textarea id="reasonInput" class="form-control" rows="4" placeholder="لطفاً علت بازگشت پروژه را وارد کنید..."></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
@@ -675,7 +675,7 @@
 
         function addLogEntry() {
             const text = document.getElementById('newLogText').value.trim();
-            if (!text) return alert("لطفا توضیح را وارد کنید");
+            if (!text) return alert("لطفاً توضیح را وارد کنید");
 
             const now = new Date();
             const date = now.toLocaleDateString('fa-IR');

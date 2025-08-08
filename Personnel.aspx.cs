@@ -207,7 +207,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا نام را مشخص کنید"
+                        Message = "لطفاً نام را مشخص کنید"
                     };
                 }
                 if (lastname.Trim().IsNullOrEmpty())
@@ -215,7 +215,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا نام خانوادگی را مشخص کنید"
+                        Message = "لطفاً نام خانوادگی را مشخص کنید"
                     };
                 }
                 if (!mobile.IsNullOrEmpty() && !mobile.IsMobileNumber())
@@ -223,7 +223,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا شماره همراه را بدرستی وارد کنید"
+                        Message = "لطفاً شماره همراه را بدرستی وارد کنید"
                     };
                 }
                 if (maxdiscount.IsNullOrEmpty())
@@ -271,7 +271,7 @@ namespace AdakStudio
                 return new
                 {
                     Result=false,
-                    Message="لطفا رمزهارو بدرستی وارد کنید"
+                    Message="لطفاً رمزهارو بدرستی وارد کنید"
                 };
             }
             if (newPassword!=confirmPassword)

@@ -39,7 +39,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا موضوع عکاسی را مشخص کنید"
+                        Message = "لطفاً موضوع عکاسی را مشخص کنید"
                     };
                 }
                 if (!turn_Date.IsDate())
@@ -47,7 +47,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا تاریخ نوبت را مشخص کنید"
+                        Message = "لطفاً تاریخ نوبت را مشخص کنید"
                     };
                 }
                 if (!turn_Time.IsNullOrEmpty() && TimeSpan.Parse(turn_Time).Hours < 8)
@@ -63,7 +63,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا خانواده را مشخص کنید"
+                        Message = "لطفاً خانواده را مشخص کنید"
                     };
                 }
                 int? hasError = 0;

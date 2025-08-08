@@ -142,7 +142,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا وضعیت فاکتور را مشخص کنید"
+                        Message = "لطفاً وضعیت فاکتور را مشخص کنید"
                     };
 
                 }
@@ -151,7 +151,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا خانواده  را مشخص کنید"
+                        Message = "لطفاً خانواده  را مشخص کنید"
                     };
                 }
                 if (TypePhotography.Trim().IsNullOrEmpty() || TypePhotography == "0")
@@ -159,7 +159,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا موضوع عکاسی را مشخص کنید"
+                        Message = "لطفاً موضوع عکاسی را مشخص کنید"
                     };
                 }
                 if (fDate.Trim().IsNullOrEmpty() || !fDate.IsDate())
@@ -167,7 +167,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا تاریخ را مشخص کنید"
+                        Message = "لطفاً تاریخ را مشخص کنید"
                     };
                 }
                 //اگر وضعیت فاکتور ناقص بود میتونه بدون اقلام ثبت کنه
@@ -176,7 +176,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا اقلام فاکتور را مشخص کنید"
+                        Message = "لطفاً اقلام فاکتور را مشخص کنید"
                     };
                 }
                 if (products.Exists(a => a.quantity <= 0))
@@ -184,7 +184,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا تعداد تمامی اقلام فاکتور را مشخص کنید"
+                        Message = "لطفاً تعداد تمامی اقلام فاکتور را مشخص کنید"
                     };
                 }
                 if (products.Exists(a => a.price <= 0))
@@ -192,7 +192,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا قیمت فروش تمامی اقلام فاکتور را مشخص کنید"
+                        Message = "لطفاً قیمت فروش تمامی اقلام فاکتور را مشخص کنید"
                     };
                 }
                 #endregion
@@ -352,7 +352,7 @@ namespace AdakStudio
                 //            return new
                 //            {
                 //                Result = false,
-                //                Message = "لطفا نوع پرداخت را مشخص کنید"
+                //                Message = "لطفاً نوع پرداخت را مشخص کنید"
                 //            };
                 //        }
                 //        long? PaidId = 0;
@@ -523,7 +523,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا صندوق و بانک رو مشخص کنید" + Environment.NewLine + "برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
+                    Message = "لطفاً صندوق و بانک رو مشخص کنید" + Environment.NewLine + "برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
                 };
             }
             if (PaidPrice <= 0)

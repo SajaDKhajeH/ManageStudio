@@ -209,7 +209,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا توضیحات را مشخص کنید"
+                    Message = "لطفاً توضیحات را مشخص کنید"
                 };
             }
             AdakDB.Db.usp_FactorLog_Add(FactorId, LoginedUser.Id, logtext);

@@ -24,7 +24,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا فیلدهای تاریخ را وارد کنید",
+                    Message = "لطفاً فیلدهای تاریخ را وارد کنید",
                 };
             }
             if (!fromdate.IsDate() || !todate.IsDate())
@@ -32,7 +32,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا تاریخ هارو به درستی وارد کنید",
+                    Message = "لطفاً تاریخ هارو به درستی وارد کنید",
                 };
             }
             if (fromdate.ToMiladi() > todate.ToMiladi())
@@ -86,7 +86,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا فیلدهای تاریخ را وارد کنید",
+                    Message = "لطفاً فیلدهای تاریخ را وارد کنید",
                 };
             }
             if (!fromdate.IsDate() || !todate.IsDate())
@@ -94,7 +94,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا تاریخ هارو به درستی وارد کنید",
+                    Message = "لطفاً تاریخ هارو به درستی وارد کنید",
                 };
             }
             if (fromdate.ToMiladi() > todate.ToMiladi())
@@ -148,7 +148,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا فیلدهای تاریخ را وارد کنید",
+                    Message = "لطفاً فیلدهای تاریخ را وارد کنید",
                 };
             }
             if (!fromdate.IsDate() || !todate.IsDate())
@@ -156,7 +156,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا تاریخ هارو به درستی وارد کنید",
+                    Message = "لطفاً تاریخ هارو به درستی وارد کنید",
                 };
             }
             if (fromdate.ToMiladi() > todate.ToMiladi())
@@ -197,7 +197,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا فیلدهای تاریخ را وارد کنید",
+                    Message = "لطفاً فیلدهای تاریخ را وارد کنید",
                 };
             }
             if (!fromdate.IsDate() || !todate.IsDate())
@@ -205,7 +205,7 @@ public partial class Reports : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا تاریخ هارو به درستی وارد کنید",
+                    Message = "لطفاً تاریخ هارو به درستی وارد کنید",
                 };
             }
             if (fromdate.ToMiladi() > todate.ToMiladi())

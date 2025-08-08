@@ -385,11 +385,11 @@
             buyPrice = buyPrice.replaceAll(",", "");
             salePrice = salePrice.replaceAll(",", "");
             if (parseFloat(buyPrice) == undefined) {
-                alert("لطفا مبلغ خرید را بدرستی وارد کنید");
+                alert("لطفاً مبلغ خرید را بدرستی وارد کنید");
                 return;
             }
             if (parseFloat(salePrice) == undefined) {
-                alert("لطفا مبلغ فروش را بدرستی وارد کنید");
+                alert("لطفاً مبلغ فروش را بدرستی وارد کنید");
                 return;
             }
             var checkInventory = $("#p_checkInventory").prop("checked");
@@ -403,15 +403,15 @@
                 pariority = "0";
             }
             if (parseInt(Inventory) == undefined) {
-                toastr.warning("لطفا موجودی را بدرستی وارد کنید","موجودی");
+                toastr.warning("لطفاً موجودی را بدرستی وارد کنید","موجودی");
                 return;
             }
             if (parseInt(pariority) == undefined) {
-                toastr.warning("لطفا ترتیب نمایش را بدرستی وارد کنید","ترتیب نمایش");
+                toastr.warning("لطفاً ترتیب نمایش را بدرستی وارد کنید","ترتیب نمایش");
                 return;
             }
             if (!Title) {
-                toastr.warning("لطفا عنوان کالا را وارد کنید", "عنوان کالا");
+                toastr.warning("لطفاً عنوان کالا را وارد کنید", "عنوان کالا");
                 return;
             }
             var desc = document.getElementById("p_desc").value;

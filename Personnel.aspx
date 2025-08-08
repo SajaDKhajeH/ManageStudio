@@ -449,12 +449,12 @@
             var desc = $("#p_desc").val();
 
             if (!firstname) {
-                toastr.warning('لطفا نام را وارد نمایید', 'نام');
+                toastr.warning('لطفاً نام را وارد نمایید', 'نام');
                 return;
             }
 
             if (!lastname) {
-                toastr.warning('لطفا نام خانوادگی را وارد نمایید', 'نام خانوادگی');
+                toastr.warning('لطفاً نام خانوادگی را وارد نمایید', 'نام خانوادگی');
                 return;
             }
 

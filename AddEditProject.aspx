@@ -841,17 +841,17 @@
             });
         }
         function btnSubmitModalVideoClicked() {
-            let localId = generateGUID();
+            let code = $('#txt-video-code').val();
+            if (!code) {
+                toastr.warning('لطفاً کد فیلم را وارد کنید!', 'کد فیلم');
+                return;
+            }
             let videographerId = $('#cmb-videographer').val();
             if (!videographerId) {
                 toastr.warning('انتخاب فیلم بردار اجباری است!', 'فیلم بردار');
                 return;
             }
-            let code = $('#txt-video-code').val();
-            if (!code) {
-                toastr.warning('لطفا کد فیلم را وارد کنید!', 'کد فیلم');
-                return;
-            }
+            let localId = generateGUID();
             let videographerTitle = $('#cmb-videographer option:selected').text();
             let desc = $('#txt-video-desc').val();
 
@@ -960,17 +960,17 @@
             });
         }
         function btnSubmitModalPhotoClicked() {
-            let localId = generateGUID();
+            let code = $('#txt-photo-code').val();
+            if (!code) {
+                toastr.warning('لطفاً کد عکس را وارد کنید!', 'کد عکس');
+                return;
+            }
             let photographerId = $('#cmb-photographer').val();
             if (!photographerId) {
                 toastr.warning('انتخاب عکاس اجباری است!', 'عکاس');
                 return;
             }
-            let code = $('#txt-photo-code').val();
-            if (!code) {
-                toastr.warning('لطفا کد عکس را وارد کنید!', 'کد عکس');
-                return;
-            }
+            let localId = generateGUID();
             let photographerTitle = $('#cmb-photographer option:selected').text();
             let desc = $('#txt-photo-desc').val();
             if (photoEdittingId) {
@@ -1078,8 +1078,12 @@
             });
         }
         function btnSubmitModalLocationClicked() {
-            let localId = generateGUID();
             let locationId = $('#cmb-location').val();
+            if (!locationId) {
+                toastr.warning('لطفاً ابتدا لوکیشن را انتخاب کنید', 'لوکیشن')
+                return;
+            }
+            let localId = generateGUID();
             let locationTitle = $('#cmb-location option:selected').text();
             let expense = parseFloat($('#txt-location-expense').val() || '0');
             let desc = $('#txt-location-desc').val();
@@ -1143,7 +1147,7 @@
         var materials = [];//id,desc,expense,material
         function btnOpenModalMaterialClicked(localId) {
             let selectedMaterial = '';
-            if (id) {
+            if (localId) {
                 materialEdittingId = localId;
                 $('#modalAddMaterial').modal('show');
                 const index = materials.findIndex(x => x.localId === localId);
@@ -1165,8 +1169,12 @@
             });
         }
         function btnSubmitModalMaterialClicked() {
-            let localId = generateGUID();
             let materialId = $('#cmb-material').val();
+            if (!materialId) {
+                toastr.warning('لطفاً ابتدا تجهیزات را انتخاب کنید','تجهیزات')
+                return;
+            }
+            let localId = generateGUID();
             let materialTitle = $('#cmb-material option:selected').text();
             let expense = parseFloat($('#txt-material-expense').val() || '0');
             let desc = $('#txt-material-desc').val();
@@ -1208,7 +1216,6 @@
                           </tr>
                     `
             ).join('');
-
 
             $('#table-materials').html(html);
             $('#count-materials').html(materials.length);
@@ -1524,7 +1531,7 @@
                             materials.push({
                                 id: x.id,
                                 localId: localId,
-                                material: x.location,
+                                material: x.material,
                                 expense: x.expense,
                                 desc: x.desc
                             });

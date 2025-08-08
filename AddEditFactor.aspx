@@ -594,7 +594,7 @@
             }
           
             if (!Productitems || Productitems.length == 0) {
-                toastr.warning('لطفا اقلام فاکتور را مشخص کنید', 'اقلام فاکتور');
+                toastr.warning('لطفاً اقلام فاکتور را مشخص کنید', 'اقلام فاکتور');
                 return;
             }
 

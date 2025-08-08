@@ -62,7 +62,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا عنوان را مشخص کنید"
+                    Message = "لطفاً عنوان را مشخص کنید"
                 };
             }
             if (turnType.IsNullOrEmpty() || turnType == "0")
@@ -70,7 +70,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا نوع عکاسی را مشخص کنید"
+                    Message = "لطفاً نوع عکاسی را مشخص کنید"
                 };
             }
             if (depositeamount <= 0)
@@ -78,7 +78,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا مبلغ بیعانه را مشخص کنید"
+                    Message = "لطفاً مبلغ بیعانه را مشخص کنید"
                 };
             }
             if (!fromdate.IsDate() || !todate.IsDate())
@@ -86,7 +86,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا بازه تاریخ را به درستی مشخص کنید"
+                    Message = "لطفاً بازه تاریخ را به درستی مشخص کنید"
                 };
             }
             if (!fromtime.IsTime() || !fromtime.IsTime())
@@ -94,7 +94,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "لطفا بازه زمانی را به درستی مشخص کنید"
+                    Message = "لطفاً بازه زمانی را به درستی مشخص کنید"
                 };
             }
             if (fromdate.ToMiladi() > todate.ToMiladi())

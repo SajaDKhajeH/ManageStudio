@@ -133,24 +133,24 @@
      <tr>
          <td>${rowNum}</td>
          <td>${row.family}</td>
-         <td>${row.price}</td>
+         <td>${PersianCurrencyFormatted(row.price)}</td>
          <td>${row.payType}</td>
          <td>${row.trackingCode}</td>
          <td>${row.fundAndBank}</td>
          <td>${row.desc}</td>
          <td>${row.createdBy}</td>
-         <td>${row.creationTime}</td>
+         <td>${convertEnglishToPersianNumbers(row.creationTime)}</td>
          <td>${actions}</td>
      </tr>
  `);
 
                 });
-                $("#sumPricePaids").text(CurrencyFormatted(sumPrice) + ' ' + currency);
+                $("#sumPricePaids").text(PersianCurrencyFormatted(sumPrice) + ' ' + currency);
 
-                $("#pageIndex").text(pageIndex);
+                $("#pageIndex").text(pageIndex+1);
                 $("#countAllTable").text(totalRecords);
                 $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
+                $("#nextPageBtn").prop("disabled", (pageIndex+1) * pageSize >= totalRecords);
             },
                 function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");

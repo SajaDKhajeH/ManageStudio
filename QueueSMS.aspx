@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <button onclick="DelSMS()" class="btn btn-danger w-100">حذف پیام های انتخاب شده</button>
                             </div>
@@ -143,16 +143,13 @@
                         <table class="table table-striped table-hover table-bordered">
                             <thead class="table-primary">
                                 <tr>
-                                    <th class="min-w-80px">
-                                        <input type="checkbox" id="selectAll" onclick="selectAllSMS(this)" /></th>
-                                    <th class="min-w-130px">عنوان خانواده</th>
+                                    <%--<th class="min-w-80px"><input type="checkbox" id="selectAll" onclick="selectAllSMS(this)" /></th>--%>
                                     <th class="min-w-80px">شماره همراه</th>
                                     <th class="min-w-100px">متن</th>
                                     <th class="min-w-100px">زمان ثبت</th>
                                     <th class="min-w-80px">ثبت کننده</th>
                                     <th class="min-w-100px">وضعیت ارسال</th>
                                     <th class="min-w-100px">زمان ارسال</th>
-                                    <th class="min-w-100px">نوع پیام</th>
                                 </tr>
                             </thead>
                             <tbody id="dt_SMS">
@@ -165,7 +162,7 @@
                             <span>تعداد کل رکوردها: <span id="countAllTable" class="fw-bold">0</span></span>
                             <span>
                                 <select data-control="select" class="form-select" id="s_pageSize" onchange="loadTableDataSMS()">
-                                   <%Response.Write(PublicMethod.Pagination()); %>
+                                    <%Response.Write(PublicMethod.Pagination()); %>
                                 </select>
                             </span>
                             <button id="nextPageBtn" class="btn btn-secondary">صفحه بعد</button>
@@ -179,7 +176,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
-        let pageIndex = 1;
+        let pageIndex = 0;
         let pageSize = 5;
         var totalRecordsSMSQueue = 0;
         var selectedSMSs = 0;
@@ -193,7 +190,7 @@
             });
 
             if (SMSIds.length == 0) {
-                ShowError("لطفا ابتدا پیامی رو انتخاب کنید");
+                ShowError("لطفاً ابتدا پیامی رو انتخاب کنید");
                 return;
             }
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
@@ -249,50 +246,86 @@
             var OnlyQueued = $("#filter_OnlyQueued").prop("checked");
             var searchText = $("#filterInput").val();
             pageSize = parseInt($("#s_pageSize").val());
-            $.ajax({
-                type: "POST",
-                url: "QueueSMS.aspx/ForGrid",
-                data: JSON.stringify({
-                    page: pageIndex, perPage: pageSize, SearchText: searchText,
-                    Fromdate: filter_From_Date, Todate: filter_To_Date, FamilyId: filter_Family,
-                    CauserId: filter_Causer, OnlyQueued: OnlyQueued, TypeId: filter_typeId
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    totalRecordsSMSQueue = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_SMS");
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
 
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
-                        <tr>
-                            <td>${row.Select}</td>
-                            <td>${row.FamilyTitle}</td>
-                            <td>${row.Mobile}</td>
-                            <td>${row.Text}</td>
-                            <td>${row.SendTime}</td>
-                            <td>${row.CauserName}</td>
-                            <td>${row.StatusSended}</td>
-                            <td>${row.SendedTime}</td>
-                            <td>${row.TypeTitle}</td>
-                        </tr>
-                    `);
-                    });
+            const tbody = $("#dt_SMS");
+            tbody.empty(); // پاک کردن داده‌های قدیمی
+            let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}`;
+            ajaxGet('/Notification/GetNotifications' + query, function (res) {
+                const data = res.items;
+                const totalRecords = res.totalCount;
 
-                    // بروزرسانی صفحه فعلی
-                    $("#pageIndex").text(pageIndex);
-                    $("#countAllTable").text(totalRecordsSMSQueue);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", pageIndex === 1);
-                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecordsSMSQueue);
-                },
-                error: function () {
-                    alert("خطا در دریافت داده‌ها");
-                }
-            });
+                data.forEach(row => {
+                    let actions = '';
+            //            `
+            //<div class='action-buttons'>
+            //        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#addEditProducts' onclick='GetInfoForEditProduct("${row.id}")' title='ویرایش'>✎</button>
+            //        <button class='btnDataTable btnDataTable-delete' onclick='ProductDelete("${row.id}")' title='حذف'>🗑</button>
+            //</div>
+            //        `;
+                    //let status = '';
+                    //if (row.active) {
+                    //    status = `<div class='badge badge-light-success'>فعال</div>`;
+                    //} else {
+                    //    status = `<div class='badge badge-light-danger'>غیرفعال</div>`;
+                    //}
+                    tbody.append(`
+                    <tr>
+                        <td>${row.mobile}</td>
+                        <td>${row.text}</td>
+                        <td>${convertEnglishToPersianNumbers(row.creationDateTime)}</td>
+                        <td>${row.creator}</td>
+                        <td>${row.statusText}</td>
+                        <td>${convertEnglishToPersianNumbers(row.sendDateTime)}</td>
+                    </tr>
+        `);
+                });
+
+                $("#pageIndex").text(pageIndex + 1);
+                $("#countAllTable").text(totalRecords);
+                $("#prevPageBtn").prop("disabled", !res.hasPreviousPage);
+                $("#nextPageBtn").prop("disabled", !res.hasNextPage);
+            },
+                function () {
+                    toastr.error("خطا در دریافت اطلاعات", "خطا");
+                });
+            //$.ajax({
+            //    type: "POST",
+            //    url: "QueueSMS.aspx/ForGrid",
+            //    data: JSON.stringify({
+            //        page: pageIndex, perPage: pageSize, SearchText: searchText,
+            //        Fromdate: filter_From_Date, Todate: filter_To_Date, FamilyId: filter_Family,
+            //        CauserId: filter_Causer, OnlyQueued: OnlyQueued, TypeId: filter_typeId
+            //    }),
+            //    contentType: "application/json; charset=utf-8",
+            //    dataType: "json",
+            //    success: function (response) {
+            //        const data = response.d.Data.data;
+            //        totalRecordsSMSQueue = response.d.Data.recordsTotal;
+
+
+            //        // اضافه کردن داده‌های جدید
+            //        data.forEach(row => {
+            //            tbody.append(`
+            //            <tr>
+            //                <td>${row.Select}</td>
+            //                <td>${row.FamilyTitle}</td>
+            //                <td>${row.Mobile}</td>
+            //                <td>${row.Text}</td>
+            //                <td>${row.SendTime}</td>
+            //                <td>${row.CauserName}</td>
+            //                <td>${row.StatusSended}</td>
+            //                <td>${row.SendedTime}</td>
+            //                <td>${row.TypeTitle}</td>
+            //            </tr>
+            //        `);
+            //        });
+
+
+            //    },
+            //    error: function () {
+            //        alert("خطا در دریافت داده‌ها");
+            //    }
+            //});
         }
         $(document).ready(function () {
             $("#master_PageTitle").text("صف پیامک");

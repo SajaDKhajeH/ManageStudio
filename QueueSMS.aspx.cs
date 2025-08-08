@@ -71,7 +71,7 @@ public partial class QueueSMS : System.Web.UI.Page
             return new
             {
                 Result = false,
-                Message = "لطفا ابتدا پیامی رو انتخاب کنید"
+                Message = "لطفاً ابتدا پیامی رو انتخاب کنید"
             };
         }
         try

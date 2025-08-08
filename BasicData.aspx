@@ -365,15 +365,15 @@
                 } else if (typeId == ProjectStatus) {
 
                     if (!title) {
-                        toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
+                        toastr.warning('لطفاً عنوان را مشخص کنید', 'عنوان');
                         return;
                     }
                     if (!priority || priority == '0') {
-                        toastr.warning('لطفا اولویت را مشخص کنید', 'اولویت');
+                        toastr.warning('لطفاً اولویت را مشخص کنید', 'اولویت');
                         return;
                     }
                     //if (!defulatsms) {
-                    //    toastr.warning('لطفا توضیحات را وارد کنید', 'توضیحات');
+                    //    toastr.warning('لطفاً توضیحات را وارد کنید', 'توضیحات');
                     //    return;
                     //}
 
@@ -400,7 +400,7 @@
                 }
             } else {
                 if (!title) {
-                    toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
+                    toastr.warning('لطفاً عنوان را مشخص کنید', 'عنوان');
                     return;
                 }
                 let color = $('#colorPicker').val();
@@ -980,7 +980,7 @@
                 checklistItems.push(item);
             });
             if (checklistItems.find(r => !r.title)) {
-                toastr.warning('لطفا عنوان را مشخص کنید', 'عنوان');
+                toastr.warning('لطفاً عنوان را مشخص کنید', 'عنوان');
                 return;
             }
             let route = '/BasicData/CreateSubItems';

@@ -91,7 +91,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا عنوان خانوادگی را مشخص کنید"
+                        Message = "لطفاً عنوان خانوادگی را مشخص کنید"
                     };
                 }
                 if (!m_mobile.IsNullOrEmpty() && !m_mobile.IsMobileNumber())
@@ -99,7 +99,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا شماره همراه مادر را بدرستی وارد کنید"
+                        Message = "لطفاً شماره همراه مادر را بدرستی وارد کنید"
                     };
                 }
                 if (!f_mobile.IsNullOrEmpty() && !f_mobile.IsMobileNumber())
@@ -107,7 +107,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا شماره همراه پدر را بدرستی وارد کنید"
+                        Message = "لطفاً شماره همراه پدر را بدرستی وارد کنید"
                     };
                 }
                 if ((f_name.IsNullOrEmpty() && !f_lastname.IsNullOrEmpty()) || (!f_name.IsNullOrEmpty() && f_lastname.IsNullOrEmpty()))
@@ -115,7 +115,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا نام و نام خانوادگی آقا را به صورت کامل وارد کنید"
+                        Message = "لطفاً نام و نام خانوادگی آقا را به صورت کامل وارد کنید"
                     };
                 }
                 if ((m_name.IsNullOrEmpty() && !m_lastname.IsNullOrEmpty()) || (!m_name.IsNullOrEmpty() && m_lastname.IsNullOrEmpty()))
@@ -123,7 +123,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا نام و نام خانوادگی خانم را به صورت کامل وارد کنید"
+                        Message = "لطفاً نام و نام خانوادگی خانم را به صورت کامل وارد کنید"
                     };
                 }
                 int? hasError = 0;

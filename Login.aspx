@@ -268,10 +268,10 @@
             var username = $("#username").val();
             var password = $("#password").val();
             if (!username) {
-                toastr.warning('لطفا نام کاربری را وارد نمایید', 'نام کاربری');
+                toastr.warning('لطفاً نام کاربری را وارد نمایید', 'نام کاربری');
             }
             else if (!password) {
-                toastr.warning('لطفا کلمه عبور را وارد نمایید', 'کلمه عبور');
+                toastr.warning('لطفاً کلمه عبور را وارد نمایید', 'کلمه عبور');
             } else {
                 loginStaffAsync(username, password);
             }

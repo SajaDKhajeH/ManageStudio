@@ -70,7 +70,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا متن پیام را مشخص کنید"
+                    Message = "لطفاً متن پیام را مشخص کنید"
                 };
             }
             if (sendToFather == false && sendToMother == false)
@@ -78,7 +78,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا ارسال به پدر یا مادر را مشخص کنید"
+                    Message = "لطفاً ارسال به پدر یا مادر را مشخص کنید"
                 };
             }
             if (selectedFamily == null || selectedFamily.Count() == 0)
@@ -86,7 +86,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا خانواده ای را انتخاب کنید"
+                    Message = "لطفاً خانواده ای را انتخاب کنید"
                 };
             }
             string familes = string.Join(",", selectedFamily);

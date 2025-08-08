@@ -727,7 +727,7 @@
                         <label class="fs-6 fw-bold mb-2">متن پیامک</label>
                         <textarea class="form-control mb-3" id="pay_smsMessage" rows="3" placeholder="متن پیامک را وارد کنید..."></textarea>
                         <!-- نکته -->
-                        <p class="text-danger fw-bold small">لطفا کلید واژه های متن پیامک(کلمات داخل {{}}) را تغییر ندهید</p>
+                        <p class="text-danger fw-bold small">لطفاً کلید واژه های متن پیامک(کلمات داخل {{}}) را تغییر ندهید</p>
                         <!-- گزینه‌های انتخابی ارسال پیام -->
                         <label class="fs-6 fw-bold mb-2" id="pay_sendSMSToLabel">ارسال به:</label>
                         <div class="btn-group w-100 mb-3" role="group" id="pay_sendSMSToDiv">
@@ -1124,7 +1124,7 @@
             var confirmPassword = document.getElementById("confirmPassword").value;
 
             if (newPassword === "" || confirmPassword === "") {
-                ShowError("لطفا رمز عبور را وارد کنید.");
+                ShowError("لطفاً رمز عبور را وارد کنید.");
                 return;
             }
 
@@ -1281,11 +1281,11 @@
             let projectId = $('#m_SetPaidPrice').attr('projectId') || null;
 
             if (!pay_PaidType) {
-                toastr.warning('لطفا طریقه پرداخت را مشخص کنید', 'طریقه پرداخت');
+                toastr.warning('لطفاً طریقه پرداخت را مشخص کنید', 'طریقه پرداخت');
                 return;
             }
             if (!pay_Cash_A_Bank) {
-                toastr.warning('لطفا صندوق/بانک را مشخص کنید', 'صندوق/بانک');
+                toastr.warning('لطفاً صندوق/بانک را مشخص کنید', 'صندوق/بانک');
                 return;
             }
 
@@ -1751,11 +1751,11 @@
             var childBirthDateArray = [];
             for (var i = 0; i < childNames.length; i++) {
                 if (childNames[i].value.trim() == "") {
-                    toastr.warning('لطفا نام فرزند را مشخص کنید', 'نام فرزند');
+                    toastr.warning('لطفاً نام فرزند را مشخص کنید', 'نام فرزند');
                     return;
                 }
                 if (childBirthDates[i].value.trim() == "") {
-                    toastr.warning('لطفا تاریخ تولد فرزند را مشخص کنید', 'تاریخ تولد فرزند');
+                    toastr.warning('لطفاً تاریخ تولد فرزند را مشخص کنید', 'تاریخ تولد فرزند');
                     return;
                 }
                 childHospitalArray.push(childHospitals[i].value);
@@ -1885,6 +1885,9 @@
         };
         function CurrencyFormatted(amount) {
             return new Intl.NumberFormat().format(amount)
+        };
+        function PersianCurrencyFormatted(amount) {
+            return convertEnglishToPersianNumbers((new Intl.NumberFormat().format(amount)).toString())
         };
         function convertPersianToEnglishNumbers(persianNumber) {
             const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
@@ -2281,12 +2284,12 @@
         function cancelSecheduleAsync() {
             let cancelReasonId = $('#cmb-cancel-reason').val() || null;
             if (cancelReasonId === null) {
-                toastr.warning('لطفا ابتدا علت کنسلی را مشخص نمایید', 'علت کنسلی')
+                toastr.warning('لطفاً ابتدا علت کنسلی را مشخص نمایید', 'علت کنسلی')
                 return false;
             }
             let desc = $('#cancelReasonDesc').val();
             if (!desc || desc.length < 10) {
-                toastr.warning('لطفا برای کنسلی توضیحات کامل وارد نمایید', 'علت کنسلی')
+                toastr.warning('لطفاً برای کنسلی توضیحات کامل وارد نمایید', 'علت کنسلی')
                 return false;
             }
             let cancelScheduleCommand =

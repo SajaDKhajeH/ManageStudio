@@ -543,19 +543,19 @@
                     tbody.append(`
                         <tr>
                             <td>${row.payFrom}</td>
-                            <td>${row.date}</td>
+                            <td>${convertEnglishToPersianNumbers(row.date)}</td>
                             <td>${row.expenseType}</td>
-                            <td>${CurrencyFormatted(row.price)}</td>
+                            <td>${PersianCurrencyFormatted(row.price)}</td>
                             <td>${row.payType}</td>
                             <td>${row.trackingCode}</td>
                             <td>${row.payTo}</td>
                             <td>${row.createdBy}</td>
-                            <td>${row.creationTime}</td>
+                            <td>${convertEnglishToPersianNumbers(row.creationTime)}</td>
                             <td>${actions}</td>
                         </tr>
                     `);
                 });
-                $("#sumPriceCost").text(CurrencyFormatted(sumPrice) + ' ' + currency);
+                $("#sumPriceCost").text(PersianCurrencyFormatted(sumPrice) + ' ' + currency);
 
                 // بروزرسانی صفحه فعلی
                 $("#pageIndex").text(pageIndex + 1);

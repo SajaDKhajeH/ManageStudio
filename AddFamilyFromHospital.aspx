@@ -179,11 +179,11 @@
             var childBirthDateArray = [];
             for (var i = 0; i < childNames.length; i++) {
                 if (childNames[i].value.trim() == "") {
-                    alert("لطفا نام فرزند را مشخص کنید");
+                    alert("لطفاً نام فرزند را مشخص کنید");
                     return;
                 }
                 if (childBirthDates[i].value.trim() == "") {
-                    alert("لطفا تاریخ تولد فرزند را مشخص کنید");
+                    alert("لطفاً تاریخ تولد فرزند را مشخص کنید");
                     return;
                 }
                 childHospitalArray.push(childHospitals[i].value);

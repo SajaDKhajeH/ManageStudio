@@ -131,7 +131,7 @@ namespace AdakStudio
                     return new
                     {
                         Result = false,
-                        Message = "لطفا عنوان را مشخص کنید"
+                        Message = "لطفاً عنوان را مشخص کنید"
                     };
                 }
                 if ((dataInfo != null && (dataInfo.D_ShowDurationForSend ?? false)))
@@ -141,7 +141,7 @@ namespace AdakStudio
                         return new
                         {
                             Result = false,
-                            Message = "لطفا زمان ارسال را به درستی وارد کنید"
+                            Message = "لطفاً زمان ارسال را به درستی وارد کنید"
                         };
                     }
                     if (DurationForSend != null && DurationForSend.ToInt() > 1000)
@@ -149,7 +149,7 @@ namespace AdakStudio
                         return new
                         {
                             Result = false,
-                            Message = "لطفا زمان ارسال را کمتر از 1000 وارد کنید"
+                            Message = "لطفاً زمان ارسال را کمتر از 1000 وارد کنید"
                         };
                     }
                 }
