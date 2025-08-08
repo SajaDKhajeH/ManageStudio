@@ -1498,7 +1498,7 @@
             if (projectId) {
                 await fillInfoAsync();
             }
-            
+            $('#familySelect').change();
             hideProgress();
         });
 
