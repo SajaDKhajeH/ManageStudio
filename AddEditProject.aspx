@@ -804,9 +804,9 @@
                     `                                    
                        <tr data-status="done">
                            <td>${item.title}</td>
-                           <td class="status-text">${item.done == null ? '-' : item.done == true ? '✅ انجام شد' : '× انجام نشد'}</td>
-                           <td>${item.creator ? item.creator : '-'}</td>
-                           <td>${item.dateTime ? item.dateTime : '-'}</td>
+                           <td class="status-text">${item.isDone == null ? '-' : item.isDone == true ? '✅ انجام شد' : '× انجام نشد'}</td>
+                           <td>${item.isDone == true ? item.doneBy : '-'}</td>
+                           <td>${item.isDone == true ? convertEnglishToPersianNumbers(item.doneTime) : '-'}</td>
                        </tr>
                     `
                 ).join('');

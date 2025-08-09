@@ -281,7 +281,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="checklistCancel" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
-                    <button type="button" id="checklistSubmit" class="btn btn-primary" data-bs-dismiss="modal" disabled>ثبت</button>
+                    <button type="button" onclick="checklistSubmitClicked(this);" class="btn btn-primary">ثبت</button>
                 </div>
             </div>
         </div>
@@ -390,8 +390,9 @@
         </div>`;
             return card;
         }
-
+        let selectedProjectIdForCheckList = '';
         function btnChecklistClicked(projectId) {
+            selectedProjectIdForCheckList = projectId;
             let query = `?ProjectId=${projectId}`;
             let route = '/Project/GetCheckList';
 
@@ -400,8 +401,8 @@
                 let html = items.map(item =>
                     `
                         <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
-                            <input type="checkbox" id="item-${item.itemId}" ${(item.done ? "checked" : "")} class="form-check-input me-2" style="width: 16px; height: 16px;">
-                            <label for="item-${item.itemId}" class="form-check-label">${item.title}</label>
+                            <input type="checkbox" id="${item.itemId}" ${(item.isDone ? "checked" : "")} class="form-check-input me-2" style="width: 16px; height: 16px;">
+                            <label for="${item.itemId}" class="form-check-label">${item.title}</label>
                         </div>
                     `
                 ).join('');
@@ -1021,6 +1022,59 @@
                     `<option value="${item.id}">${item.title}</option>`
                 ).join('');
                 $('#filter_Step_Videographi').html(defaultOption + options);
+            });
+        }
+    </script>
+
+    <script>
+        function checklistSubmitClicked(button) {
+            let projectId = selectedProjectIdForCheckList;
+            if (!projectId) {
+                toastr.error('شناسه پروژه سمت کلاینت یافت نشد!');
+                return;
+            }
+            let data = [];
+            $('#checklistForm input').each(function () {
+
+                data.push({
+                    id: this.id,
+                    isDone: $(this).is(':checked')
+                });
+            });
+
+            let checkListDoneCommand =
+            {
+                items: data,
+                projectId: projectId
+            };
+
+            let btn = $(button);
+            let defaultText = btn.html();
+            function setDisable() {
+                btn.attr('disabled', 'disabed');
+                btn.html('لطفاً منتظر بمانید ...');
+            }
+            function setEnable() {
+                btn.removeAttr('disabled');
+                btn.html(defaultText);
+            }
+            setDisable();
+
+            let method = 'PUT';
+            let route = '/Project/SetCheckListDone';
+
+            ajaxAuthCall(method, route, checkListDoneCommand, function (res) {
+                if (res.success) {
+                    setEnable();
+                    $('#checklistModal').modal('hide');
+                    toastr.success("ذخیره چک لیست با موفقیت انجام شد");
+                } else {
+                    ShowError(res.message);
+                    setEnable();
+                }
+            }, function (err) {
+                console.log(err);
+                setEnable();
             });
         }
     </script>
