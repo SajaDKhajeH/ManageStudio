@@ -116,28 +116,6 @@
                                 <button id="filterBtn" class="btn btn-bg-warning w-100">اعمال فیلتر</button>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-2">
-                                <select id="filter_TypePhotographi">
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select id="filter_Photographer">
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select id="filter_Designer">
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="d-flex flex-stack" style="margin: 3px">
-                                    <label class="form-check form-switch form-check-custom form-check-solid">
-                                        <input id="filter_ForceDesign" class="form-check-input" type="checkbox" />
-                                        <span class="form-check-label fw-bold text-dark">فاکتورهای طراحی فورس</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="row mt-3">
                         <table class="table table-striped table-hover table-bordered">
@@ -145,8 +123,6 @@
                                 <tr>
                                     <th class="min-w-80px">شماره فاکتور</th>
                                     <th class="min-w-130px">عنوان خانواده</th>
-                                    <th class="min-w-100px">عکاس</th>
-                                    <th class="min-w-100px">طراح</th>
                                     <th class="min-w-80px">تاریخ ثبت</th>
                                     <th class="min-w-100px">مجموع فاکتور</th>
                                     <th class="min-w-100px">مجموع تخفیف</th>
@@ -202,64 +178,6 @@
             loadTableDataFacotrs();
         });
 
-        function loadTableDataFacotrsOld() {
-            var filter_From_Date = $("#filter_From_Date").val();
-            var filter_To_Date = $("#filter_To_Date").val();
-            var filter_Family = $("#filter_Family").val();
-            var filter_Causer = $("#filter_Causer").val();
-            var filter_TypePhotographi = $("#filter_TypePhotographi").val();
-            var filter_Photographer = $("#filter_Photographer").val();
-            var filter_Designer = $("#filter_Designer").val();
-            var filter_ForceDesign = $("#filter_ForceDesign").prop("checked");
-            var searchText = $("#filterInput").val();
-            pageSize = parseInt($("#s_pageSize").val());
-            $.ajax({
-                type: "POST",
-                url: "ManageInvoice.aspx/ForGrid",
-                data: JSON.stringify({
-                    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
-                    causer: filter_Causer, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
-                    designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    const data = response.d.Data.data;
-                    var totalRecords = response.d.Data.recordsTotal;
-                    const tbody = $("#dt_Invoice");
-
-                    tbody.empty(); // پاک کردن داده‌های قدیمی
-
-                    // اضافه کردن داده‌های جدید
-                    data.forEach(row => {
-                        tbody.append(`
-                        <tr>
-                            <td>${row.FactorNumber}</td>
-                            <td>${row.FamilyTitle}</td>
-                            <td>${row.FactorStatus}</td>
-                            <td>${row.Photographer}</td>
-                            <td>${row.Designer}</td>
-                            <td>${row.FactorDate}</td>
-                            <td>${row.SumFactor}</td>
-                            <td>${row.SumDiscount}</td>
-                            <td>${row.FinanStatus}</td>
-                            <td>${row.Actions}</td>
-                        </tr>
-                    `);
-                    });
-
-                    // بروزرسانی صفحه فعلی
-                    $("#pageIndex").text(pageIndex);
-                    $("#countAllTable").text(totalRecords);
-                    // غیرفعال کردن دکمه‌های صفحه‌بندی در صورت نیاز
-                    $("#prevPageBtn").prop("disabled", pageIndex === 0);
-                    $("#nextPageBtn").prop("disabled", pageIndex * pageSize >= totalRecords);
-                },
-                error: function () {
-                    alert("خطا در دریافت داده‌ها");
-                }
-            });
-        }
         function FactorDelete(id) {
             const userResponse = confirm("آیا از حذف فاکتور مطمئن هستید؟");
             if (userResponse) {
@@ -340,25 +258,18 @@
             var filter_To_Date = $("#filter_To_Date").val();
             var filter_Family = $("#filter_Family").val();
             var filter_Causer = $("#filter_Causer").val();
-            var filter_TypePhotographi = $("#filter_TypePhotographi").val();
-            var filter_Photographer = $("#filter_Photographer").val();
-            var filter_Designer = $("#filter_Designer").val();
-            var filter_ForceDesign = $("#filter_ForceDesign").prop("checked");
             var searchText = $("#filterInput").val();
+            
+            const tbody = $("#dt_Invoice");
+            tbody.empty();
+
             pageSize = parseInt($("#s_pageSize").val());
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}`;
             query += `&fromDate=${filter_From_Date}&toDate=${filter_To_Date}`;
-            //data: JSON.stringify({
-            //    page: pageIndex, perPage: pageSize, fromDate: filter_From_Date, toDate: filter_To_Date, familyId: filter_Family, searchText: searchText,
-            //    causer: filter_Causer, typePhoto: filter_TypePhotographi, photographer: filter_Photographer,
-            //    designer: filter_Designer, isGift: false, forceDesign: filter_ForceDesign
-            //}),
             ajaxGet('/Invoice/GetInvoices' + query, function (res) {
                 const data = res.items;
                 const totalRecords = res.totalCount;
-                const tbody = $("#dt_Invoice");
-
-                tbody.empty(); // پاک کردن داده‌های قدیمی
+         
 
                 // اضافه کردن داده‌های جدید
                 data.forEach(row => {
@@ -376,11 +287,9 @@
                 <tr>
                     <td>${row.invoiceNumber}</td>
                     <td>${familyTitle}</td>
-                    <td>${row.photographer}</td>
-                    <td>${row.designer}</td>
-                    <td>${row.date}</td>
-                    <td>${row.sumPrice}</td>
-                    <td>${row.sumDiscount}</td>
+                    <td>${convertEnglishToPersianNumbers(row.date)}</td>
+                    <td>${PersianCurrencyFormatted(row.sumPrice)}</td>
+                    <td>${PersianCurrencyFormatted(row.sumDiscount)}</td>
                     <td>${row.finanStatus}</td>
                     <td>${actions}</td>
                 </tr>
@@ -402,9 +311,6 @@
     <script>
         function fillInfo() {
             fillFamiliesAsync();
-            fillPhotoTopicsCMBAsync('filter_TypePhotographi', false);
-            fillPhotographersCMBAsync('filter_Photographer', false);
-            fillDesignersCMBAsync('filter_Designer', false);
             fillInvoiceCreatorsCMBAsync('filter_Causer', false);
         }
         function fillFamiliesAsync() {

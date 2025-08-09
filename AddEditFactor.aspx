@@ -108,12 +108,10 @@
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th class="min-w-70px">هدیه</th>
                                                             <th class="min-w-80px">عنوان کالا</th>
                                                             <th class="min-w-50px">تعداد</th>
                                                             <th class="min-w-50px">فی</th>
                                                             <th class="min-w-120px">توضیحات</th>
-                                                            <th class="min-w-50px">تعداد عکس</th>
                                                             <th>حذف</th>
                                                         </tr>
                                                     </thead>
@@ -312,15 +310,8 @@
             document.getElementById("totalAmount").textContent = 0;
             document.getElementById("discountAmount").textContent = 0;
             document.getElementById("payableAmount").textContent = 0;
-            //document.getElementById("paidAmount").textContent = 0;
             document.getElementById("factor_discountPercent").value = "0";
-            //document.getElementById("factor_PaidPrice").value = "0";
             document.getElementById("div_Pay_A_Discount").style.display = "block";
-            $("#factor_ForceDesign").prop("checked", false);
-            $("#factor_OnlyEditedDelivered").prop("checked", false);
-            //document.getElementById('factor_PaidPrice').style.display = 'block';
-            //document.getElementById('factor_PaidType').style.display = 'block';
-            //document.getElementById('factor_RefNumber').style.display = 'block';
             document.getElementById('factor_Family').style.display = 'block';
         }
         function GetLogs() {
@@ -376,8 +367,6 @@
                     document.getElementById('factor_Family').style.display = 'none';
                     $("#factor_Family").change();
                     Productitems = data.invoiceDetails;
-                    $("#factor_ForceDesign").prop("checked", data.forceDesign);
-                    $("#factor_OnlyEditedDelivered").prop("checked", data.needEditedPictures);
                     updateTable();
                 }
                 else {
@@ -411,7 +400,6 @@
     <%--اسکریپت مربوط به جدول اقلام--%>
     <script>
         function toggleGroupItems(groupId) {
-            // const group = document.getElementById(groupId);
             groupId.style.display = groupId.style.display === "none" ? "block" : "none";
         }
 
@@ -429,9 +417,7 @@
                     desc: "",
                     productId: Id,
                     FCId: 0,
-                    productGroupTitle: gtitle,
-                    shotCount: 0,
-                    isGift: false
+                    productGroupTitle: gtitle
                 });
             }
             updateTable();
@@ -442,35 +428,25 @@
 
             let total = 0;
             Productitems.forEach((item, index) => {
-                if (item.isGift == null || item.isGift == undefined || item.isGift == false) {
-                    total += item.price * item.count;
-                }
+                total += item.price * item.count;
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                <td><input onclick="UpdateIsGift(${index},this.checked)" name="IsGift" class="form-check-input" type="checkbox" ${item.isGift ? "checked" : ""}/></td>
                 <td>${item.productGroupTitle}-${item.productTitle}</td>
                 <td><input type="number" value="${item.count}" min="1" max="100" onchange="updateCount(${index}, this.value)"></td>
                 <td><input type="text" value="${CurrencyFormatted(item.price)}" min="1" max="100000000" disabled></td>
                 <td><textarea onchange="updateDesc(${index}, this.value)">${item.desc}</textarea></td>
-                <td><input type="number" maxlength="110" value="${item.shotCount}" onchange="updateShotCount(${index}, this.value)"></td>
                 <td><button class="btn btn-danger" onclick="removeItem(${index})">حذف</button></td>
             `;
                 tbody.appendChild(row);
             });
 
             var discount = document.getElementById("factor_discountPercent").value;
-            //var paidPrice = document.getElementById("factor_PaidPrice").value;
             discount = convertPersianToEnglishNumbers(discount);
-            //paidPrice = convertPersianToEnglishNumbers(paidPrice);
-
-            //paidPrice = paidPrice.replaceAll(",", "");
             discount = discount.replaceAll(",", "");
-            //const payable = total - parseInt(discount) - parseInt(paidPrice);
             const payable = total - parseInt(discount);
 
             document.getElementById("totalAmount").textContent = CurrencyFormatted(total);
             document.getElementById("discountAmount").textContent = CurrencyFormatted(discount);
-            //document.getElementById("paidAmount").textContent = CurrencyFormatted(paidPrice);
             document.getElementById("payableAmount").textContent = CurrencyFormatted(payable);
 
             if (taxPercent === 0) {
@@ -489,17 +465,12 @@
             Productitems[index].count = parseInt(count, 10);
             updateTable();
         }
-        function updateShotCount(index, shotCount) {
-            Productitems[index].shotCount = parseInt(shotCount, 10);
-        }
+
         function updateProductPrice(index, price) {
             Productitems[index].price = parseInt(price, 1000);
             updateTable();
         }
-        function UpdateIsGift(index, checked) {
-            Productitems[index].isGift = checked;
-            updateTable();
-        }
+
 
         function updateDesc(index, desc) {
             Productitems[index].desc = desc;
@@ -517,14 +488,7 @@
             var factor_Date = $("#factor_Date").val();
             var factor_discountPrice = $("#factor_discountPercent").val();
             factor_discountPrice = convertPersianToEnglishNumbers(factor_discountPrice);
-            //var factor_PaidPrice = $("#factor_PaidPrice").val();
-            //factor_PaidPrice = convertPersianToEnglishNumbers(factor_PaidPrice);
-            //factor_PaidPrice = factor_PaidPrice.replaceAll(",", "");
             factor_discountPrice = factor_discountPrice.replaceAll(",", "");
-            //var factor_PaidType = $("#factor_PaidType").val();
-            //var factor_RefNumber = $("#factor_RefNumber").val();
-            var ForceDesign = $("#factor_ForceDesign").prop("checked");
-            var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
 
             if (!factor_Date) {
                 toastr.warning('لطفاً تاریخ فاکتور را مشخص کنید', 'تاریخ فاکتور');
@@ -545,15 +509,11 @@
                 familyId: factor_Family,
                 date: factor_Date,
                 sumDiscount: factor_discountPrice,
-                isForceDesign: ForceDesign,
-                NeedEditedPictures: OnlyEditedDelivered,
                 invoiceDetails: Productitems.map(item => ({
                     productId: item.productId,
                     price: item.price,
                     count: item.count,
-                    shotCount: item.shotCount,
-                    desc: item.desc,
-                    isGift: item.isGift
+                    desc: item.desc
                 }))
             };
             let method = 'POST';
