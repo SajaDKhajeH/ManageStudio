@@ -2377,6 +2377,7 @@
         function showModalBeiane(familyId = '', projectId = '') {
             $('#m_SetPaidPrice').attr('familyId', familyId);
             $('#m_SetPaidPrice').attr('projectId', projectId);
+            $('#pay_PaidPrice').val(0);
             $('#m_SetPaidPrice').modal('show');
             $('.lbl-beiane-price').each(function () {
                 this.innerHTML = `مبلغ پرداختی (${currency})`;

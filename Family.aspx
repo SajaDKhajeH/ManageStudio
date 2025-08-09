@@ -322,7 +322,7 @@
                             <td>${row.motherMobile}</td>
                             <td>${row.fatherMobile}</td>
                             <td>${row.creationBy}</td>
-                            <td>${row.creationTime}</td>
+                            <td>${convertEnglishToPersianNumbers(row.creationTime)}</td>
                             <td>${status}</td>
                             <td>${actions}</td>
                         </tr>

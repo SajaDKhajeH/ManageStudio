@@ -287,7 +287,7 @@
                                     <tr>
                                         <th>تاریخ</th>
                                         <th>کد</th>
-                                        <th>مجموع فاکتور</th>
+                                        <th id="col-sum-price">مجموع فاکتور</th>
                                         <th>مالیات</th>
                                         <th>تخفیف</th>
                                         <th>ثبت کننده</th>
@@ -309,7 +309,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>مبلغ پرداختی</th>
+                                        <th id="col-pay-price">مبلغ پرداختی</th>
                                         <th>بانک</th>
                                         <th>طریقه پرداخت</th>
                                         <th>شماره پیگیری</th>
@@ -317,15 +317,7 @@
                                         <th>ثبت کننده</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1,000,000</td>
-                                        <td>ملت</td>
-                                        <td>کارت به کارت</td>
-                                        <td>123456789</td>
-                                        <td>1403/02/05 - 13:40</td>
-                                        <td>سجاد خوجه</td>
-                                    </tr>
+                                <tbody id="table-payment">
                                 </tbody>
                             </table>
                         </div>
@@ -1254,6 +1246,8 @@
             const route = `/Invoice/InvoicesOfProject`;
             let query = `?projectId=${projectId}`;
 
+            $('#col-sum-price').html(`مجموع فاکتور (${currency})`);
+
             await ajaxGet(route + query, function (items) {
                 $('#count-invoices').html(items.length);
                 let html = items.map(generateInvoiceRow).join('');
@@ -1270,13 +1264,13 @@
 
             return `
                     <tr>
-                        <td>${item.date}</td>
+                        <td>${convertEnglishToPersianNumbers(item.date)}</td>
                         <td>${item.code}</td>
-                        <td>${item.price}</td>
+                        <td>${PersianCurrencyFormatted(item.price)}</td>
                         <td>${item.tax}</td>
                         <td>${item.discount}</td>
                         <td>${item.creator}</td>
-                        <td>${item.creationDateTime}</td>
+                        <td>${convertEnglishToPersianNumbers(item.creationDateTime)}</td>
                         <td>
                             ${actionButtons}
                         </td>
@@ -1311,6 +1305,44 @@
                     alert("error");
                 });
             }
+        }
+
+    </script>
+
+    <%--payments--%>
+    <script>
+
+        async function showPaymentsAsync() {
+            $('#table-payment').html('');
+            $('#count-payments').html('0');
+
+            if (!projectId) {
+                return;
+            }
+
+            const route = `/Pay/PaymentsOfProject`;
+            let query = `?projectId=${projectId}`;
+
+            $('#col-pay-price').html(`مبلغ پرداختی (${currency})`);
+
+            await ajaxGet(route + query, function (items) {
+                $('#count-payments').html(items.length);
+                let html = items.map(generatePaymentRow).join('');
+                $('#table-payment').html(html);
+            });
+        }
+        function generatePaymentRow(item) {
+           
+            return `
+                   <tr>
+                       <td>${PersianCurrencyFormatted(item.price)}</td>
+                       <td>${item.bank}</td>
+                       <td>${item.payType}</td>
+                       <td>${item.trackingCode}</td>
+                       <td>${convertEnglishToPersianNumbers(item.dateTime)}</td>
+                       <td>${item.creator}</td>
+                   </tr>
+                `;
         }
 
     </script>
@@ -1495,7 +1527,8 @@
                 fillDesignersAsync(),
                 fillEditorsAsync(),
                 showSchedulesAsync(),
-                showInvoicesAsync()
+                showInvoicesAsync(),
+                showPaymentsAsync()
             ]);
 
             if (projectTypeId) {
