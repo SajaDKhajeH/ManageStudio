@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "NextAdakStudio", ".", "{73C97E47-4932-4421-BEFD-CCC716E9C3DE}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ManageStudio", ".", "{73C97E47-4932-4421-BEFD-CCC716E9C3DE}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_60582"
@@ -21,6 +21,11 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "NextAdakStudio", ".", "{73C
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "60582"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		deploy.txt = deploy.txt
 	EndProjectSection
 EndProject
 Global

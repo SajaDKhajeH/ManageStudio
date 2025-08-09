@@ -17,7 +17,7 @@ function fillHospitalsCMBAsync(cmbId, required) {
 }
 function getPhotoTopicsForCMBAsync(required, callBack) {
     const defaultOption = '<option value="">انتخاب موضوع</option>';
-    ajaxGet('/BasicData/PhotoTopics', function (items) {
+    ajaxGet('/BasicData/ProjectTypes', function (items) {
         let options = items.map(item =>
             `<option value='${item.id}'>${item.title}</option>`
         ).join('');

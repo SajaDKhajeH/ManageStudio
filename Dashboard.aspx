@@ -411,10 +411,13 @@
                         const appointmentBtnPay = document.createElement('button');
                         appointmentBtnPay.className = 'btnDataTable btnDataTable-print';
                         appointmentBtnPay.textContent = `💰`;
-                        appointmentBtnPay.id = "btnPayTurn" + app.id;
+                        appointmentBtnPay.id = "btnPayTurn_" + app.id;
                         appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
                         appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
-                        appointmentBtnPay.onclick = () => PayDeposit(app.familyId, "دریافت بیعانه از " + app.baseFamilyTitle, app.bedPrice);
+                        appointmentBtnPay.onclick = () => {
+                            showModalBeiane(app.familyId, '');
+                            PayDeposit(app.familyId, "دریافت بیعانه از " + app.baseFamilyTitle, app.bedPrice);
+                        };
                         appointmentsCell.appendChild(appointmentBtnPay);
 
                         //کلید ثبت فاکتور
@@ -429,7 +432,7 @@
                         appointmentBtnSetFactor.id = "btnSetFactorTurn-" + app.projectId;
                         appointmentBtnSetFactor.onclick = () => {
                             setTimeout(function () {
-                                let url = `AddEditProject.aspx?scheduleId=${app.id}`;
+                                let url = `AddEditProject.aspx?scheduleId=${app.id}&projectTypeId=${app.turnId}`;
                                 if (app.projectId)
                                     url += `&id=${app.projectId}`;
                                 window.open(url, '_blank');
@@ -478,7 +481,10 @@
                 appointmentBtnPay.textContent = `💰`;
                 appointmentBtnPay.setAttribute('data-bs-toggle', 'modal');
                 appointmentBtnPay.setAttribute('data-bs-target', '#m_SetPaidPrice');
-                appointmentBtnPay.onclick = () => PayDeposit(app.familyId, "دریافت بیعانه از " + app.baseFamilyTitle, app.bedPrice);
+                appointmentBtnPay.onclick = () => {
+                    showModalBeiane(app.familyId, '');
+                    PayDeposit(app.familyId, "دریافت بیعانه از " + app.baseFamilyTitle, app.bedPrice);
+                };
                 appointmentsCellRezerv.appendChild(appointmentBtnPay);
 
                 //کلید ثبت فاکتور

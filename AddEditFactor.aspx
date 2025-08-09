@@ -151,7 +151,7 @@
                                             </div>
                                             <div class="summary row">
                                                 <div id="divTax" class="col-lg-4 divTax" hidden="hidden">مالیات: <span id="taxPercent">0</span>  </div>
-                                                 <div class="col-lg-4 divTax" hidden="hidden">مجموع فاکتور با احتساب مالیات: <span id="totalAmountWithTax">0</span> </div>
+                                                <div class="col-lg-4 divTax" hidden="hidden">مجموع فاکتور با احتساب مالیات: <span id="totalAmountWithTax">0</span> </div>
                                                 <div class="col-lg-4 divTax" hidden="hidden">قابل پرداخت با احتساب مالیات: <span id="payableAmountWithTax">0</span>  </div>
                                             </div>
                                         </div>
@@ -197,7 +197,7 @@
                     taxPercent = percent;
                     $('.divTax').removeAttr('hidden');
                     $('#taxPercent').html(percent + '%');
-                    
+
                 } else {
                     taxPercent = 0;
                     $('.divTax').attr('hidden', 'hidden');
@@ -286,8 +286,6 @@
                         dataType: "json",
                         success: function (msg) {
                             $("#factor_Family").val(msg.d.FamilyId);
-                            $("#factor_Photographer").val(msg.d.PhotographerId);
-                            $("#factor_TypePhotography").val(msg.d.TypeId);
                             $("#factor_Family").change();
                         },
                         error: function () {
@@ -298,23 +296,12 @@
             }
             document.getElementById("gotoFactor").style.visibility = "hidden";
             document.getElementById("Btn_AddRequest").style.visibility = "hidden";
-
-            $('#factor_desc').on('input', function () {
-                this.style.height = 'auto';
-
-                this.style.height =
-                    (this.scrollHeight) + 'px';
-            });
         }
         $(document).ready(function () {
             showProgress();
             fillProductGroupsAsync(function () {
-                fillPhotoTopicsCMBAsync('factor_TypePhotography', false, function () {
-                    fillPhotographersCMBAsync('factor_Photographer', false, function () {
-                        documentReady();
-                        hideProgress();
-                    });
-                });
+                documentReady();
+                hideProgress();
             });
         });
         function FirstLoad() {
@@ -328,9 +315,6 @@
             //document.getElementById("paidAmount").textContent = 0;
             document.getElementById("factor_discountPercent").value = "0";
             //document.getElementById("factor_PaidPrice").value = "0";
-            document.getElementById("factor_desc").value = "";
-            document.getElementById("factor_TypePhotography").value = "";
-            document.getElementById("factor_Photographer").value = "";
             document.getElementById("div_Pay_A_Discount").style.display = "block";
             $("#factor_ForceDesign").prop("checked", false);
             $("#factor_OnlyEditedDelivered").prop("checked", false);
@@ -388,13 +372,10 @@
                     $("#master_PageTitle").text("جزئیات فاکتور " + data.invoiceNumber);
                     $("#factor_Family").val(data.familyId);
                     $("#factor_Date").val(data.date);
-                    $("#factor_desc").val(data.desc);
                     $("#factor_discountPercent").val(data.discountPercent);
                     document.getElementById('factor_Family').style.display = 'none';
                     $("#factor_Family").change();
                     Productitems = data.invoiceDetails;
-                    document.getElementById("factor_TypePhotography").value = data.typePhotographiId;
-                    document.getElementById("factor_Photographer").value = data.photographerId;
                     $("#factor_ForceDesign").prop("checked", data.forceDesign);
                     $("#factor_OnlyEditedDelivered").prop("checked", data.needEditedPictures);
                     updateTable();
@@ -418,9 +399,6 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (msg) {
-                        if (msg.d.Change) {
-                            $("#factor_Photographer").val(msg.d.LastPhotographerId);
-                        }
                     },
                     error: function () {
                         alert("error2");
@@ -504,7 +482,7 @@
                 let payableAmountWithTax = payable + ((payable * taxPercent) / 100);
                 $('#payableAmountWithTax').html(CurrencyFormatted(payableAmountWithTax));
             }
- 
+
         }
 
         function updateCount(index, count) {
@@ -537,7 +515,6 @@
         function SetFactor() {
             var factor_Family = $("#factor_Family").val();
             var factor_Date = $("#factor_Date").val();
-            var factor_desc = $("#factor_desc").val();
             var factor_discountPrice = $("#factor_discountPercent").val();
             factor_discountPrice = convertPersianToEnglishNumbers(factor_discountPrice);
             //var factor_PaidPrice = $("#factor_PaidPrice").val();
@@ -546,8 +523,6 @@
             factor_discountPrice = factor_discountPrice.replaceAll(",", "");
             //var factor_PaidType = $("#factor_PaidType").val();
             //var factor_RefNumber = $("#factor_RefNumber").val();
-            var TypePhotography = document.getElementById("factor_TypePhotography").value;
-            var PhotographerId = document.getElementById("factor_Photographer").value;
             var ForceDesign = $("#factor_ForceDesign").prop("checked");
             var OnlyEditedDelivered = $("#factor_OnlyEditedDelivered").prop("checked");
 
@@ -555,11 +530,7 @@
                 toastr.warning('لطفاً تاریخ فاکتور را مشخص کنید', 'تاریخ فاکتور');
                 return;
             }
-            if (!TypePhotography) {
-                toastr.warning('لطفاً موضوع عکاسی را مشخص کنید', 'موضوع عکاسی');
-                return;
-            }
-          
+
             if (!Productitems || Productitems.length == 0) {
                 toastr.warning('لطفاً اقلام فاکتور را مشخص کنید', 'اقلام فاکتور');
                 return;
@@ -574,10 +545,7 @@
                 familyId: factor_Family,
                 date: factor_Date,
                 sumDiscount: factor_discountPrice,
-                typePhotographyId: (TypePhotography && TypePhotography != 0) ? TypePhotography : null,
-                photographerId: (PhotographerId && PhotographerId != 0) ? PhotographerId : null,
                 isForceDesign: ForceDesign,
-                desc: factor_desc,
                 NeedEditedPictures: OnlyEditedDelivered,
                 invoiceDetails: Productitems.map(item => ({
                     productId: item.productId,

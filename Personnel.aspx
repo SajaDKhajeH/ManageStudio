@@ -473,9 +473,11 @@
                 maxDiscount: maxdiscount ? maxdiscount : null,
                 address: address
             };
+            let isInsert = true;
             let method = 'POST';
             let route = '/User/Create';
             if (personId != '') {
+                isInsert = false;
                 method = 'PUT';
                 route = '/User/Update';
             }
@@ -485,6 +487,11 @@
                     toastr.success('اطلاعات ذخیره شد', "موفق");
                     closeModal();
                     loadTableDataPersonnel();
+                    if (isInsert) {
+                        setTimeout(function () {
+                            personRoles(res.data);
+                        }, 256);
+                    }
                 }
                 else {
                     ShowError(res.message);
@@ -649,7 +656,7 @@
 
                     actions +=
                         `
-                       <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#personnelRolesModal' onclick='personRoles("${row.id}")' title='نقش های کاربر'>⚙️</button>
+                       <button class='btnDataTable btnDataTable-edit' onclick='personRoles("${row.id}")' title='نقش های کاربر'>⚙️</button>
                        <button class='btnDataTable btnDataTable-edit' data-bs-toggle='modal' data-bs-target='#kt_modal_add_personnel' onclick='EditPerseonnel("${row.id}")' title='ویرایش'>✎</button>
                        <button class='btnDataTable btnDataTable-delete' onclick='DeletePersonnel("${row.id}")' title='حذف'>🗑</button>
                        `;
@@ -690,7 +697,12 @@
             $("#table-personel-roles").html('');
 
             var person = personel.find(x => x.id == id);
-            $('#personnelRolesModal-title').html(`نقش های ${person.fullName}`);
+            if (person) {
+                $('#personnelRolesModal-title').html(`نقش های ${person.fullName}`);
+            } else {
+                $('#personnelRolesModal-title').html(`نقش های کاربر`);//وقتی کاربر جدید ثبت میشه و پاپ آپ را باز میکنیم کاربر ممکنه هنوز تو لیست پرسنل نیومده باشه
+            }
+            $('#personnelRolesModal').modal('show');
             ajaxGet("/Role/GetAllRoles" + query, function (roles) {
                 const permissionsHtml = roles.map(role =>
                     `

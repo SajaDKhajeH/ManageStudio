@@ -701,7 +701,7 @@
 
                     <!-- فرم دریافت حضوری -->
                     <div id="payInPersonFields">
-                        <label class="fs-6 fw-bold mb-2">مبلغ پرداختی</label>
+                        <label class="fs-6 fw-bold mb-2 lbl-beiane-price">مبلغ پرداختی</label>
                         <input type="text" class="form-control mb-3" maxlength="15" id="pay_PaidPrice" onchange="TextFormatPrice(this)" onkeyup="TextFormatPrice(this)" placeholder="مبلغ">
 
                         <label class="fs-6 fw-bold mb-2">طریقه پرداخت</label>
@@ -721,7 +721,7 @@
 
                     <!-- فرم پرداخت آنلاین -->
                     <div id="payOnlineFields" style="display: none;">
-                        <label class="fs-6 fw-bold mb-2">مبلغ پرداختی</label>
+                        <label class="fs-6 fw-bold mb-2 lbl-beiane-price">مبلغ پرداختی</label>
                         <input type="text" class="form-control mb-3" maxlength="15" id="pay_PaidPriceOnline" onchange="TextFormatPrice(this)" onkeyup="TextFormatPrice(this)" placeholder="مبلغ">
 
                         <label class="fs-6 fw-bold mb-2">متن پیامک</label>
@@ -974,11 +974,6 @@
                         <div class="col-md-6">
                             <label for="turn_Location">لوکیشن</label>
                             <select id="turn_Location">
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="turn_Photographer">عکاس</label>
-                            <select id="turn_Photographer">
                             </select>
                         </div>
                     </div>
@@ -1280,6 +1275,19 @@
             let familyId = $('#m_SetPaidPrice').attr('familyId') || null;
             let projectId = $('#m_SetPaidPrice').attr('projectId') || null;
 
+            let price = 0;
+
+            try {
+                price = parseInt(pay_PaidPrice);
+            } catch {
+                price = 0;
+            }
+
+            if (price === 0) {
+                toastr.warning('لطفاً مبلغ بیعانه را مشخص کنید', 'مبلغ');
+                return;
+            }
+
             if (!pay_PaidType) {
                 toastr.warning('لطفاً طریقه پرداخت را مشخص کنید', 'طریقه پرداخت');
                 return;
@@ -1294,7 +1302,7 @@
                 familyId: familyId,
                 projectId: projectId,
                 cashBankId: pay_Cash_A_Bank,
-                price: parseInt(pay_PaidPrice),
+                price: price,
                 payTypeId: pay_PaidType,
                 trackingCode: pay_RefNumber,
                 desc: pay_desc
@@ -1343,7 +1351,6 @@
             document.getElementById("turn_Type").value = turnType;
             document.getElementById("turn_Duration").value = duration;
             document.getElementById("turn_Location").value = locationId;
-            document.getElementById("turn_Photographer").value = photographerId;
             document.getElementById("turn_project").value = projectId;
             document.getElementById("div_Family_For_Request").style.display = "block";
 
@@ -1359,7 +1366,7 @@
         };
 
         async function fillPhotoTopicsForSchedule() {
-            await ajaxGet('/BasicData/PhotoTopics', function (items) {
+            await ajaxGet('/BasicData/ProjectTypes', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
@@ -1373,15 +1380,6 @@
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
                 $('#turn_Location').html(defaultOption + options);
-            });
-        }
-        async function fillPhotographersForSchedule() {
-            const defaultOption = '<option value="">انتخاب عکاس</option>';
-            await ajaxGet('/User/GetAllPhotographers', function (items) {
-                let options = items.map(item =>
-                    `<option value='${item.id}'>${item.title}</option>`
-                ).join('');
-                $('#turn_Photographer').html(defaultOption + options);
             });
         }
         async function fillTurnProjects() {
@@ -1399,7 +1397,6 @@
                 await Promise.all([
                     fillPhotoTopicsForSchedule(),
                     fillLocationsForSchedule(),
-                    fillPhotographersForSchedule(),
                     fillTurnProjects()
                 ]);
                 console.log('All tasks finished successfully!');
@@ -1424,7 +1421,6 @@
                 turn_Duration = "0";
             }
             var turn_Location = document.getElementById("turn_Location").value;
-            var turn_Photographer = document.getElementById("turn_Photographer").value;
 
             if (!selectedFamily) {
                 toastr.warning('لطفاً ابتدا خانواده را مشخص کنید');
@@ -1445,7 +1441,6 @@
                 duration: parseInt(turn_Duration),
                 desc: turn_desc,
                 familyId: selectedFamily,
-                photographerId: turn_Photographer ? turn_Photographer : null,
                 locationId: turn_Location ? turn_Location : null,
                 photoTopicId: turn_Type ? turn_Type : null,
                 projectId: turn_project || null
@@ -2383,6 +2378,9 @@
             $('#m_SetPaidPrice').attr('familyId', familyId);
             $('#m_SetPaidPrice').attr('projectId', projectId);
             $('#m_SetPaidPrice').modal('show');
+            $('.lbl-beiane-price').each(function () {
+                this.innerHTML = `مبلغ پرداختی (${currency})`;
+            });
         }
     </script>
     <asp:ContentPlaceHolder ID="End" runat="server"></asp:ContentPlaceHolder>

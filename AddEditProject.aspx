@@ -52,7 +52,7 @@
                             <textarea id="failureReason" class="form-control" rows="2"></textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" id="btn-submit-project" onclick="btnSubmitClicked();" class="btn btn-primary">ثبت پروژه</button>
+                            <button type="button" id="btn-submit-project" onclick="btnSubmitClicked();" class="btn btn-primary">ثبت پروژه</button>
                         </div>
                     </form>
                     <ul class="nav nav-tabs mt-4" id="projectTabs" role="tablist">
@@ -603,12 +603,12 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
 
-        $(function () {
-            $('#familySelect, #projectTypeSelect').on('change', function () {
-                const fam = $('#familySelect option:selected').text();
-                const typ = $('#projectTypeSelect option:selected').text();
-                if (fam && typ) $('#projectTitle').val(`${fam} – ${typ}`);
-            });
+        //$(function () {
+        //    $('#familySelect, #projectTypeSelect').on('change', function () {
+        //        const fam = $('#familySelect option:selected').text();
+        //        const typ = $('#projectTypeSelect option:selected').text();
+        //        if (fam && typ) $('#projectTitle').val(`${fam} – ${typ}`);
+        //    });
 
             $('#projectStatus').on('change', function () {
                 if ($(this).val() === 'ناموفق') {
@@ -712,17 +712,11 @@
             document.getElementById('addLogPopover').style.display = 'none';
         }
 
-        async function fillProjectTitle() {
-            let projectType = $('#projectTypeSelect').val();
-            let familyId = $('#familySelect').val();
-            if (projectType && familyId) {
-                const selectElementFamily = document.getElementById("familySelect");
-                const selectedOptionFamily = selectElementFamily.options[selectElementFamily.selectedIndex];
-
-                const selectElementprojectType = document.getElementById("projectTypeSelect");
-                const selectedOptionprojectType = selectElementprojectType.options[selectElementprojectType.selectedIndex];
-
-                $('#projectTitle').val(selectedOptionFamily.getAttribute("title") + ' - ' + selectedOptionprojectType.getAttribute("title"));
+        function fillProjectTitle() {
+            let family = $('#familySelect option:selected').text();
+            let projectType = $('#projectTypeSelect option:selected').text();
+            if (projectType && family) {
+                $('#projectTitle').val(family + ' - ' + projectType);
             }
         }
 
@@ -742,6 +736,7 @@
             if (projectType) {
                 showCheckList();
             }
+            fillProjectTitle();
         }
     </script>
 
@@ -1183,7 +1178,7 @@
         function btnSubmitModalMaterialClicked() {
             let materialId = $('#cmb-material').val();
             if (!materialId) {
-                toastr.warning('لطفاً ابتدا تجهیزات را انتخاب کنید','تجهیزات')
+                toastr.warning('لطفاً ابتدا تجهیزات را انتخاب کنید', 'تجهیزات')
                 return;
             }
             let localId = generateGUID();
@@ -1432,6 +1427,7 @@
     <script>
         let projectId = '';
         let scheduleId = '';
+        let projectTypeId = '';
 
         function generateScheduleRow(item) {
             const isCancelled = item.isCancel;
@@ -1467,6 +1463,10 @@
             if (scheduleId) {
                 query += `&scheduleId=${scheduleId}`;
             }
+            if (projectTypeId) {
+                query += `&projectTypeId=${projectTypeId}`;
+            }
+
             await ajaxGet(route + query, function (items) {
                 $('#count-notes').html(items.length);
                 let html = items.map(generateScheduleRow).join('');
@@ -1474,17 +1474,20 @@
             });
         }
 
+        function getParamVal(p, key) {
+            let val = p.get(key);
+            if (val == undefined || val == '0' || val == 0 || val == 'undefined')
+                val = '';
+            return val;
+        }
+
         $(document).ready(async function () {
             showProgress();
 
             let params = new URLSearchParams(document.location.search);
-            projectId = params.get("id");
-            if (projectId == undefined || projectId == '0' || projectId == 0 || projectId == 'undefined')
-                projectId = '';
-
-            scheduleId = params.get("scheduleId");
-            if (scheduleId == undefined || scheduleId == '0' || scheduleId == 0 || scheduleId == 'undefined')
-                scheduleId = '';
+            projectId = getParamVal(params, "id");
+            scheduleId = getParamVal(params, "scheduleId");
+            projectTypeId = getParamVal(params, "projectTypeId");
 
             await Promise.all([
                 fillProjectTypesAsync(),
@@ -1495,6 +1498,10 @@
                 showInvoicesAsync()
             ]);
 
+            if (projectTypeId) {
+                $('#projectTypeSelect').val(projectTypeId);
+            }
+            projectTypeSelectChanged();
             if (projectId) {
                 await fillInfoAsync();
             }

@@ -824,6 +824,12 @@
         }
         function getPageQuery() {
             let query = '?a=1';
+
+            let familyId = $('#filter_Family').val();
+            if (familyId && familyId != '0') {
+                query += `&familyId=${familyId}`;
+            }
+
             let projectTypeId = $('#filter_ProjectType').val();
             if (projectTypeId) {
                 query += `&projectTypeId=${projectTypeId}`;
@@ -861,18 +867,23 @@
 
             let fromDate = $('#filter_From_Date').val();
             if (fromDate) {
-                query += `&fromDate=${encodeURIComponent(fromDate) }`;
+                query += `&fromDate=${encodeURIComponent(fromDate)}`;
             }
 
             let toDate = $('#filter_To_Date').val();
             if (toDate) {
                 query += `&toDate=${encodeURIComponent(toDate)}`;
             }
-            
+
             return query;
         }
         function setPageQuery() {
             let params = new URLSearchParams(document.location.search);
+
+            let familyId = params.get("familyId");
+            if (familyId) {
+                $('#filter_Family').val(familyId);
+            }
 
             let projectTypeId = params.get("projectTypeId");
             if (projectTypeId) {
@@ -924,8 +935,10 @@
     <script>
         async function fillAllFiltersAsync() {
             let today = getToday();
-            $('#filter_From_Date').val(convertEnglishToPersianNumbers(today));
-            $('#filter_To_Date').val(convertEnglishToPersianNumbers(today));
+            let fromDate = today.substr(0, 4) + "/01/01";
+            let toDate = today.substr(0, 4) + "/12/29";
+            $('#filter_From_Date').val(convertEnglishToPersianNumbers(fromDate));
+            $('#filter_To_Date').val(convertEnglishToPersianNumbers(toDate));
 
             await Promise.all([
                 fillProjectTypesAsync(),
@@ -939,7 +952,7 @@
             ]);
         }
         async function fillVideographersAsync() {
-            const defaultOption = '<option value="">انتخاب Videographer</option>';
+            const defaultOption = '<option value="">انتخاب فیلم بردار</option>';
             await ajaxGet('/User/GetAllVideographers', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
@@ -948,7 +961,7 @@
             });
         }
         async function fillPhotographersAsync() {
-            const defaultOption = '<option value="">انتخاب Photographer</option>';
+            const defaultOption = '<option value="">انتخاب عکاس</option>';
             await ajaxGet('/User/GetAllPhotographers', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
@@ -975,7 +988,7 @@
             });
         }
         async function fillEditorsAsync() {
-            const defaultOption = '<option value="">انتخاب ادیتور</option>';
+            const defaultOption = '<option value="">انتخاب تدوینگر</option>';
             await ajaxGet('/User/GetAllEditors', function (items) {
                 let options = items.map(item =>
                     `<option value='${item.id}'>${item.title}</option>`
@@ -984,12 +997,12 @@
             });
         }
         async function fillFamiliesAsync() {
-            const defaultOption = '<option value="">انتخاب خانواده</option>';
+            const defaultOption = '<option value="0">انتخاب مشتری</option>';
             await ajaxGet('/Family/GetAllFamilies', function (families) {
                 const options = families.map(family =>
                     `<option value="${family.id}">${family.title}</option>`
                 ).join('');
-                $('#select2-filter_Family-container').html(defaultOption + options);
+                $('#filter_Family').html(defaultOption + options);
             });
         }
         async function fillDesignerStepsAsync() {

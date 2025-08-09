@@ -979,7 +979,7 @@
                 };
                 checklistItems.push(item);
             });
-            if (checklistItems.find(r => !r.title)) {
+            if (checklistItems.find(r => !r.title && r.active)) {
                 toastr.warning('لطفاً عنوان را مشخص کنید', 'عنوان');
                 return;
             }
