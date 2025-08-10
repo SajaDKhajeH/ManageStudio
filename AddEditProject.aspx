@@ -72,7 +72,7 @@
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-locations">📍 لوکیشن ‌ها <span class="badge bg-secondary ms-1" id="count-locations">0</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ShowWhenRegisteredProject">
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-notes">📝 نوبت ‌ها <span class="badge bg-secondary ms-1" id="count-notes">0</span>
                             </a>
                         </li>
@@ -80,19 +80,19 @@
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-materials">🔌 تجهیزات <span class="badge bg-secondary ms-1" id="count-materials">0</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ShowWhenRegisteredProject">
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-invoices">🧾 فاکتورها <span class="badge bg-secondary ms-1" id="count-invoices">0</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ShowWhenRegisteredProject">
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-payments">💵 پرداختی ‌ها <span class="badge bg-secondary ms-1" id="count-payments">0</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ShowWhenRegisteredProject">
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-sms">✉️ پیامک ‌ها <span class="badge bg-secondary ms-1" id="count-sms">0</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ShowWhenRegisteredProject">
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-logs">📄 لاگ‌ ها <span class="badge bg-secondary ms-1" id="count-logs">0</span>
                             </a>
                         </li>
@@ -1442,7 +1442,12 @@
                 if (res.success) {
                     isFormDirty = false;
                     toastr.success('ثبت اطلاعات با موفقیت انجام شد', "موفق");
-                    location.href = 'ManageProject.aspx';
+                    if (projectId) {
+                        location.href = 'ManageProject.aspx';
+                    }
+                    else {
+                        location.href = 'AddEditProject.aspx';
+                    }
                 }
                 else {
                     ShowError(res.message);
@@ -1536,7 +1541,11 @@
             }
             projectTypeSelectChanged();
             if (projectId) {
+                $(".ShowWhenRegisteredProject").css("display", "block");
                 await fillInfoAsync();
+            }
+            else {
+                $(".ShowWhenRegisteredProject").css("display", "none");
             }
             $('#familySelect').change();
             hideProgress();
