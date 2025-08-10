@@ -38,38 +38,11 @@
             cursor: grab;
         }
 
-            .project-card.debtor::before {
-                content: 'بدهکار';
-                position: absolute;
-                top: 0;
-                right: 0;
-                background-color: #dc3545;
-                color: white;
-                padding: 0.2rem 0.5rem;
-                border-bottom-left-radius: 8px;
-                font-size: 0.75rem;
-            }
+           
 
-        .urgent-label {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background-color: #f8a521;
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 5px;
-            font-size: 0.75rem;
-        }
+        
 
-        .labels-wrapper {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px; /* فاصله بین لیبل‌ها */
-            z-index: 10;
-        }
+        
 
         .project-days {
             font-size: 2rem;
@@ -135,12 +108,46 @@
             justify-content: center;
         }
 
+         .project-card.debtor::before {
+                content: 'بدهکار';
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: #dc3545;
+                color: white;
+                padding: 0.2rem 0.5rem;
+                border-bottom-left-radius: 8px;
+                font-size: 0.75rem;
+            }
+
+         .labels-wrapper {
+            position: absolute;
+            top: 0;
+            right: 22px;
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 4px; /* فاصله بین لیبل‌ها */
+            z-index: 10;
+        }
+
+        .urgent-label {
+            position: absolute;
+            top: 0;
+            right: 22px;
+            padding: 0.2rem 0.3rem;
+            background-color: #f8a521;
+            color: white;
+            border-bottom-left-radius: 8px;
+            font-size: 0.85rem;
+        }
+
         .card-actions {
             position: absolute;
             top: 8px;
-            right: 8px;
-            display: flex;
             gap: 4px;
+            display: flex;
+            left: 8px;
             z-index: 20;
         }
     </style>
@@ -354,13 +361,13 @@
             card.setAttribute('data-id', item.id);
             card.innerHTML = `
 
-        ${item.urgent ? '<div class="labels-wrapper"><span class="badge-label urgent">فوری</span></div>' : ''}
+        ${item.urgent ? '<div class="labels-wrapper"><span class="badge-label urgent-label">فوری</span></div>' : ''}
             
           <div class="card-actions">
-                <button onclick="btnEditProjectClicked('${item.id}');" class="btn-icon edit-btn" title="ویرایش">
+                <button onclick="btnEditProjectClicked('${item.id}');" class="btn btn-light-primary btn-sm btn-icon" title="ویرایش">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button onclick="btnDeleteProjectClicked('${item.id}');" class="btn-icon delete-btn" title="حذف">
+                <button onclick="btnDeleteProjectClicked('${item.id}');" class="btn btn-light-danger btn-sm btn-icon" title="حذف">
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
