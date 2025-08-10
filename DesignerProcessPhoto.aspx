@@ -779,12 +779,12 @@
             });
         }
         async function fillFamiliesAsync() {
-            const defaultOption = '<option value="">انتخاب خانواده</option>';
+            const defaultOption = '<option value="0">انتخاب مشتری</option>';
             await ajaxGet('/Family/GetAllFamilies', function (families) {
                 const options = families.map(family =>
                     `<option value="${family.id}">${family.title}</option>`
                 ).join('');
-                $('#select2-filter_Family-container').html(defaultOption + options);
+                $('#filter_Family').html(defaultOption + options);
             });
         }
         async function getWorkerStepsAsync() {
