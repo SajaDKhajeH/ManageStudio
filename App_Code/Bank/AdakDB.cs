@@ -8,7 +8,6 @@ public class AdakDB
         get
         {
             var domainName = HttpContext.Current?.Request.Url.Host;
-            AdakLogger.Log.Warning(domainName);
             var cs = ConfigurationManager.ConnectionStrings[domainName]?.ConnectionString;
             return new Bank.AdakBankDataContext(cs);
         }
@@ -26,7 +25,6 @@ public class AdakDB
             {
                 if (cs.ToString().Contains(@"SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true"))
                     continue;
-                AdakLogger.Log.Warning(cs.ToString());
                 connectionStrings.Add(cs.ToString());
             }
             return connectionStrings;
