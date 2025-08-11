@@ -25,7 +25,7 @@
             height: 25px;
             border-radius: 50%; /* Makes a perfect circle */
             background-color: #007BFF; /* Background color */
-            color: white; /* Text color */
+            color: black; /* Text color */
             font-size: 10px; /* Number font size */
             font-weight: bold; /* Make the number bold */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow for effect */
@@ -285,7 +285,6 @@
         const FailedProjectReason = '110';
         const DesignerSteps = '120';
         const EditorSteps = '130';
-        const InvoiceStatus = '1001';
         const NotificationTemplate = '1002';
         const ProjectStatus = '1003';
 
@@ -324,29 +323,14 @@
             }
             var error = function (err) {
             }
-            if (typeId == InvoiceStatus || typeId == NotificationTemplate || typeId == ProjectStatus) {
+            if (typeId == NotificationTemplate || typeId == ProjectStatus) {
                 var defulatsms = $("#d_defaultsms").val();
                 var SendForWomen = $("#d_SendForWomen").prop("checked");
                 var SendForMen = $("#d_SendForMen").prop("checked");
 
                 let route = '';
                 let method = 'POST';
-                if (typeId == InvoiceStatus) {
-                    route = '/InvoiceStatus/Create';
-                    let createInvoiceStatusCommand =
-                    {
-                        id: d_id,
-                        title: title,
-                        active: active,
-                        notificationTemplate: defulatsms,
-                        priority: priority,
-                        sendToFather: SendForMen,
-                        sendToMother: SendForWomen,
-                        isRemovable: true,
-                        isEditable: true
-                    };
-                    ajaxAuthCall(method, route, createInvoiceStatusCommand, success, error);
-                } else if (typeId == NotificationTemplate) {
+                if (typeId == NotificationTemplate) {
                     route = '/NotificationTemplate/Update';
                     method = 'PUT';
                     let updateTemplateCommand =
@@ -372,12 +356,10 @@
                         toastr.warning('لطفاً اولویت را مشخص کنید', 'اولویت');
                         return;
                     }
-                    //if (!defulatsms) {
-                    //    toastr.warning('لطفاً توضیحات را وارد کنید', 'توضیحات');
-                    //    return;
-                    //}
-
-                    let color = $('#colorPicker').val();
+                    let color = null;
+                    if (!$('#divColorPicker').is(':hidden')) {
+                        color = $('#colorPicker').val();
+                    }
 
                     if (d_id == '') {
                         method = 'POST';
@@ -403,7 +385,10 @@
                     toastr.warning('لطفاً عنوان را مشخص کنید', 'عنوان');
                     return;
                 }
-                let color = $('#colorPicker').val();
+                let color = null;
+                if (!$('#divColorPicker').is(':hidden')) {
+                    color = $('#colorPicker').val();
+                }
 
                 let createItemCommand =
                 {
@@ -424,15 +409,6 @@
 
                 ajaxAuthCall(method, route, createItemCommand, success, error);
             }
-
-            //var desc = ""; //$("#d_desc").val();
-            //var state = "0";// $("#d_stateid").val();
-            //var SendForWomen = $("#d_SendForWomen").prop("checked");
-            //var SendForMen = $("#d_SendForMen").prop("checked");
-            //var DurationForSend = $("#d_DurationForSend").val();
-            //if (!ShowDurationForSend) {
-            //    DurationForSend = "0";
-            //}
         });
         $('#btn_close').click(function () {
             closeModal();
@@ -462,15 +438,7 @@
             div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
             defaultsms.style.visibility = 'hidden';
             document.getElementById('d_defaultsms').style.visibility = 'hidden';
-            if (typeId == InvoiceStatus) {
-                //invoiceStatus
-                $("#descTitle").html('متن پیش فرض');
-                $("#d_KeywordSMS").text("کلید واژه ها: {{عنوان خانواده}}-{{عنوان وضعیت}}");
-                $("#d_defaultsms").val(`خانواده {{عنوان خانواده}} عزیز سفارش شما در مرحله { {عنوان وضعیت } } قرار گرفته است`);
-                div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
-                defaultsms.style.visibility = 'visible';
-                document.getElementById('d_defaultsms').style.visibility = 'visible';
-            } else if (typeId == ProjectStatus || typeId == DesignerSteps || typeId == EditorSteps) {
+            if (typeId == ProjectStatus || typeId == DesignerSteps || typeId == EditorSteps) {
                 if (typeId == ProjectStatus) {
                     cmbProjectStatusSteps.classList.remove('d-none');
                 }
@@ -514,10 +482,7 @@
             if (userResponse) {
                 let query = `?id=${id}`;
                 let route = '';
-                if (filterTypeId == InvoiceStatus) {
-                    route = '/InvoiceStatus/Delete';
-                }
-                else if (filterTypeId == ProjectStatus) {
+                if (filterTypeId == ProjectStatus) {
                     route = '/ProjectStatus/Delete';
                 } else {
                     route = '/BasicData/Delete';
@@ -546,9 +511,7 @@
 
             let query = `?id=${id}`;
             let route = '';
-            if (filterTypeId == InvoiceStatus) {
-                route = '/InvoiceStatus/Get';
-            } else if (filterTypeId == NotificationTemplate) {
+            if (filterTypeId == NotificationTemplate) {
                 route = '/NotificationTemplate/Get';
             } else if (filterTypeId == ProjectStatus) {
                 route = '/ProjectStatus/Get';
@@ -616,7 +579,7 @@
                     }
 
                     //ارسال پیام به آقا یا خانم
-                    if (filterTypeId == InvoiceStatus || filterTypeId == NotificationTemplate) {
+                    if (filterTypeId == NotificationTemplate) {
                         div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
                     }
                     else {
@@ -653,7 +616,6 @@
                     `<option value='${item.id}'>${item.title}</option>`
                 ).join('');
 
-                options += `<option value='${InvoiceStatus}'>وضعیت فاکتور</option>`;
                 options += `<option value='${ProjectStatus}'>وضعیت پروژه</option>`;
                 $("#d_Typeid").html(options);
 
@@ -688,9 +650,7 @@
             var filter_typeId = $("#filter_typeId").val();
             let route = '';
             let query = `?pageIndex=${pageIndex}&pageSize=${pageSize}&searchText=${searchText}&category=${filter_typeId}`;
-            if (filter_typeId == InvoiceStatus) {
-                route = '/InvoiceStatus/GetStatuses';
-            } else if (filter_typeId == NotificationTemplate) {
+            if (filter_typeId == NotificationTemplate) {
                 route = '/NotificationTemplate/GetTemplates';
             } else if (filter_typeId == ProjectStatus) {
                 route = '/ProjectStatus/GetProjectStatuses';
@@ -706,11 +666,7 @@
 
                 dataTableRows.forEach(row => {
                     let deleteAction = `<button class='btnDataTable btnDataTable-delete' onclick='DeleteBasicData("${row.id}","${filter_typeId}")' title='حذف'>🗑</button>`;
-                    if (filter_typeId == InvoiceStatus) {
-                        if (!row.isRemovable) {
-                            deleteAction = '';
-                        }
-                    } else if (filter_typeId == NotificationTemplate) {
+                    if (filter_typeId == NotificationTemplate) {
                         deleteAction = '';
                     }
 
@@ -797,51 +753,6 @@
                 $("#message_active").prop("checked", result.active);
                 $("#txt_message").val(result.templateText);
                 $("#lbl_message_keyword").text("کلید واژه ها: " + result.keywords);
-                //$("#d_SendForMen").prop("checked", result.sendToFather);
-                //$("#d_SendForWomen").prop("checked", result.sendToMother);
-
-                //document.getElementById('d_defaultsms').style.visibility = 'visible';
-
-
-                //currentTypeId = filterTypeId;
-                //$("#d_Typeid").val(filterTypeId);
-                //$("#d_pariority").val(result.priority);
-                //$("#d_DurationForSend").val(result.sendDaysToEvent);
-                //$("#d_DescForUser").val(result.descForUser);
-                //$("#d_lbl_DusrationForSend").text('روز مانده به ' + result.title);
-                //$("#model_basicDataHeader").text("ویرایش اطلاعات پایه " + result.title);
-
-                //document.getElementById("div_typeData").style.display = 'none';
-                //if (result.systematic) {
-                //    document.getElementById("div_priority").style.display = 'none';
-                //}
-
-                ////نمایش مدت زمان ارسال پیام
-                //ShowDurationForSend = filterTypeId == NotificationTemplate;
-                //if (ShowDurationForSend) {
-                //    div_DurationForSend.style.visibility = 'visible';
-                //}
-                //else {
-                //    div_DurationForSend.style.visibility = 'hidden';
-                //}
-
-                //////توضیحات برای کاربر
-                //if (result.descForUser) {
-                //    div_DescForUser.style.visibility = 'visible';
-                //}
-                //else {
-                //    div_DescForUser.style.visibility = 'hidden';
-                //}
-
-                ////ارسال پیام به آقا یا خانم
-                //if (filterTypeId == InvoiceStatus || filterTypeId == NotificationTemplate) {
-                //    div_Show_SendFor_Men_Or_Women.style.visibility = 'visible';
-                //}
-                //else {
-                //    div_Show_SendFor_Men_Or_Women.style.visibility = 'hidden';
-                //}
-                //$("#d_Typeid").change();
-
             }, function (err) {
                 ShowError("خطا در دریافت اطلاعات");
             });
