@@ -38,12 +38,6 @@
             cursor: grab;
         }
 
-           
-
-        
-
-        
-
         .project-days {
             font-size: 2rem;
             font-weight: bold;
@@ -325,7 +319,7 @@
     <script src="assets/js/cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <%--<script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>--%>
     <script src="assets/js/cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
-
+    <script src="assets/js/users/forcmb.js"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="Server">
     <script>
@@ -883,6 +877,11 @@
                 query += `&toDate=${encodeURIComponent(toDate)}`;
             }
 
+            let creatorId = $('#filter_Causer').val();
+            if (creatorId) {
+                query += `&creatorId=${creatorId}`;
+            }
+
             return query;
         }
         function setPageQuery() {
@@ -928,26 +927,22 @@
                 $('#filter_Step_Videographi').val(editorStep);
             }
 
-            let fromDate = params.get("fromDate");
-            if (fromDate) {
-                $('#filter_From_Date').val(fromDate);
-            }
-
-            let toDate = params.get("toDate");
-            if (toDate) {
-                $('#filter_To_Date').val(toDate);
+            let creatorId = params.get("creatorId");
+            if (creatorId) {
+                $('#filter_Causer').val(creatorId);
             }
         }
     </script>
 
     <script>
         async function fillAllFiltersAsync() {
-            let today = getToday();
-            let fromDate = today.substr(0, 4) + "/01/01";
-            let toDate = today.substr(0, 4) + "/12/29";
-            $('#filter_From_Date').val(convertEnglishToPersianNumbers(fromDate));
-            $('#filter_To_Date').val(convertEnglishToPersianNumbers(toDate));
+            //let today = getToday();
+            //let fromDate = today.substr(0, 4) + "/01/01";
+            //let toDate = today.substr(0, 4) + "/12/29";
+            //$('#filter_From_Date').val(convertEnglishToPersianNumbers(fromDate));
+            //$('#filter_To_Date').val(convertEnglishToPersianNumbers(toDate));
 
+            fillInvoiceCreatorsCMBAsync('filter_Causer', false);
             await Promise.all([
                 fillProjectTypesAsync(),
                 fillFamiliesAsync(),
