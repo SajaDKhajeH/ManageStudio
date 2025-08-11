@@ -390,24 +390,7 @@
                                         <th>توضیحات</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>مدیر</td>
-                                        <td>1403/03/10</td>
-                                        <td>در دست طراحی</td>
-                                        <td>
-                                            <button
-                                                class="btn btn-link p-0"
-                                                type="button"
-                                                data-bs-toggle="popover"
-                                                data-bs-placement="top"
-                                                data-bs-trigger="focus"
-                                                title="متن لاگ"
-                                                data-bs-content="این عکس مربوط به نمای جنوبی پروژه است. گرفته شده در نور روز با دوربین اصلی.">
-                                                مشاهده
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tbody id="table-log">
                                 </tbody>
                             </table>
                         </div>
@@ -1347,6 +1330,66 @@
 
     </script>
 
+    <%--logs--%>
+    <script>
+
+        async function showLogsAsync() {
+            $('#table-log').html('');
+            $('#count-logs').html('0');
+
+            if (!projectId) {
+                return;
+            }
+            //در دست طراحی
+            const route = `/Project/GetLogs`;
+            let query = `?projectId=${projectId}`;
+
+            await ajaxGet(route + query, function (res) {
+                let items = res.items;
+                $('#count-logs').html(items.length);
+                let html = items.map(generateLogRow).join('');
+                $('#table-log').html(html);
+
+                document.querySelectorAll('.log-popover').forEach(el => {
+                    const raw = el.dataset.log || '';
+                    const encoded = raw
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/\n/g, '<br>');
+
+                    new bootstrap.Popover(el, {
+                        html: true,
+                        content: encoded,
+                        trigger: 'focus',
+                        placement: 'top',
+                        title: 'متن لاگ'
+                    });
+                });
+
+            });
+        }
+        function generateLogRow(item) {
+            return `
+                  <tr>
+                      <td>${item.creator}</td>
+                      <td>${convertEnglishToPersianNumbers(item.dateTime)}</td>
+                      <td>در دست طراحی</td>
+                      <td>
+                          <button
+                              class="btn btn-link p-0 log-popover"
+                              type="button"
+                              title="متن لاگ"
+                              data-log="${item.text}">
+                              مشاهده
+                          </button>
+                      </td>
+                  </tr>
+                `;
+        }
+
+    </script>
+
     <%--schedules--%>
     <script>
 
@@ -1479,10 +1522,10 @@
 
             return `
                   <tr ${isCancelled ? 'class="table-warning"' : ''}>
-                    <td>${item.date}</td>
-                    <td>${item.shortTime}</td>
+                    <td>${convertEnglishToPersianNumbers(item.date)}</td>
+                    <td>${convertEnglishToPersianNumbers(item.shortTime)}</td>
                     <td>${item.creator}</td>
-                    <td>${item.creationDateTime}</td>
+                    <td>${convertEnglishToPersianNumbers(item.creationDateTime)}</td>
                     <td>${badge}</td>
                     <td>${actionButton}</td>
                   </tr>
@@ -1533,7 +1576,8 @@
                 fillEditorsAsync(),
                 showSchedulesAsync(),
                 showInvoicesAsync(),
-                showPaymentsAsync()
+                showPaymentsAsync(),
+                showLogsAsync()
             ]);
 
             if (projectTypeId) {

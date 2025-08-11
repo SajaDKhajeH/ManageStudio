@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="DesignerProcessPhoto.aspx.cs" Inherits="DesignerProcessPhoto" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="EditorProcessVideo.aspx.cs" Inherits="EditorProcessVideo" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
     <style>
@@ -788,7 +788,7 @@
             });
         }
         async function getWorkerStepsAsync() {
-            let route = '/User/GetDesignerStepsWithDetail';
+            let route = '/User/GetEditorStepsWithDetail';
             await ajaxGet(route, function (res) {
                 if (!res.success) {
                     ShowError(res.message);

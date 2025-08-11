@@ -315,7 +315,6 @@
             </div>
         </div>
     </div>
-    <%--<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>--%>
     <script src="assets/js/cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <%--<script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>--%>
     <script src="assets/js/cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
