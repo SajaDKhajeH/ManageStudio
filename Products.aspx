@@ -356,8 +356,8 @@
                 <tr>
                     <td>${row.groupTitle}</td>
                     <td>${row.title}</td>
-                    <td>${CurrencyFormatted(row.buyPrice)}</td>
-                    <td>${CurrencyFormatted(row.salePrice)}</td>
+                    <td>${PersianCurrencyFormatted(row.buyPrice)}</td>
+                    <td>${PersianCurrencyFormatted(row.salePrice)}</td>
                     <td>${(row.checkInventory ? "بله" : "خیر")}</td>
                     <td>${row.inventory}</td>
                     <td>${status}</td>
