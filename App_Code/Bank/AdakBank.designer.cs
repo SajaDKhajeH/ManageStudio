@@ -2852,7 +2852,7 @@ namespace Bank
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefultView", DbType="VarBinary(MAX)", CanBeNull=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefultView", DbType="VarBinary(MAX)")]
 		public System.Data.Linq.Binary DefultView
 		{
 			get

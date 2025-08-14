@@ -163,14 +163,14 @@
                         <div class="kanban-board">
                             <script>
                                 const statuses = [
-                                    { key: 'readyForDesign', label: 'آماده طراحی', color: '#6c757d' },
-                                    { key: 'in_Design', label: 'در دست طراحی', color: '#0d6efd' },
-                                    { key: 'AcceptCustomer', label: 'در انتظار تایید مشتری', color: '#ffc107' },
-                                    { key: 'ready_for_Print', label: 'آماده چاپ', color: '#20c997' },
-                                    { key: 'ready_for_Delivery', label: 'اماده تحویل', color: '#198754' },
-                                    { key: 'Deliverd', label: 'تحویل داده شد', color: '#dc3545' }
+                                    { key: 'readyForDesign', label: 'آماده طراحی', color: '#6c757d', showCheckList: false, sort: 1 },
+                                    { key: 'in_Design', label: 'در دست طراحی', color: '#0d6efd', showCheckList: false, sort: 2 },
+                                    { key: 'AcceptCustomer', label: 'در انتظار تایید مشتری', color: '#ffc107', showCheckList: true, sort: 3 },
+                                    { key: 'ready_for_Print', label: 'آماده چاپ', color: '#20c997', showCheckList: true, sort: 4 },
+                                    { key: 'ready_for_Delivery', label: 'اماده تحویل', color: '#198754', showCheckList: true, sort: 5 },
+                                    { key: 'Deliverd', label: 'تحویل داده شد', color: '#dc3545', showCheckList: false, sort: 6 }
                                 ];
-    </script>
+                            </script>
 
                             <div id="kanban-container" class="d-flex gap-3 w-100"></div>
                         </div>
@@ -266,7 +266,7 @@
                             <input type="checkbox" id="item1" class="form-check-input me-2" style="width: 16px; height: 16px;">
                             <label for="item1" class="form-check-label">بررسی صحت اطلاعات</label>
                         </div>
-                       <%-- <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
+                        <%-- <div class="d-flex align-items-center mb-2" style="font-size: 14px;">
                             <input type="checkbox" id="item2" class="form-check-input me-2" style="width: 16px; height: 16px;">
                             <label for="item2" class="form-check-label">تایید نهایی توسط سرپرست</label>
                         </div>
@@ -313,25 +313,25 @@
         });
         const kanbanData = {
             readyForDesign: [
-                {id:1, title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true },
-                { id:2, title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
-                { id:3,title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true },
+                { id: 1, title: 'پروژه پهلوان', family: 'پهلوان', date: '1402/04/01', urgent: false, debt: true },
+                { id: 2, title: 'پروژه نوزادی', family: 'احمدی', date: '1403/04/01', urgent: false, debt: false },
+                { id: 3, title: 'پروژه نوزادی2', family: 'مرادی', date: '1403/03/01', urgent: false, debt: true },
 
             ],
             in_Design: [
-                {id:4, title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
-                {id:5, title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
-                {id:6, title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true },
-                { id:7, title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
+                { id: 4, title: 'پروژه عروسی', family: 'کریمی', date: '1403/04/10', urgent: true, debt: false },
+                { id: 5, title: 'پروژه تولد', family: 'احمدی', date: '1403/05/10', urgent: true, debt: false },
+                { id: 6, title: 'فرمالیته', family: 'نعمتی', date: '1403/05/10', urgent: true, debt: true },
+                { id: 7, title: 'دندونی', family: 'کواکبیان', date: '1403/05/10', urgent: true, debt: false }
             ],
             AcceptCustomer: [
-                { id:8,title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true }
+                { id: 8, title: 'پروژه فارغ‌التحصیلی', family: 'جعفری', date: '1403/03/29', urgent: false, debt: true }
             ],
             ready_for_Print: [
-                { id:9, title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true }
+                { id: 9, title: 'پروژه تبلیغاتی', family: 'قاسمی', date: '1403/04/02', urgent: false, debt: true }
             ],
             ready_for_Delivery: [
-                { id:10, title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true }
+                { id: 10, title: 'پروژه خانوادگی', family: 'نصیری', date: '1403/02/22', urgent: false, debt: true }
             ],
             Deliverd: [
 
@@ -502,7 +502,7 @@
         function onCardDrop(cardElement, sourceColumnElement, targetColumnElement) {
             const sourceStatus = sourceColumnElement.dataset.status;
             const targetStatus = targetColumnElement.dataset.status;
-            
+
             const cardId = cardElement.dataset.id;
             // پیدا کردن کارت و حذف از ستون مبدا
             let movedItem = null;
@@ -553,7 +553,7 @@
 
             }
         });
-  </script>
+    </script>
     <script>
         function showPhotos(projectTitle) {
             const samplePhotos = [
@@ -763,19 +763,33 @@
                         toColumn = evt.to;
                         fromColumn = evt.from;
 
+
+                        const targetCoolumn = evt.item.closest('.kanban-column');
+                        const sourceColumn = fromColumn.closest('.kanban-column');
+
+                        const sourceInfo = statuses.find(s => s.key === sourceColumn.dataset.status);
+
+                        const targetInfo = statuses.find(s => s.key === targetCoolumn.dataset.status);
+
                         // حذف کارت از ستون جدید (تا وقتی چک لیست تایید نشده)
                         toColumn.removeChild(draggedCard);
 
                         // ذخیره نسخه کپی کارت (در صورت نیاز به برگردوندن)
                         clonedCard = draggedCard.cloneNode(true); // نسخه کپی برای برگردوندن
+                        //اگر ستون چک لیست داشت نمایش بده در غیر اینصوررت جابجا بشه
+                        if (targetInfo.sort > sourceInfo.sort && targetInfo.showCheckList) {
+                            // ریست چک‌لیست
+                            const checklistForm = document.getElementById('checklistForm');
+                            checklistForm.reset();
+                            document.getElementById('checklistSubmit').disabled = true;
 
-                        // ریست چک‌لیست
-                        const checklistForm = document.getElementById('checklistForm');
-                        checklistForm.reset();
-                        document.getElementById('checklistSubmit').disabled = true;
-
-                        const checklistModal = new bootstrap.Modal(document.getElementById('checklistModal'));
-                        checklistModal.show();
+                            const checklistModal = new bootstrap.Modal(document.getElementById('checklistModal'));
+                            checklistModal.show();
+                        }
+                        else {
+                            toColumn.appendChild(draggedCard); // کارت اصلی رو اضافه کن
+                            onCardDrop(draggedCard, fromColumn, toColumn);
+                        }
                     }
                 });
             });
