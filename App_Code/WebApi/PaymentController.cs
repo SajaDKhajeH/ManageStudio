@@ -21,15 +21,31 @@ public class PaymentController : ApiController
     public async Task<IHttpActionResult> GoToGatewayAsync([FromBody] PaymentGoToGateway input)
     {
         string baseUrl = ConfigurationSettings.AppSettings["PortalUrl"];
-        string callbackUrl = $"{baseUrl}/payresult?tran={"tran.Guid"}";
+
+        Guid guid = Guid.NewGuid();
+
+
+        AdakDB.Db.usp_OnlineTurnRequest_Add(
+                input.FirstName,
+                input.LastName,
+                input.Gender,
+                input.ScheduleDate,
+                input.ScheduleTime,
+                input.DepositAmount,
+                input.Mobile,
+                guid,
+                input.PackageId,
+                ""
+            );
+        string callbackUrl = $"{baseUrl}/payresult?tran={guid}";
         string merchant_id = "cfa83c81-89b0-4993-9445-2c3fcd323455";
 
         var result = await _zarrinpal.BeginAsync(new
         {
             merchant_id = merchant_id,
-            amount = input.DepositAmount.ToString(),
+            amount = Settings.IsToman ? input.DepositAmount.ToString() : (input.DepositAmount / 10).ToString(),
             callback_url = callbackUrl,
-            description = "model.Description",
+            description = "رزور نوبت " + input.FirstName + " " + input.LastName + " برای تاریخ " + input.ScheduleDate,
             metadata = new
             {
                 mobile = input.Mobile

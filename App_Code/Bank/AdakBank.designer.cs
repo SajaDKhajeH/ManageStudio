@@ -22,7 +22,7 @@ namespace Bank
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Studio_Demo")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Studio_HesBaby_AranBidgol")]
 	public partial class AdakBankDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -36,7 +36,7 @@ namespace Bank
     #endregion
 		
 		public AdakBankDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["J_AdakStudioConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Studio_HesBaby_AranBidgolConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -1381,6 +1381,20 @@ namespace Bank
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id);
 			return ((ISingleResult<usp_OnlineTurnSettings_GetTimes_ForWebsiteResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnRequest_Add")]
+		public int usp_OnlineTurnRequest_Add([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Name", DbType="NVarChar(1001)")] string name, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Family", DbType="NVarChar(1001)")] string family, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Sex", DbType="Bit")] System.Nullable<bool> sex, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="VarChar(10)")] string date, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Time", DbType="VarChar(10)")] string time, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Price", DbType="Decimal(18,0)")] System.Nullable<decimal> price, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Mobile", DbType="VarChar(110)")] string mobile, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GUID", DbType="UniqueIdentifier")] System.Nullable<System.Guid> gUID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PackageId", DbType="BigInt")] System.Nullable<long> packageId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(4000)")] string desc)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), name, family, sex, date, time, price, mobile, gUID, packageId, desc);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_OnlineTurnRequest_Select")]
+		public ISingleResult<usp_OnlineTurnRequest_SelectResult> usp_OnlineTurnRequest_Select([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GUID", DbType="UniqueIdentifier")] System.Nullable<System.Guid> gUID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), gUID);
+			return ((ISingleResult<usp_OnlineTurnRequest_SelectResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -2831,7 +2845,7 @@ namespace Bank
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefultView", DbType="VarBinary(MAX)", CanBeNull=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DefultView", DbType="VarBinary(MAX)")]
 		public System.Data.Linq.Binary DefultView
 		{
 			get
@@ -13573,6 +13587,194 @@ namespace Bank
 				if ((this._Reserved != value))
 				{
 					this._Reserved = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_OnlineTurnRequest_SelectResult
+	{
+		
+		private string _OTR_Name;
+		
+		private string _OTR_Family;
+		
+		private System.Nullable<bool> _OTR_Sex;
+		
+		private string _OTR_RequestDate;
+		
+		private string _OTR_RequestTime;
+		
+		private System.Nullable<decimal> _OTR_Price;
+		
+		private string _OTR_Mobile;
+		
+		private string _OTR_Desc;
+		
+		private System.Nullable<long> _OTR_PackageId;
+		
+		private long _OTR_Id;
+		
+		public usp_OnlineTurnRequest_SelectResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Name", DbType="NVarChar(1001)")]
+		public string OTR_Name
+		{
+			get
+			{
+				return this._OTR_Name;
+			}
+			set
+			{
+				if ((this._OTR_Name != value))
+				{
+					this._OTR_Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Family", DbType="NVarChar(1001)")]
+		public string OTR_Family
+		{
+			get
+			{
+				return this._OTR_Family;
+			}
+			set
+			{
+				if ((this._OTR_Family != value))
+				{
+					this._OTR_Family = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Sex", DbType="Bit")]
+		public System.Nullable<bool> OTR_Sex
+		{
+			get
+			{
+				return this._OTR_Sex;
+			}
+			set
+			{
+				if ((this._OTR_Sex != value))
+				{
+					this._OTR_Sex = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_RequestDate", DbType="VarChar(10)")]
+		public string OTR_RequestDate
+		{
+			get
+			{
+				return this._OTR_RequestDate;
+			}
+			set
+			{
+				if ((this._OTR_RequestDate != value))
+				{
+					this._OTR_RequestDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_RequestTime", DbType="VarChar(5)")]
+		public string OTR_RequestTime
+		{
+			get
+			{
+				return this._OTR_RequestTime;
+			}
+			set
+			{
+				if ((this._OTR_RequestTime != value))
+				{
+					this._OTR_RequestTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Price", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> OTR_Price
+		{
+			get
+			{
+				return this._OTR_Price;
+			}
+			set
+			{
+				if ((this._OTR_Price != value))
+				{
+					this._OTR_Price = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Mobile", DbType="VarChar(50)")]
+		public string OTR_Mobile
+		{
+			get
+			{
+				return this._OTR_Mobile;
+			}
+			set
+			{
+				if ((this._OTR_Mobile != value))
+				{
+					this._OTR_Mobile = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Desc", DbType="NVarChar(4000)")]
+		public string OTR_Desc
+		{
+			get
+			{
+				return this._OTR_Desc;
+			}
+			set
+			{
+				if ((this._OTR_Desc != value))
+				{
+					this._OTR_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_PackageId", DbType="BigInt")]
+		public System.Nullable<long> OTR_PackageId
+		{
+			get
+			{
+				return this._OTR_PackageId;
+			}
+			set
+			{
+				if ((this._OTR_PackageId != value))
+				{
+					this._OTR_PackageId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTR_Id", DbType="BigInt NOT NULL")]
+		public long OTR_Id
+		{
+			get
+			{
+				return this._OTR_Id;
+			}
+			set
+			{
+				if ((this._OTR_Id != value))
+				{
+					this._OTR_Id = value;
 				}
 			}
 		}

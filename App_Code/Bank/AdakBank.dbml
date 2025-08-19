@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_Demo" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_Demo;User ID=Studio_Demo" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="J_AdakStudioConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_HesBaby_AranBidgol" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_HesBaby_AranBidgol;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Studio_HesBaby_AranBidgolConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Tbl_AuthKey" Member="Tbl_AuthKeys">
     <Type Name="Tbl_AuthKey">
       <Column Name="AK_ID" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1912,6 +1912,34 @@
       <Column Name="StartTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
       <Column Name="EndTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
       <Column Name="Reserved" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.usp_OnlineTurnRequest_Add" Method="usp_OnlineTurnRequest_Add">
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Family" Parameter="family" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Sex" Parameter="sex" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Time" Parameter="time" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Price" Parameter="price" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="Mobile" Parameter="mobile" Type="System.String" DbType="VarChar(110)" />
+    <Parameter Name="GUID" Parameter="gUID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="PackageId" Parameter="packageId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(4000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_OnlineTurnRequest_Select" Method="usp_OnlineTurnRequest_Select">
+    <Parameter Name="GUID" Parameter="gUID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <ElementType Name="usp_OnlineTurnRequest_SelectResult">
+      <Column Name="OTR_Name" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="OTR_Family" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="OTR_Sex" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="OTR_RequestDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="OTR_RequestTime" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="OTR_Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="OTR_Mobile" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="OTR_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="OTR_PackageId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="OTR_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>
