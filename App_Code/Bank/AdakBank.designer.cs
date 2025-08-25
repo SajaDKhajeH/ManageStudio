@@ -35,12 +35,6 @@ namespace Bank
     partial void DeleteTbl_AuthKey(Tbl_AuthKey instance);
     #endregion
 		
-		public AdakBankDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Studio_HesBaby_AranBidgolConnectionString"].ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public AdakBankDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
@@ -412,15 +406,15 @@ namespace Bank
 			rersultId = ((System.Nullable<long>)(result.GetParameterValue(10)));
 			return ((int)(result.ReturnValue));
 		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Setting_Select_By_Key")]
-		public ISingleResult<usp_Setting_Select_By_KeyResult> usp_Setting_Select_By_Key([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Key", DbType="VarChar(110)")] string key)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), key);
-			return ((ISingleResult<usp_Setting_Select_By_KeyResult>)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.Get_DefaultTemplateID")]
+
+        [global::System.Data.Linq.Mapping.FunctionAttribute(Name = "dbo.usp_Setting_Select_By_Key")]
+        public ISingleResult<usp_Setting_Select_By_KeyResult> usp_Setting_Select_By_Key([global::System.Data.Linq.Mapping.ParameterAttribute(Name = "Key", DbType = "VarChar(110)")] string key)
+        {
+            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), key);
+            return ((ISingleResult<usp_Setting_Select_By_KeyResult>)(result.ReturnValue));
+        }
+
+        [global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.Get_DefaultTemplateID")]
 		public ISingleResult<Get_DefaultTemplateIDResult> Get_DefaultTemplateID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID", DbType="Int")] System.Nullable<int> iD)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD);
@@ -1395,6 +1389,16 @@ namespace Bank
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), gUID);
 			return ((ISingleResult<usp_OnlineTurnRequest_SelectResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Turn_Add_AfterPayOnline")]
+		public int usp_Turn_Add_AfterPayOnline([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GUID", DbType="UniqueIdentifier")] System.Nullable<System.Guid> gUID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TrackingCode", DbType="VarChar(1001)")] string trackingCode, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RersultId", DbType="BigInt")] ref System.Nullable<long> rersultId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), gUID, trackingCode, message, hasError, rersultId);
+			message = ((string)(result.GetParameterValue(2)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			rersultId = ((System.Nullable<long>)(result.GetParameterValue(4)));
+			return ((int)(result.ReturnValue));
 		}
 	}
 	

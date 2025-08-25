@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_HesBaby_AranBidgol" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_HesBaby_AranBidgol;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Studio_HesBaby_AranBidgolConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Tbl_AuthKey" Member="Tbl_AuthKeys">
     <Type Name="Tbl_AuthKey">
       <Column Name="AK_ID" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1941,5 +1940,13 @@
       <Column Name="OTR_PackageId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
       <Column Name="OTR_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.usp_Turn_Add_AfterPayOnline" Method="usp_Turn_Add_AfterPayOnline">
+    <Parameter Name="GUID" Parameter="gUID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="TrackingCode" Parameter="trackingCode" Type="System.String" DbType="VarChar(1001)" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
   </Function>
 </Database>
