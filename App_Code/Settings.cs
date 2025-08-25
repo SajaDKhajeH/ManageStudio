@@ -31,6 +31,14 @@ public class Settings
             return AdakDB.Db.usp_Setting_Select_By_Key(DefaultDataIDs.Setting_Studio_Name).SingleOrDefault().Se_Value;
         }
     }
+
+    public static string MerchantCodeZarrinpal
+    {
+        get
+        {
+            return AdakDB.Db.usp_Setting_Select_By_Key("MerchantCodeZarrinpal").SingleOrDefault().Se_Value;
+        }
+    }
     public static string Website_Url
     {
         get

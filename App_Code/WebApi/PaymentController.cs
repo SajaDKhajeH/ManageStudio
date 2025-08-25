@@ -23,44 +23,44 @@ public class PaymentController : ApiController
         string baseUrl = ConfigurationSettings.AppSettings["PortalUrl"];
 
         Guid guid = Guid.NewGuid();
-
-
-        AdakDB.Db.usp_OnlineTurnRequest_Add(
-                input.FirstName,
-                input.LastName,
-                input.Gender,
-                input.ScheduleDate,
-                input.ScheduleTime,
-                input.DepositAmount,
-                input.Mobile,
-                guid,
-                input.PackageId,
-                ""
-            );
-        string callbackUrl = $"{baseUrl}/payresult?tran={guid}";
-        string merchant_id = "cfa83c81-89b0-4993-9445-2c3fcd323455";
-
-        var result = await _zarrinpal.BeginAsync(new
+        if (!Settings.MerchantCodeZarrinpal.IsNullOrEmpty())
         {
-            merchant_id = merchant_id,
-            amount = Settings.IsToman ? input.DepositAmount.ToString() : (input.DepositAmount / 10).ToString(),
-            callback_url = callbackUrl,
-            description = "رزور نوبت " + input.FirstName + " " + input.LastName + " برای تاریخ " + input.ScheduleDate,
-            metadata = new
+
+            AdakDB.Db.usp_OnlineTurnRequest_Add(
+                    input.FirstName,
+                    input.LastName,
+                    input.Gender,
+                    input.ScheduleDate,
+                    input.ScheduleTime,
+                    input.DepositAmount,
+                    input.Mobile,
+                    guid,
+                    input.PackageId,
+                    ""
+                );
+            string callbackUrl = $"{baseUrl}/payresult?tran={guid}";
+
+
+
+            string merchant_id = Settings.MerchantCodeZarrinpal;
+
+            var result = await _zarrinpal.BeginAsync(new
             {
-                mobile = input.Mobile
-            }
-        });
-        //tran.Code = result.Data?.Code ?? 0;
-        //tran.Message = result.Message;
-        //tran.ResponseContent = result.Data?.ResponseContent;
-        //if (result.Success)
-        //{
-        //    tran.Authority = result.Data?.Authority;
-        //    tran.Fee = result.Data?.Fee;
-        //}
-        //await _db.SaveChangesAsync();
-        return Ok(result);
+                merchant_id = merchant_id,
+                amount = Settings.IsToman ? input.DepositAmount.ToString() : (input.DepositAmount / 10).ToString(),
+                callback_url = callbackUrl,
+                description = "رزور نوبت " + input.FirstName + " " + input.LastName + " برای تاریخ " + input.ScheduleDate,
+                metadata = new
+                {
+                    mobile = input.Mobile
+                }
+            });
+            return Ok(result);
+        }
+        else
+        {
+            return null;
+        }
     }
     [HttpGet, Route("Api/Payment/GetReceiptInfo")]
     public async Task<OperationResult<ReceiptDto>> GetReceiptInfoAsync(string tran)
