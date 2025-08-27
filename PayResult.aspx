@@ -23,7 +23,7 @@
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="assets/plugins/global/plugins.bundle.rtl.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css" />
-     <style>
+    <style>
         @font-face {
             font-family: 'ISW';
             src: url('assets/Fonts/IRANSANSWEB.TTF');
@@ -57,68 +57,86 @@
     </style>
 </head>
 <body>
-   <div class="payment-container">
+    <div class="payment-container">
         <img src="<%Response.Write(SpecialStudio.Logo); %>" alt="لوگوی آتلیه" class="payment-logo">
         <h3 class="fw-bold"><%Response.Write(Settings.StudioName); %></h3>
         <hr>
-        <h5 class="text-danger"> <span class="fw-bold" id="mestext"></span></h5>
-         <hr>
+        <div id="divMain">
+
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
 <script type="text/javascript">
-    var k = "";
-    function GoToPayment() {
-        $.ajax({
-            type: "POST",
-            url: "Pay.aspx/GoToPayment",
-            data: JSON.stringify({ key: k }), // مقدار را درست ارسال کنید
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
-                var res = msg.d;
-                if (!res.Result) {
-                    $("#familyTitle").text(""); // مقدار را درست ست کنید
-                    $("#payPrice").text("");
-                    alert(res.Message);
-                } else {
-                    $("#familyTitle").text(res.FamilyTitle); // مقدار را درست ست کنید
-                    $("#payPrice").text(res.Price);
-                }
-            },
-            error: function () {
-                alert("خطا در دریافت اطلاعات پرداخت");
-            }
-        });
-    }
+
     $(document).ready(function () {
-        
+
         let params = new URLSearchParams(document.location.search);
-        k = params.get("tran");
+        let t = params.get("tran");
+        let a = params.get("Authority");
+        let s = params.get("Status");
 
         $.ajax({
             type: "POST",
-            url: "PayResult.aspx/SendSMS_PayLink",
-            data: JSON.stringify({ key: k }), // مقدار را درست ارسال کنید
+            url: "Api/Payment/SetResult",
+            data: JSON.stringify({ tran: t, authority: a, status: s }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (msg) {
-                var res = msg.d;
-                if (!res.Result) {
-                    $("#familyTitle").text(""); // مقدار را درست ست کنید
-                    $("#payPrice").text("");
-                    alert(res.Message);
+            success: function (res) {
+                if (!res.Success) {
+                    let html = '';
+                    html +=
+                        `
+                        <h5 class="text-danger"><span class="fw-bold">❌${res.Message} </span></h5>
+                    `;
+                    html +=
+                        `
+                        <h5 class="text-danger"><span class="fw-bold">شماره پیگیری:</span></h5>
+                        <h5 class="text-danger"><span class="fw-bold">${t}</span></h5>
+                        <hr>
+                    `;
+                    html +=
+                        `
+                        <h5 class="text-danger"><span class="fw-bold">شناسه تراکنش:</span></h5>
+                        <h5 class="text-danger"><span class="fw-bold">${a}</span></h5>
+                        <hr>
+                    `;
+                    $('#divMain').html(html);
                 } else {
-                    $("#familyTitle").text(res.FamilyTitle); // مقدار را درست ست کنید
-                    $("#payPrice").text(res.Price);
+                    let d = res.Data;
+                    let html = '';
+                    html +=
+                        `
+                        <h5 class="text-success"><span class="fw-bold">✅${d.Description} </span></h5>
+                    `;
+                    html +=
+                        `
+                        <h5 class="text-success"><span class="fw-bold">زمان تراکنش:</span></h5>
+                        <h5 class="text-success"><span class="fw-bold">${d.DateTime}</span></h5>
+                        <hr>
+                    `;
+                    html +=
+                        `
+                        <h5 class="text-success"><span class="fw-bold">مبلغ:</span></h5>
+                        <h5 class="text-success"><span class="fw-bold">${d.Price}</span></h5>
+                        <hr>
+                    `;
+                    html +=
+                        `
+                        <h5 class="text-success"><span class="fw-bold">شماره پیگیری:</span></h5>
+                        <h5 class="text-success"><span class="fw-bold">${d.RefId}</span></h5>
+                        <hr>
+                    `;
+
+                    $('#divMain').html(html);
                 }
             },
             error: function () {
                 alert("خطا در دریافت اطلاعات پرداخت");
             }
         });
-        
+
     });
-    
-</script> 
+
+</script>
