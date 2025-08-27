@@ -22,4 +22,10 @@ public class OnlineTurnBookingController : ApiController
                 Select(x => new { Date = x.DateS, Time = x.StartTime, x.Reserved }).ToList();
         return Json(list);
     }
+    [HttpGet, Route("Api/OnlineTurnBooking/GetCurrency")]
+    public string GetCurrency()
+    {
+        return Settings.TextAfterPrice;
+    }
+
 }
