@@ -192,7 +192,7 @@
                         <div class="row">
                             <div class="col-md-12 fv-row">
                                 <label class="fs-6 fw-bold mb-2">توضیحات و قوانین عکاسی</label>
-                                <textarea id="ots_desc" placeholder="توضیحات و قوانین عکاسی" rows="5" ></textarea>
+                                <textarea id="ots_desc" placeholder="توضیحات و قوانین عکاسی" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -238,11 +238,11 @@
                         ShowError(msg.d.Message);
                     }
                     else {
-                        var formfiles = new FormData();
-                        formfiles.append("file", filepath);
-                        formfiles.append('createThumbnail', "0");
-                        formfiles.append('fromProfile', "1");
-
+                        //var formfiles = new FormData();
+                        //formfiles.append("file", filepath);
+                        //formfiles.append('createThumbnail', "0");
+                        //formfiles.append('fromProfile', "1");
+                        uploadFile();
 
                         toastr.success(msg.d.Message, "موفق");
                         closeModalOnlineTurnSetting();
@@ -259,6 +259,60 @@
                 }
             });
         };
+        function uploadFile() {
+            let file = lastVoiceFile;
+            if (file == null) {
+                SaveHomework();
+                return;
+            }
+            let IsFromPractice = '1';
+
+            let formData = new FormData();
+
+            formData.append("file", file);
+            formData.append("codedCalendarId", calendarId);
+            formData.append("IsFromPractice", IsFromPractice);
+
+
+            $.ajax({
+                type: 'post',
+                url: '/student/handler.ashx',
+                data: formData,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res.success) {
+                        SaveHomework(res?.relativeUrl ?? res.fileSrc);
+                        return;
+                    }
+                    //isUploaded(conTag);
+                    SaveHomework();
+                },
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        //myXhr.upload.addEventListener('progress', function (e) {
+                        //    if (e.lengthComputable) {
+                        //        var max = e.total;
+                        //        var current = e.loaded;
+                        //        var Percentage = (current * 100) / max;
+                        //        loaderUpdate(Percentage.toFixed(0), loaderId);
+                        //        if (Percentage >= 100) {
+                        //            hideLoader($(voiceBtn).closest(conTag).find('.voice'), loaderId);
+                        //        }
+                        //    }
+                        //}, false);
+                    }
+                    return myXhr;
+                },
+                error: function (err) {
+                    console.warn('هنگام آپلود خطایی رخ داد');
+                    SaveHomework();
+                }
+            });
+        }
         $('#btncancel').click(function () {
             closeModalOnlineTurnSetting();
         });
@@ -347,6 +401,7 @@
         let currentPage = 1;
         let pageSize = 5;
         var isFileChanged = false;
+        let uploadedFile = null;
         $(document).ready(function () {
             $("#master_PageTitle").text("تنظیمات نوبت دهی آنلاین");
             $("#s_pageSize").val("5");
@@ -355,8 +410,14 @@
             isFileChanged = false;
             $('#ots_filepath').on('change', function () {
                 isFileChanged = true;
-                var fileName = $(this)[0].files[0]?.name || 'فایلی انتخاب نشده است';
-                alert(fileName);
+                uploadedFile = null;
+                $('#file-info').text('');
+                var fileName = $(this)[0].files[0]?.name || '';
+                if (!fileName) {
+                    alert('فایلی انتخاب نشده است');
+                    return;
+                }
+                uploadedFile = $(this)[0].files[0];
                 $('#file-info').text('فایل جدید: ' + fileName);
             });
         });
