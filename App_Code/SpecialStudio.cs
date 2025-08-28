@@ -12,4 +12,14 @@ public class SpecialStudio
             return $"Files/{name}/Logo/logo.png";
         }
     }
+    public static string FilesDirectory
+    {
+        get
+        {
+            string name = HttpContext.Current.Request.Url.Host;
+            if (string.IsNullOrEmpty(name))
+                name = "unknown";
+            return $"Files/{name}/";
+        }
+    }
 }

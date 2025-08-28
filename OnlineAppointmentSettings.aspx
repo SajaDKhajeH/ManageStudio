@@ -242,11 +242,13 @@
                         //formfiles.append("file", filepath);
                         //formfiles.append('createThumbnail', "0");
                         //formfiles.append('fromProfile', "1");
-                        uploadFile();
-
-                        toastr.success(msg.d.Message, "موفق");
-                        closeModalOnlineTurnSetting();
-                        loadTableSettings();
+                        if (uploadedFile == null) {
+                            toastr.success(msg.d.Message, "موفق");
+                            closeModalOnlineTurnSetting();
+                            loadTableSettings();
+                        } else {
+                            uploadFile(msg.d.Message);
+                        }
                     }
                 },
                 error: function () {
@@ -259,36 +261,38 @@
                 }
             });
         };
-        function uploadFile() {
-            let file = lastVoiceFile;
+        function uploadFile(msgText) {
+            let file = uploadedFile;
             if (file == null) {
-                SaveHomework();
+                alert('فایلی برای آپلود یافت نشد!');
                 return;
             }
-            let IsFromPractice = '1';
+
 
             let formData = new FormData();
-
             formData.append("file", file);
-            formData.append("codedCalendarId", calendarId);
-            formData.append("IsFromPractice", IsFromPractice);
+
+            //let IsFromPractice = '1';
+            //formData.append("IsFromPractice", IsFromPractice);
 
 
             $.ajax({
                 type: 'post',
-                url: '/student/handler.ashx',
+                url: '/handler.ashx',
                 data: formData,
                 contentType: false,
                 processData: false,
                 cache: false,
                 success: function (res) {
-                    console.log(res);
                     if (res.success) {
-                        SaveHomework(res?.relativeUrl ?? res.fileSrc);
-                        return;
+                        alert('این نشونش میده ' + res.relativeUrl);
+                        alert('اینو سیو کن' + res.fileSrc);
+                        toastr.success(msgText, "موفق");
+                        closeModalOnlineTurnSetting();
+                        loadTableSettings();
+                    } else {
+                        toastr.error(res.message);
                     }
-                    //isUploaded(conTag);
-                    SaveHomework();
                 },
                 xhr: function () {
                     var myXhr = $.ajaxSettings.xhr();
@@ -309,7 +313,7 @@
                 },
                 error: function (err) {
                     console.warn('هنگام آپلود خطایی رخ داد');
-                    SaveHomework();
+                    //SaveHomework();
                 }
             });
         }
@@ -318,6 +322,8 @@
         });
         function closeModalOnlineTurnSetting() {
             $('#kt_modal_AddEditOnlineTurnSetting').modal('hide');
+            document.getElementById('ots_filepath').value = "";
+            uploadedFile = null;
         };
         function ResetFeildsSetting() {
             $("#ots_title").val("");
