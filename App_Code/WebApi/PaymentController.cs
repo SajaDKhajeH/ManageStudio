@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 public class PaymentController : ApiController
@@ -20,7 +21,7 @@ public class PaymentController : ApiController
     [HttpPost, Route("Api/Payment/GoToGateway")]
     public async Task<IHttpActionResult> GoToGatewayAsync([FromBody] PaymentGoToGateway input)
     {
-        string baseUrl = ConfigurationSettings.AppSettings["PortalUrl"];
+        string baseUrl = "https://" + HttpContext.Current?.Request.Url.Host;//ConfigurationSettings.AppSettings["PortalUrl"];
 
         Guid guid = Guid.NewGuid();
         if (!Settings.MerchantCodeZarrinpal.IsNullOrEmpty())
@@ -47,7 +48,7 @@ public class PaymentController : ApiController
             var result = await _zarrinpal.BeginAsync(new
             {
                 merchant_id = merchant_id,
-                amount = Settings.IsToman ? input.DepositAmount.ToString() : (input.DepositAmount / 10).ToString(),
+                amount = input.DepositAmount.ToString(),
                 callback_url = callbackUrl,
                 description = "رزور نوبت " + input.FirstName + " " + input.LastName + " برای تاریخ " + input.ScheduleDate,
                 metadata = new
@@ -178,6 +179,7 @@ public class PaymentController : ApiController
         string tran = b.tran;
         string authority = b.authority;
         string status = b.status;
+        string step = "";
         OperationResult<PGVerifyResponseData> result = new OperationResult<PGVerifyResponseData>();
         try
         {
@@ -186,80 +188,29 @@ public class PaymentController : ApiController
             {
                 return OperationResult<PGVerifyResponseData>.Failed("مقادیر ورودی نامعتبر است");
             }
-
+            step = "1";
             var success = (status ?? "").ToLower().Equals("ok");
             if (!success)
             {
                 return OperationResult<PGVerifyResponseData>.Failed("پرداخت انجام نشد!");
             }
-
-            //var transaction = new Transaction();// await _db.Transactions.SingleOrDefaultAsync(x => x.Guid == tranGuid);
-            //if (transaction == null)
-            //{
-            //    return OperationResult<PGVerifyResponseData>.Failed("تراکنش یافت نشد");
-            //}
-            //if (transaction.VerifiedSuccess)
-            //{
-            //    result.Success = true;
-            //    result.Message = "اطلاعات پرداخت قبلاً ثبت شده و پرداخت شما موفق بوده";
-            //    result.Data = SetData(transaction);
-            //    return result;
-            //}
-            //if (transaction.VerifyTime != null && !transaction.VerifySuccess)
-            //{
-            //    result.Success = false;
-            //    if (string.IsNullOrEmpty(transaction.VerifiedMessage))
-            //    {
-            //        result.Message = "تراکنش در حال پردازش است در صورت خطا نهایتا تا 72 ساعت آینده پول به حساب شما بازخواهد گشت";
-            //    }
-            //    else
-            //    {
-            //        result.Message = transaction.VerifiedMessage;
-            //    }
-            //    result.Data = SetData(transaction);
-            //    return result;
-            //}
-            //if ((transaction.Authority ?? "") != (authority ?? ""))
-            //{
-            //    return OperationResult<PGVerifyResponseData>.Failed("تراکنش یافت نشد!!!");
-            //}
-            //var customer = await _db.Customers
-            //    .Where(x => x.Id == transaction.CustomerId)
-            //    .Select(x => new { x.MerchentCode, x.Mobile })
-            //    .FirstOrDefaultAsync();
-            //if (customer == null)
-            //{
-            //    result.Message = "اطلاعات مشتری در سامانه ثبت نشده";
-            //    return result;
-            //}
-
-
-            //transaction.VerifyTime = DateTime.Now;
-            //transaction.VerifySuccess = (status ?? "").ToLower().Equals("ok");
-            //await _db.SaveChangesAsync();
-
-            //if (!transaction.VerifySuccess)
-            //{
-            //    result.Message = "پرداخت انجام نشد!";
-            //    result.Data = SetData(transaction);
-            //    return result;
-            //}
-
+            step = "2";
             var transaction = AdakDB.Db.usp_OnlineTurnRequest_Select(tranGuid).SingleOrDefault();
             if (transaction == null)
             {
                 return OperationResult<PGVerifyResponseData>.Failed("تراکنش یافت نشد");
             }
-
-
+            step = "3";
             result = await _zarrinpal.VerifyAsync(new
             {
-                amount = (long)transaction.OTR_Price,
-                authority = authority
-                //merchant_id = customer.MerchentCode
+                amount =(long)transaction.OTR_Price,
+                authority = authority,
+                merchant_id = Settings.MerchantCodeZarrinpal
             });
+            step = "4";
             if (result.Success)
             {
+                step = "5";
                 string message = "";
                 int? hasError = null;
                 long? resultId = null;
@@ -270,12 +221,18 @@ public class PaymentController : ApiController
                     ref hasError,
                     ref resultId
                   );
+
+                step = "6";
                 if ((hasError ?? 0) != 0)
                 {
                     return OperationResult<PGVerifyResponseData>.Failed(message);
                 }
             }
-            result.Success = true;
+            else
+            {
+                return OperationResult<PGVerifyResponseData>.Failed(result.Message);
+            }
+            step = "7";
             result.Data = new PGVerifyResponseData
             {
                 DateTime = DateTime.Now.ToShamsiWithTime(),
@@ -288,7 +245,7 @@ public class PaymentController : ApiController
         catch (Exception ex)
         {
             result.Success = false;
-            result.Message = "خطای سیستمی سمت سرور رخ داده";
+            result.Message = ex.Message + "- Step=> " + step;
             //_logger.LogError(ex, result.Message);
         }
         return result;
