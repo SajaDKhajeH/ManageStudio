@@ -1649,23 +1649,23 @@
                 <%}%>
                 childNamesArray.push(childNames[i].value);
                 childSexArray.push(childSexs[i].checked);
-                childBirthDateArray.push(childBirthDates[i].value);
+                childBirthDateArray.push(convertPersianToEnglishNumbers(childBirthDates[i].value));
                 childIdsArray.push(childIds[i].value);
             }
             var m_name = $("#m_name").val();
             var m_lastname = $("#m_lastname").val();
             var f_name = $("#f_name").val();
             var f_lastname = $("#f_lastname").val();
-            var m_mobile = $("#m_mobile").val();
-            var f_mobile = $("#f_mobile").val();
-            var phone = $("#f_phone").val();
+            var m_mobile = convertPersianToEnglishNumbers($("#m_mobile").val());
+            var f_mobile = convertPersianToEnglishNumbers($("#f_mobile").val());
+            var phone = convertPersianToEnglishNumbers($("#f_phone").val());
             var title = $("#f_title").val();
             var address = $("#f_address").val();
             var archive = $("#f_archive").prop("checked");
             var desc = $("#f_desc").val();
-            var f_BirthDate = $("#f_BirthDate").val();
-            var m_BirthDate = $("#m_BirthDate").val();
-            var f_MarriageDate = $("#f_MarriageDate").val();
+            var f_BirthDate = convertPersianToEnglishNumbers($("#f_BirthDate").val());
+            var m_BirthDate = convertPersianToEnglishNumbers($("#m_BirthDate").val());
+            var f_MarriageDate = convertPersianToEnglishNumbers($("#f_MarriageDate").val());
             var f_InviteType = $("#f_InviteType").val();
             btnAddEdit_ChangeDisable("btn_submitdataFamily", true);
             var isEdit = familyId != null && familyId.length > 1;
