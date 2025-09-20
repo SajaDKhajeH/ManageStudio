@@ -1764,6 +1764,14 @@
         function CurrencyFormatted(amount) {
             return new Intl.NumberFormat().format(amount)
         };
+        //function convertPersianToEnglishNumbers(persianNumber) {
+        //    // تبدیل اعداد فارسی به انگلیسی
+        //    return persianNumber.replace(/[\u06F0-\u06F9]/g, function (d) {
+        //        return d.charCodeAt(0) - 1728; // تبدیل یونیکد فارسی به یونیکد انگلیسی
+        //    }).replace(/[\u0660-\u0669]/g, function (d) {
+        //        return d.charCodeAt(0) - 1584; // تبدیل یونیکد عربی به یونیکد انگلیسی
+        //    });
+        //}
         function convertPersianToEnglishNumbers(persianNumber) {
             const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
             const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -1807,14 +1815,45 @@
             btnnnn.disabled = disable;
             btnnnn.style.opacity = disable ? 0.5 : 1;
         };
+
         function TextFormatPrice(e) {
-            var vall = convertPersianToEnglishNumbers($(e).val());
-            if (vall == '' || vall == null) {
-                vall = "0";
+            try {
+                // گرفتن مقدار ورودی و حذف فاصله‌های اضافی
+                let inputValue = $(e).val().trim();
+
+                // تبدیل اعداد فارسی به انگلیسی
+                inputValue = convertPersianToEnglishNumbers(inputValue);
+
+                // بررسی مقدار ورودی برای اطمینان از اینکه عدد معتبر باشد
+                if (!inputValue || isNaN(inputValue.replace(/,/g, ""))) {
+                    inputValue = "0"; // مقدار پیش‌فرض برای حالت نامعتبر
+                }
+
+                // حذف کاماهای موجود و تبدیل به عدد صحیح
+                const numericValue = parseInt(inputValue.replace(/,/g, "")) || 0;
+
+                // تبدیل عدد به فرمت سه رقم سه رقم جدا شده (با کاما)
+                const formattedValue = CurrencyFormatted(numericValue);
+
+                // تنظیم مقدار جدید در input
+                $(e).val(formattedValue);
+            } catch (error) {
+                console.error("خطا در فرمت کردن مقدار:", error);
             }
-            vall = vall.replaceAll(",", "");
-            $(e).val(CurrencyFormatted(parseInt(vall)));
-        };
+        }
+
+        function CurrencyFormatted(number) {
+            // تبدیل عدد به فرمت 3 رقم 3 رقم جداشده با کاما
+            return number.toLocaleString("en-US");
+        }
+        //function TextFormatPrice(e) {
+        //    var vall = convertPersianToEnglishNumbers($(e).val());
+        //    if (vall == '' || vall == null) {
+        //        vall = "0";
+        //    }
+        //    vall = vall.replaceAll(",", "");
+        //    $(e).val(CurrencyFormatted(parseInt(vall)));
+        //};
         function addFamily_FromHospital_Setting(GotoPage) {
             if (GotoPage) {
                 document.getElementById("gotoFactor").style.display = "none";
