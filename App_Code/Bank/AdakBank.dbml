@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_HesBaby_AranBidgol" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_Arcloc" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_Arcloc;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Studio_ArclocConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Tbl_AuthKey" Member="Tbl_AuthKeys">
     <Type Name="Tbl_AuthKey">
       <Column Name="AK_ID" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -1948,5 +1949,29 @@
     <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Turn_Select_For_Grid" Method="usp_Turn_Select_For_Grid">
+    <Parameter Name="SearchText" Parameter="searchText" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="FromDate" Parameter="fromDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ToDate" Parameter="toDate" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FamilyId" Parameter="familyId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Page" Parameter="page" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PerPage" Parameter="perPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="OutCount" Parameter="outCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="TypePhotographiId" Parameter="typePhotographiId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Turn_Select_For_GridResult">
+      <Column Name="R_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="R_Desc" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="CauserName" Type="System.String" DbType="NVarChar(221)" CanBeNull="true" />
+      <Column Name="R_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="R_TurnDate" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="R_Type" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TypePhotographyTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="R_FamilyId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="R_TurnTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="LocationTitle" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+    </ElementType>
   </Function>
 </Database>

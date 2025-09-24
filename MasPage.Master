@@ -1761,9 +1761,9 @@
 
             return formattedValue;
         };
-        function CurrencyFormatted(amount) {
-            return new Intl.NumberFormat().format(amount)
-        };
+        //function CurrencyFormatted(amount) {
+        //    return new Intl.NumberFormat().format(amount)
+        //};
         //function convertPersianToEnglishNumbers(persianNumber) {
         //    // تبدیل اعداد فارسی به انگلیسی
         //    return persianNumber.replace(/[\u06F0-\u06F9]/g, function (d) {

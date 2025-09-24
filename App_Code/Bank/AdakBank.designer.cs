@@ -22,7 +22,7 @@ namespace Bank
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Studio_HesBaby_AranBidgol")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Studio_Arcloc")]
 	public partial class AdakBankDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -34,6 +34,12 @@ namespace Bank
     partial void UpdateTbl_AuthKey(Tbl_AuthKey instance);
     partial void DeleteTbl_AuthKey(Tbl_AuthKey instance);
     #endregion
+		
+		public AdakBankDataContext() : 
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["Studio_ArclocConnectionString"].ConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
 		public AdakBankDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -406,15 +412,15 @@ namespace Bank
 			rersultId = ((System.Nullable<long>)(result.GetParameterValue(10)));
 			return ((int)(result.ReturnValue));
 		}
-
-        [global::System.Data.Linq.Mapping.FunctionAttribute(Name = "dbo.usp_Setting_Select_By_Key")]
-        public ISingleResult<usp_Setting_Select_By_KeyResult> usp_Setting_Select_By_Key([global::System.Data.Linq.Mapping.ParameterAttribute(Name = "Key", DbType = "VarChar(110)")] string key)
-        {
-            IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), key);
-            return ((ISingleResult<usp_Setting_Select_By_KeyResult>)(result.ReturnValue));
-        }
-
-        [global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.Get_DefaultTemplateID")]
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Setting_Select_By_Key")]
+		public ISingleResult<usp_Setting_Select_By_KeyResult> usp_Setting_Select_By_Key([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Key", DbType="VarChar(110)")] string key)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), key);
+			return ((ISingleResult<usp_Setting_Select_By_KeyResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="RPT.Get_DefaultTemplateID")]
 		public ISingleResult<Get_DefaultTemplateIDResult> Get_DefaultTemplateID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID", DbType="Int")] System.Nullable<int> iD)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD);
@@ -1399,6 +1405,14 @@ namespace Bank
 			hasError = ((System.Nullable<int>)(result.GetParameterValue(3)));
 			rersultId = ((System.Nullable<long>)(result.GetParameterValue(4)));
 			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Turn_Select_For_Grid")]
+		public ISingleResult<usp_Turn_Select_For_GridResult> usp_Turn_Select_For_Grid([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SearchText", DbType="NVarChar(1001)")] string searchText, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FromDate", DbType="VarChar(10)")] string fromDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ToDate", DbType="VarChar(10)")] string toDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Page", DbType="Int")] System.Nullable<int> page, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PerPage", DbType="Int")] System.Nullable<int> perPage, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="OutCount", DbType="Int")] ref System.Nullable<int> outCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypePhotographiId", DbType="BigInt")] System.Nullable<long> typePhotographiId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), searchText, fromDate, toDate, familyId, page, perPage, outCount, causerId, typePhotographiId);
+			outCount = ((System.Nullable<int>)(result.GetParameterValue(6)));
+			return ((ISingleResult<usp_Turn_Select_For_GridResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -13779,6 +13793,212 @@ namespace Bank
 				if ((this._OTR_Id != value))
 				{
 					this._OTR_Id = value;
+				}
+			}
+		}
+	}
+	
+	public partial class usp_Turn_Select_For_GridResult
+	{
+		
+		private long _R_Id;
+		
+		private string _R_Desc;
+		
+		private string _CauserName;
+		
+		private System.DateTime _R_CreationTime;
+		
+		private string _R_TurnDate;
+		
+		private string _FamilyTitle;
+		
+		private System.Nullable<long> _R_Type;
+		
+		private string _TypePhotographyTitle;
+		
+		private long _R_FamilyId;
+		
+		private System.Nullable<System.TimeSpan> _R_TurnTime;
+		
+		private string _LocationTitle;
+		
+		public usp_Turn_Select_For_GridResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_Id", DbType="BigInt NOT NULL")]
+		public long R_Id
+		{
+			get
+			{
+				return this._R_Id;
+			}
+			set
+			{
+				if ((this._R_Id != value))
+				{
+					this._R_Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_Desc", DbType="NVarChar(4000)")]
+		public string R_Desc
+		{
+			get
+			{
+				return this._R_Desc;
+			}
+			set
+			{
+				if ((this._R_Desc != value))
+				{
+					this._R_Desc = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CauserName", DbType="NVarChar(221)")]
+		public string CauserName
+		{
+			get
+			{
+				return this._CauserName;
+			}
+			set
+			{
+				if ((this._CauserName != value))
+				{
+					this._CauserName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_CreationTime", DbType="DateTime NOT NULL")]
+		public System.DateTime R_CreationTime
+		{
+			get
+			{
+				return this._R_CreationTime;
+			}
+			set
+			{
+				if ((this._R_CreationTime != value))
+				{
+					this._R_CreationTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_TurnDate", DbType="VarChar(10)")]
+		public string R_TurnDate
+		{
+			get
+			{
+				return this._R_TurnDate;
+			}
+			set
+			{
+				if ((this._R_TurnDate != value))
+				{
+					this._R_TurnDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1001) NOT NULL", CanBeNull=false)]
+		public string FamilyTitle
+		{
+			get
+			{
+				return this._FamilyTitle;
+			}
+			set
+			{
+				if ((this._FamilyTitle != value))
+				{
+					this._FamilyTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_Type", DbType="BigInt")]
+		public System.Nullable<long> R_Type
+		{
+			get
+			{
+				return this._R_Type;
+			}
+			set
+			{
+				if ((this._R_Type != value))
+				{
+					this._R_Type = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TypePhotographyTitle", DbType="NVarChar(1001)")]
+		public string TypePhotographyTitle
+		{
+			get
+			{
+				return this._TypePhotographyTitle;
+			}
+			set
+			{
+				if ((this._TypePhotographyTitle != value))
+				{
+					this._TypePhotographyTitle = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_FamilyId", DbType="BigInt NOT NULL")]
+		public long R_FamilyId
+		{
+			get
+			{
+				return this._R_FamilyId;
+			}
+			set
+			{
+				if ((this._R_FamilyId != value))
+				{
+					this._R_FamilyId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_R_TurnTime", DbType="Time")]
+		public System.Nullable<System.TimeSpan> R_TurnTime
+		{
+			get
+			{
+				return this._R_TurnTime;
+			}
+			set
+			{
+				if ((this._R_TurnTime != value))
+				{
+					this._R_TurnTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LocationTitle", DbType="NVarChar(1001)")]
+		public string LocationTitle
+		{
+			get
+			{
+				return this._LocationTitle;
+			}
+			set
+			{
+				if ((this._LocationTitle != value))
+				{
+					this._LocationTitle = value;
 				}
 			}
 		}
