@@ -71,6 +71,7 @@
         const todate = document.getElementById('Reports_To_Date');
         const factorStatus = document.getElementById('Reports_factorStatus');
         function Report_AllFactors() {
+            alert(1);
             $.ajax({
                 type: "POST",
                 url: "Reports.aspx/Report_AllFactors",

@@ -37,7 +37,7 @@ public class PaymentController : ApiController
                     input.Mobile,
                     guid,
                     input.PackageId,
-                    ""
+                    input.Desc
                 );
             string callbackUrl = $"{baseUrl}/payresult?tran={guid}";
 
@@ -203,7 +203,7 @@ public class PaymentController : ApiController
             step = "3";
             result = await _zarrinpal.VerifyAsync(new
             {
-                amount =(long)transaction.OTR_Price,
+                amount = (long)transaction.OTR_Price,
                 authority = authority,
                 merchant_id = Settings.MerchantCodeZarrinpal
             });

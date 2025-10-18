@@ -391,7 +391,7 @@
                         $("#factor_Family").val(res.FamilyCodeId);
                         $("#factor_Date").val(res.FactorInfo.F_Date);
                         
-                        $("#factor_discountPercent").val(res.FactorInfo.F_DiscountPercent);
+                        $("#factor_discountPercent").val(res.FactorInfo.F_SumDiscountPrice);
                         //document.getElementById('factor_PaidPrice').style.display = 'none';
                         //document.getElementById('factor_PaidType').style.display = 'none';
                         //document.getElementById('factor_RefNumber').style.display = 'none';

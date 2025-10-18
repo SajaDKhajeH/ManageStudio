@@ -8,5 +8,6 @@
     public string ScheduleDate { get; set; }
     public string ScheduleTime { get; set; }
     public decimal DepositAmount { get; set; }
+    public string Desc { get; set; }
 
 }

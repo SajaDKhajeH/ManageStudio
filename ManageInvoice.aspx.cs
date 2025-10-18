@@ -284,7 +284,7 @@ namespace AdakStudio
                 else
                 {
                     IsEdit = true;
-                    db.usp_Factor_Edit(FactorId, fDate, SumPrice, DiscountPrice, 0, products.Count, 0, 0, factor_desc, CauserId, ref mes, ref hasError, ForceDesign, TypePhotography.ToLong(), factor_status.ToLong(), PhotographerId.ToLong(), OnlyEditedDelivered);
+                    db.usp_Factor_Edit2(FactorId, FamilyId, fDate, SumPrice, DiscountPrice, 0, products.Count, 0, 0, factor_desc, CauserId, ref mes, ref hasError, ForceDesign, TypePhotography.ToLong(), factor_status.ToLong(), PhotographerId.ToLong(), OnlyEditedDelivered);
                 }
                 if (hasError == 1)
                 {

@@ -1414,6 +1414,33 @@ namespace Bank
 			outCount = ((System.Nullable<int>)(result.GetParameterValue(6)));
 			return ((ISingleResult<usp_Turn_Select_For_GridResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.usp_Factor_Edit2")]
+		public int usp_Factor_Edit2(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Id", DbType="BigInt")] System.Nullable<long> id, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="FamilyId", DbType="BigInt")] System.Nullable<long> familyId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="VarChar(10)")] string date, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SumPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> sumPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SumDiscountPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> sumDiscountPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TaxPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> taxPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DetailCount", DbType="Int")] System.Nullable<int> detailCount, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DiscountPercent", DbType="Int")] System.Nullable<int> discountPercent, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TaxPercent", DbType="Int")] System.Nullable<int> taxPercent, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Desc", DbType="NVarChar(4000)")] string desc, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CauserId", DbType="BigInt")] System.Nullable<long> causerId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(1001)")] ref string message, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="HasError", DbType="Int")] ref System.Nullable<int> hasError, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ForceDesign", DbType="Bit")] System.Nullable<bool> forceDesign, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TypePhotographyId", DbType="BigInt")] System.Nullable<long> typePhotographyId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Status", DbType="BigInt")] System.Nullable<long> status, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PhotographerId", DbType="BigInt")] System.Nullable<long> photographerId, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OnlyEditedDelivered", DbType="Bit")] System.Nullable<bool> onlyEditedDelivered)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), id, familyId, date, sumPrice, sumDiscountPrice, taxPrice, detailCount, discountPercent, taxPercent, desc, causerId, message, hasError, forceDesign, typePhotographyId, status, photographerId, onlyEditedDelivered);
+			message = ((string)(result.GetParameterValue(11)));
+			hasError = ((System.Nullable<int>)(result.GetParameterValue(12)));
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tbl_AuthKey")]
