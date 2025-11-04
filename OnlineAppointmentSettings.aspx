@@ -1,6 +1,47 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasPage.Master" AutoEventWireup="true" CodeFile="OnlineAppointmentSettings.aspx.cs" Inherits="OnlineAppointmentSettings" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
+    <style>
+         .days-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .day-item {
+            position: relative;
+        }
+
+        /* مخفی کردن چک‌باکس */
+        input[type="checkbox"] {
+            position: absolute;
+            opacity: 0; /* چک‌باکس مخفی می‌شود ولی هنوز کار می‌کند */
+            cursor: pointer;
+        }
+
+        label.weekday {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        label:hover.weekday{
+            background-color: #f1f1f1;
+        }
+
+        /* تنظیمات ظاهری زمانی که چک‌باکس انتخاب شده است */
+        input[type="checkbox"]:checked + label {
+            background-color: #4CAF50;
+            color: #fff;
+            border-color: #4CAF50;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="post d-flex flex-column-fluid" id="kt_post">
@@ -75,19 +116,17 @@
                 <div class="modal-body">
                     <div class="scroll-y me-n7 pe-7">
                         <div class="row g-9 mb-7">
-                            <div class="col-md-6 fv-row">
+                            <div class="col-md-4 fv-row">
                                 <label class="required fs-6 fw-bold mb-2">عنوان</label>
                                 <input type="text" id="ots_title" class="form-control form-control-solid" placeholder="" name="name" />
                             </div>
-                            <div class="col-md-6 fv-row">
+                            <div class="col-md-4 fv-row">
                                 <label class="required fs-6 fw-bold mb-2">نوع عکاسی</label>
                                 <select id="ots_turnType">
                                     <%Response.Write(PublicMethod.GetTypePhotographi());%>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row g-9 mb-7">
-                            <div class="col-md-6 fv-row">
+                            <div class="col-md-4 fv-row">
                                 <label class="required fs-6 fw-bold mb-2">وضعیت نمایش</label>
                                 <div class="d-flex flex-stack">
                                     <label class="form-check form-switch form-check-custom form-check-solid">
@@ -96,125 +135,202 @@
                                     </label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row g-9 mb-7">
                             <div class="col-md-6 fv-row">
                                 <label class="required fs-6 fw-bold mb-2">مبلغ بیعانه</label>
                                 <input type="text" onkeyup="TextFormatPrice(this)" id="ots_depositeamount" class="form-control form-control-solid" placeholder="مبلغ بیعانه" />
                             </div>
-                        </div>
-                        <div class="row g-9 mb-7">
                             <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">نمایش از تاریخ</label>
-                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="ots_fromdate" placeholder="از تاریخ">
-                            </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">نمایش تا تاریخ</label>
-                                <input class="form-control datepicker selectedDateWithoutInitialValue" id="ots_todate" placeholder="تا تاریخ">
+                                <label class="required fs-6 fw-bold mb-2">نمایش چند هفته</label>
+                                <input type="text" id="ots_CountShowWeek" class="form-control form-control-solid" placeholder="نمایش چند هفته" />
                             </div>
                         </div>
                         <div class="row g-9 mb-7">
-                            <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">نمایش از ساعت</label>
-                                <select id="ots_fromtime">
-                                    <option value="06:00">06:00</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="08:30">08:30</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="09:30">09:30</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="10:30">10:30</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="11:30">11:30</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="12:30">12:30</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="13:30">13:30</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="14:30">14:30</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="15:30">15:30</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="16:30">16:30</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="17:30">17:30</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="18:30">18:30</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="19:30">19:30</option>
-                                    <option value="20:00">20:00</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="22:00">22:00</option>
-                                </select>
+                            <label class="required fs-6 fw-bold mb-2">روزهای هفته</label>
+                            <div class="days-container">
+                                <div class="day-item">
+                                    <input type="checkbox" id="saturday" name="days[]" value="Saturday">
+                                    <label class="weekday" for="saturday">شنبه</label>
+                                </div>
+                                <div class="day-item">
+                                    <input type="checkbox" id="sunday" name="days[]" value="Sunday">
+                                    <label class="weekday" for="sunday">یک‌شنبه</label>
+                                </div>
+                                <div class="day-item">
+                                    <input type="checkbox" id="monday" name="days[]" value="Monday">
+                                    <label class="weekday" for="monday">دوشنبه</label>
+                                </div>
+                                <div class="day-item">
+                                    <input type="checkbox" id="tuesday" name="days[]" value="Tuesday">
+                                    <label class="weekday" for="tuesday">سه‌شنبه</label>
+                                </div>
+                                <div class="day-item">
+                                    <input type="checkbox" id="wednesday" name="days[]" value="Wednesday">
+                                    <label class="weekday" for="wednesday">چهارشنبه</label>
+                                </div>
+                                <div class="day-item">
+                                    <input type="checkbox" id="thursday" name="days[]" value="Thursday">
+                                    <label class="weekday" for="thursday">پنج‌شنبه</label>
+                                </div>
+                                <div class="day-item">
+                                    <input type="checkbox" id="friday" name="days[]" value="Friday">
+                                    <label class="weekday" for="friday">جمعه</label>
+                                </div>
+                                
+                                
                             </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">نمایش تا ساعت</label>
-                                <select id="ots_totime">
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="11:30">11:30</option>
-                                    <option value="12:00">12:00</option>
-                                     <option value="12:30">12:30</option>
-                                    <option value="13:00">13:00</option>
-                                     <option value="13:30">13:30</option>
-                                    <option value="14:00">14:00</option>
-                                     <option value="14:30">14:30</option>
-                                    <option value="15:00">15:00</option>
-                                     <option value="15:30">15:30</option>
-                                    <option value="16:00">16:00</option>
-                                     <option value="16:30">16:30</option>
-                                    <option value="17:00">17:00</option>
-                                     <option value="17:30">17:30</option>
-                                    <option value="18:00">18:00</option>
-                                     <option value="18:30">18:30</option>
-                                    <option value="19:00">19:00</option>
-                                     <option value="19:30">19:30</option>
-                                    <option value="20:00">20:00</option>
-                                     <option value="20:30">20:30</option>
-                                    <option value="21:00">21:00</option>
-                                    <option value="21:30">21:30</option>
-                                    <option value="22:00">22:00</option>
-                                    <option value="22:30">22:30</option>
-                                    <option value="23:00">23:00</option>
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <label class="required fs-6 fw-bold mb-2">نوبت طرف صبح</label>
+                            <div class="row g-9 mb-7">
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">نمایش از ساعت</label>
+                                    <select id="ots_fromtime">
+                                        <option value="06:00">06:00</option>
+                                        <option value="07:00">07:00</option>
+                                        <option value="08:00">08:00</option>
+                                        <option value="08:30">08:30</option>
+                                        <option value="09:00">09:00</option>
+                                        <option value="09:30">09:30</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="10:30">10:30</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="11:30">11:30</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="12:30">12:30</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="13:30">13:30</option>
+                                        <option value="14:00">14:00</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">نمایش تا ساعت</label>
+                                    <select id="ots_totime">
+                                        <option value="08:00">08:00</option>
+                                        <option value="09:00">09:00</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="11:30">11:30</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="12:30">12:30</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="13:30">13:30</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="14:30">14:30</option>
+                                        <option value="15:00">15:00</option>
 
-                                </select>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
+                                    <select id="ots_TimeEachTurn">
+                                        <option value="30">سی دقیقه</option>
+                                        <option value="45">چهل و پنج دقیقه</option>
+                                        <option value="60">یک ساعت</option>
+                                        <option value="90">یک ساعت و سی دقیقه</option>
+                                        <option value="120">دو ساعت</option>
+                                        <option value="150">دو ساعت و سی دقیقه</option>
+                                        <option value="180">سه ساعت</option>
+                                        <option value="210">سه ساعت و سی دقیقه</option>
+                                        <option value="240">چهار ساعت</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">ظرفیت</label>
+                                    <select id="ots_capacity">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-9 mb-7">
-                            <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
-                                <select id="ots_TimeEachTurn">
-                                    <option value="30">سی دقیقه</option>
-                                    <option value="45">چهل و پنج دقیقه</option>
-                                    <option value="60">یک ساعت</option>
-                                    <option value="90">یک ساعت و سی دقیقه</option>
-                                    <option value="120">دو ساعت</option>
-                                    <option value="150">دو ساعت و سی دقیقه</option>
-                                    <option value="180">سه ساعت</option>
-                                    <option value="210">سه ساعت و سی دقیقه</option>
-                                    <option value="240">چهار ساعت</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">ظرفیت</label>
-                                <select id="ots_capacity">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
+                            <label class="required fs-6 fw-bold mb-2">نوبت طرف بعدازظهر</label>
+                            <div class="row g-9 mb-7">
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">نمایش از ساعت</label>
+                                    <select id="ots_af_fromtime">
+                                        <option value="15:00">15:00</option>
+                                        <option value="15:30">15:30</option>
+                                        <option value="16:00">16:00</option>
+                                        <option value="16:30">16:30</option>
+                                        <option value="17:00">17:00</option>
+                                        <option value="17:30">17:30</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="18:30">18:30</option>
+                                        <option value="19:00">19:00</option>
+                                        <option value="19:30">19:30</option>
+                                        <option value="20:00">20:00</option>
+                                        <option value="21:00">21:00</option>
+                                        <option value="22:00">22:00</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">نمایش تا ساعت</label>
+                                    <select id="ots_af_totime">
+                                        <option value="15:00">15:00</option>
+                                        <option value="15:30">15:30</option>
+                                        <option value="16:00">16:00</option>
+                                        <option value="16:30">16:30</option>
+                                        <option value="17:00">17:00</option>
+                                        <option value="17:30">17:30</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="18:30">18:30</option>
+                                        <option value="19:00">19:00</option>
+                                        <option value="19:30">19:30</option>
+                                        <option value="20:00">20:00</option>
+                                        <option value="20:30">20:30</option>
+                                        <option value="21:00">21:00</option>
+                                        <option value="21:30">21:30</option>
+                                        <option value="22:00">22:00</option>
+                                        <option value="22:30">22:30</option>
+                                        <option value="23:00">23:00</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
+                                    <select id="ots_af_TimeEachTurn">
+                                        <option value="30">سی دقیقه</option>
+                                        <option value="45">چهل و پنج دقیقه</option>
+                                        <option value="60">یک ساعت</option>
+                                        <option value="90">یک ساعت و سی دقیقه</option>
+                                        <option value="120">دو ساعت</option>
+                                        <option value="150">دو ساعت و سی دقیقه</option>
+                                        <option value="180">سه ساعت</option>
+                                        <option value="210">سه ساعت و سی دقیقه</option>
+                                        <option value="240">چهار ساعت</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 fv-row">
+                                    <label class="required fs-6 fw-bold mb-2">ظرفیت</label>
+                                    <select id="ots_af_capacity">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-9 mb-7">
                             <div class="col-md-12 fv-row">
-                                <label class="fs-6 fw-bold mb-2">عکس لوکیشن</label>
+                                <label class="fs-6 fw-bold mb-2">فایل</label>
                                 <input type="file" class="form-control" id="ots_filepath" name="file-upload" accept="image/*">
                                 <p id="file-info"></p>
                             </div>
