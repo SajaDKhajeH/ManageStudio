@@ -13,7 +13,7 @@
         }
 
         /* مخفی کردن چک‌باکس */
-        input[type="checkbox"] {
+        input[type="checkbox"][name="days[]"] {
             position: absolute;
             opacity: 0; /* چک‌باکس مخفی می‌شود ولی هنوز کار می‌کند */
             cursor: pointer;
@@ -36,7 +36,7 @@
         }
 
         /* تنظیمات ظاهری زمانی که چک‌باکس انتخاب شده است */
-        input[type="checkbox"]:checked + label {
+        input[type="checkbox"][name="days[]"]:checked + label {
             background-color: #4CAF50;
             color: #fff;
             border-color: #4CAF50;
@@ -121,7 +121,7 @@
                                 <input type="text" id="ots_title" class="form-control form-control-solid" placeholder="" name="name" />
                             </div>
                             <div class="col-md-4 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">نوع عکاسی</label>
+                                <label class="required fs-6 fw-bold mb-2">نوع پروژه</label>
                                 <select id="ots_turnType">
                                     <%Response.Write(PublicMethod.GetTypePhotographi());%>
                                 </select>
@@ -633,4 +633,3 @@
         }
     </script>
 </asp:Content>
-

@@ -47,13 +47,27 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
 
     }
     [WebMethod]
-    public static dynamic AddEdit(long ots_Id, string title, string turnType, bool active, decimal depositeamount, string fromdate, string todate,
-                   string fromtime, string totime, int TimeEachTurn, int capacity, string desc)
+    public static dynamic AddEdit(
+            long ots_Id,
+            string title,
+            string turnType,
+            bool active,
+            decimal depositeamount,
+            int countShowWeek,
+            string fromtime,
+            string totime,
+            int TimeEachTurn,
+            int capacity,
+            string af_fromtime,
+            string af_totime,
+            int af_TimeEachTurn,
+            int af_capacity,
+            string days,
+            string desc
+        )
     {
         try
         {
-            fromdate = fromdate.ToEnglishNumber();
-            todate = todate.ToEnglishNumber();
             fromtime = fromtime.ToEnglishNumber();
             totime = totime.ToEnglishNumber();
             turnType = turnType.ToDecodeNumber();
@@ -81,28 +95,12 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                     Message = "لطفا مبلغ بیعانه را مشخص کنید"
                 };
             }
-            if (!fromdate.IsDate() || !todate.IsDate())
-            {
-                return new
-                {
-                    Result = false,
-                    Message = "لطفا بازه تاریخ را به درستی مشخص کنید"
-                };
-            }
             if (!fromtime.IsTime() || !fromtime.IsTime())
             {
                 return new
                 {
                     Result = false,
-                    Message = "لطفا بازه زمانی را به درستی مشخص کنید"
-                };
-            }
-            if (fromdate.ToMiladi() > todate.ToMiladi())
-            {
-                return new
-                {
-                    Result = false,
-                    Message = "از تاریخ نمی تواند بزرگتر از تا تاریخ باشد"
+                    Message = "لطفا بازه زمانی طرف صبح را به درستی مشخص کنید"
                 };
             }
             if (fromtime.ToTimeParse() > totime.ToTimeParse())
@@ -110,29 +108,30 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 return new
                 {
                     Result = false,
-                    Message = "از ساعت نمی تواند بزرگتر از تا ساعت باشد"
+                    Message = "از ساعت نمی تواند بزرگتر از تا ساعت نوبت طرف صبح باشد"
+                };
+            }
+            if (!af_fromtime.IsTime() || !af_fromtime.IsTime())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "لطفا بازه زمانی طرف بعدازظهر را به درستی مشخص کنید"
+                };
+            }
+            if (af_fromtime.ToTimeParse() > af_totime.ToTimeParse())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "از ساعت نمی تواند بزرگتر از تا ساعت برای نوبت طرف بعدازظهر باشد"
                 };
             }
             string path = "";
             var b = AdakDB.Db;
-            //#region UploadFile
-            //if (ots_Id > 0 && isFileChanged)
-            //{
-            //    var ots_Info = b.usp_OnlineTurnSettings_SelectById(ots_Id).SingleOrDefault();
-            //    path = HttpContext.Current.Server.MapPath(ots_Info.OTS_FilePath);
-            //    if (File.Exists(path))
-            //    {
-            //        File.Delete(path);
-            //    }
-            //    filepath.SaveAs(Path.Combine(path, fileName));
-            //}
-            //else
-            //{
-            //    path = HttpContext.Current.Server.MapPath($"Files/OnlineTurnSettings/{DateTime.Now.Ticks}.jpg");
-            //    filepath.SaveAs(Path.Combine(path, fileName));
-            //}
-            //#endregion
+           
             capacity = capacity == 0 ? 1 : capacity;
+            af_capacity = af_capacity == 0 ? 1 : af_capacity;
 
             long CauserId = LoginedUser.Id;
             int? hasError = 0;
