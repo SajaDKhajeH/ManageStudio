@@ -4067,22 +4067,22 @@ namespace Bank
 	
 	public partial class usp_Factor_Select_ProductResult
 	{
-		
+
 		private string _ProductTitle;
-		
+
 		private string _Desc;
-		
-		private System.Nullable<decimal> _Fee;
-		
-		private int _Count;
-		
-		private System.Nullable<decimal> _Sum;
-		
+
+		private string _Fee;
+
+		private string _Count;
+
+		private string _Sum;
+
 		public usp_Factor_Select_ProductResult()
 		{
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductTitle", DbType="NVarChar(2003) NOT NULL", CanBeNull=false)]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_ProductTitle", DbType = "NVarChar(1001) NOT NULL", CanBeNull = false)]
 		public string ProductTitle
 		{
 			get
@@ -4097,8 +4097,8 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Desc]", Storage="_Desc", DbType="NVarChar(1001)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name = "[Desc]", Storage = "_Desc", DbType = "NVarChar(2003) NOT NULL", CanBeNull = false)]
 		public string Desc
 		{
 			get
@@ -4113,9 +4113,9 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fee", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> Fee
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Fee", DbType = "VarChar(110)")]
+		public string Fee
 		{
 			get
 			{
@@ -4129,9 +4129,9 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int NOT NULL")]
-		public int Count
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Count", DbType = "NVarChar(110)")]
+		public string Count
 		{
 			get
 			{
@@ -4145,9 +4145,9 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sum", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> Sum
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Sum", DbType = "VarChar(110)")]
+		public string Sum
 		{
 			get
 			{
@@ -10654,31 +10654,49 @@ namespace Bank
 			}
 		}
 	}
-	
+
 	public partial class usp_Factor_DetailResult
 	{
-		
+
 		private string _FamilyTitle;
-		
+
 		private System.Nullable<decimal> _DiscountPrice;
-		
+
 		private string _FactorTitle;
-		
+
 		private string _FactorDate;
-		
+
 		private System.Nullable<decimal> _PaidPrice;
-		
-		private System.Nullable<decimal> _ModPrice;
-		
+
+		private string _ModPrice;
+
+		private System.Nullable<decimal> _SumPriceFactor;
+
 		private string _FactorDesc;
-		
+
 		private string _UniqueKey;
-		
+
+		private string _Name_Men;
+
+		private string _Family_Men;
+
+		private string _Moblie_Men;
+
+		private string _Name_Women;
+
+		private string _Family_Women;
+
+		private string _Mobile_Women;
+
+		private string _Address;
+
+		private string _ProjectType;
+
 		public usp_Factor_DetailResult()
 		{
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FamilyTitle", DbType="NVarChar(1039)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_FamilyTitle", DbType = "NVarChar(1039)")]
 		public string FamilyTitle
 		{
 			get
@@ -10693,8 +10711,8 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiscountPrice", DbType="Decimal(18,0)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_DiscountPrice", DbType = "Decimal(18,0)")]
 		public System.Nullable<decimal> DiscountPrice
 		{
 			get
@@ -10709,8 +10727,8 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorTitle", DbType="VarChar(110)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_FactorTitle", DbType = "VarChar(110)")]
 		public string FactorTitle
 		{
 			get
@@ -10725,8 +10743,8 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDate", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_FactorDate", DbType = "VarChar(10) NOT NULL", CanBeNull = false)]
 		public string FactorDate
 		{
 			get
@@ -10741,8 +10759,8 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidPrice", DbType="Decimal(38,0)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_PaidPrice", DbType = "Decimal(38,0)")]
 		public System.Nullable<decimal> PaidPrice
 		{
 			get
@@ -10757,9 +10775,9 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModPrice", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> ModPrice
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_ModPrice", DbType = "NVarChar(119)")]
+		public string ModPrice
 		{
 			get
 			{
@@ -10773,8 +10791,24 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FactorDesc", DbType="NVarChar(1001)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_SumPriceFactor", DbType = "Decimal(18,0)")]
+		public System.Nullable<decimal> SumPriceFactor
+		{
+			get
+			{
+				return this._SumPriceFactor;
+			}
+			set
+			{
+				if ((this._SumPriceFactor != value))
+				{
+					this._SumPriceFactor = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_FactorDesc", DbType = "NVarChar(1001)")]
 		public string FactorDesc
 		{
 			get
@@ -10789,8 +10823,8 @@ namespace Bank
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniqueKey", DbType="VarChar(110)")]
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_UniqueKey", DbType = "VarChar(110)")]
 		public string UniqueKey
 		{
 			get
@@ -10805,8 +10839,136 @@ namespace Bank
 				}
 			}
 		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Name_Men", DbType = "NVarChar(110)")]
+		public string Name_Men
+		{
+			get
+			{
+				return this._Name_Men;
+			}
+			set
+			{
+				if ((this._Name_Men != value))
+				{
+					this._Name_Men = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Family_Men", DbType = "NVarChar(110)")]
+		public string Family_Men
+		{
+			get
+			{
+				return this._Family_Men;
+			}
+			set
+			{
+				if ((this._Family_Men != value))
+				{
+					this._Family_Men = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Moblie_Men", DbType = "VarChar(14)")]
+		public string Moblie_Men
+		{
+			get
+			{
+				return this._Moblie_Men;
+			}
+			set
+			{
+				if ((this._Moblie_Men != value))
+				{
+					this._Moblie_Men = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Name_Women", DbType = "NVarChar(110)")]
+		public string Name_Women
+		{
+			get
+			{
+				return this._Name_Women;
+			}
+			set
+			{
+				if ((this._Name_Women != value))
+				{
+					this._Name_Women = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Family_Women", DbType = "NVarChar(110)")]
+		public string Family_Women
+		{
+			get
+			{
+				return this._Family_Women;
+			}
+			set
+			{
+				if ((this._Family_Women != value))
+				{
+					this._Family_Women = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Mobile_Women", DbType = "VarChar(14)")]
+		public string Mobile_Women
+		{
+			get
+			{
+				return this._Mobile_Women;
+			}
+			set
+			{
+				if ((this._Mobile_Women != value))
+				{
+					this._Mobile_Women = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_Address", DbType = "NVarChar(1001)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this._Address = value;
+				}
+			}
+		}
+
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_ProjectType", DbType = "NVarChar(1001) NOT NULL", CanBeNull = false)]
+		public string ProjectType
+		{
+			get
+			{
+				return this._ProjectType;
+			}
+			set
+			{
+				if ((this._ProjectType != value))
+				{
+					this._ProjectType = value;
+				}
+			}
+		}
 	}
-	
+
 	public partial class usp_Page_SelectResult
 	{
 		

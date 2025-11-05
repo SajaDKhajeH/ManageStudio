@@ -317,6 +317,9 @@
                             window.open(res.Url, '_blank').focus();
                         }, 110);
                     }
+                    else {
+                        ShowError(res.Message);
+                    }
                 },
                 error: function () {
                     toastr.error("خطا در دریافت اطلاعات", "خطا");

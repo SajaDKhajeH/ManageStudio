@@ -448,28 +448,54 @@ namespace AdakStudio
         [WebMethod]
         public static dynamic PrintFactor(long id)
         {
+            string Step = "1";
             try
             {
+                Step = "2";
                 var data = AdakDB.Db.usp_Factor_Select_Product(id).ToList();
+                Step = "2.5";
                 var factorDetail = AdakDB.Db.usp_Factor_Detail(id).Single();
-
+                if (data == null || factorDetail == null)
+                {
+                    return new
+                    {
+                        Result = false,
+                        Message = "اطلاعات فاکتور مشخص نیست",
+                        Url = ""
+                    };
+                }
+                Step = "3";
                 var variables = new Dictionary<string, string>
                 {
-                    { "ModPrice", (factorDetail.ModPrice ?? 0).ToString() },
-                    { "PaidPrice", (factorDetail.PaidPrice ?? 0).ToString() },
-                    { "DiscountPrice", (factorDetail.DiscountPrice ?? 0).ToString() },
-                    { "FamilyTitle", factorDetail.FamilyTitle },
-                    { "FactorDate", factorDetail.FactorDate },
-                    { "FactorDesc", factorDetail.FactorDesc },
-                    { "FactorTitle", factorDetail.FactorTitle },
+                    { "FinanStatus", factorDetail.ModPrice },
+                    { "SumFactor", (factorDetail.SumPriceFactor ?? 0).ToString("N0") },
+                    { "DiscountPrice", (factorDetail.DiscountPrice ?? 0).ToString("N0") },
+                    { "CeremonyDate", factorDetail.FactorDate },
+                    { "AggrementDate", factorDetail.FactorDate },
+                    { "StudioName", Settings.StudioName },
+                    { "Name_Men", factorDetail.Name_Men },
+                    { "Family_Men", factorDetail.Family_Men },
+                    { "Mobile_Men", factorDetail.Moblie_Men },
+                    { "Name_Women", factorDetail.Name_Women },
+                    { "Family_Women", factorDetail.Family_Women },
+                    { "Mobile_Women", factorDetail.Mobile_Women },
+                    { "ProjectType", factorDetail.ProjectType },
+                    { "CustomerAddress", factorDetail.Address },
+                    { "StudioAddress", Settings.Address },
+                    { "StudioPhone", Settings.Phone },
+                    { "LogoUrl", SpecialStudio.Logo },
+
                 };
+                Step = "4";
                 //string url = $"files/temp/{Guid.NewGuid().ToString("N")}.jpg";
                 string url = $"Files/Factors/{factorDetail.UniqueKey}.jpg";
+                Step = "4.5";
                 bool ok = AdakStiReportBuilder.WithName("invoice.mrt")
                      .WithData(data)
                      .WithVaiables(variables)
                      .SaveImage(url);
-
+                Step = "5";
+                url = $"Files/" + HttpContext.Current?.Request.Url.Host + $"/Factors/{factorDetail.UniqueKey}.jpg";
                 return new
                 {
                     Result = ok,
@@ -483,8 +509,8 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "خطایی در ذخیره فاکتور رخ داده است",
-                    Url = ex.Message
+                    Message = "خطایی در ذخیره فاکتور رخ داده است" + "-" + Step,
+                    Url = ex.Message + "-" + Step
                 };
             }
         }
@@ -514,7 +540,7 @@ namespace AdakStudio
                 return new
                 {
                     Result = false,
-                    Message = "لطفا صندوق و بانک رو مشخص کنید" +Environment.NewLine +"برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
+                    Message = "لطفا صندوق و بانک رو مشخص کنید" + Environment.NewLine + "برای تعریف  صندوق و بانک میتوانید از منوی اطلاعات پایه اقدام کنید"
                 };
             }
             if (PaidPrice <= 0)

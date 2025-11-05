@@ -4,6 +4,7 @@
 
     void Application_Start(object sender, EventArgs e)
     {
+        StartUpCodes.RegisterCustomFonts();
         System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
         RouteConfig.RegisterRoutes(System.Web.Routing.RouteTable.Routes);
         string baseUrl = HttpContext.Current.Server.MapPath("~");

@@ -1,4 +1,5 @@
 ﻿using Stimulsoft.Report;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
@@ -24,34 +25,61 @@ public class AdakStiReportBuilder
     }
     public AdakStiReportBuilder WithData(object data)
     {
-        Report.RegData("Data", data);
-        return this;
+        try
+        {
+            Report.RegData("Data", data);
+            return this;
+        }
+        catch (System.Exception ex)
+        {
+
+            AdakDB.Db.usp_ErrorAdd("AdakStiReportBuilder WithData", ex.Message);
+            return null;
+        }
     }
     public AdakStiReportBuilder WithVaiables(Dictionary<string, string> variables)
     {
-        foreach (var variable in variables)
+        string key = "";
+        try
         {
-            Report.Dictionary.Variables[variable.Key].Value = variable.Value;
+            foreach (var variable in variables)
+            {
+                key = variable.Key;
+                Report.Dictionary.Variables[variable.Key].Value = variable.Value;
+            }
+        }
+        catch (System.Exception ex)
+        {
+            AdakDB.Db.usp_ErrorAdd("AdakStiReportBuilder WithVaiables" + " =>" + key, ex.Message);
         }
         return this;
     }
     public bool SaveImage(string path)
     {
-        path = GetSpecialPath(path);
-        Report.RegReportDataSources();
-        Report.Compile();
-        Report.Render();
-        using (MemoryStream ms = new MemoryStream())
+        try
         {
-            Report.ExportDocument(StiExportFormat.Image, ms);
-            if (File.Exists(HttpContext.Current.Server.MapPath(path)))
+            path = GetSpecialPath(path);
+            Report.RegReportDataSources();
+            Report.Compile();
+            Report.Render();
+            using (MemoryStream ms = new MemoryStream())
             {
-                File.Delete(HttpContext.Current.Server.MapPath(path));
+                Report.ExportDocument(StiExportFormat.Image, ms);
+                if (File.Exists(HttpContext.Current.Server.MapPath(path)))
+                {
+                    File.Delete(HttpContext.Current.Server.MapPath(path));
+                }
+                File.WriteAllBytes(HttpContext.Current.Server.MapPath(path), ms.ToArray());
             }
-            File.WriteAllBytes(HttpContext.Current.Server.MapPath(path), ms.ToArray());
+            Report.Dispose();
+
+            return true;
         }
-        Report.Dispose();
-        return true;
+        catch (System.Exception ex)
+        {
+            AdakDB.Db.usp_ErrorAdd("AdakStiReportBuilder SaveImage", ex.Message);
+            return false;
+        }
     }
     public bool SavePNG(string path)
     {
