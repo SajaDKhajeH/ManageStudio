@@ -95,14 +95,40 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                     Message = "لطفا مبلغ بیعانه را مشخص کنید"
                 };
             }
-            if (!fromtime.IsTime() || !fromtime.IsTime())
+            if (fromtime.IsNullOrEmpty() && !totime.IsNullOrEmpty())
             {
                 return new
                 {
                     Result = false,
-                    Message = "لطفا بازه زمانی طرف صبح را به درستی مشخص کنید"
+                    Message = "لطفا بازه زمانی طرف صبح را به صورت کامل مشخص کنید"
                 };
             }
+            if (af_fromtime.IsNullOrEmpty() && !af_totime.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "لطفا بازه زمانی طرف بعدازظهر را به صورت کامل مشخص کنید"
+                };
+            }
+
+            if (!fromtime.IsNullOrEmpty() && totime.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "لطفا بازه زمانی طرف صبح را به صورت کامل مشخص کنید"
+                };
+            }
+            if (!af_fromtime.IsNullOrEmpty() && af_totime.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "لطفا بازه زمانی طرف بعدازظهر را به صورت کامل مشخص کنید"
+                };
+            }
+
             if (fromtime.ToTimeParse() > totime.ToTimeParse())
             {
                 return new
@@ -111,14 +137,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                     Message = "از ساعت نمی تواند بزرگتر از تا ساعت نوبت طرف صبح باشد"
                 };
             }
-            if (!af_fromtime.IsTime() || !af_fromtime.IsTime())
-            {
-                return new
-                {
-                    Result = false,
-                    Message = "لطفا بازه زمانی طرف بعدازظهر را به درستی مشخص کنید"
-                };
-            }
+
             if (af_fromtime.ToTimeParse() > af_totime.ToTimeParse())
             {
                 return new
@@ -129,9 +148,19 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
             }
             string path = "";
             var b = AdakDB.Db;
-           
+
+            if (days.IsNullOrEmpty())
+            {
+                return new
+                {
+                    Result = false,
+                    Message = "لطفا روزهای هفته را مشخص کنید"
+                };
+            }
+
             capacity = capacity == 0 ? 1 : capacity;
             af_capacity = af_capacity == 0 ? 1 : af_capacity;
+            countShowWeek = countShowWeek == 0 ? 1 : countShowWeek;
 
             long CauserId = LoginedUser.Id;
             int? hasError = 0;
@@ -139,11 +168,11 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
             string mes = "";
             if (ots_Id <= 0)
             {
-                b.usp_OnlineTurnSettings_Add(title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), fromdate.ToMiladi(), todate.ToMiladi(), path, capacity, active, CauserId, ref mes, ref hasError, ref resultId);
+                b.usp_OnlineTurnSettings2_Add(title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), path, capacity, af_fromtime.ToTimeParse(), af_totime.ToTimeParse(), af_TimeEachTurn, af_capacity, days, countShowWeek, active, CauserId, ref mes, ref hasError, ref resultId);
             }
             else
             {
-                b.usp_OnlineTurnSettings_Edit(ots_Id, title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), fromdate.ToMiladi(), todate.ToMiladi(), path, capacity, active, CauserId, ref mes, ref hasError);
+                b.usp_OnlineTurnSettings2_Edit(ots_Id, title, TimeEachTurn, depositeamount, desc, turnType.ToLong(), fromtime.ToTimeParse(), totime.ToTimeParse(), path, capacity, af_fromtime.ToTimeParse(), af_totime.ToTimeParse(), af_TimeEachTurn, af_capacity, days, countShowWeek, active, CauserId, ref mes, ref hasError);
             }
             if (hasError == 1)
             {
@@ -230,6 +259,7 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
             }
             var dataInfo = AdakDB.Db.usp_OnlineTurnSettings_SelectById(id).SingleOrDefault();
             dataInfo = dataInfo ?? new Bank.usp_OnlineTurnSettings_SelectByIdResult();
+            var days = dataInfo.OTS_WeekDays.IsNullOrEmpty() ? new List<string>() : dataInfo.OTS_WeekDays.Split(',').ToList();
             return new
             {
                 Result = true,
@@ -237,15 +267,28 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
                 FromDate = dataInfo.OTS_FromDate.ToShamsi(),
                 ToDate = dataInfo.OTS_ToDate.ToShamsi(),
                 TurnType = dataInfo.OTS_TurnType.ToCodeNumber(),
-                FromTime = dataInfo.OTS_FromTime.ToString().Substring(0, 5),
-                ToTime = dataInfo.OTS_ToTime.ToString().Substring(0, 5),
+                FromTime = dataInfo.OTS_FromTime == null ? "" : dataInfo.OTS_FromTime.ToString().Substring(0, 5),
+                ToTime = dataInfo.OTS_ToTime == null ? "" : dataInfo.OTS_ToTime.ToString().Substring(0, 5),
                 Capacity = dataInfo.OTS_Capacity ?? 0,
                 Active = dataInfo.OTS_Active,
                 DepositeAmount = dataInfo.OTS_DepositAmount ?? 0,
                 Desc = dataInfo.OTS_Desc,
                 FilePath = dataInfo.OTS_FilePath,
                 TimeEachTurn = dataInfo.OTS_TimeEachTurn ?? 0,
-                FileName = Path.GetFileName(dataInfo.OTS_FilePath)
+                FileName = Path.GetFileName(dataInfo.OTS_FilePath),
+                AF_FromTime = dataInfo.OTS_AF_FromTime == null ? "" : dataInfo.OTS_AF_FromTime.ToString().Substring(0, 5),
+                AF_ToTime = dataInfo.OTS_AF_ToTime == null ? "" : dataInfo.OTS_AF_ToTime.ToString().Substring(0, 5),
+                AF_Capacity = dataInfo.OTS_AF_Capacity ?? 0,
+                AF_TimeEachTurn = dataInfo.OTS_AF_TimeEachTurn ?? 0,
+                CountShowWeek = dataInfo.OTS_CountShowWeek ?? 0,
+                saturday = days.Any(a => a == "1"),
+                sunday = days.Any(a => a == "2"),
+                monday = days.Any(a => a == "3"),
+                tuesday = days.Any(a => a == "4"),
+                wednesday = days.Any(a => a == "5"),
+                thursday = days.Any(a => a == "6"),
+                friday = days.Any(a => a == "7")
+
             };
 
         }

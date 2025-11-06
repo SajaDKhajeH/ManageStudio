@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="Server">
     <style>
-         .days-container {
+        .days-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -31,7 +31,7 @@
             background-color: white;
         }
 
-        label:hover.weekday{
+        label:hover.weekday {
             background-color: #f1f1f1;
         }
 
@@ -70,8 +70,6 @@
                                         <th class="min-w-120px">عنوان</th>
                                         <th class="min-w-110px">نوع عکاسی</th>
                                         <th class="min-w-90px">وضعیت</th>
-                                        <th class="min-w-120px">بازه تاریخی</th>
-                                        <th class="min-w-120px">بازه زمانی</th>
                                         <th class="min-w-110px">مبلغ بیعانه</th>
                                         <th class="min-w-80px">ظرفیت</th>
                                         <th class="min-w-130px">عملیات</th>
@@ -142,8 +140,19 @@
                                 <input type="text" onkeyup="TextFormatPrice(this)" id="ots_depositeamount" class="form-control form-control-solid" placeholder="مبلغ بیعانه" />
                             </div>
                             <div class="col-md-6 fv-row">
-                                <label class="required fs-6 fw-bold mb-2">نمایش چند هفته</label>
-                                <input type="text" id="ots_CountShowWeek" class="form-control form-control-solid" placeholder="نمایش چند هفته" />
+                                <label class="required fs-6 fw-bold mb-2">نمایش تا چند هفته بعد</label>
+                                <select id="ots_CountShowWeek">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row g-9 mb-7">
@@ -177,16 +186,15 @@
                                     <input type="checkbox" id="friday" name="days[]" value="Friday">
                                     <label class="weekday" for="friday">جمعه</label>
                                 </div>
-                                
-                                
                             </div>
                         </div>
                         <div class="row g-9 mb-7">
-                            <label class="required fs-6 fw-bold mb-2">نوبت طرف صبح</label>
+                            <label class="fs-6 fw-bold mb-2">نوبت طرف صبح</label>
                             <div class="row g-9 mb-7">
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">نمایش از ساعت</label>
+                                    <label class="fs-6 fw-bold mb-2">نمایش از ساعت</label>
                                     <select id="ots_fromtime">
+                                         <option>انتخاب ساعت</option>
                                         <option value="06:00">06:00</option>
                                         <option value="07:00">07:00</option>
                                         <option value="08:00">08:00</option>
@@ -205,8 +213,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">نمایش تا ساعت</label>
+                                    <label class="fs-6 fw-bold mb-2">نمایش تا ساعت</label>
                                     <select id="ots_totime">
+                                         <option>انتخاب ساعت</option>
                                         <option value="08:00">08:00</option>
                                         <option value="09:00">09:00</option>
                                         <option value="10:00">10:00</option>
@@ -223,7 +232,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
+                                    <label class="fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
                                     <select id="ots_TimeEachTurn">
                                         <option value="30">سی دقیقه</option>
                                         <option value="45">چهل و پنج دقیقه</option>
@@ -237,7 +246,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">ظرفیت</label>
+                                    <label class="fs-6 fw-bold mb-2">ظرفیت</label>
                                     <select id="ots_capacity">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -254,11 +263,12 @@
                             </div>
                         </div>
                         <div class="row g-9 mb-7">
-                            <label class="required fs-6 fw-bold mb-2">نوبت طرف بعدازظهر</label>
+                            <label class="fs-6 fw-bold mb-2">نوبت طرف بعدازظهر</label>
                             <div class="row g-9 mb-7">
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">نمایش از ساعت</label>
+                                    <label class="fs-6 fw-bold mb-2">نمایش از ساعت</label>
                                     <select id="ots_af_fromtime">
+                                         <option>انتخاب ساعت</option>
                                         <option value="15:00">15:00</option>
                                         <option value="15:30">15:30</option>
                                         <option value="16:00">16:00</option>
@@ -275,8 +285,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">نمایش تا ساعت</label>
+                                    <label class="fs-6 fw-bold mb-2">نمایش تا ساعت</label>
                                     <select id="ots_af_totime">
+                                        <option>انتخاب ساعت</option>
                                         <option value="15:00">15:00</option>
                                         <option value="15:30">15:30</option>
                                         <option value="16:00">16:00</option>
@@ -294,11 +305,10 @@
                                         <option value="22:00">22:00</option>
                                         <option value="22:30">22:30</option>
                                         <option value="23:00">23:00</option>
-
                                     </select>
                                 </div>
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
+                                    <label class="fs-6 fw-bold mb-2">فاصله زمانی بین نوبت ها</label>
                                     <select id="ots_af_TimeEachTurn">
                                         <option value="30">سی دقیقه</option>
                                         <option value="45">چهل و پنج دقیقه</option>
@@ -312,7 +322,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 fv-row">
-                                    <label class="required fs-6 fw-bold mb-2">ظرفیت</label>
+                                    <label class="fs-6 fw-bold mb-2">ظرفیت</label>
                                     <select id="ots_af_capacity">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -355,17 +365,31 @@
     <script type="text/javascript">
         var ots_Id = 0;
         function AddEdit() {
+            var days = "";
+            if ($("#saturday").prop("checked")) { days = "1,"; }
+            if ($("#sunday").prop("checked")) { days = days+ "2,"; }
+            if ($("#monday").prop("checked")) { days = days + "3,"; }
+            if ($("#tuesday").prop("checked")) { days = days + "4,"; }
+            if ($("#wednesday").prop("checked")) { days = days + "5,"; }
+            if ($("#thursday").prop("checked")) { days = days + "6,"; }
+            if ($("#friday").prop("checked")) { days = days + "7,"; }
+
             var title = $("#ots_title").val();
             var turnType = $("#ots_turnType").val();
             var active = $("#ots_active").prop("checked");
             var depositeamount = $("#ots_depositeamount").val();
             depositeamount = depositeamount.replaceAll(",", "");
-            var fromdate = $("#ots_fromdate").val();
-            var todate = $("#ots_todate").val();
             var fromtime = $("#ots_fromtime").val();
             var totime = $("#ots_totime").val();
             var TimeEachTurn = $("#ots_TimeEachTurn").val();
             var capacity = $("#ots_capacity").val();
+            var countShowWeek = $("#ots_CountShowWeek").val();
+
+            var af_fromtime = $("#ots_af_fromtime").val();
+            var af_totime = $("#ots_af_totime").val();
+            var af_TimeEachTurn = $("#ots_af_TimeEachTurn").val();
+            var af_capacity = $("#ots_af_capacity").val();
+
             var fileInput = $('#ots_filepath')[0];
             var filepath = fileInput.files.length === 0 ? null : fileInput.files[0];
             var desc = $("#ots_desc").val();
@@ -374,8 +398,10 @@
                 type: "POST",
                 url: "OnlineAppointmentSettings.aspx/AddEdit",
                 data: JSON.stringify({
-                    ots_Id, title, turnType, active, depositeamount, fromdate, todate,
-                    fromtime, totime, TimeEachTurn, capacity, desc
+                    ots_Id, title, turnType, active, depositeamount,
+                    countShowWeek, fromtime, totime, TimeEachTurn, capacity,
+                    af_fromtime, af_totime, af_TimeEachTurn, af_capacity,
+                    days, desc
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -384,10 +410,6 @@
                         ShowError(msg.d.Message);
                     }
                     else {
-                        //var formfiles = new FormData();
-                        //formfiles.append("file", filepath);
-                        //formfiles.append('createThumbnail', "0");
-                        //formfiles.append('fromProfile', "1");
                         if (uploadedFile == null) {
                             toastr.success(msg.d.Message, "موفق");
                             closeModalOnlineTurnSetting();
@@ -477,15 +499,23 @@
             $("#ots_active").prop("checked", true);
             $("#OnlineTurnSettingHeader").text("ثبت تنظیمات نوبت دهی ");
             $("#ots_depositeamount").val("0");
-            $("#ots_fromdate").val("");
-            $("#ots_todate").val("");
             $("#ots_fromtime").val("06:00");
             $("#ots_totime").val("06:00");
             $("#ots_TimeEachTurn").val("60");
             $("#ots_capacity").val("1");
+
+            $("#ots_af_fromtime").val("06:00");
+            $("#ots_af_totime").val("06:00");
+            $("#ots_af_TimeEachTurn").val("60");
+            $("#ots_af_capacity").val("1");
+            $("#ots_CountShowWeek").val("4");
             document.getElementById('ots_filepath').value = "";
             $("#ots_desc").val("");
-
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="days[]"]');
+            // غیرفعال کردن هر چک‌باکس
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
         };
         function DeleteOnlineAppointmentSettings(id) {
             const userResponse = confirm("آیا از حذف مطمئن هستین؟");
@@ -531,12 +561,26 @@
                         $("#ots_active").prop("checked", result.Active);
                         $("#OnlineTurnSettingHeader").text("ویرایش " + result.Title);
                         $("#ots_depositeamount").val(result.DepositeAmount);
-                        $("#ots_fromdate").val(result.FromDate);
-                        $("#ots_todate").val(result.ToDate);
                         $("#ots_fromtime").val(result.FromTime);
                         $("#ots_totime").val(result.ToTime);
                         $("#ots_TimeEachTurn").val(result.TimeEachTurn);
                         $("#ots_capacity").val(result.Capacity);
+
+                        $("#ots_af_fromtime").val(result.AF_FromTime);
+                        $("#ots_af_totime").val(result.AF_ToTime);
+                        $("#ots_af_TimeEachTurn").val(result.AF_TimeEachTurn);
+                        $("#ots_af_capacity").val(result.AF_Capacity);
+                        $("#ots_CountShowWeek").val(result.CountShowWeek);
+
+                        $("#saturday").prop("checked", result.saturday);
+                        $("#sunday").prop("checked", result.sunday);
+                        $("#monday").prop("checked", result.monday);
+                        $("#tuesday").prop("checked", result.tuesday);
+                        $("#wednesday").prop("checked", result.wednesday);
+                        $("#thursday").prop("checked", result.thursday);
+                        $("#friday").prop("checked", result.friday);
+
+
                         $("#ots_filepath").files = null;
                         $("#ots_desc").val(result.Desc);
                         $('#file-info').text('فایل فعلی: ' + result.FileName);
@@ -610,8 +654,6 @@
                          <td>${row.Title}</td>
                          <td>${row.TurnType}</td>
                          <td>${row.Status}</td>
-                         <td>${row.RangeDate}</td>
-                         <td>${row.RangeTime}</td>
                          <td>${row.DepositeAmount}</td>
                          <td>${row.Capacity}</td>
                          <td>${row.Actions}</td>

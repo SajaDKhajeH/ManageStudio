@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_Arcloc" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_Arcloc;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Studio_ArclocConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Studio_HesBaby_AranBidgol" Class="AdakBankDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=87.107.146.115,1433;Initial Catalog=Studio_HesBaby_AranBidgol;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Studio_HesBaby_AranBidgolConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Tbl_AuthKey" Member="Tbl_AuthKeys">
     <Type Name="Tbl_AuthKey">
       <Column Name="AK_ID" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -488,16 +488,6 @@
       <Column Name="CauserName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
       <Column Name="FactorId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="FamilyTiyle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="RPT.usp_Factor_Select_Product" Method="usp_Factor_Select_Product">
-    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_Factor_Select_ProductResult">
-      <Column Name="ProductTitle" Type="System.String" DbType="NVarChar(2003) NOT NULL" CanBeNull="false" />
-      <Column Name="[Desc]" Member="Desc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="Fee" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Sum" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
     </ElementType>
   </Function>
   <Function Name="dbo.usp_Request_Add" Method="usp_Request_Add">
@@ -1608,19 +1598,6 @@
       <Column Name="CauserFullName" Type="System.String" DbType="NVarChar(221) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="RPT.usp_Factor_Detail" Method="usp_Factor_Detail">
-    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_Factor_DetailResult">
-      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1039)" CanBeNull="true" />
-      <Column Name="DiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="FactorTitle" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
-      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
-      <Column Name="ModPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="FactorDesc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.usp_Page_Select" Method="usp_Page_Select">
     <Parameter Name="PersonnelId" Parameter="personnelId" Type="System.Int64" DbType="BigInt" />
     <ElementType Name="usp_Page_SelectResult">
@@ -1630,26 +1607,6 @@
       <Column Name="P_Sort" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="HasPermission" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="P_ShowOnMenu" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.usp_OnlineTurnSettings_SelectById" Method="usp_OnlineTurnSettings_SelectById">
-    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
-    <ElementType Name="usp_OnlineTurnSettings_SelectByIdResult">
-      <Column Name="OTS_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
-      <Column Name="OTS_TimeEachTurn" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="OTS_Causer" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="OTS_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="OTS_DepositAmount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="OTS_Desc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="OTS_TurnType" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="OTS_FromTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
-      <Column Name="OTS_ToTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
-      <Column Name="OTS_FromDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="OTS_ToDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="OTS_FilePath" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
-      <Column Name="OTS_Capacity" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="OTS_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="OTS_UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
     </ElementType>
   </Function>
   <Function Name="dbo.usp_Factor_Select_By_FamilyId" Method="usp_Factor_Select_By_FamilyId">
@@ -1994,5 +1951,109 @@
     <Parameter Name="PhotographerId" Parameter="photographerId" Type="System.Int64" DbType="BigInt" />
     <Parameter Name="OnlyEditedDelivered" Parameter="onlyEditedDelivered" Type="System.Boolean" DbType="Bit" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_OnlineTurnSettings2_Add" Method="usp_OnlineTurnSettings2_Add">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="TimeEachTurn" Parameter="timeEachTurn" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DepositAmount" Parameter="depositAmount" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="TurnType" Parameter="turnType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromTime" Parameter="fromTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="ToTime" Parameter="toTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="FilePath" Parameter="filePath" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Capacity" Parameter="capacity" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Af_FromTime" Parameter="af_FromTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="Af_ToTime" Parameter="af_ToTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="Af_TimeEachTurn" Parameter="af_TimeEachTurn" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Af_Capacity" Parameter="af_Capacity" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Days" Parameter="days" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="CountShowWeek" Parameter="countShowWeek" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="RersultId" Parameter="rersultId" Type="System.Int64" DbType="BigInt" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_OnlineTurnSettings2_Edit" Method="usp_OnlineTurnSettings2_Edit">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="TimeEachTurn" Parameter="timeEachTurn" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DepositAmount" Parameter="depositAmount" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="Desc" Parameter="desc" Type="System.String" DbType="NVarChar(MAX)" />
+    <Parameter Name="TurnType" Parameter="turnType" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="FromTime" Parameter="fromTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="ToTime" Parameter="toTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="FilePath" Parameter="filePath" Type="System.String" DbType="NVarChar(1001)" />
+    <Parameter Name="Capacity" Parameter="capacity" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Af_FromTime" Parameter="af_FromTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="Af_ToTime" Parameter="af_ToTime" Type="System.TimeSpan" DbType="Time" />
+    <Parameter Name="Af_TimeEachTurn" Parameter="af_TimeEachTurn" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Af_Capacity" Parameter="af_Capacity" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Days" Parameter="days" Type="System.String" DbType="NVarChar(110)" />
+    <Parameter Name="CountShowWeek" Parameter="countShowWeek" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Active" Parameter="active" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="CauserId" Parameter="causerId" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="Message" Parameter="message" Type="System.String" DbType="NVarChar(1001)" Direction="InOut" />
+    <Parameter Name="HasError" Parameter="hasError" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_OnlineTurnSettings_SelectById" Method="usp_OnlineTurnSettings_SelectById">
+    <Parameter Name="Id" Parameter="id" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_OnlineTurnSettings_SelectByIdResult">
+      <Column Name="OTS_Title" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="OTS_TimeEachTurn" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OTS_Causer" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="OTS_CreationTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="OTS_DepositAmount" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="OTS_Desc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="OTS_TurnType" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="OTS_FromTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="OTS_ToTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="OTS_FromDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="OTS_ToDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="OTS_FilePath" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="OTS_Capacity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OTS_Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="OTS_UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="OTS_AF_FromTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="OTS_AF_ToTime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="OTS_AF_TimeEachTurn" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OTS_AF_Capacity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OTS_WeekDays" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="OTS_CountShowWeek" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Factor_Detail" Method="usp_Factor_Detail">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_DetailResult">
+      <Column Name="FamilyTitle" Type="System.String" DbType="NVarChar(1039)" CanBeNull="true" />
+      <Column Name="DiscountPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorTitle" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="FactorDate" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidPrice" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+      <Column Name="ModPrice" Type="System.String" DbType="NVarChar(119)" CanBeNull="true" />
+      <Column Name="SumPriceFactor" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="FactorDesc" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="UniqueKey" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="Name_Men" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="Family_Men" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="Moblie_Men" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="Name_Women" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="Family_Women" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="Mobile_Women" Type="System.String" DbType="VarChar(14)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(1001)" CanBeNull="true" />
+      <Column Name="ProjectType" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="RPT.usp_Factor_Select_Product" Method="usp_Factor_Select_Product">
+    <Parameter Name="FactorId" Parameter="factorId" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="usp_Factor_Select_ProductResult">
+      <Column Name="ProductTitle" Type="System.String" DbType="NVarChar(1001) NOT NULL" CanBeNull="false" />
+      <Column Name="[Desc]" Member="Desc" Type="System.String" DbType="NVarChar(2003) NOT NULL" CanBeNull="false" />
+      <Column Name="Fee" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+      <Column Name="Count" Type="System.String" DbType="NVarChar(110)" CanBeNull="true" />
+      <Column Name="Sum" Type="System.String" DbType="VarChar(110)" CanBeNull="true" />
+    </ElementType>
   </Function>
 </Database>
