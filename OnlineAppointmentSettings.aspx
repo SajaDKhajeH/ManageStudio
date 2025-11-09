@@ -390,6 +390,18 @@
             var af_TimeEachTurn = $("#ots_af_TimeEachTurn").val();
             var af_capacity = $("#ots_af_capacity").val();
 
+            if (af_capacity == undefined || af_capacity == null) {
+                af_capacity = 0;
+            }
+            if (capacity == undefined || capacity == null) {
+                capacity = 0;
+            }
+            if (af_TimeEachTurn == undefined || af_TimeEachTurn == null) {
+                af_TimeEachTurn = 0;
+            }
+            if (TimeEachTurn == undefined || TimeEachTurn == null) {
+                TimeEachTurn = 0;
+            }
             var fileInput = $('#ots_filepath')[0];
             var filepath = fileInput.files.length === 0 ? null : fileInput.files[0];
             var desc = $("#ots_desc").val();

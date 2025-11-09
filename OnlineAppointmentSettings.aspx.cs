@@ -209,8 +209,6 @@ public partial class OnlineAppointmentSettings : System.Web.UI.Page
         {
             Title = x.OTS_Title,
             TurnType = x.TurnTypeTitle,
-            RangeDate = x.OTS_FromDate.ToShamsi() + " تا " + x.OTS_ToDate.ToShamsi(),
-            RangeTime = x.OTS_FromTime.ToString().Substring(0, 5) + " تا " + x.OTS_ToTime.ToString().Substring(0, 5),
             DepositeAmount = (x.OTS_DepositAmount ?? 0).ShowPrice(TextAfterPrice),
             Capacity = x.OTS_Capacity ?? 0,
             Status = x.OTS_Active ? "<div class='badge badge-light-success'>فعال</div>" : "<div class='badge badge-light-danger'>غیرفعال</div>",
