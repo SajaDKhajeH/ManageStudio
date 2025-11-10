@@ -484,6 +484,7 @@ namespace AdakStudio
                     { "StudioAddress", Settings.Address },
                     { "StudioPhone", Settings.Phone },
                     { "LogoUrl", SpecialStudio.Logo },
+                    { "FamilyTitle", factorDetail.FamilyTitle },
 
                 };
                 Step = "4";
