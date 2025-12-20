@@ -94,10 +94,27 @@
             margin: 5px;
         }
 
-            .appointment:hover {
-                background-color: #e0e0e0;
-                border-color: #999;
-            }
+        .appointment:hover {
+            background-color: #e0e0e0;
+            border-color: #999;
+        }
+
+        .appointmentOnline {
+            background-color: #c0e681;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 5px;
+        }
+
+        .appointmentOnline:hover {
+            background-color: #e0e0e0;
+            border-color: #999;
+        }
+
     </style>
     <style>
         /* Tabs Container */
@@ -231,30 +248,6 @@
         </div>
     </div>
 </div>
-  <%--  <div class="post d-flex flex-column-fluid" id="kt_post">
-        <div id="kt_content_container" class="container-xxl">
-            <div class="card">
-                <div class="calendar-container">
-                    <!-- Header -->
-                    <div class="headercalendar">
-                        <button id="prevWeek">هفته قبل</button>
-                        <div id="currentWeek">12 تا 18 آذر</div>
-                        <button id="nextWeek">هفته بعد</button>
-                    </div>
-
-                    <!-- Days Row -->
-                    <div class="days-row" id="daysRow">
-                        <!-- روزهای هفته به صورت داینامیک اضافه می‌شوند -->
-                    </div>
-
-                    <!-- Schedule -->
-                    <div class="schedule" id="schedule">
-                        <!-- زمان‌بندی‌ها و نوبت‌ها به صورت داینامیک اضافه می‌شوند -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--%>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="End" runat="server">
     <script>
@@ -320,7 +313,7 @@
         // گرفتن نوبت‌ها برای روز خاص
         const getAppointmentsForDay = (dayIndex) => {
             var sampleAppointments = [
-                { hour: 0, time: '', title: '', RequestId: 0, Date: "", TurnId: "", TurnTitle: "", Desc: "", BaseFamilyTitle: "", PhotographerId: "", Duration: 0, LocationId: "", LocationTitle: "", ModPrice: 0, DurationText: "", PhotographerName: "", FamilyId: 0, FamilyTitle: "", BedPrice:0 }
+                { hour: 0, time: '', title: '', RequestId: 0, Date: "", TurnId: "", TurnTitle: "", Desc: "", BaseFamilyTitle: "", PhotographerId: "", Duration: 0, LocationId: "", LocationTitle: "", ModPrice: 0, DurationText: "", PhotographerName: "", FamilyId: 0, FamilyTitle: "", BedPrice:0,IsOnline:false }
             ];
             $.ajax({
                 type: "POST",
@@ -367,7 +360,12 @@
                     matchedAppointments.forEach(app => {
                         //دیو برای ویرایش نوبت
                         const appointmentDiv = document.createElement('div');
-                        appointmentDiv.className = 'appointment';
+                        if (app.IsOnline) {
+                            appointmentDiv.className = 'appointmentOnline';
+                        }
+                        else {
+                            appointmentDiv.className = 'appointment';
+                        }
                         locationTitle = app.LocationTitle == null || app.LocationTitle == undefined ? "" : " " + app.LocationTitle;
                         if (app.Duration > 0) {
                             DurationText = " مدت زمان:" + app.DurationText;

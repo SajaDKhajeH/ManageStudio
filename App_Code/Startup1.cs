@@ -15,6 +15,7 @@ public class Startup1
     {
         //if is not local
         SmsSender.Instance.BeginSend();
+        AutomaticSendSMS.Instance.BeginSetSMS();
         #region JWT
         //string portalUrl = ConfigurationSettings.AppSettings["PortalUrl"];
         //string portalUrl = new StringBuilder()

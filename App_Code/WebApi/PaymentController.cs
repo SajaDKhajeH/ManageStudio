@@ -34,7 +34,7 @@ public class PaymentController : ApiController
                     input.ScheduleDate,
                     input.ScheduleTime,
                     input.DepositAmount,
-                    input.Mobile,
+                    input.Mobile.ToEnglishNumber(),
                     guid,
                     input.PackageId,
                     input.Desc

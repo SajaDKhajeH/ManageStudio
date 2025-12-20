@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Web;
+using System.Web.Http.Cors;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -15,11 +17,14 @@ namespace AdakStudio
         }
         protected static void CloseConnectios(Bank.AdakBankDataContext db)
         {
-            try { db.Transaction?.Rollback(); } catch { };
-            try { db.Connection.Close(); } catch { };
+            try { db.Transaction?.Rollback(); } catch { }
+            ;
+            try { db.Connection.Close(); } catch { }
+            ;
             try
             { db.Dispose(); }
-            catch { };
+            catch { }
+            ;
         }
         [WebMethod]
         public static dynamic SetRequestOnMaster(long requestId, string turn_Date, string turn_Time,
@@ -133,7 +138,7 @@ namespace AdakStudio
                     FamilyId = item.R_FamilyId,
                     FamilyTitle = item.FamilyTitle,
                     BedPrice = item.BedPrice ?? 0,
-
+                    IsOnline = item.IsOnline ?? false
                 });
             }
             return tlist;
@@ -341,7 +346,7 @@ namespace AdakStudio
                     return new
                     {
                         LastPhotographerId = lastPhotographerId.ToCodeNumber(),
-                        Change=true
+                        Change = true
                     };
                 }
             }
@@ -375,6 +380,7 @@ public class TurnList
     public long FamilyId { get; set; }
     public string FamilyTitle { get; set; }
     public decimal BedPrice { get; set; }
+    public bool IsOnline { get; set; }     
 }
 public class LunarCalendarList
 {

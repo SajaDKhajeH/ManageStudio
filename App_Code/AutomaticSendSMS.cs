@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Web;
@@ -18,25 +19,33 @@ public class AutomaticSendSMS
     public void BeginSetSMS()
     {
         //هر 20 ساعت اجرا میشه
-        timer = new Timer(5000);
+        timer = new Timer(10000);
         timer.Elapsed += Timer_Elapsed;
         timer.Enabled = true;
         timer.Start();
     }
-
+    bool isWorking = false;
     private void Timer_Elapsed(object sender, ElapsedEventArgs e)
     {
-        ExecuteTime += 5;
-        //اگر 5 6 7 یا هفت ثانیه هم شد اجرا بشه
-        //اطلاع رسانی نوبت ها
-        if (ExecuteTime % 5 == 0)
+        if (isWorking)
+            return;
+        isWorking = true;
+        ExecuteTime += 10;
+        var css = AdakDB.ConnectionStrings;
+        foreach (var cs in css)
         {
-            AdakDB.Db.usp_Remind_Turn();
+            using (var db = AdakDB.GetDb(cs))
+            {
+                if (ExecuteTime % 10 == 0)
+                {
+                    db.usp_Remind_Turn();
+                }
+                else if (ExecuteTime % 72000 == 0)
+                {
+                    db.usp_Remind_Lunar_A_BirthDate();
+                }
+            }
         }
-        //ماهگرد و تولد
-        else if (ExecuteTime % 72000 == 0)
-        {
-            AdakDB.Db.usp_Remind_Lunar_A_BirthDate();
-        }
+        isWorking = false;
     }
 }

@@ -275,10 +275,16 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <input type="text" id="filterInput" class="form-control" placeholder="جستجو...">
+                                    </div>
+                                    <div class="col-md-6">
                                         <select id="filter_Hospital">
                                             <%Response.Write(PublicMethod.GetHospitals()); %>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="row">
+
                                     <div class="col-md-6">
                                         <div class="d-flex flex-stack" style="margin: 3px">
                                             <label class="form-check form-switch form-check-custom form-check-solid">
@@ -339,8 +345,8 @@
                                     </label>
                                 </div>
                                 <div class="col-md-5">
-                                <button class="submit-btn btn-primary" onclick="sendSMS()">ارسال پیام</button>
-                                 </div>
+                                    <button class="submit-btn btn-primary" onclick="sendSMS()">ارسال پیام</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -440,12 +446,13 @@
             var filter_From_Date = $("#filter_From_Date").val();
             var filter_To_Date = $("#filter_To_Date").val();
             var filter_hospital = $("#filter_Hospital").val();
+            var filterInput = $("#filterInput").val();
             var filter_FamilyBed = $("#filter_BedFamily").prop("checked");
             $.ajax({
                 type: "POST",
                 url: "SendSms.aspx/ForGrid",
                 data: JSON.stringify({
-                    Fromdate: filter_From_Date, Todate: filter_To_Date, Hospital: filter_hospital, BedFamily: filter_FamilyBed
+                    Fromdate: filter_From_Date, Todate: filter_To_Date, Hospital: filter_hospital, BedFamily: filter_FamilyBed, TextSearch: filterInput
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

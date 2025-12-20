@@ -16,15 +16,19 @@ namespace AdakStudio
         }
         [WebMethod]
         public static OperationResult<ForGrid.DataTableModel> ForGrid(
-               string Fromdate, string Todate, string Hospital, bool BedFamily
+               string Fromdate, string Todate, string Hospital, bool BedFamily, string TextSearch
                )
         {
+            try
+            {
+
+          
             Fromdate = Fromdate.ToEnglishNumber();
             Todate = Todate.ToEnglishNumber();
             Hospital = Hospital.ToDecodeNumber();
             int? countt = 0;
             string TextAfterPrice = Settings.TextAfterPrice;
-            var data = AdakDB.Db.usp_Family_Select_For_SendSMS(Fromdate, Todate, Hospital.ToLong(), BedFamily, LoginedUser.Id).ToList();
+            var data = AdakDB.Db.usp_Family_Select_For_SendSMS(Fromdate, Todate, Hospital.ToLong(), BedFamily, LoginedUser.Id, TextSearch).ToList();
             data = data ?? new List<Bank.usp_Family_Select_For_SendSMSResult>();
             List<SMSForGrid> list = new List<SMSForGrid>();
             countt = data.Count;
@@ -59,6 +63,12 @@ namespace AdakStudio
                     data = list
                 }
             };
+            }
+            catch (Exception ex)
+            {
+                AdakDB.Db.usp_ErrorAdd("SendSms.ForGrid", ex.Message);
+                return null;
+            }
         }
 
         [WebMethod]
